@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Main</name>
+    </assembly>
+    <members>
+        <member name="T:MonoMultiJack.MainClass">
+            <summary>
+            startup class
+            </summary>
+        </member>
+        <member name="M:MonoMultiJack.MainClass.Main(System.String[])">
+            <summary>
+            startup script, starts MainWindow
+            </summary>
+            <param name="args">
+            A <see cref="T:System.String" /></param>
+        </member>
+    </members>
+</doc>
