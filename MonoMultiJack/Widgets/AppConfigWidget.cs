@@ -24,10 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using Gtk;
+using System;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Widgets
 {
 	/// <summary>
 	/// Widget for configuring an application for use with jackd
@@ -37,17 +37,17 @@ namespace MonoMultiJack
 		//// <value>
 		/// Entry field for application name
 		/// </value>
-		protected Gtk.Entry appNameEntry;
+		protected Gtk.Entry _appNameEntry;
 		
 		//// <value>
 		/// Entry field for application startup command
 		/// </value>
-		protected Gtk.Entry appCommandEntry;
+		protected Gtk.Entry _appCommandEntry;
 		
 		//// <value>
 		/// button for destroying widget
 		/// </value>
-		protected Gtk.Button removeApp;
+		protected Gtk.Button _removeApp;
 		
 		//// <value>
 		/// edited configuration
@@ -56,7 +56,7 @@ namespace MonoMultiJack
 		{
 			get 
 			{
-				return new AppConfiguration(this.appNameEntry.Text.Trim(), this.appCommandEntry.Text.Trim());
+				return new AppConfiguration(this._appNameEntry.Text.Trim(), this._appCommandEntry.Text.Trim());
 			}
 		}
 		
@@ -68,8 +68,8 @@ namespace MonoMultiJack
 		public AppConfigWidget(AppConfiguration appConfig)
 		{
 			this.BuildWidget();
-			this.appNameEntry.Text = appConfig.name;
-			this.appCommandEntry.Text = appConfig.command;
+			this._appNameEntry.Text = appConfig.name;
+			this._appCommandEntry.Text = appConfig.command;
 		}
 		
 		/// <summary>
@@ -89,20 +89,20 @@ namespace MonoMultiJack
 			label = new Label ("Name");
 			label.Xalign = 0;
 			table.Attach (label, 0, 1, 1, 2);
-			this.appNameEntry = new Entry();
-			table.Attach (this.appNameEntry, 1, 2, 1, 2);
-			label.MnemonicWidget = this.appNameEntry;
+			this._appNameEntry = new Entry();
+			table.Attach (this._appNameEntry, 1, 2, 1, 2);
+			label.MnemonicWidget = this._appNameEntry;
 			
 			label = new Label ("Command");
 			label.Xalign = 0;
 			table.Attach (label, 0, 1, 2, 3);
-			this.appCommandEntry = new Entry();
-			table.Attach (this.appCommandEntry, 1, 2, 2, 3);
-			label.MnemonicWidget = this.appCommandEntry;
+			this._appCommandEntry = new Entry();
+			table.Attach (this._appCommandEntry, 1, 2, 2, 3);
+			label.MnemonicWidget = this._appCommandEntry;
 			
-			this.removeApp = new Button(Stock.Delete);
-			this.removeApp.Clicked += RemoveApp;
-			table.Attach(this.removeApp,2, 3, 1, 2);
+			this._removeApp = new Button(Stock.Delete);
+			this._removeApp.Clicked += RemoveApp;
+			table.Attach(this._removeApp,2, 3, 1, 2);
 			
 			
 			this.Put(table, 0, 0);

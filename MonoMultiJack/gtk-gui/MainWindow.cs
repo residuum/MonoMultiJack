@@ -14,27 +14,25 @@ public partial class MainWindow {
     
     private Gtk.UIManager UIManager;
     
-    private Gtk.Action FileAction;
+    private Gtk.Action fileAction;
     
-    private Gtk.Action ReStartJackdAction;
+    private Gtk.Action reStartJackdAction;
     
-    private Gtk.Action StopJackdAction;
+    private Gtk.Action stopJackdAction;
     
-    private Gtk.Action StopAllAction;
+    private Gtk.Action stopAllAction;
     
-    private Gtk.Action QuitAction;
+    private Gtk.Action quitAction;
     
-    private Gtk.Action ConfigurationAction;
+    private Gtk.Action configurationAction;
     
-    private Gtk.Action ConfigureJackdAction;
+    private Gtk.Action configureJackdAction;
     
-    private Gtk.Action AddRemoveApplicationsAction;
+    private Gtk.Action addRemoveApplicationsAction;
     
-    private Gtk.Action HelpAction;
+    private Gtk.Action helpAction;
     
-    private Gtk.Action AboutAction;
-    
-    private Gtk.Action ReStartJackd;
+    private Gtk.Action aboutAction;
     
     private Gtk.VBox mainVbox;
     
@@ -45,42 +43,39 @@ public partial class MainWindow {
         // Widget MainWindow
         this.UIManager = new Gtk.UIManager();
         Gtk.ActionGroup w1 = new Gtk.ActionGroup("Default");
-        this.FileAction = new Gtk.Action("FileAction", Mono.Unix.Catalog.GetString("File"), null, null);
-        this.FileAction.ShortLabel = Mono.Unix.Catalog.GetString("File");
-        w1.Add(this.FileAction, null);
-        this.ReStartJackdAction = new Gtk.Action("ReStartJackdAction", Mono.Unix.Catalog.GetString("(Re)Start Jackd"), null, "gtk-refresh");
-        this.ReStartJackdAction.Sensitive = false;
-        this.ReStartJackdAction.ShortLabel = Mono.Unix.Catalog.GetString("(Re)Start Jackd");
-        w1.Add(this.ReStartJackdAction, null);
-        this.StopJackdAction = new Gtk.Action("StopJackdAction", Mono.Unix.Catalog.GetString("Stop Jackd"), null, "gtk-stop");
-        this.StopJackdAction.Sensitive = false;
-        this.StopJackdAction.ShortLabel = Mono.Unix.Catalog.GetString("Stop Jackd");
-        w1.Add(this.StopJackdAction, null);
-        this.StopAllAction = new Gtk.Action("StopAllAction", Mono.Unix.Catalog.GetString("Stop All"), null, "gtk-stop");
-        this.StopAllAction.Sensitive = false;
-        this.StopAllAction.ShortLabel = Mono.Unix.Catalog.GetString("Stop All");
-        w1.Add(this.StopAllAction, null);
-        this.QuitAction = new Gtk.Action("QuitAction", Mono.Unix.Catalog.GetString("Quit"), null, "gtk-quit");
-        this.QuitAction.ShortLabel = Mono.Unix.Catalog.GetString("Quit");
-        w1.Add(this.QuitAction, null);
-        this.ConfigurationAction = new Gtk.Action("ConfigurationAction", Mono.Unix.Catalog.GetString("Configuration"), null, null);
-        this.ConfigurationAction.ShortLabel = Mono.Unix.Catalog.GetString("Configuration");
-        w1.Add(this.ConfigurationAction, null);
-        this.ConfigureJackdAction = new Gtk.Action("ConfigureJackdAction", Mono.Unix.Catalog.GetString("Configure Jackd"), null, "gtk-preferences");
-        this.ConfigureJackdAction.ShortLabel = Mono.Unix.Catalog.GetString("Configure Jackd");
-        w1.Add(this.ConfigureJackdAction, null);
-        this.AddRemoveApplicationsAction = new Gtk.Action("AddRemoveApplicationsAction", Mono.Unix.Catalog.GetString("Add / Remove Applications"), null, "gtk-preferences");
-        this.AddRemoveApplicationsAction.ShortLabel = Mono.Unix.Catalog.GetString("Add / Remove Applications");
-        w1.Add(this.AddRemoveApplicationsAction, null);
-        this.HelpAction = new Gtk.Action("HelpAction", Mono.Unix.Catalog.GetString("Help"), null, null);
-        this.HelpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
-        w1.Add(this.HelpAction, null);
-        this.AboutAction = new Gtk.Action("AboutAction", Mono.Unix.Catalog.GetString("About"), null, "gtk-about");
-        this.AboutAction.ShortLabel = Mono.Unix.Catalog.GetString("About");
-        w1.Add(this.AboutAction, null);
-        this.ReStartJackd = new Gtk.Action("ReStartJackd", Mono.Unix.Catalog.GetString("(Re)Start Jackd"), null, null);
-        this.ReStartJackd.ShortLabel = Mono.Unix.Catalog.GetString("(Re)Start Jackd");
-        w1.Add(this.ReStartJackd, "<Mod2>Escape");
+        this.fileAction = new Gtk.Action("fileAction", Mono.Unix.Catalog.GetString("File"), null, null);
+        this.fileAction.ShortLabel = Mono.Unix.Catalog.GetString("File");
+        w1.Add(this.fileAction, null);
+        this.reStartJackdAction = new Gtk.Action("reStartJackdAction", Mono.Unix.Catalog.GetString("(Re)Start Jackd"), null, "gtk-refresh");
+        this.reStartJackdAction.Sensitive = false;
+        this.reStartJackdAction.ShortLabel = Mono.Unix.Catalog.GetString("(Re)Start Jackd");
+        w1.Add(this.reStartJackdAction, null);
+        this.stopJackdAction = new Gtk.Action("stopJackdAction", Mono.Unix.Catalog.GetString("Stop Jackd"), null, "gtk-stop");
+        this.stopJackdAction.Sensitive = false;
+        this.stopJackdAction.ShortLabel = Mono.Unix.Catalog.GetString("Stop Jackd");
+        w1.Add(this.stopJackdAction, null);
+        this.stopAllAction = new Gtk.Action("stopAllAction", Mono.Unix.Catalog.GetString("Stop All"), null, "gtk-stop");
+        this.stopAllAction.Sensitive = false;
+        this.stopAllAction.ShortLabel = Mono.Unix.Catalog.GetString("Stop All");
+        w1.Add(this.stopAllAction, null);
+        this.quitAction = new Gtk.Action("quitAction", Mono.Unix.Catalog.GetString("Quit"), null, "gtk-quit");
+        this.quitAction.ShortLabel = Mono.Unix.Catalog.GetString("Quit");
+        w1.Add(this.quitAction, null);
+        this.configurationAction = new Gtk.Action("configurationAction", Mono.Unix.Catalog.GetString("Configuration"), null, null);
+        this.configurationAction.ShortLabel = Mono.Unix.Catalog.GetString("Configuration");
+        w1.Add(this.configurationAction, null);
+        this.configureJackdAction = new Gtk.Action("configureJackdAction", Mono.Unix.Catalog.GetString("Configure Jackd"), null, "gtk-preferences");
+        this.configureJackdAction.ShortLabel = Mono.Unix.Catalog.GetString("Configure Jackd");
+        w1.Add(this.configureJackdAction, null);
+        this.addRemoveApplicationsAction = new Gtk.Action("addRemoveApplicationsAction", Mono.Unix.Catalog.GetString("Add / Remove Applications"), null, "gtk-preferences");
+        this.addRemoveApplicationsAction.ShortLabel = Mono.Unix.Catalog.GetString("Add / Remove Applications");
+        w1.Add(this.addRemoveApplicationsAction, null);
+        this.helpAction = new Gtk.Action("helpAction", Mono.Unix.Catalog.GetString("Help"), null, null);
+        this.helpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
+        w1.Add(this.helpAction, null);
+        this.aboutAction = new Gtk.Action("aboutAction", Mono.Unix.Catalog.GetString("About"), null, "gtk-about");
+        this.aboutAction.ShortLabel = Mono.Unix.Catalog.GetString("About");
+        w1.Add(this.aboutAction, null);
         this.UIManager.InsertActionGroup(w1, 0);
         this.AddAccelGroup(this.UIManager.AccelGroup);
         this.Name = "MainWindow";
@@ -91,7 +86,7 @@ public partial class MainWindow {
         this.mainVbox.Name = "mainVbox";
         this.mainVbox.Spacing = 6;
         // Container child mainVbox.Gtk.Box+BoxChild
-        this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='FileAction' action='FileAction'><menuitem name='ReStartJackdAction' action='ReStartJackdAction'/><menuitem name='StopJackdAction' action='StopJackdAction'/><menuitem name='StopAllAction' action='StopAllAction'/><menuitem name='QuitAction' action='QuitAction'/></menu><menu name='ConfigurationAction' action='ConfigurationAction'><menuitem name='ConfigureJackdAction' action='ConfigureJackdAction'/><menuitem name='AddRemoveApplicationsAction' action='AddRemoveApplicationsAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
+        this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='fileAction' action='fileAction'><menuitem name='reStartJackdAction' action='reStartJackdAction'/><menuitem name='stopJackdAction' action='stopJackdAction'/><menuitem name='stopAllAction' action='stopAllAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='configurationAction' action='configurationAction'><menuitem name='configureJackdAction' action='configureJackdAction'/><menuitem name='addRemoveApplicationsAction' action='addRemoveApplicationsAction'/></menu><menu name='helpAction' action='helpAction'><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
         this.menubar1 = ((Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
         this.menubar1.Name = "menubar1";
         this.mainVbox.Add(this.menubar1);
@@ -103,16 +98,15 @@ public partial class MainWindow {
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 366;
+        this.DefaultWidth = 462;
         this.DefaultHeight = 300;
         this.Show();
-        this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
-        this.ReStartJackdAction.Activated += new System.EventHandler(this.restartJackd);
-        this.StopJackdAction.Activated += new System.EventHandler(this.stopJackd);
-        this.StopAllAction.Activated += new System.EventHandler(this.stopAll);
-        this.QuitAction.Activated += new System.EventHandler(this.OnQuitActionActivated);
-        this.ConfigureJackdAction.Activated += new System.EventHandler(this.ConfigureJackd);
-        this.AddRemoveApplicationsAction.Activated += new System.EventHandler(this.ConfigureApplications);
-        this.AboutAction.Activated += new System.EventHandler(this.AboutDialog);
+        this.reStartJackdAction.Activated += new System.EventHandler(this.RestartJackd);
+        this.stopJackdAction.Activated += new System.EventHandler(this.StopJackd);
+        this.stopAllAction.Activated += new System.EventHandler(this.StopAll);
+        this.quitAction.Activated += new System.EventHandler(this.OnQuitActionActivated);
+        this.configureJackdAction.Activated += new System.EventHandler(this.ConfigureJackd);
+        this.addRemoveApplicationsAction.Activated += new System.EventHandler(this.ConfigureApplications);
+        this.aboutAction.Activated += new System.EventHandler(this.AboutDialog);
     }
 }

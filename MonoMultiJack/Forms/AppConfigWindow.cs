@@ -25,10 +25,11 @@
 // THE SOFTWARE.
 
 
-using System;
-using System.Collections.Generic;
 using Gtk;
 using MonoMultiJack;
+using MonoMultiJack.Widgets;
+using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// dialog for application configuration
@@ -38,12 +39,12 @@ public class AppConfigWindow : Gtk.Dialog
 	//// <value>
 	/// table for layout
 	/// </value>
-	protected Table configTable;
+	protected Table _configTable;
 	
 	//// <value>
 	/// button for adding config widgets
 	/// </value>
-	protected Button addWidget;
+	protected Button _addWidget;
 	
 	//// <value>
 	/// getter for new application configurations
@@ -55,7 +56,7 @@ public class AppConfigWindow : Gtk.Dialog
 			List<AppConfiguration> newAppConfigs = new List<AppConfiguration>();
 			AppConfiguration newAppConfig;
 			
-			foreach (Widget appConfigWidget in this.configTable.Children)
+			foreach (Widget appConfigWidget in this._configTable.Children)
 			{
 				if (appConfigWidget is AppConfigWidget)
 				{
@@ -85,20 +86,20 @@ public class AppConfigWindow : Gtk.Dialog
 	/// </param>
 	protected void BuildDialog (List<AppConfiguration> appConfigs)
 	{
-		this.configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
-		this.configTable.ColumnSpacing = 10;
-		this.configTable.RowSpacing = 10;
-		this.VBox.PackStart (this.configTable, false, false, 0);
+		this._configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
+		this._configTable.ColumnSpacing = 10;
+		this._configTable.RowSpacing = 10;
+		this.VBox.PackStart (this._configTable, false, false, 0);
 		AppConfigWidget appConfigWidget;
 		uint count = 0;
 		foreach (AppConfiguration appConfig in appConfigs)
 		{
 			appConfigWidget = new AppConfigWidget (appConfig);
-			this.configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
+			this._configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
 			count++;
 		}
 		this.CreateAddButton ();
-		this.configTable.Attach (this.addWidget, 0, 1, count, count + 1);
+		this._configTable.Attach (this._addWidget, 0, 1, count, count + 1);
 		this.AddButton (Stock.Ok, ResponseType.Ok);
 		this.AddButton (Stock.Cancel, ResponseType.Cancel);
 	}
@@ -108,12 +109,12 @@ public class AppConfigWindow : Gtk.Dialog
 	/// </summary>
 	protected void CreateAddButton ()
 	{
-		if (this.addWidget != null)
+		if (this._addWidget != null)
 		{
-			this.addWidget.Destroy ();
+			this._addWidget.Destroy ();
 		}
-		this.addWidget = new Button ("Add Application");
-		this.addWidget.Clicked += addNewConfigWidget;
+		this._addWidget = new Button ("Add Application");
+		this._addWidget.Clicked += AddNewConfigWidget;
 	}
 	
 	/// <summary>
@@ -121,12 +122,12 @@ public class AppConfigWindow : Gtk.Dialog
 	/// </summary>
 	protected void AddNewConfigWidget()
 	{
-		this.configTable.NRows++;
+		this._configTable.NRows++;
 		AppConfigWidget appConfigWidget = new AppConfigWidget();
-		this.configTable.Attach (appConfigWidget, 0, 1, this.configTable.NRows - 2, this.configTable.NRows -1);
+		this._configTable.Attach (appConfigWidget, 0, 1, this._configTable.NRows - 2, this._configTable.NRows -1);
 		this.CreateAddButton ();
-		this.configTable.Attach (this.addWidget, 0, 1, this.configTable.NRows - 1, this.configTable.NRows);
-		this.configTable.ShowAll ();
+		this._configTable.Attach (this._addWidget, 0, 1, this._configTable.NRows - 1, this._configTable.NRows);
+		this._configTable.ShowAll ();
 	}
 	
 	/// <summary>
@@ -138,7 +139,7 @@ public class AppConfigWindow : Gtk.Dialog
 	/// <param name="args">
 	/// A <see cref="System.EventArgs"/>
 	/// </param>
-	protected void addNewConfigWidget (object sender, System.EventArgs args)
+	protected void AddNewConfigWidget (object sender, System.EventArgs args)
 	{
 		this.AddNewConfigWidget ();
 	}

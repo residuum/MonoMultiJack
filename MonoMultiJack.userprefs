@@ -3,24 +3,21 @@
   <MonoDevelop.Ide.DebuggingService>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService>
-  <MonoDevelop.Ide.Workbench ActiveDocument="MonoMultiJack/Classes/JackdInterop.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MonoMultiJack/Forms/AppConfigWindow.cs" ctype="Workbench">
     <Files>
-      <File FileName="MonoMultiJack/Forms/MainWindow.cs" Line="92" Column="46" />
-      <File FileName="MonoMultiJack/Classes/JackdInterop.cs" Line="37" Column="1" />
+      <File FileName="MonoMultiJack/Forms/AppConfigWindow.cs" Line="97" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="MonoMultiJack" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="UserInterface" expanded="True" />
-            <Node name="Classes" expanded="True" />
+            <Node name="UserInterface" expanded="True" selected="True" />
+            <Node name="Configuration" expanded="True" />
             <Node name="Forms" expanded="True" />
+            <Node name="Jackd" expanded="True" />
             <Node name="Widgets" expanded="True" />
           </Node>
-          <Node name="Pakete" expanded="True">
-            <Node name="Linux Binaries" selected="True" />
-          </Node>
+          <Node name="Pakete" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

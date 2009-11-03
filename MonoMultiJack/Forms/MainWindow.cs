@@ -24,11 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
 using Gtk;
 using MonoMultiJack;
+using MonoMultiJack.Widgets;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 /// <summary>
 /// Main Window 
@@ -38,42 +39,45 @@ public partial class MainWindow: Gtk.Window
 	/// <summary>
 	/// Xml Configuration
 	/// </summary>
-	protected XmlConfiguration config;
+	protected XmlConfiguration _config;
 	
 	/// <summary>
 	/// Jackd startup command
 	/// </summary>
-	protected string jackdStartup;
+	protected string _jackdStartup;
 	
 	/// <summary>
 	/// Count of elements in appTable
 	/// </summary>
-	protected uint tableCounter;
+	protected uint _tableCounter;
 	
 	/// <summary>
 	/// Rows in appTable
 	/// </summary>
-	protected uint tableRows = 10;
+	protected uint _tableRows = 10;
 	
 	/// <summary>
 	/// Table for appWidgets
 	/// </summary>
-	protected Gtk.Table appTable;
+	protected Gtk.Table _appTable;
 	
+	/// <summary>
+	/// Area for Jackd Connectors
+	/// </summary>
 	private Gtk.Fixed _ConnectorArea;
 	
 	/// <summary>
 	/// jackd process
 	/// </summary>
-	protected Process jackd;
+	protected Process _jackd;
 	
 	/// <summary>
 	/// Constructor
 	/// </summary>
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
-		this.tableCounter = 0;
-		this.Build ();
+		this._tableCounter = 0;
+		this.Build ();	
 		this.BuildWindowContent ();
 	}
 	
@@ -83,15 +87,15 @@ public partial class MainWindow: Gtk.Window
 		this.Icon = new Gdk.Pixbuf("monomultijack.png");
 		Gtk.HBox NewHBox = new Gtk.HBox (false, 0);
 		this.mainVbox.Add (NewHBox);
-        this.appTable = new Gtk.Table((this.tableRows), ((uint)(2)), false);
-        this.appTable.Name = "appTable";
-        this.appTable.RowSpacing = ((uint)(2));
-        this.appTable.ColumnSpacing = ((uint)(10));
-		NewHBox.Add (this.appTable);
+        this._appTable = new Gtk.Table((this._tableRows), ((uint)(2)), false);
+        this._appTable.Name = "appTable";
+        this._appTable.RowSpacing = ((uint)(2));
+        this._appTable.ColumnSpacing = ((uint)(10));
+		NewHBox.Add (this._appTable);
 		this.ReadConfiguration ();
 		this._ConnectorArea = MakeConnectorArea ();
 		NewHBox.Add (_ConnectorArea);
-		this.appTable.ShowAll();
+		this._appTable.ShowAll();
 	}
 	
 	private Fixed MakeConnectorArea ()
@@ -105,13 +109,13 @@ public partial class MainWindow: Gtk.Window
 	/// </summary>
 	protected void ReadConfiguration ()
 	{
-		this.config = new XmlConfiguration();
-		if (this.config.jackdConfig == null && this.config.appConfigs.Count == 0)
+		this._config = new XmlConfiguration();
+		if (this._config.jackdConfig == null && this._config.appConfigs.Count == 0)
 		{
 			this.InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
 		}
-		this.UpdateAppWidgets(this.config.appConfigs);
-		this.UpdateJackd(this.config.jackdConfig);
+		this.UpdateAppWidgets(this._config.appConfigs);
+		this.UpdateJackd(this._config.jackdConfig);
 	}
 	
 	/// <summary>
@@ -126,9 +130,9 @@ public partial class MainWindow: Gtk.Window
 	protected bool InAppWidgets (AppConfiguration appConfig)
 	{
 		bool status = false;
-		if (this.appTable.Children != null)
+		if (this._appTable.Children != null)
 		{
-			foreach (Gtk.Widget app in this.appTable.Children)
+			foreach (Gtk.Widget app in this._appTable.Children)
 			{
 				if (app is AppWidget)
 				{
@@ -152,15 +156,15 @@ public partial class MainWindow: Gtk.Window
 	protected void AddAppWidget (AppConfiguration appConfig)
 	{
 		AppWidget newApp = new AppWidget(appConfig);
-		if (this.tableCounter < this.tableRows)
+		if (this._tableCounter < this._tableRows)
 		{
-			this.appTable.Attach(newApp, 0, 1, this.tableCounter, this.tableCounter + 1);
+			this._appTable.Attach(newApp, 0, 1, this._tableCounter, this._tableCounter + 1);
 		}
 		else
 		{
-			this.appTable.Attach(newApp, 1, 2, this.tableCounter - this.tableRows, this.tableCounter - this.tableRows + 1);
+			this._appTable.Attach(newApp, 1, 2, this._tableCounter - this._tableRows, this._tableCounter - this._tableRows + 1);
 		}
-		this.tableCounter++;
+		this._tableCounter++;
 		newApp.Show();
 	}
 	
@@ -192,10 +196,10 @@ public partial class MainWindow: Gtk.Window
 	{
 		if (jackdConfig != null)
 		{
-			this.jackdStartup = jackdConfig.path 
+			this._jackdStartup = jackdConfig.path 
 				+ " -d " + jackdConfig.driver 
 				+ " -r " + jackdConfig.audiorate;
-			this.ReStartJackdAction.Sensitive = true;
+			this.reStartJackdAction.Sensitive = true;
 		}
 	}
 	
@@ -204,22 +208,22 @@ public partial class MainWindow: Gtk.Window
 	/// </summary>
 	protected void QuitIt()
 	{
-		if (this.jackd != null && this.jackd.HasExited == false)
+		if (this._jackd != null && this._jackd.HasExited == false)
 		{
 			try
 			{
-				this.jackd.Kill();
+				this._jackd.Kill();
 			}
 			catch (Exception ex)
 			{
 				this.InfoMessage(ex.Message);
 			}
 		}
-		foreach (Widget appPart in this.appTable.Children)
+		foreach (Widget appPart in this._appTable.Children)
 		{
 			if (appPart is AppWidget)
 			{
-				((AppWidget)appPart).stopApplication();
+				((AppWidget)appPart).StopApplication();
 			}	
 		}
 		Application.Quit ();
@@ -248,19 +252,19 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">
 	/// A <see cref="System.EventArgs"/>
 	/// </param>
-	protected virtual void restartJackd (object sender, System.EventArgs e)
+	protected virtual void RestartJackd (object sender, System.EventArgs e)
 	{
-		if (this.jackd != null && this.jackd.HasExited == false)
+		if (this._jackd != null && this._jackd.HasExited == false)
 		{
-			this.jackd.CloseMainWindow ();
+			this._jackd.CloseMainWindow ();
 		}
-		this.jackd = new Process ();
-		this.jackd.StartInfo.FileName = jackdStartup;
-		if (this.jackd.Start ())
+		this._jackd = new Process ();
+		this._jackd.StartInfo.FileName = _jackdStartup;
+		if (this._jackd.Start ())
 		{
-			this.jackd.EnableRaisingEvents = true;
-			jackd.Exited += jackdExited;
-			StopJackdAction.Sensitive = true;
+			this._jackd.EnableRaisingEvents = true;
+			_jackd.Exited += JackdExited;
+			stopJackdAction.Sensitive = true;
 		}
 	}
 
@@ -273,13 +277,13 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">
 	/// A <see cref="System.EventArgs"/>
 	/// </param>
-	protected virtual void stopJackd (object sender, System.EventArgs e)
+	protected virtual void StopJackd (object sender, System.EventArgs e)
 	{
-		if (this.jackd != null || this.jackd.HasExited == false)
+		if (this._jackd != null || this._jackd.HasExited == false)
 		{
-			this.jackd.CloseMainWindow ();
+			this._jackd.CloseMainWindow ();
 		}	
-		StopJackdAction.Sensitive = false;
+		stopJackdAction.Sensitive = false;
 	}
 
 	/// <summary>
@@ -291,7 +295,7 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">
 	/// A <see cref="System.EventArgs"/>
 	/// </param>
-	protected virtual void stopAll (object sender, System.EventArgs e)
+	protected virtual void StopAll (object sender, System.EventArgs e)
 	{
 		//TODO
 	}
@@ -308,20 +312,20 @@ public partial class MainWindow: Gtk.Window
 	protected virtual void ConfigureJackd (object sender, System.EventArgs e)
 	{
 		//TODO: stopall
-		JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (this.config.jackdConfig);
+		JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (this._config.jackdConfig);
 		this.Sensitive = false;
 		jackdConfigWindow.ShowAll ();
 		ResponseType response = (ResponseType)jackdConfigWindow.Run ();
 		if (response == ResponseType.Ok)
 		{
 			JackdConfiguration jackdConfig = jackdConfigWindow.jackdConfig;
-			if (!this.config.updateConfiguration(jackdConfig))
+			if (!this._config.UpdateConfiguration(jackdConfig))
 			{
 				this.InfoMessage("Configuration file is not writable.");
 			}
 			else
 			{
-				this.UpdateJackd (this.config.jackdConfig);
+				this.UpdateJackd (this._config.jackdConfig);
 			}
 		}
 		jackdConfigWindow.Destroy ();
@@ -339,7 +343,7 @@ public partial class MainWindow: Gtk.Window
 	/// </param>
 	protected virtual void ConfigureApplications (object sender, System.EventArgs e)
 	{
-		AppConfigWindow appConfigWindow = new AppConfigWindow (this.config.appConfigs);
+		AppConfigWindow appConfigWindow = new AppConfigWindow (this._config.appConfigs);
 		this.Sensitive = false;		
 		appConfigWindow.ShowAll ();
 		ResponseType response = (ResponseType)appConfigWindow.Run ();
@@ -348,13 +352,13 @@ public partial class MainWindow: Gtk.Window
 			//TODO: stop all
 			List<AppConfiguration> newAppConfigs = appConfigWindow.appConfigs;
 			newAppConfigs.Reverse ();
-			if (!this.config.updateConfiguration(newAppConfigs))
+			if (!this._config.UpdateConfiguration(newAppConfigs))
 			{
 				this.InfoMessage("Configuration file is not writable.");
 			}
 			else
 			{
-			//this.UpdateAppWidgets (this.config.appConfigs);
+			//this._UpdateAppWidgets (this.config.appConfigs);
 			}
 		}
 		appConfigWindow.Destroy ();
@@ -375,9 +379,9 @@ public partial class MainWindow: Gtk.Window
 		this.QuitIt ();
 	}
 	
-	protected virtual void jackdExited (object sender, System.EventArgs args)
+	protected virtual void JackdExited (object sender, System.EventArgs args)
 	{
-		this.StopJackdAction.Sensitive = false;
+		this.stopJackdAction.Sensitive = false;
 	}
 
 	/// <summary>

@@ -9,6 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AssemblyName>MonoMultiJack</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>MonoMultiJack</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,23 +60,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Forms\MainWindow.cs" />
-    <Compile Include="Classes\XmlConfiguration.cs" />
-    <Compile Include="Classes\JackdConfiguration.cs" />
-    <Compile Include="Classes\AppConfiguration.cs" />
+    <Compile Include="Configuration\XmlConfiguration.cs" />
+    <Compile Include="Configuration\JackdConfiguration.cs" />
+    <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Forms\AppConfigWindow.cs" />
     <Compile Include="Forms\JackdConfigWindow.cs" />
-    <Compile Include="Classes\JackdInterop.cs" />
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="Jackd\JackdInterop.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Forms\" />
-    <Folder Include="Classes\" />
+    <Folder Include="Configuration\" />
     <Folder Include="Widgets\" />
+    <Folder Include="Jackd\" />
   </ItemGroup>
 </Project>
