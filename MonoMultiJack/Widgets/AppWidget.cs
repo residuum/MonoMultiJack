@@ -74,7 +74,7 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		public void StopApplication ()
 		{
-			if (this._appProcess != null && this._appProcess.HasExited == false)
+			if (this._appProcess != null && !this._appProcess.HasExited)
 			{
 				this._appProcess.CloseMainWindow ();
 			}				
@@ -115,7 +115,7 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		private void StopApplication (object obj, EventArgs args)
 		{
-			if (this._appProcess.HasExited == false)
+			if (!this._appProcess.HasExited)
 			{
 				this._appProcess.CloseMainWindow ();
 			}

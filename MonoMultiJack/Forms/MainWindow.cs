@@ -208,7 +208,7 @@ public partial class MainWindow: Gtk.Window
 	/// </summary>
 	protected void QuitIt()
 	{
-		if (this._jackd != null && this._jackd.HasExited == false)
+		if (this._jackd != null && !this._jackd.HasExited)
 		{
 			try
 			{
@@ -254,7 +254,7 @@ public partial class MainWindow: Gtk.Window
 	/// </param>
 	protected virtual void RestartJackd (object sender, System.EventArgs e)
 	{
-		if (this._jackd != null && this._jackd.HasExited == false)
+		if (this._jackd != null && !this._jackd.HasExited)
 		{
 			this._jackd.CloseMainWindow ();
 		}
@@ -279,7 +279,7 @@ public partial class MainWindow: Gtk.Window
 	/// </param>
 	protected virtual void StopJackd (object sender, System.EventArgs e)
 	{
-		if (this._jackd != null || this._jackd.HasExited == false)
+		if (this._jackd != null || !this._jackd.HasExited)
 		{
 			this._jackd.CloseMainWindow ();
 		}	
