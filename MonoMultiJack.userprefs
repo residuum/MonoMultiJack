@@ -1,26 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
   <MonoDevelop.Ide.DebuggingService>
-    <BreakpointStore>
-      <Breakpoint file="/home/thomas/dev/mono/MonoMultiJack/MonoMultiJack/Forms/MainWindow.cs" line="315" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService>
-  <MonoDevelop.Ide.Workbench ActiveDocument="MonoMultiJack/Widgets/AppWidget.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MonoMultiJack/Configuration/XmlConfiguration.cs" ctype="Workbench">
     <Files>
-      <File FileName="MonoMultiJack/Main.cs" Line="49" Column="1" />
-      <File FileName="MonoMultiJack/Widgets/AppWidget.cs" Line="94" Column="1" />
+      <File FileName="MonoMultiJack/Configuration/XmlConfiguration.cs" Line="223" Column="29" />
+      <File FileName="MonoMultiJack/Forms/MainWindow.cs" Line="315" Column="1" />
+      <File FileName="MonoMultiJack/Main.cs" Line="48" Column="1" />
+      <File FileName="MonoMultiJack/Configuration/JackdConfiguration.cs" Line="41" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="MonoMultiJack" expanded="True">
-            <Node name="UserInterface" expanded="True" />
-            <Node name="Configuration" expanded="True" />
-            <Node name="Forms" expanded="True" />
-            <Node name="Jackd" expanded="True" />
-            <Node name="Widgets" expanded="True">
-              <Node name="AppWidget.cs" selected="True" />
+            <Node name="Configuration" expanded="True">
+              <Node name="XmlConfiguration.cs" selected="True" />
             </Node>
+            <Node name="Forms" expanded="True" />
+            <Node name="Widgets" expanded="True" />
           </Node>
           <Node name="Pakete" expanded="True" />
         </State>

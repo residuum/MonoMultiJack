@@ -67,6 +67,11 @@ public partial class MainWindow: Gtk.Window
 	private Gtk.Fixed _ConnectorArea;
 	
 	/// <summary>
+	/// Status icon for jackd process
+	/// </summary>
+	private Gtk.Image _jackdStatusIcon;
+	
+	/// <summary>
 	/// jackd process
 	/// </summary>
 	protected Process _jackd;
@@ -79,8 +84,12 @@ public partial class MainWindow: Gtk.Window
 		this._tableCounter = 0;
 		this.Build ();	
 		this.BuildWindowContent ();
+		this.DeleteEvent += OnDelete;
 	}
 	
+	/// <summary>
+	/// builds window content
+	/// </summary>
 	private void BuildWindowContent ()
 	{
 		this.Title = "MonoMultiJack";
@@ -96,6 +105,9 @@ public partial class MainWindow: Gtk.Window
 		this._ConnectorArea = MakeConnectorArea ();
 		NewHBox.Add (_ConnectorArea);
 		this._appTable.ShowAll();
+		Gtk.Statusbar statusbar = new Gtk.Statusbar();
+		this.mainVbox.Add(statusbar);
+		statusbar.ShowAll();
 	}
 	
 	private Fixed MakeConnectorArea ()
@@ -432,5 +444,10 @@ THE SOFTWARE.";
 		MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
 		popup.Run();
 		popup.Destroy();
+	}
+	
+	public void OnDelete(object o, EventArgs args)
+	{
+		this.QuitIt();
 	}
 }
