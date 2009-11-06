@@ -27,120 +27,124 @@
 
 using Gtk;
 using MonoMultiJack;
+using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
 using System;
 using System.Collections.Generic;
 
-/// <summary>
-/// dialog for application configuration
-/// </summary>
-public class AppConfigWindow : Gtk.Dialog
+namespace MonoMultiJack
 {
-	//// <value>
-	/// table for layout
-	/// </value>
-	protected Table _configTable;
-	
-	//// <value>
-	/// button for adding config widgets
-	/// </value>
-	protected Button _addWidget;
-	
-	//// <value>
-	/// getter for new application configurations
-	/// </value>
-	public List<AppConfiguration> appConfigs
+	/// <summary>
+	/// dialog for application configuration
+	/// </summary>
+	public class AppConfigWindow : Gtk.Dialog
 	{
-		get 
+		//// <value>
+		/// table for layout
+		/// </value>
+		protected Table _configTable;
+		
+		//// <value>
+		/// button for adding config widgets
+		/// </value>
+		protected Button _addWidget;
+		
+		//// <value>
+		/// getter for new application configurations
+		/// </value>
+		public List<AppConfiguration> appConfigs
 		{
-			List<AppConfiguration> newAppConfigs = new List<AppConfiguration>();
-			AppConfiguration newAppConfig;
-			
-			foreach (Widget appConfigWidget in this._configTable.Children)
+			get 
 			{
-				if (appConfigWidget is AppConfigWidget)
+				List<AppConfiguration> newAppConfigs = new List<AppConfiguration>();
+				AppConfiguration newAppConfig;
+				
+				foreach (Widget appConfigWidget in this._configTable.Children)
 				{
-					newAppConfig = ((AppConfigWidget)appConfigWidget).appConfig;
-					if ( !newAppConfig.name.Equals(string.Empty) && !newAppConfig.command.Equals(string.Empty))
+					if (appConfigWidget is AppConfigWidget)
 					{
-						newAppConfigs.Add(newAppConfig);
+						newAppConfig = ((AppConfigWidget)appConfigWidget).appConfig;
+						if ( !newAppConfig.name.Equals(string.Empty) && !newAppConfig.command.Equals(string.Empty))
+						{
+							newAppConfigs.Add(newAppConfig);
+						}
 					}
 				}
+				return newAppConfigs;
 			}
-			return newAppConfigs;
 		}
-	}
-			
-	public AppConfigWindow (List<AppConfiguration> appConfigs)
-	{
-		this.Title = "Configure Applications";
-		this.Resizable = false;
-		this.BuildDialog(appConfigs);
-	}
-	
-	/// <summary>
-	/// builds layout of dialog
-	/// </summary>
-	/// <param name="appConfigs">
-	/// A <see cref="List"/> current application configuration
-	/// </param>
-	protected void BuildDialog (List<AppConfiguration> appConfigs)
-	{
-		this._configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
-		this._configTable.ColumnSpacing = 10;
-		this._configTable.RowSpacing = 10;
-		this.VBox.PackStart (this._configTable, false, false, 0);
-		AppConfigWidget appConfigWidget;
-		uint count = 0;
-		foreach (AppConfiguration appConfig in appConfigs)
+				
+		public AppConfigWindow (List<AppConfiguration> appConfigs)
 		{
-			appConfigWidget = new AppConfigWidget (appConfig);
-			this._configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
-			count++;
+			this.Title = "Configure Applications";
+			this.Resizable = false;
+			this.BuildDialog(appConfigs);
 		}
-		this.CreateAddButton ();
-		this._configTable.Attach (this._addWidget, 0, 1, count, count + 1);
-		this.AddButton (Stock.Ok, ResponseType.Ok);
-		this.AddButton (Stock.Cancel, ResponseType.Cancel);
-	}
-	
-	/// <summary>
-	/// (re-)creates add button
-	/// </summary>
-	protected void CreateAddButton ()
-	{
-		if (this._addWidget != null)
+		
+		/// <summary>
+		/// builds layout of dialog
+		/// </summary>
+		/// <param name="appConfigs">
+		/// A <see cref="List"/> current application configuration
+		/// </param>
+		protected void BuildDialog (List<AppConfiguration> appConfigs)
 		{
-			this._addWidget.Destroy ();
+			this._configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
+			this._configTable.ColumnSpacing = 10;
+			this._configTable.RowSpacing = 10;
+			this.VBox.PackStart (this._configTable, false, false, 0);
+			AppConfigWidget appConfigWidget;
+			uint count = 0;
+			foreach (AppConfiguration appConfig in appConfigs)
+			{
+				appConfigWidget = new AppConfigWidget (appConfig);
+				this._configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
+				count++;
+			}
+			this.CreateAddButton ();
+			this._configTable.Attach (this._addWidget, 0, 1, count, count + 1);
+			this.AddButton (Stock.Ok, ResponseType.Ok);
+			this.AddButton (Stock.Cancel, ResponseType.Cancel);
 		}
-		this._addWidget = new Button ("Add Application");
-		this._addWidget.Clicked += AddNewConfigWidget;
-	}
-	
-	/// <summary>
-	/// creates and attaches new application configuration widget
-	/// </summary>
-	protected void AddNewConfigWidget()
-	{
-		this._configTable.NRows++;
-		AppConfigWidget appConfigWidget = new AppConfigWidget();
-		this._configTable.Attach (appConfigWidget, 0, 1, this._configTable.NRows - 2, this._configTable.NRows -1);
-		this.CreateAddButton ();
-		this._configTable.Attach (this._addWidget, 0, 1, this._configTable.NRows - 1, this._configTable.NRows);
-		this._configTable.ShowAll ();
-	}
-	
-	/// <summary>
-	/// event handler for creating and attaching new application config widget
-	/// </summary>
-	/// <param name="sender">
-	/// A <see cref="System.Object"/>
-	/// </param>
-	/// <param name="args">
-	/// A <see cref="System.EventArgs"/>
-	/// </param>
-	protected void AddNewConfigWidget (object sender, System.EventArgs args)
-	{
-		this.AddNewConfigWidget ();
+		
+		/// <summary>
+		/// (re-)creates add button
+		/// </summary>
+		protected void CreateAddButton ()
+		{
+			if (this._addWidget != null)
+			{
+				this._addWidget.Destroy ();
+			}
+			this._addWidget = new Button ("Add Application");
+			this._addWidget.Clicked += AddNewConfigWidget;
+		}
+		
+		/// <summary>
+		/// creates and attaches new application configuration widget
+		/// </summary>
+		protected void AddNewConfigWidget()
+		{
+			this._configTable.NRows++;
+			AppConfigWidget appConfigWidget = new AppConfigWidget();
+			this._configTable.Attach (appConfigWidget, 0, 1, this._configTable.NRows - 2, this._configTable.NRows -1);
+			this.CreateAddButton ();
+			this._configTable.Attach (this._addWidget, 0, 1, this._configTable.NRows - 1, this._configTable.NRows);
+			this._configTable.ShowAll ();
+		}
+		
+		/// <summary>
+		/// event handler for creating and attaching new application config widget
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="System.EventArgs"/>
+		/// </param>
+		protected void AddNewConfigWidget (object sender, System.EventArgs args)
+		{
+			this.AddNewConfigWidget ();
+		}
 	}
 }

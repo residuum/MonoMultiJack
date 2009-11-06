@@ -45,9 +45,6 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -59,7 +56,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Forms\MainWindow.cs" />
@@ -70,7 +66,8 @@
     <Compile Include="Forms\JackdConfigWindow.cs" />
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
-    <Compile Include="gtk-gui\window1.cs" />
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

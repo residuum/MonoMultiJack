@@ -26,15 +26,32 @@
 
 using System;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Configuration
 {
-
-
+	/// <summary>
+	/// Configuration of an application
+	/// </summary>
 	public class AppConfiguration
 	{
+		/// <summary>
+		/// name of the application
+		/// </summary>
 		public string name {get; protected set;}
+		
+		/// <summary>
+		/// command to launch the application
+		/// </summary>
 		public string command {get; protected set;}
 
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="newName">
+		/// A <see cref="System.String"/> indicating name of application
+		/// </param>
+		/// <param name="newCommand">
+		/// A <see cref="System.String"/> indicating command to lauch the application
+		/// </param>
 		public AppConfiguration (string newName, string newCommand)
 		{
 			this.name = newName;

@@ -26,6 +26,7 @@
 
 using Gtk;
 using MonoMultiJack;
+using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack
 {

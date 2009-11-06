@@ -26,6 +26,7 @@
 
 using System;
 using System.Diagnostics;
+using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.Widgets
 {	

@@ -25,14 +25,15 @@
 // THE SOFTWARE.
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
-using System.Linq;
-using System.Xml.Linq;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Configuration
 {
+	/// <summary>
+	/// Class for reading and writing XML configuration file.
+	/// </summary>
 	public class XmlConfiguration
 	{
 		/// <summary>
