@@ -71,6 +71,9 @@ public partial class MainWindow: Gtk.Window
 	/// </summary>
 	private Gtk.Image _jackdStatusIcon;
 	
+	private string _jackdStatusIconRunning = Stock.Connect;
+	private string _jackdStatusIconStopped = Stock.Disconnect;
+	
 	/// <summary>
 	/// jackd process
 	/// </summary>
@@ -106,6 +109,9 @@ public partial class MainWindow: Gtk.Window
 		NewHBox.Add (_ConnectorArea);
 		this._appTable.ShowAll();
 		Gtk.Statusbar statusbar = new Gtk.Statusbar();
+		this._jackdStatusIcon = new Image();
+		statusbar.Add(this._jackdStatusIcon);
+		this._jackdStatusIcon.File = this._jackdStatusIconStopped;
 		this.mainVbox.Add(statusbar);
 		statusbar.ShowAll();
 	}
@@ -277,6 +283,7 @@ public partial class MainWindow: Gtk.Window
 			this._jackd.EnableRaisingEvents = true;
 			_jackd.Exited += JackdExited;
 			stopJackdAction.Sensitive = true;
+			this._jackdStatusIcon.File = this._jackdStatusIconRunning;
 		}
 	}
 
@@ -294,6 +301,7 @@ public partial class MainWindow: Gtk.Window
 		if (this._jackd != null || !this._jackd.HasExited)
 		{
 			this._jackd.CloseMainWindow ();
+			this._jackdStatusIcon.File = this._jackdStatusIconRunning;
 		}	
 		stopJackdAction.Sensitive = false;
 	}
@@ -394,6 +402,7 @@ public partial class MainWindow: Gtk.Window
 	protected virtual void JackdExited (object sender, System.EventArgs args)
 	{
 		this.stopJackdAction.Sensitive = false;
+		this._jackdStatusIcon.File = this._jackdStatusIconRunning;
 	}
 
 	/// <summary>
