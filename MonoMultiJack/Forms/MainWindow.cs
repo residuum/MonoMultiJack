@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using Gtk;
+using Gdk;
 using MonoMultiJack;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
@@ -37,7 +38,7 @@ namespace MonoMultiJack
 	/// <summary>
 	/// Main Window 
 	/// </summary>
-	public partial class MainWindow: Window
+	public partial class MainWindow: Gtk.Window
 	{		
 		/// <summary>
 		/// Xml Configuration
@@ -70,12 +71,15 @@ namespace MonoMultiJack
 		private Fixed _ConnectorArea;
 		
 		/// <summary>
-		/// Status icon for jackd process
+		/// statusbar
 		/// </summary>
-		private Image _jackdStatusIcon;
+		private Statusbar _statusbar;
 		
-		private string _jackdStatusIconRunning = Stock.Connect;
-		private string _jackdStatusIconStopped = Stock.Disconnect;
+		/// <summary>
+		/// Jackd status messages
+		/// </summary>
+		private string _jackdStatusRunning = "Jackd is running.";
+		private string _jackdStatusStopped = "Jackd is stopped.";
 		
 		/// <summary>
 		/// jackd process
@@ -85,7 +89,7 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public MainWindow () : base (WindowType.Toplevel)
+		public MainWindow () : base (Gtk.WindowType.Toplevel)
 		{
 			this._tableCounter = 0;
 			this.Build ();	
@@ -99,7 +103,7 @@ namespace MonoMultiJack
 		private void BuildWindowContent ()
 		{
 			this.Title = "MonoMultiJack";
-			this.Icon = new Gdk.Pixbuf("monomultijack.png");
+			this.Icon = new Pixbuf("monomultijack.png");
 			HBox NewHBox = new HBox (false, 0);
 			this.mainVbox.Add (NewHBox);
 	        this._appTable = new Table((this._tableRows), ((uint)(2)), false);
@@ -111,12 +115,10 @@ namespace MonoMultiJack
 			this._ConnectorArea = MakeConnectorArea ();
 			NewHBox.Add (_ConnectorArea);
 			this._appTable.ShowAll();
-			Gtk.Statusbar statusbar = new Statusbar();
-			this._jackdStatusIcon = new Image();
-			statusbar.Add(this._jackdStatusIcon);
-			this._jackdStatusIcon.File = this._jackdStatusIconStopped;
-			this.mainVbox.Add(statusbar);
-			statusbar.ShowAll();
+			this._statusbar = new Statusbar();
+			this.mainVbox.PackEnd(this._statusbar,false, false, 0);
+			this._statusbar.ShowAll();
+			this._statusbar.Push(0, this._jackdStatusStopped);
 		}
 		
 		private Fixed MakeConnectorArea ()
@@ -285,8 +287,8 @@ namespace MonoMultiJack
 			{
 				this._jackd.EnableRaisingEvents = true;
 				_jackd.Exited += JackdExited;
-				stopJackdAction.Sensitive = true;
-				this._jackdStatusIcon.File = this._jackdStatusIconRunning;
+				this.stopJackdAction.Sensitive = true;
+				this._statusbar.Push(0, this._jackdStatusRunning);
 			}
 		}
 	
@@ -304,9 +306,9 @@ namespace MonoMultiJack
 			if (this._jackd != null || !this._jackd.HasExited)
 			{
 				this._jackd.CloseMainWindow ();
-				this._jackdStatusIcon.File = this._jackdStatusIconRunning;
 			}	
-			stopJackdAction.Sensitive = false;
+			this.stopJackdAction.Sensitive = false;
+			this._statusbar.Push(0, this._jackdStatusStopped);
 		}
 	
 		/// <summary>
@@ -405,7 +407,7 @@ namespace MonoMultiJack
 		protected virtual void JackdExited (object sender, System.EventArgs args)
 		{
 			this.stopJackdAction.Sensitive = false;
-			this._jackdStatusIcon.File = this._jackdStatusIconRunning;
+			this._statusbar.Push(0, this._jackdStatusStopped);
 		}
 	
 		/// <summary>

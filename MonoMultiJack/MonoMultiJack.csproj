@@ -67,7 +67,7 @@
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
+    <Compile Include="gtk-gui\window1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

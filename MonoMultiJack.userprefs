@@ -5,13 +5,12 @@
   </MonoDevelop.Ide.DebuggingService>
   <MonoDevelop.Ide.Workbench ActiveDocument="MonoMultiJack/Forms/MainWindow.cs" ctype="Workbench">
     <Files>
-      <File FileName="MonoMultiJack/Forms/MainWindow.cs" Line="1" Column="1" />
+      <File FileName="MonoMultiJack/Forms/MainWindow.cs" Line="409" Column="43" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="MonoMultiJack" expanded="True">
-            <Node name="References" expanded="True" />
             <Node name="Configuration" expanded="True" />
             <Node name="Forms" expanded="True">
               <Node name="MainWindow.cs" selected="True" />
@@ -22,9 +21,15 @@
         </State>
       </Pad>
       <Pad Id="ClassPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="MonoMultiJack" expanded="True">
             <Node name="MonoMultiJack" expanded="True" />
+            <Node name="Stetic" expanded="True">
+              <Node name="Stetic.ActionGroups" expanded="True">
+                <Node name="GetActionGroup" selected="True" />
+              </Node>
+              <Node name="Stetic.Gui" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

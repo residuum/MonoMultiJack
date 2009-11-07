@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/MonoMultiJack.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MonoMultiJack.MainWindow" design-size="462 159">
+  <widget class="Gtk.Window" id="MonoMultiJack.MainWindow" design-size="560 345">
     <action-group name="Default">
       <action id="fileAction">
         <property name="Type">Action</property>
@@ -46,7 +46,7 @@
         <property name="StockId">gtk-quit</property>
         <signal name="Activated" handler="OnQuitActionActivated" />
       </action>
-      <action id="configurationAction">
+      <action id="ConfigurationAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Configuration</property>
         <property name="ShortLabel" translatable="yes">Configuration</property>
@@ -95,7 +95,7 @@
                 <node type="Menuitem" action="stopAllAction" />
                 <node type="Menuitem" action="quitAction" />
               </node>
-              <node type="Menu" action="configurationAction">
+              <node type="Menu" action="ConfigurationAction">
                 <node type="Menuitem" action="configureJackdAction" />
                 <node type="Menuitem" action="addRemoveApplicationsAction" />
               </node>
