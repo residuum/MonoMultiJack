@@ -1,5 +1,5 @@
 // 
-// JackdConfiguration.cs
+// JackdInterop.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -25,49 +25,16 @@
 // THE SOFTWARE.
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace MonoMultiJack.Configuration
+namespace MonoMultiJack.Common
 {
 	/// <summary>
-	/// jackd configuration
+	/// static class for interoperation with libjack
 	/// </summary>
-	public class JackdConfiguration
+	public static class JackdInterop
 	{
-		/// <summary>
-		/// path to jackd executable
-		/// </summary>
-		public string path {get; protected set;}
-		
-		/// <summary>
-		/// driver infrastructure for jacdk
-		/// </summary>
-		public string driver {get; protected set;}
-		
-		/// <summary>
-		/// audiorate to run jackd at
-		/// </summary>
-		public string audiorate {get; protected set;}
-		
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newPath">
-		/// A <see cref="System.String"/> indicating path to jackd executable
-		/// </param>
-		/// <param name="newDriver">
-		/// A <see cref="System.String"/> indicating driver infrastructure for jackd
-		/// </param>
-		/// <param name="newAudiorate">
-		/// A <see cref="System.String"/> indicating audiorate for jackd
-		/// </param>
-		public JackdConfiguration (string newPath, string newDriver, string newAudiorate)
-		{			
-			this.path = newPath;
-			this.driver = newDriver;
-			this.audiorate = newAudiorate;
-		}
-		
-		public JackdConfiguration () : this(String.Empty, String.Empty, String.Empty)
-		{}
+		[DllImport("libjack.so.0")]
+		public static extern int jack_client_name_size();
 	}
 }

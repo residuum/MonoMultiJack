@@ -63,6 +63,12 @@ namespace MonoMultiJack.Configuration
 			}
 		}
 		
+		public XmlConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
+		{
+			this.appConfigs = newAppConfigs;
+			this.jackdConfig = newJackdConfig;
+		}
+		
 		/// <summary>
 		/// Creates <seealso cref="this.jackdConfig"/> jackdConfiguration from XML
 		/// </summary>

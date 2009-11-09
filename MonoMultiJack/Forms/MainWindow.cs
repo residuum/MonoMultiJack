@@ -24,9 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Gtk;
 using Gdk;
+using Gtk;
 using MonoMultiJack;
+using MonoMultiJack.Common;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
 using System;
@@ -132,13 +133,17 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void ReadConfiguration ()
 		{
-			this._config = new XmlConfiguration();
-			if (this._config.jackdConfig == null && this._config.appConfigs.Count == 0)
+			try
+			{
+				this._config = new XmlConfiguration();
+				this.UpdateAppWidgets(this._config.appConfigs);
+				this.UpdateJackd(this._config.jackdConfig);
+			}
+			catch (System.Xml.XmlException)
 			{
 				this.InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
+				this._config = new XmlConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
 			}
-			this.UpdateAppWidgets(this._config.appConfigs);
-			this.UpdateJackd(this._config.jackdConfig);
 		}
 		
 		/// <summary>
@@ -285,6 +290,7 @@ namespace MonoMultiJack
 			this._jackd.StartInfo.FileName = _jackdStartup;
 			if (this._jackd.Start ())
 			{
+				int jackdTest = JackdInterop.jack_client_name_size();
 				this._jackd.EnableRaisingEvents = true;
 				_jackd.Exited += JackdExited;
 				this.stopJackdAction.Sensitive = true;
@@ -383,7 +389,7 @@ namespace MonoMultiJack
 				}
 				else
 				{
-				//this._UpdateAppWidgets (this.config.appConfigs);
+					//this._UpdateAppWidgets (this.config.appConfigs);
 				}
 			}
 			appConfigWindow.Destroy ();
