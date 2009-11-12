@@ -69,7 +69,7 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Area for Jackd Connectors
 		/// </summary>
-		private Fixed _ConnectorArea;
+		private DrawingArea _ConnectorArea;
 		
 		/// <summary>
 		/// statusbar
@@ -107,10 +107,10 @@ namespace MonoMultiJack
 			this.Icon = new Pixbuf("monomultijack.png");
 			HBox NewHBox = new HBox (false, 0);
 			this.mainVbox.Add (NewHBox);
-	        this._appTable = new Table((this._tableRows), ((uint)(2)), false);
+	        this._appTable = new Table((this._tableRows), 1, false);
 	        this._appTable.Name = "appTable";
-	        this._appTable.RowSpacing = ((uint)(2));
-	        this._appTable.ColumnSpacing = ((uint)(10));
+	        this._appTable.RowSpacing = 2;
+	        this._appTable.ColumnSpacing = 10;
 			NewHBox.Add (this._appTable);
 			this.ReadConfiguration ();
 			this._ConnectorArea = MakeConnectorArea ();
@@ -122,10 +122,18 @@ namespace MonoMultiJack
 			this._statusbar.Push(0, this._jackdStatusStopped);
 		}
 		
-		private Fixed MakeConnectorArea ()
+		/// <summary>
+		/// Creates connector area
+		/// </summary>
+		/// <returns>
+		/// A <see cref="Fixed"/>
+		/// </returns>
+		private DrawingArea MakeConnectorArea ()
 		{
-			Gtk.Fixed Area = new Fixed ();
-			return Area;
+			DrawingArea area = new DrawingArea();
+			area.SetSizeRequest(200, 200);
+			area.ModifyBg(StateType.Normal, new Color(255, 255, 255));
+			return area;
 		}
 		
 		/// <summary>
@@ -160,7 +168,7 @@ namespace MonoMultiJack
 			bool status = false;
 			if (this._appTable.Children != null)
 			{
-				foreach (Gtk.Widget app in this._appTable.Children)
+				foreach (Widget app in this._appTable.Children)
 				{
 					if (app is AppWidget)
 					{
@@ -389,7 +397,7 @@ namespace MonoMultiJack
 				}
 				else
 				{
-					//this._UpdateAppWidgets (this.config.appConfigs);
+					//this.UpdateAppWidgets (this.config.appConfigs);
 				}
 			}
 			appConfigWindow.Destroy ();
@@ -410,6 +418,15 @@ namespace MonoMultiJack
 			this.QuitIt ();
 		}
 		
+		/// <summary>
+		/// Event handler for exit of jackd process
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="System.EventArgs"/>
+		/// </param>
 		protected virtual void JackdExited (object sender, System.EventArgs args)
 		{
 			this.stopJackdAction.Sensitive = false;
@@ -459,6 +476,12 @@ namespace MonoMultiJack
 			about.Destroy();
 		}
 		
+		/// <summary>
+		/// Shows an popup window with info message
+		/// </summary>
+		/// <param name="message">
+		/// A <see cref="System.String"/>, the message to show in the popup
+		/// </param>
 		protected void InfoMessage(string message)
 		{
 			MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
@@ -466,6 +489,15 @@ namespace MonoMultiJack
 			popup.Destroy();
 		}
 		
+		/// <summary>
+		/// Event handler for destruction of main window
+		/// </summary>
+		/// <param name="o">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="EventArgs"/>
+		/// </param>
 		public void OnDelete(object o, EventArgs args)
 		{
 			this.QuitIt();

@@ -27,18 +27,19 @@
 using System;
 using System.Diagnostics;
 using MonoMultiJack.Configuration;
+using Gtk;
 
 namespace MonoMultiJack.Widgets
 {	
 	/// <summary>
 	/// Widget for applications to start / stop
 	/// </summary>
-	public class AppWidget : Gtk.Fixed
+	public class AppWidget : Fixed
 	{
 		//// <value>
 		/// toggle Button for starting / stopping
 		/// </value>
-		private Gtk.ToggleButton _startButton;
+		private ToggleButton _startButton;
 		
 		//// <value>
 		/// the application process
@@ -61,7 +62,7 @@ namespace MonoMultiJack.Widgets
 		{
 			this.appCommand = appConfig.command;
 			
-			this._startButton = new Gtk.ToggleButton ();
+			this._startButton = new ToggleButton ();
 			this._startButton.Label = appConfig.name;
 			this.Name = appConfig.name;
 			this._startButton.Name = appCommand;
@@ -95,13 +96,13 @@ namespace MonoMultiJack.Widgets
 			if (this._appProcess == null || this._appProcess.HasExited)
 			{
 				this._appProcess = new Process ();
-				this._appProcess.StartInfo.FileName = ((Gtk.ToggleButton)obj).Name;
+				this._appProcess.StartInfo.FileName = ((ToggleButton)obj).Name;
 				if (_appProcess.Start ())
 				{
 					this._appProcess.EnableRaisingEvents = true;
 					this._appProcess.Exited += ResetButton;
-					((Gtk.ToggleButton)obj).Clicked -= StartApplication;
-					((Gtk.ToggleButton)obj).Clicked += StopApplication;
+					((ToggleButton)obj).Clicked -= StartApplication;
+					((ToggleButton)obj).Clicked += StopApplication;
 				}
 			}
 		}
@@ -120,8 +121,8 @@ namespace MonoMultiJack.Widgets
 			{
 				this._appProcess.CloseMainWindow ();
 			}
-			((Gtk.ToggleButton)obj).Clicked -= StopApplication;
-			((Gtk.ToggleButton)obj).Clicked += StartApplication;
+			((ToggleButton)obj).Clicked -= StopApplication;
+			((ToggleButton)obj).Clicked += StartApplication;
 		}
 		
 		/// <summary>

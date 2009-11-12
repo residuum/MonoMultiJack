@@ -33,22 +33,22 @@ namespace MonoMultiJack.Widgets
 	/// <summary>
 	/// Widget for configuring an application for use with jackd
 	/// </summary>
-	public class AppConfigWidget : Gtk.Fixed
+	public class AppConfigWidget : Fixed
 	{
 		//// <value>
 		/// Entry field for application name
 		/// </value>
-		protected Gtk.Entry _appNameEntry;
+		protected Entry _appNameEntry;
 		
 		//// <value>
 		/// Entry field for application startup command
 		/// </value>
-		protected Gtk.Entry _appCommandEntry;
+		protected Entry _appCommandEntry;
 		
 		//// <value>
 		/// button for destroying widget
 		/// </value>
-		protected Gtk.Button _removeApp;
+		protected Button _removeApp;
 		
 		//// <value>
 		/// edited configuration
@@ -61,11 +61,20 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 		
+		/// <summary>
+		/// constructor
+		/// </summary>
 		public AppConfigWidget()
 		{
 			this.BuildWidget();
 		}
 		
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="appConfig">
+		/// The <see cref="AppConfiguration"/> to edit
+		/// </param>
 		public AppConfigWidget(AppConfiguration appConfig)
 		{
 			this.BuildWidget();

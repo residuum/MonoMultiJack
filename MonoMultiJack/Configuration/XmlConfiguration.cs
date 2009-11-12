@@ -63,6 +63,15 @@ namespace MonoMultiJack.Configuration
 			}
 		}
 		
+		/// <summary>
+		/// Constructor with setting of new configurations
+		/// </summary>
+		/// <param name="newJackdConfig">
+		/// The new <see cref="JackdConfiguration"/>
+		/// </param>
+		/// <param name="newAppConfigs">
+		/// The new <see cref="List<AppConfiguration>"/>
+		/// </param>
 		public XmlConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
 		{
 			this.appConfigs = newAppConfigs;

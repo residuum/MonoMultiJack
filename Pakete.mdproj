@@ -8,7 +8,7 @@
     <Packages>
       <Packages>
         <Package name="Linux Binaries">
-          <Builder targetFile="MonoMultiJack\MonoMultiJack.tar.gz" platform="Linux" configuration="Debug" ctype="BinariesZipPackageBuilder">
+          <Builder targetFile="MonoMultiJack\MonoMultiJack.tar.gz" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
             <RootEntry path="MonoMultiJack\MonoMultiJack.csproj" />
           </Builder>
         </Package>
