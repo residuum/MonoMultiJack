@@ -52,19 +52,9 @@ namespace MonoMultiJack
 		protected string _jackdStartup;
 		
 		/// <summary>
-		/// Count of elements in appTable
-		/// </summary>
-		protected uint _tableCounter;
-		
-		/// <summary>
-		/// Rows in appTable
-		/// </summary>
-		protected uint _tableRows = 10;
-		
-		/// <summary>
 		/// Table for appWidgets
 		/// </summary>
-		protected Table _appTable;
+		protected VButtonBox _appButtonBox;
 		
 		/// <summary>
 		/// Area for Jackd Connectors
@@ -79,8 +69,8 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Jackd status messages
 		/// </summary>
-		private string _jackdStatusRunning = "Jackd is running.";
-		private string _jackdStatusStopped = "Jackd is stopped.";
+		private const string JackdStatusRunning = "Jackd is running.";
+		private const string JackdStatusStopped = "Jackd is stopped.";
 		
 		/// <summary>
 		/// jackd process
@@ -92,7 +82,6 @@ namespace MonoMultiJack
 		/// </summary>
 		public MainWindow () : base (Gtk.WindowType.Toplevel)
 		{
-			this._tableCounter = 0;
 			this.Build ();	
 			this.BuildWindowContent ();
 			this.DeleteEvent += OnDelete;
@@ -105,21 +94,20 @@ namespace MonoMultiJack
 		{
 			this.Title = "MonoMultiJack";
 			this.Icon = new Pixbuf("monomultijack.png");
-			HBox NewHBox = new HBox (false, 0);
+			HBox NewHBox = new HBox (false, 2);
 			this.mainVbox.Add (NewHBox);
-	        this._appTable = new Table((this._tableRows), 1, false);
-	        this._appTable.Name = "appTable";
-	        this._appTable.RowSpacing = 2;
-	        this._appTable.ColumnSpacing = 10;
-			NewHBox.Add (this._appTable);
+	        this._appButtonBox = new VButtonBox();
+			this._appButtonBox.Spacing = 2;
+	        this._appButtonBox.Name = "appTable";
+			NewHBox.Add (this._appButtonBox);
 			this.ReadConfiguration ();
 			this._ConnectorArea = MakeConnectorArea ();
 			NewHBox.Add (_ConnectorArea);
-			this._appTable.ShowAll();
+			this._appButtonBox.ShowAll();
 			this._statusbar = new Statusbar();
 			this.mainVbox.PackEnd(this._statusbar,false, false, 0);
 			this._statusbar.ShowAll();
-			this._statusbar.Push(0, this._jackdStatusStopped);
+			this._statusbar.Push(0, JackdStatusStopped);
 		}
 		
 		/// <summary>
@@ -166,9 +154,9 @@ namespace MonoMultiJack
 		protected bool InAppWidgets (AppConfiguration appConfig)
 		{
 			bool status = false;
-			if (this._appTable.Children != null)
+			if (this._appButtonBox.Children != null)
 			{
-				foreach (Widget app in this._appTable.Children)
+				foreach (Widget app in this._appButtonBox.Children)
 				{
 					if (app is AppWidget)
 					{
@@ -192,15 +180,7 @@ namespace MonoMultiJack
 		protected void AddAppWidget (AppConfiguration appConfig)
 		{
 			AppWidget newApp = new AppWidget(appConfig);
-			if (this._tableCounter < this._tableRows)
-			{
-				this._appTable.Attach(newApp, 0, 1, this._tableCounter, this._tableCounter + 1);
-			}
-			else
-			{
-				this._appTable.Attach(newApp, 1, 2, this._tableCounter - this._tableRows, this._tableCounter - this._tableRows + 1);
-			}
-			this._tableCounter++;
+			this._appButtonBox.Add(newApp);
 			newApp.Show();
 		}
 		
@@ -255,7 +235,7 @@ namespace MonoMultiJack
 					this.InfoMessage(ex.Message);
 				}
 			}
-			foreach (Widget appPart in this._appTable.Children)
+			foreach (Widget appPart in this._appButtonBox.Children)
 			{
 				if (appPart is AppWidget)
 				{
@@ -290,6 +270,13 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void RestartJackd (object sender, System.EventArgs e)
 		{
+			RestartJackd();
+		}
+		/// <summary>
+		/// Starts or restart jackd process
+		/// </summary>
+		protected void RestartJackd()
+		{
 			if (this._jackd != null && !this._jackd.HasExited)
 			{
 				this._jackd.CloseMainWindow ();
@@ -302,8 +289,17 @@ namespace MonoMultiJack
 				this._jackd.EnableRaisingEvents = true;
 				_jackd.Exited += JackdExited;
 				this.stopJackdAction.Sensitive = true;
-				this._statusbar.Push(0, this._jackdStatusRunning);
+				this._statusbar.Push(0, JackdStatusRunning);
 			}
+		}
+		
+		/// <summary>
+		/// Cleans up after jackd process has stopped
+		/// </summary>
+		protected void CleanUpJackd()
+		{
+			this.stopJackdAction.Sensitive = false;
+			this._statusbar.Push(0, JackdStatusStopped);
 		}
 	
 		/// <summary>
@@ -321,8 +317,7 @@ namespace MonoMultiJack
 			{
 				this._jackd.CloseMainWindow ();
 			}	
-			this.stopJackdAction.Sensitive = false;
-			this._statusbar.Push(0, this._jackdStatusStopped);
+			CleanUpJackd();
 		}
 	
 		/// <summary>
@@ -429,8 +424,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void JackdExited (object sender, System.EventArgs args)
 		{
-			this.stopJackdAction.Sensitive = false;
-			this._statusbar.Push(0, this._jackdStatusStopped);
+			CleanUpJackd();
 		}
 	
 		/// <summary>
