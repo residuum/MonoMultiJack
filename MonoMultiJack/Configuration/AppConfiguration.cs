@@ -36,12 +36,12 @@ namespace MonoMultiJack.Configuration
 		/// <summary>
 		/// name of the application
 		/// </summary>
-		public string name {get; protected set;}
+		public string Name {get; protected set;}
 		
 		/// <summary>
 		/// command to launch the application
 		/// </summary>
-		public string command {get; protected set;}
+		public string Command {get; protected set;}
 
 		/// <summary>
 		/// constructor
@@ -54,8 +54,8 @@ namespace MonoMultiJack.Configuration
 		/// </param>
 		public AppConfiguration (string newName, string newCommand)
 		{
-			this.name = newName;
-			this.command = newCommand;
+			Name = newName;
+			Command = newCommand;
 		}
 	}
 }

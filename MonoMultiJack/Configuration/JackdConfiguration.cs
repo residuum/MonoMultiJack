@@ -36,17 +36,17 @@ namespace MonoMultiJack.Configuration
 		/// <summary>
 		/// path to jackd executable
 		/// </summary>
-		public string path {get; protected set;}
+		public string Path {get; protected set;}
 		
 		/// <summary>
 		/// driver infrastructure for jacdk
 		/// </summary>
-		public string driver {get; protected set;}
+		public string Driver {get; protected set;}
 		
 		/// <summary>
 		/// audiorate to run jackd at
 		/// </summary>
-		public string audiorate {get; protected set;}
+		public string Audiorate {get; protected set;}
 		
 		/// <summary>
 		/// constructor
@@ -62,9 +62,9 @@ namespace MonoMultiJack.Configuration
 		/// </param>
 		public JackdConfiguration (string newPath, string newDriver, string newAudiorate)
 		{			
-			this.path = newPath;
-			this.driver = newDriver;
-			this.audiorate = newAudiorate;
+			Path = newPath;
+			Driver = newDriver;
+			Audiorate = newAudiorate;
 		}
 		
 		public JackdConfiguration () : this(String.Empty, String.Empty, String.Empty)

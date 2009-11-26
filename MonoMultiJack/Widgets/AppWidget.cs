@@ -60,11 +60,11 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		public AppWidget (AppConfiguration appConfig)
 		{
-			this.appCommand = appConfig.command;
+			this.appCommand = appConfig.Command;
 			
 			this._startButton = new ToggleButton ();
-			this._startButton.Label = appConfig.name;
-			this.Name = appConfig.name;
+			this._startButton.Label = appConfig.Name;
+			this.Name = appConfig.Name;
 			this._startButton.Name = appCommand;
 			this._startButton.WidthRequest = 100;
 			this._startButton.Clicked += StartApplication;

@@ -78,8 +78,8 @@ namespace MonoMultiJack.Widgets
 		public AppConfigWidget(AppConfiguration appConfig)
 		{
 			this.BuildWidget();
-			this._appNameEntry.Text = appConfig.name;
-			this._appCommandEntry.Text = appConfig.command;
+			this._appNameEntry.Text = appConfig.Name;
+			this._appCommandEntry.Text = appConfig.Command;
 		}
 		
 		/// <summary>

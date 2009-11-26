@@ -56,8 +56,8 @@ namespace MonoMultiJack.Configuration
 		/// </summary>
 		public XmlConfiguration ()
 		{
-			this.appConfigs = new List<AppConfiguration>();
-			if (!this.ReadXml())
+			appConfigs = new List<AppConfiguration>();
+			if (!ReadXml())
 			{
 				throw new XmlException("Error reading XML configuration file.");
 			}
@@ -74,12 +74,12 @@ namespace MonoMultiJack.Configuration
 		/// </param>
 		public XmlConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
 		{
-			this.appConfigs = newAppConfigs;
-			this.jackdConfig = newJackdConfig;
+			appConfigs = newAppConfigs;
+			jackdConfig = newJackdConfig;
 		}
 		
 		/// <summary>
-		/// Creates <seealso cref="this.jackdConfig"/> jackdConfiguration from XML
+		/// Creates <seealso cref="jackdConfig"/> jackdConfiguration from XML
 		/// </summary>
 		/// <param name="jackdNode">
 		/// A <see cref="XmlNode"/> with the jackd configuration values
@@ -111,18 +111,18 @@ namespace MonoMultiJack.Configuration
 							break;
 					}
 				}
-				this.jackdConfig = new JackdConfiguration(path, driver, audiorate);
+				jackdConfig = new JackdConfiguration(path, driver, audiorate);
 				return true;
 			}
 			catch
 			{
-				this.jackdConfig = new JackdConfiguration(String.Empty, String.Empty, String.Empty);
+				jackdConfig = new JackdConfiguration(String.Empty, String.Empty, String.Empty);
 				return false;
 			}
 		}
 		
 		/// <summary>
-		/// Creates <seealso cref="this.appConfigs"/> List of AppConfigurations from XML
+		/// Creates <seealso cref="appConfigs"/> List of AppConfigurations from XML
 		/// </summary>
 		/// <param name="applicationNode">
 		/// A <see cref="XmlNode"/> with the AppConfigurations values
@@ -155,7 +155,7 @@ namespace MonoMultiJack.Configuration
 							}
 						}
 						AppConfiguration newApp = new AppConfiguration(name, command);
-						this.appConfigs.Add(newApp);
+						appConfigs.Add(newApp);
 					}
 				}
 				return true;
@@ -190,13 +190,13 @@ namespace MonoMultiJack.Configuration
 									switch (nodeSecond.Name)
 									{
 										case "jackd":
-											if (!this.LoadJackdXml(nodeSecond))
+											if (!LoadJackdXml(nodeSecond))
 											{
 												throw new XmlException();
 											}
 											break;
 										case "applications":
-											if (!this.LoadApplicationsXml(nodeSecond))
+											if (!LoadApplicationsXml(nodeSecond))
 											{
 												throw new XmlException();
 											}
@@ -232,7 +232,7 @@ namespace MonoMultiJack.Configuration
 		{
 			try
 			{
-				using (XmlTextWriter writer = new XmlTextWriter(this._configFile, System.Text.Encoding.UTF8))
+				using (XmlTextWriter writer = new XmlTextWriter(_configFile, System.Text.Encoding.UTF8))
 				{
 					writer.Formatting = Formatting.Indented;
 					writer.IndentChar = '\t';
@@ -240,16 +240,16 @@ namespace MonoMultiJack.Configuration
 					writer.WriteStartDocument();
 					writer.WriteStartElement("monomultijack");
 					writer.WriteStartElement("jackd");
-					writer.WriteElementString("path", this.jackdConfig.path);
-					writer.WriteElementString("driver", this.jackdConfig.driver);
-					writer.WriteElementString("audiorate", this.jackdConfig.audiorate);
+					writer.WriteElementString("path", jackdConfig.Path);
+					writer.WriteElementString("driver", jackdConfig.Driver);
+					writer.WriteElementString("audiorate", jackdConfig.Audiorate);
 					writer.WriteEndElement();
 					writer.WriteStartElement("applications");
-					foreach (AppConfiguration appConfig in this.appConfigs)
+					foreach (AppConfiguration appConfig in appConfigs)
 					{
 						writer.WriteStartElement("application");
-						writer.WriteElementString("name", appConfig.name);
-						writer.WriteElementString("command", appConfig.command);
+						writer.WriteElementString("name", appConfig.Name);
+						writer.WriteElementString("command", appConfig.Command);
 						writer.WriteEndElement();
 					}
 					writer.WriteEndElement();
@@ -275,8 +275,8 @@ namespace MonoMultiJack.Configuration
 		/// </returns>
 		public bool UpdateConfiguration (JackdConfiguration newJackdConfig)
 		{
-			this.jackdConfig = newJackdConfig;
-			return this.WriteXml();
+			jackdConfig = newJackdConfig;
+			return WriteXml();
 		}
 		
 		/// <summary>
@@ -290,8 +290,8 @@ namespace MonoMultiJack.Configuration
 		/// </returns>
 		public bool UpdateConfiguration (List<AppConfiguration> newAppConfigs)
 		{
-			this.appConfigs = newAppConfigs;
-			return this.WriteXml();
+			appConfigs = newAppConfigs;
+			return WriteXml();
 		}
 	}
 }

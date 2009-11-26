@@ -52,19 +52,19 @@ namespace MonoMultiJack
 		//// <value>
 		/// getter for new application configurations
 		/// </value>
-		public List<AppConfiguration> appConfigs
+		public List<AppConfiguration> AppConfigs
 		{
 			get 
 			{
 				List<AppConfiguration> newAppConfigs = new List<AppConfiguration>();
 				AppConfiguration newAppConfig;
 				
-				foreach (Widget appConfigWidget in this._configTable.Children)
+				foreach (Widget appConfigWidget in _configTable.Children)
 				{
 					if (appConfigWidget is AppConfigWidget)
 					{
 						newAppConfig = ((AppConfigWidget)appConfigWidget).appConfig;
-						if ( !newAppConfig.name.Equals(string.Empty) && !newAppConfig.command.Equals(string.Empty))
+						if ( !newAppConfig.Name.Equals(string.Empty) && !newAppConfig.Command.Equals(string.Empty))
 						{
 							newAppConfigs.Add(newAppConfig);
 						}
@@ -76,9 +76,9 @@ namespace MonoMultiJack
 				
 		public AppConfigWindow (List<AppConfiguration> appConfigs)
 		{
-			this.Title = "Configure Applications";
-			this.Resizable = false;
-			this.BuildDialog(appConfigs);
+			Title = "Configure Applications";
+			Resizable = false;
+			BuildDialog(appConfigs);
 		}
 		
 		/// <summary>
@@ -89,22 +89,22 @@ namespace MonoMultiJack
 		/// </param>
 		protected void BuildDialog (List<AppConfiguration> appConfigs)
 		{
-			this._configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
-			this._configTable.ColumnSpacing = 10;
-			this._configTable.RowSpacing = 10;
-			this.VBox.PackStart (this._configTable, false, false, 0);
+			_configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
+			_configTable.ColumnSpacing = 10;
+			_configTable.RowSpacing = 10;
+			VBox.PackStart (_configTable, false, false, 0);
 			AppConfigWidget appConfigWidget;
 			uint count = 0;
 			foreach (AppConfiguration appConfig in appConfigs)
 			{
 				appConfigWidget = new AppConfigWidget (appConfig);
-				this._configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
+				_configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
 				count++;
 			}
-			this.CreateAddButton ();
-			this._configTable.Attach (this._addWidget, 0, 1, count, count + 1);
-			this.AddButton (Stock.Ok, ResponseType.Ok);
-			this.AddButton (Stock.Cancel, ResponseType.Cancel);
+			CreateAddButton ();
+			_configTable.Attach (_addWidget, 0, 1, count, count + 1);
+			AddButton (Stock.Ok, ResponseType.Ok);
+			AddButton (Stock.Cancel, ResponseType.Cancel);
 		}
 		
 		/// <summary>
@@ -112,12 +112,12 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void CreateAddButton ()
 		{
-			if (this._addWidget != null)
+			if (_addWidget != null)
 			{
-				this._addWidget.Destroy ();
+				_addWidget.Destroy ();
 			}
-			this._addWidget = new Button ("Add Application");
-			this._addWidget.Clicked += AddNewConfigWidget;
+			_addWidget = new Button ("Add Application");
+			_addWidget.Clicked += AddNewConfigWidget;
 		}
 		
 		/// <summary>
@@ -125,12 +125,12 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void AddNewConfigWidget()
 		{
-			this._configTable.NRows++;
+			_configTable.NRows++;
 			AppConfigWidget appConfigWidget = new AppConfigWidget();
-			this._configTable.Attach (appConfigWidget, 0, 1, this._configTable.NRows - 2, this._configTable.NRows -1);
-			this.CreateAddButton ();
-			this._configTable.Attach (this._addWidget, 0, 1, this._configTable.NRows - 1, this._configTable.NRows);
-			this._configTable.ShowAll ();
+			_configTable.Attach (appConfigWidget, 0, 1, _configTable.NRows - 2, _configTable.NRows -1);
+			CreateAddButton ();
+			_configTable.Attach (_addWidget, 0, 1, _configTable.NRows - 1, _configTable.NRows);
+			_configTable.ShowAll ();
 		}
 		
 		/// <summary>
@@ -144,7 +144,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected void AddNewConfigWidget (object sender, System.EventArgs args)
 		{
-			this.AddNewConfigWidget ();
+			AddNewConfigWidget ();
 		}
 	}
 }

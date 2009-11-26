@@ -69,7 +69,7 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Common\JackdInterop.cs" />
     <Compile Include="Widgets\JackConnectionsWidget.cs" />
-    <Compile Include="gtk-gui\window1.cs" />
+    <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

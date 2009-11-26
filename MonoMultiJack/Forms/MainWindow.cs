@@ -82,9 +82,9 @@ namespace MonoMultiJack
 		/// </summary>
 		public MainWindow () : base (Gtk.WindowType.Toplevel)
 		{
-			this.Build ();	
-			this.BuildWindowContent ();
-			this.DeleteEvent += OnDelete;
+			Build ();	
+			BuildWindowContent ();
+			DeleteEvent += OnDelete;
 		}
 		
 		/// <summary>
@@ -92,22 +92,22 @@ namespace MonoMultiJack
 		/// </summary>
 		private void BuildWindowContent ()
 		{
-			this.Title = "MonoMultiJack";
-			this.Icon = new Pixbuf("monomultijack.png");
+			Title = "MonoMultiJack";
+			Icon = new Pixbuf("monomultijack.png");
 			HBox NewHBox = new HBox (false, 2);
-			this.mainVbox.Add (NewHBox);
-	        this._appButtonBox = new VButtonBox();
-			this._appButtonBox.Spacing = 2;
-	        this._appButtonBox.Name = "appTable";
-			NewHBox.Add (this._appButtonBox);
-			this.ReadConfiguration ();
-			this._ConnectorArea = MakeConnectorArea ();
+			mainVbox.Add (NewHBox);
+	        _appButtonBox = new VButtonBox();
+			_appButtonBox.Spacing = 2;
+	        _appButtonBox.Name = "appTable";
+			NewHBox.Add (_appButtonBox);
+			ReadConfiguration ();
+			_ConnectorArea = MakeConnectorArea ();
 			NewHBox.Add (_ConnectorArea);
-			this._appButtonBox.ShowAll();
-			this._statusbar = new Statusbar();
-			this.mainVbox.PackEnd(this._statusbar,false, false, 0);
-			this._statusbar.ShowAll();
-			this._statusbar.Push(0, JackdStatusStopped);
+			_appButtonBox.ShowAll();
+			_statusbar = new Statusbar();
+			mainVbox.PackEnd(_statusbar,false, false, 0);
+			_statusbar.ShowAll();
+			_statusbar.Push(0, JackdStatusStopped);
 		}
 		
 		/// <summary>
@@ -131,14 +131,14 @@ namespace MonoMultiJack
 		{
 			try
 			{
-				this._config = new XmlConfiguration();
-				this.UpdateAppWidgets(this._config.appConfigs);
-				this.UpdateJackd(this._config.jackdConfig);
+				_config = new XmlConfiguration();
+				UpdateAppWidgets(_config.appConfigs);
+				UpdateJackd(_config.jackdConfig);
 			}
 			catch (System.Xml.XmlException)
 			{
-				this.InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
-				this._config = new XmlConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
+				InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
+				_config = new XmlConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
 			}
 		}
 		
@@ -154,13 +154,13 @@ namespace MonoMultiJack
 		protected bool InAppWidgets (AppConfiguration appConfig)
 		{
 			bool status = false;
-			if (this._appButtonBox.Children != null)
+			if (_appButtonBox.Children != null)
 			{
-				foreach (Widget app in this._appButtonBox.Children)
+				foreach (Widget app in _appButtonBox.Children)
 				{
 					if (app is AppWidget)
 					{
-						if ( ((AppWidget)app).appCommand.Equals(appConfig.command))
+						if ( ((AppWidget)app).appCommand.Equals(appConfig.Command))
 						{
 							status = true;
 							break;
@@ -180,7 +180,7 @@ namespace MonoMultiJack
 		protected void AddAppWidget (AppConfiguration appConfig)
 		{
 			AppWidget newApp = new AppWidget(appConfig);
-			this._appButtonBox.Add(newApp);
+			_appButtonBox.Add(newApp);
 			newApp.Show();
 		}
 		
@@ -194,9 +194,9 @@ namespace MonoMultiJack
 		{
 			foreach (AppConfiguration app in appConfigs)
 			{
-				if (!this.InAppWidgets (app))
+				if (!InAppWidgets (app))
 				{
-					this.AddAppWidget (app);
+					AddAppWidget (app);
 				}
 			}
 			//TODO: Delete old AppWidgets
@@ -212,10 +212,10 @@ namespace MonoMultiJack
 		{
 			if (jackdConfig != null)
 			{
-				this._jackdStartup = jackdConfig.path 
-					+ " -d " + jackdConfig.driver 
-					+ " -r " + jackdConfig.audiorate;
-				this.reStartJackdAction.Sensitive = true;
+				_jackdStartup = jackdConfig.Path 
+					+ " -d " + jackdConfig.Driver 
+					+ " -r " + jackdConfig.Audiorate;
+				reStartJackdAction.Sensitive = true;
 			}
 		}
 		
@@ -224,18 +224,18 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void QuitIt()
 		{
-			if (this._jackd != null && !this._jackd.HasExited)
+			if (_jackd != null && !_jackd.HasExited)
 			{
 				try
 				{
-					this._jackd.Kill();
+					_jackd.Kill();
 				}
 				catch (Exception ex)
 				{
-					this.InfoMessage(ex.Message);
+					InfoMessage(ex.Message);
 				}
 			}
-			foreach (Widget appPart in this._appButtonBox.Children)
+			foreach (Widget appPart in _appButtonBox.Children)
 			{
 				if (appPart is AppWidget)
 				{
@@ -256,7 +256,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 		{
-			this.QuitIt ();
+			QuitIt ();
 		}
 		
 		/// <summary>
@@ -277,19 +277,19 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void RestartJackd()
 		{
-			if (this._jackd != null && !this._jackd.HasExited)
+			if (_jackd != null && !_jackd.HasExited)
 			{
-				this._jackd.CloseMainWindow ();
+				_jackd.CloseMainWindow ();
 			}
-			this._jackd = new Process ();
-			this._jackd.StartInfo.FileName = _jackdStartup;
-			if (this._jackd.Start ())
+			_jackd = new Process ();
+			_jackd.StartInfo.FileName = _jackdStartup;
+			if (_jackd.Start ())
 			{
 				int jackdTest = JackdInterop.jack_client_name_size();
-				this._jackd.EnableRaisingEvents = true;
+				_jackd.EnableRaisingEvents = true;
 				_jackd.Exited += JackdExited;
-				this.stopJackdAction.Sensitive = true;
-				this._statusbar.Push(0, JackdStatusRunning);
+				stopJackdAction.Sensitive = true;
+				_statusbar.Push(0, JackdStatusRunning);
 			}
 		}
 		
@@ -298,8 +298,8 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void CleanUpJackd()
 		{
-			this.stopJackdAction.Sensitive = false;
-			this._statusbar.Push(0, JackdStatusStopped);
+			stopJackdAction.Sensitive = false;
+			_statusbar.Push(0, JackdStatusStopped);
 		}
 	
 		/// <summary>
@@ -313,12 +313,20 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void StopJackd (object sender, System.EventArgs e)
 		{
-			if (this._jackd != null || !this._jackd.HasExited)
-			{
-				this._jackd.CloseMainWindow ();
-			}	
-			CleanUpJackd();
+			StopJackd ();
 		}
+
+		/// <summary>
+		/// stops jackd
+		/// </summary>
+		protected void StopJackd ()
+		{
+			if (_jackd != null || !_jackd.HasExited) {
+				_jackd.CloseMainWindow ();
+			}
+			CleanUpJackd ();
+		}
+
 	
 		/// <summary>
 		/// stops all running appWidgets
@@ -331,6 +339,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void StopAll (object sender, System.EventArgs e)
 		{
+			StopJackd();
 			//TODO
 		}
 		
@@ -346,24 +355,24 @@ namespace MonoMultiJack
 		protected virtual void ConfigureJackd (object sender, System.EventArgs e)
 		{
 			//TODO: stopall
-			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (this._config.jackdConfig);
-			this.Sensitive = false;
+			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (_config.jackdConfig);
+			Sensitive = false;
 			jackdConfigWindow.ShowAll ();
 			ResponseType response = (ResponseType)jackdConfigWindow.Run ();
 			if (response == ResponseType.Ok)
 			{
-				JackdConfiguration jackdConfig = jackdConfigWindow.jackdConfig;
-				if (!this._config.UpdateConfiguration(jackdConfig))
+				JackdConfiguration jackdConfig = jackdConfigWindow.JackdConfig;
+				if (!_config.UpdateConfiguration(jackdConfig))
 				{
-					this.InfoMessage("Configuration file is not writable.");
+					InfoMessage("Configuration file is not writable.");
 				}
 				else
 				{
-					this.UpdateJackd (this._config.jackdConfig);
+					UpdateJackd (_config.jackdConfig);
 				}
 			}
 			jackdConfigWindow.Destroy ();
-			this.Sensitive = true;
+			Sensitive = true;
 		}	
 		
 		/// <summary>
@@ -377,26 +386,26 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void ConfigureApplications (object sender, System.EventArgs e)
 		{
-			AppConfigWindow appConfigWindow = new AppConfigWindow (this._config.appConfigs);
-			this.Sensitive = false;		
+			AppConfigWindow appConfigWindow = new AppConfigWindow (_config.appConfigs);
+			Sensitive = false;		
 			appConfigWindow.ShowAll ();
 			ResponseType response = (ResponseType)appConfigWindow.Run ();
 			if (response == ResponseType.Ok)
 			{
 				//TODO: stop all
-				List<AppConfiguration> newAppConfigs = appConfigWindow.appConfigs;
+				List<AppConfiguration> newAppConfigs = appConfigWindow.AppConfigs;
 				newAppConfigs.Reverse ();
-				if (!this._config.UpdateConfiguration(newAppConfigs))
+				if (!_config.UpdateConfiguration(newAppConfigs))
 				{
-					this.InfoMessage("Configuration file is not writable.");
+					InfoMessage("Configuration file is not writable.");
 				}
 				else
 				{
-					//this.UpdateAppWidgets (this.config.appConfigs);
+					//UpdateAppWidgets (config.appConfigs);
 				}
 			}
 			appConfigWindow.Destroy ();
-			this.Sensitive = true;
+			Sensitive = true;
 		}
 	
 		/// <summary>
@@ -410,7 +419,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void OnQuitActionActivated (object sender, System.EventArgs e)
 		{
-			this.QuitIt ();
+			QuitIt ();
 		}
 		
 		/// <summary>
@@ -494,7 +503,7 @@ namespace MonoMultiJack
 		/// </param>
 		public void OnDelete(object o, EventArgs args)
 		{
-			this.QuitIt();
+			QuitIt();
 		}
 	}
 }

@@ -42,11 +42,11 @@ namespace MonoMultiJack
 		//// <value>
 		/// returns values of entry fields as jackdConfiguration
 		/// </value>
-		public JackdConfiguration jackdConfig 
+		public JackdConfiguration JackdConfig 
 		{ 
 			get 
 			{
-				return new JackdConfiguration(this._jackdPathEntry.Text.Trim(), this._jackdDriverEntry.Text.Trim(), this._jackdAudiorateEntry.Text.Trim());
+				return new JackdConfiguration(_jackdPathEntry.Text.Trim(), _jackdDriverEntry.Text.Trim(), _jackdAudiorateEntry.Text.Trim());
 			}
 		}
 		
@@ -58,9 +58,9 @@ namespace MonoMultiJack
 		/// </param>
 		public JackdConfigWindow (JackdConfiguration jackdConfig)
 		{
-			this.Title = "Configure Jackd";
-			this.Resizable = false;
-			this.BuildDialog (jackdConfig);
+			Title = "Configure Jackd";
+			Resizable = false;
+			BuildDialog (jackdConfig);
 		}
 		
 		/// <summary>
@@ -74,40 +74,40 @@ namespace MonoMultiJack
 			Table table = new Table (3, 2, false);
 			table.RowSpacing = 2;
 		    table.ColumnSpacing = 3;
-			this.VBox.PackStart (table, false, false, 0);
+			VBox.PackStart (table, false, false, 0);
 			
 			Label label = new Label ("Jackd Startup Path");
 			table.Attach (label, 0, 1, 0, 1);
-			this._jackdPathEntry = new Entry();
-			table.Attach (this._jackdPathEntry, 1, 2, 0, 1);
-			label.MnemonicWidget = this._jackdPathEntry;
+			_jackdPathEntry = new Entry();
+			table.Attach (_jackdPathEntry, 1, 2, 0, 1);
+			label.MnemonicWidget = _jackdPathEntry;
 			if (jackdConfig != null)
 			{
-				this._jackdPathEntry.Text = jackdConfig.path;
+				_jackdPathEntry.Text = jackdConfig.Path;
 			}
 			
 			label = new Label ("Audiorate");
 			table.Attach (label, 0, 1, 1, 2);
-			this._jackdAudiorateEntry = new Entry ();
-			table.Attach (this._jackdAudiorateEntry, 1, 2, 1, 2);
-			label.MnemonicWidget = this._jackdAudiorateEntry;
+			_jackdAudiorateEntry = new Entry ();
+			table.Attach (_jackdAudiorateEntry, 1, 2, 1, 2);
+			label.MnemonicWidget = _jackdAudiorateEntry;
 			if (jackdConfig != null)
 			{
-				this._jackdAudiorateEntry.Text = jackdConfig.audiorate;
+				_jackdAudiorateEntry.Text = jackdConfig.Audiorate;
 			}
 			
 			label = new Label ("Driver Infrastructure");
 			table.Attach (label, 0, 1, 2, 3);
-			this._jackdDriverEntry = new Entry ();
-			table.Attach (this._jackdDriverEntry, 1, 2, 2, 3);
-			label.MnemonicWidget = this._jackdDriverEntry;
+			_jackdDriverEntry = new Entry ();
+			table.Attach (_jackdDriverEntry, 1, 2, 2, 3);
+			label.MnemonicWidget = _jackdDriverEntry;
 			if (jackdConfig != null)
 			{
-				this._jackdDriverEntry.Text = jackdConfig.driver;
+				_jackdDriverEntry.Text = jackdConfig.Driver;
 			}
 			
-			this.AddButton(Stock.Ok, ResponseType.Ok);
-			this.AddButton(Stock.Cancel, ResponseType.Cancel);
+			AddButton(Stock.Ok, ResponseType.Ok);
+			AddButton(Stock.Cancel, ResponseType.Cancel);
 		}
 	}
 }
