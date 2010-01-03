@@ -26,6 +26,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace MonoMultiJack.Common
 {
@@ -33,8 +34,32 @@ namespace MonoMultiJack.Common
 	/// static class for interoperation with libjack
 	/// </summary>
 	public static class JackdInterop
-	{
-		[DllImport("libjack.so.0")]
-		public static extern int jack_client_name_size();
+	{		
+		public const string JackLibName = "libjack.so.0";
+		
+		/// <summary>
+		/// http://jackaudio.org/files/docs/html/group__ClientFunctions.html
+		/// </summary>
+		[DllImport(JackLibName)]
+		public static extern int jack_activate(ref IntPtr jack_client_t);
+		[DllImport(JackLibName)]
+		public static extern int jack_client_close(ref IntPtr jack_client_t);
+		[DllImport(JackLibName)]
+		public static extern IntPtr jack_client_open(ref string client_name, 
+		                                             IntPtr jack_options_t, 
+		                                             ref IntPtr jack_status_t);		
+		[DllImport(JackLibName)]
+		public static extern string jack_client_thread_id(ref IntPtr jack_client_t);
+		[DllImport(JackLibName)]
+		public static extern int jack_deactivate(ref IntPtr jack_client_t);
+		[DllImport(JackLibName)]
+		public static extern void jack_internal_client_close(ref string client_name);
+		[DllImport(JackLibName)]
+		public static extern int jack_internal_client_new(ref string client_name,
+		                                                  ref string load_name,
+		                                                  ref string load_init);
+		
+		//[DllImport(JackLibName)]
+		//public static extern string jack_get_ports();
 	}
 }

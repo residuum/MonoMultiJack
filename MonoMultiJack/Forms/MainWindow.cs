@@ -59,7 +59,11 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Area for Jackd Connectors
 		/// </summary>
-		private DrawingArea _ConnectorArea;
+		private Fixed _connectorArea;
+		
+		private JackConnectionsWidget _clientsOutput;
+		
+		private JackConnectionsWidget _clientsInput;
 		
 		/// <summary>
 		/// statusbar
@@ -101,8 +105,8 @@ namespace MonoMultiJack
 	        _appButtonBox.Name = "appTable";
 			NewHBox.Add (_appButtonBox);
 			ReadConfiguration ();
-			_ConnectorArea = MakeConnectorArea ();
-			NewHBox.Add (_ConnectorArea);
+			MakeConnectorArea ();
+			NewHBox.Add (_connectorArea);
 			_appButtonBox.ShowAll();
 			_statusbar = new Statusbar();
 			mainVbox.PackEnd(_statusbar,false, false, 0);
@@ -116,12 +120,13 @@ namespace MonoMultiJack
 		/// <returns>
 		/// A <see cref="Fixed"/>
 		/// </returns>
-		private DrawingArea MakeConnectorArea ()
+		private void MakeConnectorArea ()
 		{
-			DrawingArea area = new DrawingArea();
-			area.SetSizeRequest(200, 200);
-			area.ModifyBg(StateType.Normal, new Color(255, 255, 255));
-			return area;
+			_connectorArea = new Fixed();
+			_clientsOutput = new JackConnectionsWidget(ConnectionType.Outlet);
+			_connectorArea.Put(_clientsOutput, 0, 0);
+			_clientsInput = new JackConnectionsWidget(ConnectionType.Inlet);
+			_connectorArea.Put(_clientsInput, 200, 0);
 		}
 		
 		/// <summary>
@@ -199,7 +204,7 @@ namespace MonoMultiJack
 					AddAppWidget (app);
 				}
 			}
-			//TODO: Delete old AppWidgets
+			//TODO: Delete old AppWidgets, Reorder AppWidgets
 		}
 		
 		/// <summary>
@@ -246,6 +251,60 @@ namespace MonoMultiJack
 		}
 		
 		/// <summary>
+		/// Starts or restart jackd process
+		/// </summary>
+		protected void RestartJackd()
+		{
+			if (_jackd != null && !_jackd.HasExited)
+			{
+				_jackd.CloseMainWindow ();
+			}
+			_jackd = new Process ();
+			_jackd.StartInfo.FileName = _jackdStartup;
+			if (_jackd.Start ())
+			{
+				//int jackdTest = JackdInterop.jack_client_name_size();
+				_jackd.EnableRaisingEvents = true;
+				_jackd.Exited += JackdExited;
+				stopJackdAction.Sensitive = true;
+				_statusbar.Push(0, JackdStatusRunning);
+			}
+		}
+		
+		/// <summary>
+		/// Cleans up after jackd process has stopped
+		/// </summary>
+		protected void CleanUpJackd()
+		{
+			stopJackdAction.Sensitive = false;
+			_statusbar.Push(0, JackdStatusStopped);
+		}
+
+		/// <summary>
+		/// stops jackd
+		/// </summary>
+		protected void StopJackd ()
+		{
+			if (_jackd != null || !_jackd.HasExited) {
+				_jackd.CloseMainWindow ();
+			}
+			CleanUpJackd ();
+		}
+		
+		/// <summary>
+		/// Shows an popup window with info message
+		/// </summary>
+		/// <param name="message">
+		/// A <see cref="System.String"/>, the message to show in the popup
+		/// </param>
+		protected void InfoMessage(string message)
+		{
+			MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
+			popup.Run();
+			popup.Destroy();
+		}
+		
+		/// <summary>
 		/// On deletion of window
 		/// </summary>
 		/// <param name="sender">
@@ -272,35 +331,6 @@ namespace MonoMultiJack
 		{
 			RestartJackd();
 		}
-		/// <summary>
-		/// Starts or restart jackd process
-		/// </summary>
-		protected void RestartJackd()
-		{
-			if (_jackd != null && !_jackd.HasExited)
-			{
-				_jackd.CloseMainWindow ();
-			}
-			_jackd = new Process ();
-			_jackd.StartInfo.FileName = _jackdStartup;
-			if (_jackd.Start ())
-			{
-				int jackdTest = JackdInterop.jack_client_name_size();
-				_jackd.EnableRaisingEvents = true;
-				_jackd.Exited += JackdExited;
-				stopJackdAction.Sensitive = true;
-				_statusbar.Push(0, JackdStatusRunning);
-			}
-		}
-		
-		/// <summary>
-		/// Cleans up after jackd process has stopped
-		/// </summary>
-		protected void CleanUpJackd()
-		{
-			stopJackdAction.Sensitive = false;
-			_statusbar.Push(0, JackdStatusStopped);
-		}
 	
 		/// <summary>
 		/// stops Jackd
@@ -315,18 +345,6 @@ namespace MonoMultiJack
 		{
 			StopJackd ();
 		}
-
-		/// <summary>
-		/// stops jackd
-		/// </summary>
-		protected void StopJackd ()
-		{
-			if (_jackd != null || !_jackd.HasExited) {
-				_jackd.CloseMainWindow ();
-			}
-			CleanUpJackd ();
-		}
-
 	
 		/// <summary>
 		/// stops all running appWidgets
@@ -477,19 +495,6 @@ namespace MonoMultiJack
 			about.Logo = new Gdk.Pixbuf("monomultijack.png");
 			about.Run();
 			about.Destroy();
-		}
-		
-		/// <summary>
-		/// Shows an popup window with info message
-		/// </summary>
-		/// <param name="message">
-		/// A <see cref="System.String"/>, the message to show in the popup
-		/// </param>
-		protected void InfoMessage(string message)
-		{
-			MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
-			popup.Run();
-			popup.Destroy();
 		}
 		
 		/// <summary>

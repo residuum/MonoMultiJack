@@ -69,7 +69,10 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Common\JackdInterop.cs" />
     <Compile Include="Widgets\JackConnectionsWidget.cs" />
+    <Compile Include="Widgets\JackdClientTree.cs" />
+    <Compile Include="Common\Enums.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
+    <Compile Include="Widgets\JackdClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

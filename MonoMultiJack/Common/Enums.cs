@@ -1,5 +1,5 @@
 // 
-// JackConnectionsWidget.cs
+// ConnectionType.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -25,35 +25,12 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using MonoMultiJack.Common;
-using Gtk;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Common
 {
-
-
-	public class JackConnectionsWidget : TreeView
-	{
-		protected List<JackdClient> _jackdClients;
-		
-		protected ConnectionType _connectionType;
-		
-		public JackdClientTree _subtree;
-		
-		public JackConnectionsWidget(ConnectionType type)
+	public enum ConnectionType
 		{
-			_connectionType = type;
-			TreeViewColumn column = new TreeViewColumn();
-			column.Title = "Jackd Client";
-			AppendColumn(column);
-			CreateSubTree();
+			Inlet,
+			Outlet
 		}
-		
-		protected void CreateSubTree()
-		{
-			_subtree = new JackdClientTree(_connectionType);
-			Add(_subtree);
-		}
-	}
 }
