@@ -229,24 +229,7 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void QuitIt()
 		{
-			if (_jackd != null && !_jackd.HasExited)
-			{
-				try
-				{
-					_jackd.Kill();
-				}
-				catch (Exception ex)
-				{
-					InfoMessage(ex.Message);
-				}
-			}
-			foreach (Widget appPart in _appButtonBox.Children)
-			{
-				if (appPart is AppWidget)
-				{
-					((AppWidget)appPart).StopApplication();
-				}	
-			}
+			StopAll();
 			Application.Quit ();
 		}
 		
@@ -267,6 +250,7 @@ namespace MonoMultiJack
 				_jackd.EnableRaisingEvents = true;
 				_jackd.Exited += JackdExited;
 				stopJackdAction.Sensitive = true;
+				stopAllAction.Sensitive = true;
 				_statusbar.Push(0, JackdStatusRunning);
 			}
 		}
@@ -291,6 +275,22 @@ namespace MonoMultiJack
 			CleanUpJackd ();
 		}
 		
+		protected void StopAll()
+		{
+			if (_appButtonBox.Children != null)
+			{
+				foreach (Widget app in _appButtonBox.Children)
+				{
+					if (app is AppWidget && ((AppWidget)app).IsRunning)
+					{
+						((AppWidget)app).StopApplication();
+					}
+				}
+			}
+			StopJackd();
+			stopAllAction.Sensitive = false;
+		}
+		
 		/// <summary>
 		/// Shows an popup window with info message
 		/// </summary>
@@ -302,6 +302,11 @@ namespace MonoMultiJack
 			MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
 			popup.Run();
 			popup.Destroy();
+		}
+		
+		public void AppStarted()
+		{
+			stopAllAction.Sensitive = true;
 		}
 		
 		/// <summary>
@@ -357,8 +362,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void StopAll (object sender, System.EventArgs e)
 		{
-			StopJackd();
-			//TODO
+			StopAll();
 		}
 		
 		/// <summary>
@@ -372,7 +376,7 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void ConfigureJackd (object sender, System.EventArgs e)
 		{
-			//TODO: stopall
+			StopAll();
 			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (_config.jackdConfig);
 			Sensitive = false;
 			jackdConfigWindow.ShowAll ();
@@ -410,7 +414,7 @@ namespace MonoMultiJack
 			ResponseType response = (ResponseType)appConfigWindow.Run ();
 			if (response == ResponseType.Ok)
 			{
-				//TODO: stop all
+				StopAll();
 				List<AppConfiguration> newAppConfigs = appConfigWindow.AppConfigs;
 				newAppConfigs.Reverse ();
 				if (!_config.UpdateConfiguration(newAppConfigs))

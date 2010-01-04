@@ -1,10 +1,10 @@
 // 
-// JackConnectionsWidget.cs
+// JackdClientTree.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,27 +32,19 @@ using Gtk;
 namespace MonoMultiJack.Widgets
 {
 
-
-	public class JackConnectionsWidget : TreeView
+	public class JackdClientTree : TreeView
 	{
-		
 		protected ConnectionType _connectionType;
-		
-		public JackdClientTree _subtree;
-		
-		public JackConnectionsWidget(ConnectionType type)
+
+		public JackdClientTree (ConnectionType connectionType)
 		{
-			_connectionType = type;
+			_connectionType = connectionType;
 			TreeViewColumn column = new TreeViewColumn();
-			column.Title = "Jackd Client";
+			column.Title = "Client Name";
 			AppendColumn(column);
-			CreateSubTree();
-		}
-		
-		protected void CreateSubTree()
-		{
-			_subtree = new JackdClientTree(_connectionType);
-			Add(_subtree);
+			column = new TreeViewColumn();
+			column.Title = "Client Port";
+			AppendColumn(column);
 		}
 	}
 }

@@ -27,6 +27,7 @@
 using System;
 using System.Diagnostics;
 using MonoMultiJack.Configuration;
+using MonoMultiJack;
 using Gtk;
 
 namespace MonoMultiJack.Widgets
@@ -45,6 +46,24 @@ namespace MonoMultiJack.Widgets
 		/// the application process
 		/// </value>
 		private Process _appProcess;
+		
+		/// <summary>
+		/// returns status of running application
+		/// </summary>
+		public bool IsRunning
+		{
+			get 
+			{
+				if (_appProcess == null ||_appProcess.HasExited)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
 		
 		//// <value>
 		/// the command to start application
@@ -79,7 +98,7 @@ namespace MonoMultiJack.Widgets
 			if (this._appProcess != null && !this._appProcess.HasExited)
 			{
 				this._appProcess.CloseMainWindow ();
-			}				
+			}			
 		}
 
 		/// <summary>
@@ -104,6 +123,11 @@ namespace MonoMultiJack.Widgets
 					((ToggleButton)obj).Clicked -= StartApplication;
 					((ToggleButton)obj).Clicked += StopApplication;
 				}
+			}
+			Widget top = Toplevel;
+			if (Toplevel is MainWindow)
+			{
+				((MainWindow)Toplevel).AppStarted();
 			}
 		}
 		/// <summary>
