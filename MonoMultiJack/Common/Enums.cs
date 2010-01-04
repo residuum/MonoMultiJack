@@ -29,8 +29,8 @@ using System;
 namespace MonoMultiJack.Common
 {
 	public enum ConnectionType
-		{
-			Inlet,
-			Outlet
-		}
+	{
+		Inlet,
+		Outlet
+	}
 }
