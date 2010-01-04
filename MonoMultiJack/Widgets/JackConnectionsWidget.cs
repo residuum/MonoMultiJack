@@ -35,11 +35,11 @@ namespace MonoMultiJack.Widgets
 
 	public class JackConnectionsWidget : TreeView
 	{
-		protected List<JackdClient> _jackdClients;
+		//protected List<JackdClient> _jackdClients;
 		
 		protected ConnectionType _connectionType;
 		
-		public JackdClientTree _subtree;
+		//public JackdClientTree _subtree;
 		
 		public JackConnectionsWidget(ConnectionType type)
 		{
@@ -52,8 +52,8 @@ namespace MonoMultiJack.Widgets
 		
 		protected void CreateSubTree()
 		{
-			_subtree = new JackdClientTree(_connectionType);
-			Add(_subtree);
+			//_subtree = new JackdClientTree(_connectionType);
+			//Add(_subtree);
 		}
 	}
 }
