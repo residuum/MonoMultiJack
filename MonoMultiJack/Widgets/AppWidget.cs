@@ -50,11 +50,11 @@ namespace MonoMultiJack.Widgets
 		/// <summary>
 		/// returns status of running application
 		/// </summary>
-		public bool IsRunning
+		public bool IsAppRunning
 		{
 			get 
 			{
-				if (_appProcess == null ||_appProcess.HasExited)
+				if (_appProcess == null || _appProcess.HasExited)
 				{
 					return false;
 				}
@@ -79,15 +79,15 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		public AppWidget (AppConfiguration appConfig)
 		{
-			this.appCommand = appConfig.Command;
+			appCommand = appConfig.Command;
 			
-			this._startButton = new ToggleButton ();
-			this._startButton.Label = appConfig.Name;
-			this.Name = appConfig.Name;
-			this._startButton.Name = appCommand;
-			this._startButton.WidthRequest = 100;
-			this._startButton.Clicked += StartApplication;
-			this.Put (_startButton, 0, 0);
+			_startButton = new ToggleButton ();
+			_startButton.Label = appConfig.Name;
+			Name = appConfig.Name;
+			_startButton.Name = appCommand;
+			_startButton.WidthRequest = 100;
+			_startButton.Clicked += StartApplication;
+			Put (_startButton, 0, 0);
 		}
 		
 		/// <summary>
@@ -95,10 +95,45 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		public void StopApplication ()
 		{
-			if (this._appProcess != null && !this._appProcess.HasExited)
+			if (IsAppRunning)
 			{
-				this._appProcess.CloseMainWindow ();
-			}			
+				_appProcess.CloseMainWindow ();
+			}
+			ResetWidget();
+		}
+		
+		/// <summary>
+		/// starts application, updates action for togglebutton
+		/// </summary>
+		private void StartApplication()
+		{			
+			if (!IsAppRunning)
+			{
+				_appProcess = new Process ();
+				_appProcess.StartInfo.FileName = _startButton.Name;
+				if (_appProcess.Start ())
+				{
+					_appProcess.EnableRaisingEvents = true;
+					_appProcess.Exited += ResetWidget;
+					_startButton.Clicked -= StartApplication;
+					_startButton.Clicked += StopApplication;
+					if (Toplevel is MainWindow)
+					{
+						((MainWindow)Toplevel).AppStarted();
+					}
+				}
+			}
+		}
+		
+		/// <summary>		
+		/// resets ToggleButton state and clears appProcess
+		/// </summary>
+		private void ResetWidget ()
+		{
+			_startButton.Clicked -= StopApplication;
+			_startButton.Active = false;
+			_appProcess = null;
+			_startButton.Clicked += StartApplication;
 		}
 
 		/// <summary>
@@ -112,23 +147,7 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		private void StartApplication (object obj, EventArgs args)
 		{
-			if (this._appProcess == null || this._appProcess.HasExited)
-			{
-				this._appProcess = new Process ();
-				this._appProcess.StartInfo.FileName = ((ToggleButton)obj).Name;
-				if (_appProcess.Start ())
-				{
-					this._appProcess.EnableRaisingEvents = true;
-					this._appProcess.Exited += ResetButton;
-					((ToggleButton)obj).Clicked -= StartApplication;
-					((ToggleButton)obj).Clicked += StopApplication;
-				}
-			}
-			Widget top = Toplevel;
-			if (Toplevel is MainWindow)
-			{
-				((MainWindow)Toplevel).AppStarted();
-			}
+			StartApplication();
 		}
 		/// <summary>
 		/// stops application, updates action for ToggleButton
@@ -141,12 +160,7 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		private void StopApplication (object obj, EventArgs args)
 		{
-			if (!this._appProcess.HasExited)
-			{
-				this._appProcess.CloseMainWindow ();
-			}
-			((ToggleButton)obj).Clicked -= StopApplication;
-			((ToggleButton)obj).Clicked += StartApplication;
+			StopApplication();
 		}
 		
 		/// <summary>
@@ -158,11 +172,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void ResetButton (object obj, EventArgs args)
+		private void ResetWidget (object obj, EventArgs args)
 		{
-			this._startButton.Active = false;
-			this._startButton.Clicked -= StopApplication;
-			this._startButton.Clicked += StartApplication;
+			ResetWidget();
 		}
 	}
 }

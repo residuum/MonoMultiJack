@@ -57,7 +57,7 @@ namespace MonoMultiJack.Widgets
 		{
 			get 
 			{
-				return new AppConfiguration(this._appNameEntry.Text.Trim(), this._appCommandEntry.Text.Trim());
+				return new AppConfiguration(_appNameEntry.Text.Trim(), _appCommandEntry.Text.Trim());
 			}
 		}
 		
@@ -66,7 +66,7 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		public AppConfigWidget()
 		{
-			this.BuildWidget();
+			BuildWidget();
 		}
 		
 		/// <summary>
@@ -77,9 +77,9 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		public AppConfigWidget(AppConfiguration appConfig)
 		{
-			this.BuildWidget();
-			this._appNameEntry.Text = appConfig.Name;
-			this._appCommandEntry.Text = appConfig.Command;
+			BuildWidget();
+			_appNameEntry.Text = appConfig.Name;
+			_appCommandEntry.Text = appConfig.Command;
 		}
 		
 		/// <summary>
@@ -99,23 +99,23 @@ namespace MonoMultiJack.Widgets
 			label = new Label ("Name");
 			label.Xalign = 0;
 			table.Attach (label, 0, 1, 1, 2);
-			this._appNameEntry = new Entry();
-			table.Attach (this._appNameEntry, 1, 2, 1, 2);
-			label.MnemonicWidget = this._appNameEntry;
+			_appNameEntry = new Entry();
+			table.Attach (_appNameEntry, 1, 2, 1, 2);
+			label.MnemonicWidget = _appNameEntry;
 			
 			label = new Label ("Command");
 			label.Xalign = 0;
 			table.Attach (label, 0, 1, 2, 3);
-			this._appCommandEntry = new Entry();
-			table.Attach (this._appCommandEntry, 1, 2, 2, 3);
-			label.MnemonicWidget = this._appCommandEntry;
+			_appCommandEntry = new Entry();
+			table.Attach (_appCommandEntry, 1, 2, 2, 3);
+			label.MnemonicWidget = _appCommandEntry;
 			
-			this._removeApp = new Button(Stock.Delete);
-			this._removeApp.Clicked += RemoveApp;
-			table.Attach(this._removeApp,2, 3, 1, 2);
+			_removeApp = new Button(Stock.Delete);
+			_removeApp.Clicked += RemoveApp;
+			table.Attach(_removeApp,2, 3, 1, 2);
 			
 			
-			this.Put(table, 0, 0);
+			Put(table, 0, 0);
 		}
 		
 		/// <summary>
@@ -129,7 +129,7 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		protected void RemoveApp(object sender, System.EventArgs args)
 		{
-			this.Destroy ();
+			Destroy ();
 		}
 	}
 }

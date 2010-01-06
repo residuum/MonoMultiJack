@@ -129,6 +129,21 @@ namespace MonoMultiJack
 			_connectorArea.Put(_clientsInput, 200, 0);
 		}
 		
+		public bool IsJackdRunning
+		{
+			get
+			{
+				if (_jackd == null || _jackd.HasExited)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
+		
 		/// <summary>
 		/// read configuration
 		/// </summary>
@@ -238,10 +253,7 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void RestartJackd()
 		{
-			if (_jackd != null && !_jackd.HasExited)
-			{
-				_jackd.CloseMainWindow ();
-			}
+			StopJackd();
 			_jackd = new Process ();
 			_jackd.StartInfo.FileName = _jackdStartup;
 			if (_jackd.Start ())
@@ -269,7 +281,7 @@ namespace MonoMultiJack
 		/// </summary>
 		protected void StopJackd ()
 		{
-			if (_jackd != null || !_jackd.HasExited) {
+			if (IsJackdRunning) {
 				_jackd.CloseMainWindow ();
 			}
 			CleanUpJackd ();
@@ -281,7 +293,7 @@ namespace MonoMultiJack
 			{
 				foreach (Widget app in _appButtonBox.Children)
 				{
-					if (app is AppWidget && ((AppWidget)app).IsRunning)
+					if (app is AppWidget && ((AppWidget)app).IsAppRunning)
 					{
 						((AppWidget)app).StopApplication();
 					}
@@ -471,13 +483,13 @@ namespace MonoMultiJack
 		{
 			AboutDialog about = new AboutDialog();
 			about.ProgramName = "MonoMultiJack";
-			about.Version = "0.1";
-			about.Copyright = "(c) Thomas Mayer 2009";
+			about.Version = "0.0.1";
+			about.Copyright = "(c) Thomas Mayer 2010";
 			about.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
 	programs.";
 	        about.Website = "http://ix.residuum.org/";
 			about.Authors = new String[] {"Thomas Mayer"};
-			about.License = @"Copyright (c) 2009 Thomas Mayer
+			about.License = @"Copyright (c) 2010 Thomas Mayer
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the ""Software""), to deal
