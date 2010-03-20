@@ -33,6 +33,7 @@ using MonoMultiJack.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace MonoMultiJack
 {
@@ -77,6 +78,31 @@ namespace MonoMultiJack
 		private const string JackdStatusStopped = "Jackd is stopped.";
 		
 		/// <summary>
+		/// Path to icon file
+		/// </summary>
+		private const string IconFile = "monomultijack.png";
+		
+		/// <summary>
+		/// Icon File
+		/// </summary>
+		private Pixbuf _programIcon;
+		
+		/// <summary>
+		/// public getter for <see cref="_programIcon"/>
+		/// </summary>
+		public Pixbuf ProgramIcon
+		{
+			get
+			{
+				if (_programIcon == null && File.Exists(IconFile))
+				{
+					_programIcon = new Pixbuf(IconFile);
+				}
+				return _programIcon;
+			}
+		}
+		
+		/// <summary>
 		/// jackd process
 		/// </summary>
 		protected Process _jackd;
@@ -97,21 +123,26 @@ namespace MonoMultiJack
 		private void BuildWindowContent ()
 		{
 			Title = "MonoMultiJack";
-			Icon = new Pixbuf("monomultijack.png");
-			HBox NewHBox = new HBox (false, 2);
-			mainVbox.Add (NewHBox);
+			Icon = ProgramIcon;
+			HBox newHBox = new HBox (false, 2);
+			mainVbox.Add (newHBox);
 	        _appButtonBox = new VButtonBox();
 			_appButtonBox.Spacing = 2;
 	        _appButtonBox.Name = "appTable";
-			NewHBox.Add (_appButtonBox);
+			newHBox.Add (_appButtonBox);
 			ReadConfiguration ();
 			MakeConnectorArea ();
-			NewHBox.Add (_connectorArea);
-			_appButtonBox.ShowAll();
+			newHBox.Add (_connectorArea);
 			_statusbar = new Statusbar();
 			mainVbox.PackEnd(_statusbar,false, false, 0);
 			_statusbar.ShowAll();
 			_statusbar.Push(0, JackdStatusStopped);
+			_clientsOutput.AddJackClient("test");
+			_clientsInput.AddJackClient("test2");
+			newHBox.Visible = true;
+			_connectorArea.Visible = true;
+			_clientsInput.Visible = true;
+			_clientsOutput.Visible = true;
 		}
 		
 		/// <summary>
@@ -129,6 +160,9 @@ namespace MonoMultiJack
 			_connectorArea.Put(_clientsInput, 200, 0);
 		}
 		
+		/// <summary>
+		/// Returns status of Jackd
+		/// </summary>
 		public bool IsJackdRunning
 		{
 			get
@@ -163,35 +197,6 @@ namespace MonoMultiJack
 		}
 		
 		/// <summary>
-		/// tests for constructed appWidget with appConfig
-		/// </summary>
-		/// <param name="appConfig">
-		/// A <see cref="AppConfiguration"/>
-		/// </param>
-		/// <returns>
-		/// A <see cref="System.Boolean"/>
-		/// </returns>
-		protected bool InAppWidgets (AppConfiguration appConfig)
-		{
-			bool status = false;
-			if (_appButtonBox.Children != null)
-			{
-				foreach (Widget app in _appButtonBox.Children)
-				{
-					if (app is AppWidget)
-					{
-						if ( ((AppWidget)app).appCommand.Equals(appConfig.Command))
-						{
-							status = true;
-							break;
-						}
-					}
-				}
-			}
-			return status;
-		}
-		
-		/// <summary>
 		/// Adds appWidget from appConfig to appTable
 		/// </summary>
 		/// <param name="appConfig">
@@ -212,14 +217,19 @@ namespace MonoMultiJack
 		/// </param>
 		protected void UpdateAppWidgets (List<AppConfiguration> appConfigs)
 		{
-			foreach (AppConfiguration app in appConfigs)
+			foreach (Widget widget in _appButtonBox.Children)
 			{
-				if (!InAppWidgets (app))
+				AppWidget appWidget = widget as AppWidget;
+				if (appWidget != null)
 				{
-					AddAppWidget (app);
+					appWidget.Destroy();
 				}
 			}
-			//TODO: Delete old AppWidgets, Reorder AppWidgets
+			foreach (AppConfiguration appConfig in appConfigs)
+			{
+				AddAppWidget (appConfig);
+			}
+			_appButtonBox.ShowAll();
 		}
 		
 		/// <summary>
@@ -291,11 +301,12 @@ namespace MonoMultiJack
 		{
 			if (_appButtonBox.Children != null)
 			{
-				foreach (Widget app in _appButtonBox.Children)
+				foreach (Widget child in _appButtonBox.Children)
 				{
-					if (app is AppWidget && ((AppWidget)app).IsAppRunning)
+					AppWidget app = child as AppWidget;
+					if (app != null && app.IsAppRunning)
 					{
-						((AppWidget)app).StopApplication();
+						app.StopApplication();
 					}
 				}
 			}
@@ -342,9 +353,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void RestartJackd (object sender, System.EventArgs e)
+		protected virtual void RestartJackd (object sender, EventArgs e)
 		{
 			RestartJackd();
 		}
@@ -356,9 +367,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void StopJackd (object sender, System.EventArgs e)
+		protected virtual void StopJackd (object sender, EventArgs e)
 		{
 			StopJackd ();
 		}
@@ -370,9 +381,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void StopAll (object sender, System.EventArgs e)
+		protected virtual void StopAll (object sender, EventArgs e)
 		{
 			StopAll();
 		}
@@ -384,9 +395,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void ConfigureJackd (object sender, System.EventArgs e)
+		protected virtual void ConfigureJackd (object sender, EventArgs e)
 		{
 			StopAll();
 			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (_config.jackdConfig);
@@ -416,10 +427,11 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void ConfigureApplications (object sender, System.EventArgs e)
+		protected virtual void ConfigureApplications (object sender, EventArgs e)
 		{
+			StopAll();
 			AppConfigWindow appConfigWindow = new AppConfigWindow (_config.appConfigs);
 			Sensitive = false;		
 			appConfigWindow.ShowAll ();
@@ -435,7 +447,7 @@ namespace MonoMultiJack
 				}
 				else
 				{
-					//UpdateAppWidgets (config.appConfigs);
+					UpdateAppWidgets (_config.appConfigs);
 				}
 			}
 			appConfigWindow.Destroy ();
@@ -449,9 +461,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void OnQuitActionActivated (object sender, System.EventArgs e)
+		protected virtual void OnQuitActionActivated (object sender, EventArgs e)
 		{
 			QuitIt ();
 		}
@@ -463,9 +475,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="args">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void JackdExited (object sender, System.EventArgs args)
+		protected virtual void JackdExited (object sender, EventArgs args)
 		{
 			CleanUpJackd();
 		}
@@ -477,9 +489,9 @@ namespace MonoMultiJack
 		/// A <see cref="System.Object"/>
 		/// </param>
 		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
+		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void AboutDialog (object sender, System.EventArgs e)
+		protected virtual void AboutDialog (object sender, EventArgs e)
 		{
 			AboutDialog about = new AboutDialog();
 			about.ProgramName = "MonoMultiJack";
@@ -508,7 +520,7 @@ namespace MonoMultiJack
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.";
-			about.Logo = new Gdk.Pixbuf("monomultijack.png");
+			about.Logo = ProgramIcon;
 			about.Run();
 			about.Destroy();
 		}

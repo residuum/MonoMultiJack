@@ -99,7 +99,10 @@ namespace MonoMultiJack.Widgets
 			{
 				_appProcess.CloseMainWindow ();
 			}
-			ResetWidget();
+			else
+			{
+				ResetWidget();
+			}
 		}
 		
 		/// <summary>

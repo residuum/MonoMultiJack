@@ -59,12 +59,13 @@ namespace MonoMultiJack
 				List<AppConfiguration> newAppConfigs = new List<AppConfiguration>();
 				AppConfiguration newAppConfig;
 				
-				foreach (Widget appConfigWidget in _configTable.Children)
+				foreach (Widget child in _configTable.Children)
 				{
-					if (appConfigWidget is AppConfigWidget)
+					AppConfigWidget appConfigWidget = child as AppConfigWidget;
+					if (appConfigWidget != null)
 					{
-						newAppConfig = ((AppConfigWidget)appConfigWidget).appConfig;
-						if ( !newAppConfig.Name.Equals(string.Empty) && !newAppConfig.Command.Equals(string.Empty))
+						newAppConfig = appConfigWidget.appConfig;
+						if (!string.IsNullOrEmpty(newAppConfig.Name) && !string.IsNullOrEmpty(newAppConfig.Command))
 						{
 							newAppConfigs.Add(newAppConfig);
 						}
