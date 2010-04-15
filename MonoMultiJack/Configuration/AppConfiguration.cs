@@ -31,17 +31,17 @@ namespace MonoMultiJack.Configuration
 	/// <summary>
 	/// Configuration of an application
 	/// </summary>
-	public class AppConfiguration
+	public struct AppConfiguration
 	{
 		/// <summary>
 		/// name of the application
 		/// </summary>
-		public string Name {get; protected set;}
+		public string Name {get; private set;}
 		
 		/// <summary>
 		/// command to launch the application
 		/// </summary>
-		public string Command {get; protected set;}
+		public string Command {get; private set;}
 
 		/// <summary>
 		/// constructor

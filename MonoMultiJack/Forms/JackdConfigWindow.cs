@@ -35,9 +35,9 @@ namespace MonoMultiJack
 	/// </summary>
 	public class JackdConfigWindow : Gtk.Dialog
 	{
-		protected Gtk.Entry _jackdPathEntry;
-		protected Gtk.Entry _jackdAudiorateEntry;
-		protected Gtk.Entry _jackdDriverEntry;
+		private Gtk.Entry _jackdPathEntry;
+		private Gtk.Entry _jackdAudiorateEntry;
+		private Gtk.Entry _jackdDriverEntry;
 		
 		//// <value>
 		/// returns values of entry fields as jackdConfiguration
@@ -69,7 +69,7 @@ namespace MonoMultiJack
 		/// <param name="jackdConfig">
 		/// A <see cref="JackdConfiguration"/>
 		/// </param>
-		protected void BuildDialog (JackdConfiguration jackdConfig)
+		private void BuildDialog (JackdConfiguration jackdConfig)
 		{
 			Table table = new Table (3, 2, false);
 			table.RowSpacing = 2;
@@ -81,30 +81,21 @@ namespace MonoMultiJack
 			_jackdPathEntry = new Entry();
 			table.Attach (_jackdPathEntry, 1, 2, 0, 1);
 			label.MnemonicWidget = _jackdPathEntry;
-			if (jackdConfig != null)
-			{
-				_jackdPathEntry.Text = jackdConfig.Path;
-			}
+			_jackdPathEntry.Text = jackdConfig.Path;
 			
 			label = new Label ("Audiorate");
 			table.Attach (label, 0, 1, 1, 2);
 			_jackdAudiorateEntry = new Entry ();
 			table.Attach (_jackdAudiorateEntry, 1, 2, 1, 2);
 			label.MnemonicWidget = _jackdAudiorateEntry;
-			if (jackdConfig != null)
-			{
-				_jackdAudiorateEntry.Text = jackdConfig.Audiorate;
-			}
+			_jackdAudiorateEntry.Text = jackdConfig.Audiorate;
 			
 			label = new Label ("Driver Infrastructure");
 			table.Attach (label, 0, 1, 2, 3);
 			_jackdDriverEntry = new Entry ();
 			table.Attach (_jackdDriverEntry, 1, 2, 2, 3);
 			label.MnemonicWidget = _jackdDriverEntry;
-			if (jackdConfig != null)
-			{
-				_jackdDriverEntry.Text = jackdConfig.Driver;
-			}
+			_jackdDriverEntry.Text = jackdConfig.Driver;
 			
 			AddButton(Stock.Ok, ResponseType.Ok);
 			AddButton(Stock.Cancel, ResponseType.Cancel);

@@ -68,7 +68,7 @@ namespace MonoMultiJack.Widgets
 		//// <value>
 		/// the command to start application
 		/// </value>
-		public string appCommand {get; protected set;}
+		public string appCommand {get; private set;}
 		
 		
 		/// <summary>
@@ -97,11 +97,14 @@ namespace MonoMultiJack.Widgets
 		{
 			if (IsAppRunning)
 			{
-				_appProcess.CloseMainWindow ();
-			}
-			else
-			{
-				ResetWidget();
+				if (_appProcess.CloseMainWindow())
+				{
+					_appProcess.Close();
+				}
+				else
+				{
+					_appProcess.Kill();
+				}
 			}
 		}
 		
@@ -133,9 +136,10 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		private void ResetWidget ()
 		{
-			_startButton.Clicked -= StopApplication;
-			_startButton.Active = false;
+			_appProcess.Dispose();
 			_appProcess = null;
+			_startButton.Active = false;
+			_startButton.Clicked -= StopApplication;
 			_startButton.Clicked += StartApplication;
 		}
 

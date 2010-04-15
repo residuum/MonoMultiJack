@@ -42,12 +42,12 @@ namespace MonoMultiJack
 		//// <value>
 		/// table for layout
 		/// </value>
-		protected Table _configTable;
+		private Table _configTable;
 		
 		//// <value>
 		/// button for adding config widgets
 		/// </value>
-		protected Button _addWidget;
+		private Button _addWidget;
 		
 		//// <value>
 		/// getter for new application configurations
@@ -88,7 +88,7 @@ namespace MonoMultiJack
 		/// <param name="appConfigs">
 		/// A <see cref="List"/> current application configuration
 		/// </param>
-		protected void BuildDialog (List<AppConfiguration> appConfigs)
+		private void BuildDialog (List<AppConfiguration> appConfigs)
 		{
 			_configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
 			_configTable.ColumnSpacing = 10;
@@ -111,7 +111,7 @@ namespace MonoMultiJack
 		/// <summary>
 		/// (re-)creates add button
 		/// </summary>
-		protected void CreateAddButton ()
+		private void CreateAddButton ()
 		{
 			if (_addWidget != null)
 			{
@@ -124,7 +124,7 @@ namespace MonoMultiJack
 		/// <summary>
 		/// creates and attaches new application configuration widget
 		/// </summary>
-		protected void AddNewConfigWidget()
+		private void AddNewConfigWidget()
 		{
 			_configTable.NRows++;
 			AppConfigWidget appConfigWidget = new AppConfigWidget();
@@ -143,7 +143,7 @@ namespace MonoMultiJack
 		/// <param name="args">
 		/// A <see cref="System.EventArgs"/>
 		/// </param>
-		protected void AddNewConfigWidget (object sender, System.EventArgs args)
+		private void AddNewConfigWidget (object sender, System.EventArgs args)
 		{
 			AddNewConfigWidget ();
 		}

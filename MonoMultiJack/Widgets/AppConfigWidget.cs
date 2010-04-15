@@ -38,17 +38,17 @@ namespace MonoMultiJack.Widgets
 		//// <value>
 		/// Entry field for application name
 		/// </value>
-		protected Entry _appNameEntry;
+		private Entry _appNameEntry;
 		
 		//// <value>
 		/// Entry field for application startup command
 		/// </value>
-		protected Entry _appCommandEntry;
+		private Entry _appCommandEntry;
 		
 		//// <value>
 		/// button for destroying widget
 		/// </value>
-		protected Button _removeApp;
+		private Button _removeApp;
 		
 		//// <value>
 		/// edited configuration
@@ -85,7 +85,7 @@ namespace MonoMultiJack.Widgets
 		/// <summary>
 		/// builds subwidgets and layout
 		/// </summary>
-		protected void BuildWidget()
+		private void BuildWidget()
 		{
 			Table table = new Table(3, 3, false);
 			table.RowSpacing = 3;
@@ -127,7 +127,7 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="System.EventArgs"/>
 		/// </param>
-		protected void RemoveApp(object sender, System.EventArgs args)
+		private void RemoveApp(object sender, System.EventArgs args)
 		{
 			Destroy ();
 		}
