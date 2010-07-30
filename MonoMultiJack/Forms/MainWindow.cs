@@ -110,9 +110,9 @@ namespace MonoMultiJack
 		}
 		
 		/// <summary>
-		/// jackd process
+		/// jackd process id
 		/// </summary>
-		private Process _jackd;
+		private string _jackdPid;
 		
 		/// <summary>
 		/// Constructor
@@ -172,7 +172,7 @@ namespace MonoMultiJack
 		{
 			get
 			{
-				if (_jackd == null || _jackd.HasExited)
+				if (String.IsNullOrEmpty(_jackdPid))
 				{
 					return false;
 				}
@@ -245,9 +245,19 @@ namespace MonoMultiJack
 		/// </param>
 		private void UpdateJackd (JackdConfiguration jackdConfig)
 		{
-			_jackdStartup = jackdConfig.Path 
+			string jackdCommand = jackdConfig.Path 
 				+ " -d " + jackdConfig.Driver 
 				+ " -r " + jackdConfig.Audiorate;
+			
+			_jackdStartup = System.IO.Path.GetTempFileName();
+			try
+			{
+				File.WriteAllText(_jackdStartup, XmlConfiguration.GetScriptHeader() + jackdCommand + XmlConfiguration.GetScriptFooter());
+			}
+			catch (Exception ex)
+			{
+				new IOException("Unable to write to temporary file.", ex);
+			}
 			reStartJackdAction.Sensitive = true;
 		}
 		
@@ -266,17 +276,21 @@ namespace MonoMultiJack
 		private void RestartJackd()
 		{
 			StopJackd();
-			_jackd = new Process ();
-			_jackd.StartInfo.FileName = _jackdStartup;
-			if (_jackd.Start ())
+			Process jackdBash = new Process ();
+			jackdBash.StartInfo.FileName = "sh";
+			jackdBash.StartInfo.Arguments = _jackdStartup;
+			if (jackdBash.Start())
 			{
-				//int jackdTest = JackdInterop.jack_client_name_size();
-				_jackd.EnableRaisingEvents = true;
-				_jackd.Exited += JackdExited;
+				jackdBash.OutputDataReceived += HandleJackdBashOutputDataReceived;	
 				stopJackdAction.Sensitive = true;
 				stopAllAction.Sensitive = true;
 				_statusbar.Push(0, JackdStatusRunning);
 			}
+		}
+
+		private void HandleJackdBashOutputDataReceived (object sender, DataReceivedEventArgs e)
+		{
+			_jackdPid = e.Data;
 		}
 		
 		/// <summary>
@@ -286,6 +300,7 @@ namespace MonoMultiJack
 		{
 			stopJackdAction.Sensitive = false;
 			_statusbar.Push(0, JackdStatusStopped);
+			_jackdPid = null;
 		}
 
 		/// <summary>
@@ -293,8 +308,14 @@ namespace MonoMultiJack
 		/// </summary>
 		private void StopJackd ()
 		{
-			if (IsJackdRunning) {
-				_jackd.CloseMainWindow ();
+			if (IsJackdRunning) 
+			{
+				Process killJackd = new Process();
+				killJackd.StartInfo.FileName = "kill";
+				killJackd.StartInfo.Arguments = _jackdPid;
+				killJackd.Start();
+				killJackd.Kill();
+				killJackd.Dispose();
 			}
 			CleanUpJackd ();
 		}
@@ -345,7 +366,7 @@ namespace MonoMultiJack
 				AppWidget app = child as AppWidget;
 				if (app != null && app.IsAppRunning)
 				{
-					_clientsInput.AddJackClient(app.appCommand);
+					//_clientsInput.AddJackClient(app.appCommand);
 				}
 			}
 		}

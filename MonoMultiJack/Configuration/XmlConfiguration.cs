@@ -293,5 +293,15 @@ namespace MonoMultiJack.Configuration
 			AppConfigs = newAppConfigs;
 			return WriteXml();
 		}
+		
+		public static string GetScriptHeader()
+		{
+			return "#!/bin/sh\n";
+		}
+		
+		public static string GetScriptFooter()
+		{
+			return " >> /dev/null 2>&1&\necho $!";
+		}
 	}
 }
