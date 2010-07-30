@@ -9,9 +9,13 @@ ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-
 ASSEMBLY = bin/Debug/MonoMultiJack.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = winexe
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =  \
+	../Jackd-CIL/bin/Debug/Jackd-CIL.dll
 BUILD_DIR = bin/Debug
 
+JACKD_CIL_DLL_SOURCE=../Jackd-CIL/bin/Debug/Jackd-CIL.dll
+JACKD_CIL_DLL_MDB_SOURCE=../Jackd-CIL/bin/Debug/Jackd-CIL.dll.mdb
+JACKD_CIL_DLL_MDB=$(BUILD_DIR)/Jackd-CIL.dll.mdb
 MONOMULTIJACK_EXE_MDB_SOURCE=bin/Debug/MonoMultiJack.exe.mdb
 MONOMULTIJACK_EXE_MDB=$(BUILD_DIR)/MonoMultiJack.exe.mdb
 
@@ -23,9 +27,12 @@ ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
 ASSEMBLY = bin/Release/MonoMultiJack.exe
 ASSEMBLY_MDB = 
 COMPILE_TARGET = winexe
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =  \
+	../Jackd-CIL/bin/Release/Jackd-CIL.dll
 BUILD_DIR = bin/Release
 
+JACKD_CIL_DLL_SOURCE=../Jackd-CIL/bin/Release/Jackd-CIL.dll
+JACKD_CIL_DLL_MDB=
 MONOMULTIJACK_EXE_MDB=
 
 endif
@@ -34,6 +41,8 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
+	$(JACKD_CIL_DLL) \
+	$(JACKD_CIL_DLL_MDB) \
 	$(MONOMULTIJACK_EXE_MDB)  
 
 BINARIES = \
@@ -88,8 +97,11 @@ CLEANFILES = $(PROGRAMFILES) $(BINARIES)
 
 include $(top_srcdir)/Makefile.include
 
+JACKD_CIL_DLL = $(BUILD_DIR)/Jackd-CIL.dll
 MONOMULTIJACK = $(BUILD_DIR)/monomultijack
 
+$(eval $(call emit-deploy-target,JACKD_CIL_DLL))
+$(eval $(call emit-deploy-target,JACKD_CIL_DLL_MDB))
 $(eval $(call emit-deploy-wrapper,MONOMULTIJACK,monomultijack,x))
 
 

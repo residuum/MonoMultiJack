@@ -1,0 +1,6 @@
+Name: Jackd-CIL
+Description: Jackd-CIL
+Version: 0.1
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/Jackd-CIL.dll
