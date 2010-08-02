@@ -252,7 +252,9 @@ namespace MonoMultiJack
 			_jackdStartup = System.IO.Path.GetTempFileName();
 			try
 			{
-				File.WriteAllText(_jackdStartup, XmlConfiguration.GetScriptHeader() + jackdCommand + XmlConfiguration.GetScriptFooter());
+				
+				File.WriteAllText(_jackdStartup, 
+				                  XmlConfiguration.GetBashScript(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true));
 			}
 			catch (Exception ex)
 			{
@@ -279,18 +281,27 @@ namespace MonoMultiJack
 			Process jackdBash = new Process ();
 			jackdBash.StartInfo.FileName = "sh";
 			jackdBash.StartInfo.Arguments = _jackdStartup;
+			jackdBash.StartInfo.RedirectStandardOutput = true;
+			jackdBash.EnableRaisingEvents = true;
+			jackdBash.StartInfo.UseShellExecute = false;
+			jackdBash.OutputDataReceived += HandleJackdBashOutputDataReceived;	
+			//jackdBash.Exited += JackdExited;
 			if (jackdBash.Start())
 			{
-				jackdBash.OutputDataReceived += HandleJackdBashOutputDataReceived;	
+				jackdBash.BeginOutputReadLine();
 				stopJackdAction.Sensitive = true;
 				stopAllAction.Sensitive = true;
 				_statusbar.Push(0, JackdStatusRunning);
 			}
+			//jackdBash.WaitForExit();
 		}
 
 		private void HandleJackdBashOutputDataReceived (object sender, DataReceivedEventArgs e)
 		{
-			_jackdPid = e.Data;
+			if (!string.IsNullOrEmpty (e.Data))
+			{
+				_jackdPid = e.Data;
+			}
 		}
 		
 		/// <summary>
@@ -314,8 +325,6 @@ namespace MonoMultiJack
 				killJackd.StartInfo.FileName = "kill";
 				killJackd.StartInfo.Arguments = _jackdPid;
 				killJackd.Start();
-				killJackd.Kill();
-				killJackd.Dispose();
 			}
 			CleanUpJackd ();
 		}
@@ -517,7 +526,9 @@ namespace MonoMultiJack
 		/// </param>
 		protected virtual void JackdExited (object sender, EventArgs args)
 		{
-			CleanUpJackd();
+			//CleanUpJackd();
+		
+			_jackdPid = string.Empty;
 		}
 	
 		/// <summary>

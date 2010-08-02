@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Text;
 
 namespace MonoMultiJack.Configuration
 {
@@ -294,14 +295,29 @@ namespace MonoMultiJack.Configuration
 			return WriteXml();
 		}
 		
-		public static string GetScriptHeader()
+		public static string GetBashScript(string commandName, string commandArguments, bool isSingleInstance)
 		{
-			return "#!/bin/sh\n";
+			StringBuilder bashScript = new StringBuilder();
+			bashScript.AppendLine("#!/bin/sh");
+			if (isSingleInstance)
+			{
+				string[] commandPaths = commandName.Split(Path.DirectorySeparatorChar);
+				bashScript.AppendLine("if pgrep " + commandPaths[commandPaths.Length - 1]);
+				bashScript.AppendLine("then true");
+				bashScript.AppendLine("else");
+			}
+			bashScript.AppendLine(commandName + " "+commandArguments + " >> /dev/null 2>&1&");
+			bashScript.AppendLine("echo $!");
+			if (isSingleInstance)
+			{
+				bashScript.AppendLine("fi");
+			}
+			return bashScript.ToString();
 		}
 		
-		public static string GetScriptFooter()
+		public static string GetBashScript(string commandName, string commandArguments)
 		{
-			return " >> /dev/null 2>&1&\necho $!";
+			return GetBashScript(commandName, commandArguments, false);
 		}
 	}
 }
