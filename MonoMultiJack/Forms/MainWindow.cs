@@ -46,7 +46,7 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Xml Configuration
 		/// </summary>
-		private XmlConfiguration _config;
+		private PeristantConfiguration _config;
 		
 		/// <summary>
 		/// Jackd startup command
@@ -183,14 +183,14 @@ namespace MonoMultiJack
 		{
 			try
 			{
-				_config = new XmlConfiguration();
+				_config = new PeristantConfiguration();
 				UpdateAppWidgets(_config.AppConfigs);
 				UpdateJackd(_config.JackdConfig);
 			}
 			catch (System.Xml.XmlException)
 			{
 				InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
-				_config = new XmlConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
+				_config = new PeristantConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
 			}
 		}
 		
@@ -243,7 +243,7 @@ namespace MonoMultiJack
 			{
 				
 				File.WriteAllText(_jackdStartup, 
-				                  XmlConfiguration.GetBashScript(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true));
+				                  PeristantConfiguration.GetShellScript(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true));
 			}
 			catch (Exception ex)
 			{
@@ -283,6 +283,15 @@ namespace MonoMultiJack
 			}
 		}
 
+		/// <summary>
+		/// Handles data received from startup bash script.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="DataReceivedEventArgs"/>
+		/// </param>
 		private void HandleJackdBashOutputDataReceived (object sender, DataReceivedEventArgs e)
 		{
 			if (!string.IsNullOrEmpty (e.Data))
@@ -349,12 +358,6 @@ namespace MonoMultiJack
 			MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
 			popup.Run();
 			popup.Destroy();
-		}
-		
-		public void AppStarted()
-		{
-			stopAllAction.Sensitive = true;
-			RefreshConnectionTree();
 		}
 		
 		private void RefreshConnectionTree()
@@ -504,22 +507,6 @@ namespace MonoMultiJack
 			QuitIt ();
 		}
 		
-		/// <summary>
-		/// Event handler for exit of jackd process
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="EventArgs"/>
-		/// </param>
-		protected virtual void JackdExited (object sender, EventArgs args)
-		{
-			//CleanUpJackd();
-		
-			_jackdPid = string.Empty;
-		}
-	
 		/// <summary>
 		/// shows about dialog
 		/// </summary>

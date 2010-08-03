@@ -64,7 +64,6 @@
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Forms\MainWindow.cs" />
-    <Compile Include="Configuration\XmlConfiguration.cs" />
     <Compile Include="Configuration\JackdConfiguration.cs" />
     <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Forms\AppConfigWindow.cs" />
@@ -76,6 +75,7 @@
     <Compile Include="Widgets\JackConnectionsWidget.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
+    <Compile Include="Configuration\PeristantConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

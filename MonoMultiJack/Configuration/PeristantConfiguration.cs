@@ -27,15 +27,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using System.Text;
+using System.Xml;
 
 namespace MonoMultiJack.Configuration
 {
 	/// <summary>
-	/// Class for reading and writing XML configuration file.
+	/// Class for managing configuration.
 	/// </summary>
-	public class XmlConfiguration
+	public class PeristantConfiguration
 	{
 		/// <summary>
 		/// Jackd Configuration
@@ -55,7 +55,7 @@ namespace MonoMultiJack.Configuration
 		/// <summary>
 		/// constructor
 		/// </summary>
-		public XmlConfiguration ()
+		public PeristantConfiguration ()
 		{
 			AppConfigs = new List<AppConfiguration>();
 			if (!ReadXml())
@@ -73,7 +73,7 @@ namespace MonoMultiJack.Configuration
 		/// <param name="newAppConfigs">
 		/// The new <see cref="List<AppConfiguration>"/>
 		/// </param>
-		public XmlConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
+		public PeristantConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
 		{
 			AppConfigs = newAppConfigs;
 			JackdConfig = newJackdConfig;
@@ -295,7 +295,22 @@ namespace MonoMultiJack.Configuration
 			return WriteXml();
 		}
 		
-		public static string GetBashScript(string commandName, string commandArguments, bool isSingleton)
+		/// <summary>
+		/// Gets shell script for starting up application and returning the process id of that application.
+		/// </summary>
+		/// <param name="commandName">
+		/// The command to start up.
+		/// </param>
+		/// <param name="commandArguments">
+		/// Command line arguments to pass.
+		/// </param>
+		/// <param name="isSingleton">
+		/// If <c>true</c>, then only one instance of that application may start. The script will return the pid of that instance then.
+		/// </param>
+		/// <returns>
+		/// The complete shell script for starting the application.
+		/// </returns>
+		public static string GetShellScript(string commandName, string commandArguments, bool isSingleton)
 		{
 			StringBuilder bashScript = new StringBuilder();
 			bashScript.AppendLine("#!/bin/sh");
@@ -315,9 +330,21 @@ namespace MonoMultiJack.Configuration
 			return bashScript.ToString();
 		}
 		
-		public static string GetBashScript(string commandName, string commandArguments)
+		/// <summary>
+		/// Gets shell script for starting up application and returning the process id of that application.
+		/// </summary>
+		/// <param name="commandName">
+		/// The command to start up.
+		/// </param>
+		/// <param name="commandArguments">
+		/// Command line arguments to pass.
+		/// </param>
+		/// <returns>
+		/// The complete shell script for starting the application.
+		/// </returns>
+		public static string GetShellScript(string commandName, string commandArguments)
 		{
-			return GetBashScript(commandName, commandArguments, false);
+			return GetShellScript(commandName, commandArguments, false);
 		}
 	}
 }

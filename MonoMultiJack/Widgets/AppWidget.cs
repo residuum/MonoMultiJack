@@ -27,10 +27,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using MonoMultiJack.Configuration;
-using MonoMultiJack;
-using Gtk;
 using System.Linq;
+using Gtk;
+using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.Widgets
 {	
@@ -49,6 +48,9 @@ namespace MonoMultiJack.Widgets
 		/// </value>
 		private string _appProcessPid;
 		
+		/// <summary>
+		/// Path to shell script for starting application
+		/// </summary>
 		private string _appStartup;
 		
 		/// <summary>
@@ -60,13 +62,7 @@ namespace MonoMultiJack.Widgets
 			{
 				return !string.IsNullOrEmpty(_appProcessPid);
 			}
-		}
-		
-		//// <value>
-		/// the command to start application
-		/// </value>
-		public string appCommand {get; private set;}
-		
+		}		
 		
 		/// <summary>
 		/// constructor
@@ -79,7 +75,7 @@ namespace MonoMultiJack.Widgets
 			_startButton = new ToggleButton ();
 			_startButton.Label = appConfig.Name;
 			Name = appConfig.Name;
-			_startButton.Name = appCommand;
+			_startButton.Name = appConfig.Command;
 			_startButton.WidthRequest = 100;
 			_startButton.Clicked += StartApplication;
 			Put (_startButton, 0, 0);
@@ -89,7 +85,7 @@ namespace MonoMultiJack.Widgets
 				string[] appConfigValues = appConfig.Command.Split(new char[]{' '}, 2);
 				
 				File.WriteAllText(_appStartup, 
-				                  XmlConfiguration.GetBashScript(appConfigValues[0], 
+				                  PeristantConfiguration.GetShellScript(appConfigValues[0], 
 				                                                 appConfigValues.Count() > 1? appConfigValues[1] : string.Empty)
 				                  );
 			}
@@ -138,11 +134,20 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
+		/// <summary>
+		/// Event handler for data received from bash script.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="DataReceivedEventArgs"/>
+		/// </param>
 		void HandleStartAppBashOutputDataReceived (object sender, DataReceivedEventArgs e)
 		{
 			if (!string.IsNullOrEmpty(e.Data))
 			{
-				_appProcessPid = e.Data;
+			_appProcessPid = e.Data;
 			_startButton.Clicked -= StartApplication;
 			_startButton.Clicked += StopApplication;
 			}
