@@ -26,9 +26,11 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using MonoMultiJack.Configuration;
 using MonoMultiJack;
 using Gtk;
+using System.Linq;
 
 namespace MonoMultiJack.Widgets
 {	
@@ -45,7 +47,9 @@ namespace MonoMultiJack.Widgets
 		//// <value>
 		/// the application process
 		/// </value>
-		private Process _appProcess;
+		private string _appProcessPid;
+		
+		private string _appStartup;
 		
 		/// <summary>
 		/// returns status of running application
@@ -54,14 +58,7 @@ namespace MonoMultiJack.Widgets
 		{
 			get 
 			{
-				if (_appProcess == null || _appProcess.HasExited)
-				{
-					return false;
-				}
-				else
-				{
-					return true;
-				}
+				return !string.IsNullOrEmpty(_appProcessPid);
 			}
 		}
 		
@@ -78,9 +75,7 @@ namespace MonoMultiJack.Widgets
 		/// A <see cref="AppConfiguration"/>
 		/// </param>
 		public AppWidget (AppConfiguration appConfig)
-		{
-			appCommand = appConfig.Command;
-			
+		{			
 			_startButton = new ToggleButton ();
 			_startButton.Label = appConfig.Name;
 			Name = appConfig.Name;
@@ -88,6 +83,21 @@ namespace MonoMultiJack.Widgets
 			_startButton.WidthRequest = 100;
 			_startButton.Clicked += StartApplication;
 			Put (_startButton, 0, 0);
+			_appStartup = System.IO.Path.GetTempFileName();
+			try
+			{
+				string[] appConfigValues = appConfig.Command.Split(new char[]{' '}, 2);
+				
+				File.WriteAllText(_appStartup, 
+				                  XmlConfiguration.GetBashScript(appConfigValues[0], 
+				                                                 appConfigValues.Count() > 1? appConfigValues[1] : string.Empty)
+				                  );
+			}
+			catch (Exception ex)
+			{
+				new IOException("Unable to write to temporary file.", ex);
+			}
+		
 		}
 		
 		/// <summary>
@@ -97,13 +107,12 @@ namespace MonoMultiJack.Widgets
 		{
 			if (IsAppRunning)
 			{
-				if (_appProcess.CloseMainWindow())
+				Process killApp = new Process();
+				killApp.StartInfo.FileName = "kill";
+				killApp.StartInfo.Arguments = _appProcessPid;
+				if (killApp.Start())
 				{
-					_appProcess.Close();
-				}
-				else
-				{
-					_appProcess.Kill();
+					ResetWidget ();					
 				}
 			}
 		}
@@ -115,19 +124,27 @@ namespace MonoMultiJack.Widgets
 		{			
 			if (!IsAppRunning)
 			{
-				_appProcess = new Process ();
-				_appProcess.StartInfo.FileName = _startButton.Name;
-				if (_appProcess.Start ())
+				Process startAppBash = new Process();				
+				startAppBash.StartInfo.FileName = "sh";
+				startAppBash.StartInfo.Arguments = _appStartup;
+				startAppBash.StartInfo.RedirectStandardOutput = true;
+				startAppBash.EnableRaisingEvents = true;
+				startAppBash.StartInfo.UseShellExecute = false;
+				startAppBash.OutputDataReceived += HandleStartAppBashOutputDataReceived;	
+				if (startAppBash.Start())
 				{
-					_appProcess.EnableRaisingEvents = true;
-					_appProcess.Exited += ResetWidget;
-					_startButton.Clicked -= StartApplication;
-					_startButton.Clicked += StopApplication;
-					if (Toplevel is MainWindow)
-					{
-						((MainWindow)Toplevel).AppStarted();
-					}
+					startAppBash.BeginOutputReadLine();
 				}
+			}
+		}
+
+		void HandleStartAppBashOutputDataReceived (object sender, DataReceivedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(e.Data))
+			{
+				_appProcessPid = e.Data;
+			_startButton.Clicked -= StartApplication;
+			_startButton.Clicked += StopApplication;
 			}
 		}
 		
@@ -136,11 +153,10 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		private void ResetWidget ()
 		{
-			_appProcess.Dispose();
-			_appProcess = null;
 			_startButton.Active = false;
 			_startButton.Clicked -= StopApplication;
 			_startButton.Clicked += StartApplication;
+			_appProcessPid = null;
 		}
 
 		/// <summary>

@@ -295,11 +295,11 @@ namespace MonoMultiJack.Configuration
 			return WriteXml();
 		}
 		
-		public static string GetBashScript(string commandName, string commandArguments, bool isSingleInstance)
+		public static string GetBashScript(string commandName, string commandArguments, bool isSingleton)
 		{
 			StringBuilder bashScript = new StringBuilder();
 			bashScript.AppendLine("#!/bin/sh");
-			if (isSingleInstance)
+			if (isSingleton)
 			{
 				string[] commandPaths = commandName.Split(Path.DirectorySeparatorChar);
 				bashScript.AppendLine("if pgrep " + commandPaths[commandPaths.Length - 1]);
@@ -308,7 +308,7 @@ namespace MonoMultiJack.Configuration
 			}
 			bashScript.AppendLine(commandName + " "+commandArguments + " >> /dev/null 2>&1&");
 			bashScript.AppendLine("echo $!");
-			if (isSingleInstance)
+			if (isSingleton)
 			{
 				bashScript.AppendLine("fi");
 			}

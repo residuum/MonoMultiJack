@@ -172,14 +172,7 @@ namespace MonoMultiJack
 		{
 			get
 			{
-				if (String.IsNullOrEmpty(_jackdPid))
-				{
-					return false;
-				}
-				else
-				{
-					return true;
-				}
+				return !String.IsNullOrEmpty(_jackdPid);
 			}
 		}
 		
@@ -244,11 +237,7 @@ namespace MonoMultiJack
 		/// A <see cref="JackdConfiguration"/>
 		/// </param>
 		private void UpdateJackd (JackdConfiguration jackdConfig)
-		{
-			string jackdCommand = jackdConfig.Path 
-				+ " -d " + jackdConfig.Driver 
-				+ " -r " + jackdConfig.Audiorate;
-			
+		{			
 			_jackdStartup = System.IO.Path.GetTempFileName();
 			try
 			{
@@ -285,7 +274,6 @@ namespace MonoMultiJack
 			jackdBash.EnableRaisingEvents = true;
 			jackdBash.StartInfo.UseShellExecute = false;
 			jackdBash.OutputDataReceived += HandleJackdBashOutputDataReceived;	
-			//jackdBash.Exited += JackdExited;
 			if (jackdBash.Start())
 			{
 				jackdBash.BeginOutputReadLine();
@@ -293,7 +281,6 @@ namespace MonoMultiJack
 				stopAllAction.Sensitive = true;
 				_statusbar.Push(0, JackdStatusRunning);
 			}
-			//jackdBash.WaitForExit();
 		}
 
 		private void HandleJackdBashOutputDataReceived (object sender, DataReceivedEventArgs e)
@@ -324,9 +311,11 @@ namespace MonoMultiJack
 				Process killJackd = new Process();
 				killJackd.StartInfo.FileName = "kill";
 				killJackd.StartInfo.Arguments = _jackdPid;
-				killJackd.Start();
+				if (killJackd.Start())
+				{
+					CleanUpJackd ();					
+				}
 			}
-			CleanUpJackd ();
 		}
 		
 		/// <summary>
