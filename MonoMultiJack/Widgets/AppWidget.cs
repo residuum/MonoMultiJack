@@ -43,26 +43,10 @@ namespace MonoMultiJack.Widgets
 		/// </value>
 		private ToggleButton _startButton;
 		
-		//// <value>
-		/// the application process
-		/// </value>
-		private string _appProcessPid;
-		
 		/// <summary>
-		/// Path to shell script for starting application
+		/// Manages the running program.
 		/// </summary>
-		private string _appStartup;
-		
-		/// <summary>
-		/// returns status of running application
-		/// </summary>
-		public bool IsAppRunning
-		{
-			get 
-			{
-				return !string.IsNullOrEmpty(_appProcessPid);
-			}
-		}		
+		private ProgramManagement _appInstance;
 		
 		/// <summary>
 		/// constructor
@@ -79,21 +63,24 @@ namespace MonoMultiJack.Widgets
 			_startButton.WidthRequest = 100;
 			_startButton.Clicked += StartApplication;
 			Put (_startButton, 0, 0);
-			_appStartup = System.IO.Path.GetTempFileName();
-			try
-			{
-				string[] appConfigValues = appConfig.Command.Split(new char[]{' '}, 2);
-				
-				File.WriteAllText(_appStartup, 
-				                  PeristantConfiguration.GetShellScript(appConfigValues[0], 
-				                                                 appConfigValues.Count() > 1? appConfigValues[1] : string.Empty)
-				                  );
-			}
-			catch (Exception ex)
-			{
-				new IOException("Unable to write to temporary file.", ex);
-			}
+			string[] appConfigValues = appConfig.Command.Split(new char[]{' '}, 2);
+			_appInstance = new ProgramManagement(appConfigValues[0], 
+			                    appConfigValues.Count() > 1? appConfigValues[1] : string.Empty);
+			_appInstance.HasStarted += AppInstanceHasStarted;
+			_appInstance.HasExited += AppInstanceHasExited;
 		
+		}
+
+		void AppInstanceHasExited (object sender, EventArgs e)
+		{
+			ResetWidget();
+			
+		}
+
+		void AppInstanceHasStarted (object sender, EventArgs e)
+		{
+			_startButton.Clicked -= StartApplication;
+			_startButton.Clicked += StopApplication;			
 		}
 		
 		/// <summary>
@@ -101,56 +88,15 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		public void StopApplication ()
 		{
-			if (IsAppRunning)
-			{
-				Process killApp = new Process();
-				killApp.StartInfo.FileName = "kill";
-				killApp.StartInfo.Arguments = _appProcessPid;
-				if (killApp.Start())
-				{
-					ResetWidget ();					
-				}
-			}
+			_appInstance.StopProgram();
 		}
 		
 		/// <summary>
 		/// starts application, updates action for togglebutton
 		/// </summary>
 		private void StartApplication()
-		{			
-			if (!IsAppRunning)
-			{
-				Process startAppBash = new Process();				
-				startAppBash.StartInfo.FileName = "sh";
-				startAppBash.StartInfo.Arguments = _appStartup;
-				startAppBash.StartInfo.RedirectStandardOutput = true;
-				startAppBash.EnableRaisingEvents = true;
-				startAppBash.StartInfo.UseShellExecute = false;
-				startAppBash.OutputDataReceived += HandleStartAppBashOutputDataReceived;	
-				if (startAppBash.Start())
-				{
-					startAppBash.BeginOutputReadLine();
-				}
-			}
-		}
-
-		/// <summary>
-		/// Event handler for data received from bash script.
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="e">
-		/// A <see cref="DataReceivedEventArgs"/>
-		/// </param>
-		void HandleStartAppBashOutputDataReceived (object sender, DataReceivedEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(e.Data))
-			{
-			_appProcessPid = e.Data;
-			_startButton.Clicked -= StartApplication;
-			_startButton.Clicked += StopApplication;
-			}
+			_appInstance.StartProgram();
 		}
 		
 		/// <summary>		
@@ -161,7 +107,6 @@ namespace MonoMultiJack.Widgets
 			_startButton.Active = false;
 			_startButton.Clicked -= StopApplication;
 			_startButton.Clicked += StartApplication;
-			_appProcessPid = null;
 		}
 
 		/// <summary>

@@ -46,12 +46,12 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Xml Configuration
 		/// </summary>
-		private PeristantConfiguration _config;
+		private PersistantConfiguration _config;
 		
 		/// <summary>
-		/// Jackd startup command
+		/// Instance for managing Jackd
 		/// </summary>
-		private string _jackdStartup;
+		private ProgramManagement _jackd;
 		
 		/// <summary>
 		/// Table for appWidgets
@@ -110,11 +110,6 @@ namespace MonoMultiJack
 		}
 		
 		/// <summary>
-		/// jackd process id
-		/// </summary>
-		private string _jackdPid;
-		
-		/// <summary>
 		/// Constructor
 		/// </summary>
 		public MainWindow () : base (Gtk.WindowType.Toplevel)
@@ -166,31 +161,20 @@ namespace MonoMultiJack
 		}
 		
 		/// <summary>
-		/// Returns status of Jackd
-		/// </summary>
-		public bool IsJackdRunning
-		{
-			get
-			{
-				return !String.IsNullOrEmpty(_jackdPid);
-			}
-		}
-		
-		/// <summary>
 		/// read configuration
 		/// </summary>
 		private void ReadConfiguration ()
 		{
 			try
 			{
-				_config = new PeristantConfiguration();
+				_config = new PersistantConfiguration();
 				UpdateAppWidgets(_config.AppConfigs);
 				UpdateJackd(_config.JackdConfig);
 			}
 			catch (System.Xml.XmlException)
 			{
 				InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
-				_config = new PeristantConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
+				_config = new PersistantConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
 			}
 		}
 		
@@ -237,19 +221,45 @@ namespace MonoMultiJack
 		/// A <see cref="JackdConfiguration"/>
 		/// </param>
 		private void UpdateJackd (JackdConfiguration jackdConfig)
-		{			
-			_jackdStartup = System.IO.Path.GetTempFileName();
-			try
+		{	
+			if (_jackd != null && _jackd.IsRunning)
 			{
-				
-				File.WriteAllText(_jackdStartup, 
-				                  PeristantConfiguration.GetShellScript(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true));
+				_jackd.StopProgram();
 			}
-			catch (Exception ex)
-			{
-				new IOException("Unable to write to temporary file.", ex);
-			}
+			_jackd = new ProgramManagement(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true);
+			_jackd.HasStarted += JackdHasStarted;
+			_jackd.HasExited += JackdHasExited;
 			reStartJackdAction.Sensitive = true;
+		}
+
+		/// <summary>
+		/// Handles the exit event of jackd.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="EventArgs"/>
+		/// </param>
+		void JackdHasExited (object sender, EventArgs e)
+		{
+			CleanUpJackd();	
+		}
+
+		/// <summary>
+		/// Handles the start event of jackd.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="EventArgs"/>
+		/// </param>
+		void JackdHasStarted (object sender, EventArgs e)
+		{
+			stopJackdAction.Sensitive = true;
+			stopAllAction.Sensitive =  true;
+			_statusbar.Push(0, JackdStatusRunning);
 		}
 		
 		/// <summary>
@@ -267,37 +277,7 @@ namespace MonoMultiJack
 		private void RestartJackd()
 		{
 			StopJackd();
-			Process jackdBash = new Process ();
-			jackdBash.StartInfo.FileName = "sh";
-			jackdBash.StartInfo.Arguments = _jackdStartup;
-			jackdBash.StartInfo.RedirectStandardOutput = true;
-			jackdBash.EnableRaisingEvents = true;
-			jackdBash.StartInfo.UseShellExecute = false;
-			jackdBash.OutputDataReceived += HandleJackdBashOutputDataReceived;	
-			if (jackdBash.Start())
-			{
-				jackdBash.BeginOutputReadLine();
-				stopJackdAction.Sensitive = true;
-				stopAllAction.Sensitive = true;
-				_statusbar.Push(0, JackdStatusRunning);
-			}
-		}
-
-		/// <summary>
-		/// Handles data received from startup bash script.
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="e">
-		/// A <see cref="DataReceivedEventArgs"/>
-		/// </param>
-		private void HandleJackdBashOutputDataReceived (object sender, DataReceivedEventArgs e)
-		{
-			if (!string.IsNullOrEmpty (e.Data))
-			{
-				_jackdPid = e.Data;
-			}
+			_jackd.StartProgram();
 		}
 		
 		/// <summary>
@@ -307,7 +287,6 @@ namespace MonoMultiJack
 		{
 			stopJackdAction.Sensitive = false;
 			_statusbar.Push(0, JackdStatusStopped);
-			_jackdPid = null;
 		}
 
 		/// <summary>
@@ -315,16 +294,7 @@ namespace MonoMultiJack
 		/// </summary>
 		private void StopJackd ()
 		{
-			if (IsJackdRunning) 
-			{
-				Process killJackd = new Process();
-				killJackd.StartInfo.FileName = "kill";
-				killJackd.StartInfo.Arguments = _jackdPid;
-				if (killJackd.Start())
-				{
-					CleanUpJackd ();					
-				}
-			}
+			_jackd.StopProgram();
 		}
 		
 		/// <summary>
@@ -337,10 +307,7 @@ namespace MonoMultiJack
 				foreach (Widget child in _appButtonBox.Children)
 				{
 					AppWidget app = child as AppWidget;
-					if (app != null && app.IsAppRunning)
-					{
-						app.StopApplication();
-					}
+					app.StopApplication();
 				}
 			}
 			StopJackd();
@@ -362,14 +329,6 @@ namespace MonoMultiJack
 		
 		private void RefreshConnectionTree()
 		{
-			foreach (Widget child in _appButtonBox.Children)
-			{
-				AppWidget app = child as AppWidget;
-				if (app != null && app.IsAppRunning)
-				{
-					//_clientsInput.AddJackClient(app.appCommand);
-				}
-			}
 		}
 		
 		/// <summary>

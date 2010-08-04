@@ -75,7 +75,8 @@
     <Compile Include="Widgets\JackConnectionsWidget.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
-    <Compile Include="Configuration\PeristantConfiguration.cs" />
+    <Compile Include="Configuration\PersistantConfiguration.cs" />
+    <Compile Include="Configuration\ProgramManagement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

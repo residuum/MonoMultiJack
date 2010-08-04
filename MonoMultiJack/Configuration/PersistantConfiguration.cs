@@ -35,7 +35,7 @@ namespace MonoMultiJack.Configuration
 	/// <summary>
 	/// Class for managing configuration.
 	/// </summary>
-	public class PeristantConfiguration
+	public class PersistantConfiguration
 	{
 		/// <summary>
 		/// Jackd Configuration
@@ -55,7 +55,7 @@ namespace MonoMultiJack.Configuration
 		/// <summary>
 		/// constructor
 		/// </summary>
-		public PeristantConfiguration ()
+		public PersistantConfiguration ()
 		{
 			AppConfigs = new List<AppConfiguration>();
 			if (!ReadXml())
@@ -73,7 +73,7 @@ namespace MonoMultiJack.Configuration
 		/// <param name="newAppConfigs">
 		/// The new <see cref="List<AppConfiguration>"/>
 		/// </param>
-		public PeristantConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
+		public PersistantConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
 		{
 			AppConfigs = newAppConfigs;
 			JackdConfig = newJackdConfig;
@@ -293,58 +293,6 @@ namespace MonoMultiJack.Configuration
 		{
 			AppConfigs = newAppConfigs;
 			return WriteXml();
-		}
-		
-		/// <summary>
-		/// Gets shell script for starting up application and returning the process id of that application.
-		/// </summary>
-		/// <param name="commandName">
-		/// The command to start up.
-		/// </param>
-		/// <param name="commandArguments">
-		/// Command line arguments to pass.
-		/// </param>
-		/// <param name="isSingleton">
-		/// If <c>true</c>, then only one instance of that application may start. The script will return the pid of that instance then.
-		/// </param>
-		/// <returns>
-		/// The complete shell script for starting the application.
-		/// </returns>
-		public static string GetShellScript(string commandName, string commandArguments, bool isSingleton)
-		{
-			StringBuilder bashScript = new StringBuilder();
-			bashScript.AppendLine("#!/bin/sh");
-			if (isSingleton)
-			{
-				string[] commandPaths = commandName.Split(Path.DirectorySeparatorChar);
-				bashScript.AppendLine("if pgrep " + commandPaths[commandPaths.Length - 1]);
-				bashScript.AppendLine("then true");
-				bashScript.AppendLine("else");
-			}
-			bashScript.AppendLine(commandName + " "+commandArguments + " >> /dev/null 2>&1&");
-			bashScript.AppendLine("echo $!");
-			if (isSingleton)
-			{
-				bashScript.AppendLine("fi");
-			}
-			return bashScript.ToString();
-		}
-		
-		/// <summary>
-		/// Gets shell script for starting up application and returning the process id of that application.
-		/// </summary>
-		/// <param name="commandName">
-		/// The command to start up.
-		/// </param>
-		/// <param name="commandArguments">
-		/// Command line arguments to pass.
-		/// </param>
-		/// <returns>
-		/// The complete shell script for starting the application.
-		/// </returns>
-		public static string GetShellScript(string commandName, string commandArguments)
-		{
-			return GetShellScript(commandName, commandArguments, false);
 		}
 	}
 }
