@@ -1,0 +1,12 @@
+About MonoMultiJack
+
+MonoMultJack (MMJ) aims to be an application for musicians, who regularly
+have to deal with multiple programs to start and create and maintain
+audio connections via jackd.
+
+MMJ is written in C# using the Mono framework and is licensed with an
+MIT (or as the FSF calls it X11) style license, meaning more or less:
+Do as thou wilst (with the software) shall be whole of the law.
+
+To compile you will need libjack0, autotools and the mono c# compiler
+installed.

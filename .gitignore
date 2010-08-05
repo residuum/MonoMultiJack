@@ -1,3 +1,5 @@
 # Ignore compiled files
-MonoMultijack/bin/*
+*.exe
+*.dll
+*.mdb
 *.userprefs
