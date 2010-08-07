@@ -51,15 +51,23 @@ namespace MonoMultiJack.Common
 		private string _commandArguments;
 		
 		/// <summary>
-		/// Path to shell script
+		/// Path to shell script for starting
 		/// </summary>
-		private string _shellScriptFile;
+		private string _startScriptFile;
+		
+		/// <summary>
+		/// Path to shell script for testing
+		/// </summary>
+		private string _testingScriptFile;
 		
 		/// <summary>
 		/// Process ID of program
 		/// </summary>
 		private string _pid;
 		
+		/// <summary>
+		/// Indicates if only one instance is allowed.
+		/// </summary>
 		private bool _isSingleton;
 		
 		/// <summary>
@@ -79,6 +87,7 @@ namespace MonoMultiJack.Common
 		{
 			get
 			{
+				TestForStillRunning();
 				return !string.IsNullOrEmpty(_pid);
 			}
 		}
@@ -100,10 +109,10 @@ namespace MonoMultiJack.Common
 			_commandName = commandName;
 			_commandArguments = commandArguments;
 			_isSingleton = isSingleton;
-			BuildShellScript();
+			BuildStartScript();
 			if (_isSingleton)
 			{
-				TestForRunning();
+				TestForRunningSingleton();
 			}
 		}
 		
@@ -118,13 +127,28 @@ namespace MonoMultiJack.Common
 		/// </param>
 		public ProgramManagement(string commandName, string commandArgument) 
 			: this(commandName, commandArgument, false)
+		{}
+		
+		/// <summary>
+		/// Destructs instance and cleans up temporary files.
+		/// </summary>
+		~ProgramManagement()
 		{
+			if (!string.IsNullOrEmpty(_startScriptFile) && File.Exists(_startScriptFile))
+			{
+				File.Delete(_startScriptFile);
+			}
+			if (!string.IsNullOrEmpty(_testingScriptFile) && File.Exists(_testingScriptFile))
+			{
+				File.Delete(_testingScriptFile);
+			}
+			
 		}
 		
 		/// <summary>
 		/// Builds and saves the shell script for starting the program.
 		/// </summary>
-		private void BuildShellScript()
+		private void BuildStartScript()
 		{
 			StringBuilder bashScript = new StringBuilder();
 			bashScript.AppendLine("#!/bin/sh");
@@ -142,11 +166,37 @@ namespace MonoMultiJack.Common
 				bashScript.AppendLine("fi");
 			}
 			
-			_shellScriptFile = Path.GetTempFileName();
+			_startScriptFile = Path.GetTempFileName();
 			try
 			{				
-				File.WriteAllText(_shellScriptFile, bashScript.ToString());
+				File.WriteAllText(_startScriptFile, bashScript.ToString());
 				                  
+			}
+			catch (Exception ex)
+			{
+				new IOException("Unable to write to temporary file.", ex);
+			}
+		}
+		
+		/// <summary>
+		/// Builds and saves the shell script for starting the program.
+		/// </summary>
+		private void BuildStillRunningScript()
+		{
+			StringBuilder bashScript = new StringBuilder();
+			bashScript.AppendLine("#!/bin/sh");
+			bashScript.AppendLine("if [ -e /proc/" + _pid + " ];");
+			bashScript.AppendLine("then echo " + _pid);
+			bashScript.AppendLine("else echo 0");
+			bashScript.AppendLine("fi");
+			
+			if (string.IsNullOrEmpty(_testingScriptFile))
+			{
+				_testingScriptFile = Path.GetTempFileName();
+			}
+			try
+			{				
+				File.WriteAllText(_testingScriptFile, bashScript.ToString());				                  
 			}
 			catch (Exception ex)
 			{
@@ -159,9 +209,20 @@ namespace MonoMultiJack.Common
 		/// </summary>
 		public void StartProgram()
 		{
+			ExecuteShellScript(_startScriptFile);
+		}
+		
+		/// <summary>
+		/// Executes the indicated shell script.
+		/// </summary>
+		/// <param name="fileName">
+		/// A <see cref="System.String"/> holding the path to the shell script.
+		/// </param>
+		private void ExecuteShellScript(string fileName)
+		{
 			Process shellStartProcess = new Process ();
 			shellStartProcess.StartInfo.FileName = "sh";
-			shellStartProcess.StartInfo.Arguments = _shellScriptFile;
+			shellStartProcess.StartInfo.Arguments = fileName;
 			shellStartProcess.StartInfo.RedirectStandardOutput = true;
 			shellStartProcess.EnableRaisingEvents = true;
 			shellStartProcess.StartInfo.UseShellExecute = false;
@@ -171,6 +232,7 @@ namespace MonoMultiJack.Common
 				shellStartProcess.BeginOutputReadLine();
 			}
 		}
+			
 
 		/// <summary>
 		/// Event handler for data received from bash script.
@@ -185,8 +247,22 @@ namespace MonoMultiJack.Common
 		{
 			if (!string.IsNullOrEmpty(e.Data))
 			{
-				_pid = e.Data;
-				HasStarted(this, new EventArgs());
+				if (e.Data != "0")
+				{
+					_pid = e.Data;
+					BuildStillRunningScript();
+					HasStarted(this, new EventArgs());
+				}
+				else
+				{
+					_pid = null;
+					HasExited(this, new EventArgs());
+				}
+				Process senderProcess = sender as Process;
+				if (senderProcess != null)
+				{
+					senderProcess.Dispose();
+				}
 			}
 		}
 		
@@ -209,9 +285,9 @@ namespace MonoMultiJack.Common
 		}
 		
 		/// <summary>
-		/// Tests, if process is already running.
+		/// Tests, if singleton process is already running.
 		/// </summary>
-		private void TestForRunning()
+		private void TestForRunningSingleton()
 		{
 			Process pgrepProgram = new Process();
 			pgrepProgram.StartInfo.FileName = "pgrep";
@@ -225,6 +301,14 @@ namespace MonoMultiJack.Common
 			{
 				pgrepProgram.BeginOutputReadLine();
 			}
+		}
+		
+		/// <summary>
+		/// Tests, if process is still running.
+		/// </summary>
+		private void TestForStillRunning()
+		{
+			ExecuteShellScript(_testingScriptFile);
 		}
 	}
 }
