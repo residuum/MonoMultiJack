@@ -71,12 +71,11 @@
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="Common\JackdInterop.cs" />
     <Compile Include="Widgets\JackConnectionsWidget.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="Configuration\PersistantConfiguration.cs" />
-    <Compile Include="Configuration\ProgramManagement.cs" />
+    <Compile Include="Common\ProgramManagement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

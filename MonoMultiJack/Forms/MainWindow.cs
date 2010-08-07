@@ -132,13 +132,13 @@ namespace MonoMultiJack
 			_appButtonBox.Spacing = 2;
 	        _appButtonBox.Name = "appTable";
 			newHBox.Add (_appButtonBox);
-			ReadConfiguration ();
-			MakeConnectorArea ();
-			newHBox.Add (_connectorArea);
 			_statusbar = new Statusbar();
 			mainVbox.PackEnd(_statusbar,false, false, 0);
 			_statusbar.ShowAll();
 			_statusbar.Push(0, JackdStatusStopped);
+			ReadConfiguration ();
+			MakeConnectorArea ();
+			newHBox.Add (_connectorArea);
 			newHBox.Visible = true;
 			_connectorArea.Visible = true;
 			_clientsInput.Visible = true;

@@ -28,7 +28,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 
-namespace MonoMultiJack.Configuration
+namespace MonoMultiJack.Common
 {
 	/// <summary>
 	/// Delegate to signal stopped program.
@@ -101,6 +101,10 @@ namespace MonoMultiJack.Configuration
 			_commandArguments = commandArguments;
 			_isSingleton = isSingleton;
 			BuildShellScript();
+			if (_isSingleton)
+			{
+				TestForRunning();
+			}
 		}
 		
 		/// <summary>
@@ -115,7 +119,6 @@ namespace MonoMultiJack.Configuration
 		public ProgramManagement(string commandName, string commandArgument) 
 			: this(commandName, commandArgument, false)
 		{
-			
 		}
 		
 		/// <summary>
@@ -178,7 +181,7 @@ namespace MonoMultiJack.Configuration
 		/// <param name="e">
 		/// A <see cref="DataReceivedEventArgs"/>
 		/// </param>
-		void HandleStartOutputDataReceived (object sender, DataReceivedEventArgs e)
+		private void HandleStartOutputDataReceived (object sender, DataReceivedEventArgs e)
 		{
 			if (!string.IsNullOrEmpty(e.Data))
 			{
@@ -203,7 +206,26 @@ namespace MonoMultiJack.Configuration
 					_pid = null;
 				}
 			}
-		}		
+		}
+		
+		/// <summary>
+		/// Tests, if process is already running.
+		/// </summary>
+		private void TestForRunning()
+		{
+			Process pgrepProgram = new Process();
+			pgrepProgram.StartInfo.FileName = "pgrep";
+			string[] commandPaths = _commandName.Split(Path.DirectorySeparatorChar);
+			pgrepProgram.StartInfo.Arguments = commandPaths[commandPaths.Length - 1];
+			pgrepProgram.StartInfo.RedirectStandardOutput = true;
+			pgrepProgram.EnableRaisingEvents = true;
+			pgrepProgram.StartInfo.UseShellExecute = false;
+			pgrepProgram.OutputDataReceived += HandleStartOutputDataReceived;	
+			if (pgrepProgram.Start())
+			{
+				pgrepProgram.BeginOutputReadLine();
+			}
+		}
 	}
 }
 

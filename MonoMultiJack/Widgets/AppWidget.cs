@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Gtk;
+using MonoMultiJack.Common;
 using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.Widgets
