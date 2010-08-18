@@ -294,7 +294,10 @@ namespace MonoMultiJack
 		/// </summary>
 		private void StopJackd ()
 		{
-			_jackd.StopProgram();
+			if (_jackd != null && _jackd.IsRunning)
+			{
+				_jackd.StopProgram();
+			}
 		}
 		
 		/// <summary>
