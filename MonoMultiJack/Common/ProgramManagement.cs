@@ -169,8 +169,7 @@ namespace MonoMultiJack.Common
 			_startScriptFile = Path.GetTempFileName();
 			try
 			{				
-				File.WriteAllText(_startScriptFile, bashScript.ToString());
-				                  
+				File.WriteAllText(_startScriptFile, bashScript.ToString());				                  
 			}
 			catch (Exception ex)
 			{
@@ -209,6 +208,10 @@ namespace MonoMultiJack.Common
 		/// </summary>
 		public void StartProgram()
 		{
+			if (!string.IsNullOrEmpty(_startScriptFile) && File.Exists(_startScriptFile))
+			{
+				BuildStartScript();
+			}
 			ExecuteShellScript(_startScriptFile);
 		}
 		
@@ -228,8 +231,8 @@ namespace MonoMultiJack.Common
 			shellStartProcess.StartInfo.UseShellExecute = false;
 			if (shellStartProcess.Start())
 			{
-				_pid = shellStartProcess.StandardOutput.ReadToEnd();
-				if (_pid == "0" && string.IsNullOrEmpty(_pid))
+				_pid = shellStartProcess.StandardOutput.ReadToEnd().TrimEnd();
+				if (_pid == "0" || string.IsNullOrEmpty(_pid))
 				{
 					_pid = null;
 					HasExited(this, new EventArgs());
@@ -280,8 +283,8 @@ namespace MonoMultiJack.Common
 			pgrepProgram.StartInfo.UseShellExecute = false;
 			if (pgrepProgram.Start())
 			{
-				_pid = pgrepProgram.StandardOutput.ReadToEnd();
-				if (_pid == "0" && string.IsNullOrEmpty(_pid))
+				_pid = pgrepProgram.StandardOutput.ReadToEnd().TrimEnd();
+				if (_pid == "0" || string.IsNullOrEmpty(_pid))
 				{
 					_pid = null;
 				}
@@ -299,7 +302,10 @@ namespace MonoMultiJack.Common
 		/// </summary>
 		private void TestForStillRunning()
 		{
-			ExecuteShellScript(_testingScriptFile);
+			if (!string.IsNullOrEmpty(_testingScriptFile) && File.Exists(_testingScriptFile))
+			{
+				ExecuteShellScript(_testingScriptFile);
+			}
 		}
 	}
 }
