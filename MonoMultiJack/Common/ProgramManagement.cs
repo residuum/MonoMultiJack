@@ -226,46 +226,26 @@ namespace MonoMultiJack.Common
 			shellStartProcess.StartInfo.RedirectStandardOutput = true;
 			shellStartProcess.EnableRaisingEvents = true;
 			shellStartProcess.StartInfo.UseShellExecute = false;
-			shellStartProcess.OutputDataReceived += HandleStartOutputDataReceived;	
 			if (shellStartProcess.Start())
 			{
-				shellStartProcess.BeginOutputReadLine();
-			}
-		}
-			
-
-		/// <summary>
-		/// Event handler for data received from bash script.
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="e">
-		/// A <see cref="DataReceivedEventArgs"/>
-		/// </param>
-		private void HandleStartOutputDataReceived (object sender, DataReceivedEventArgs e)
-		{
-			if (!string.IsNullOrEmpty(e.Data))
-			{
-				if (e.Data != "0")
-				{
-					_pid = e.Data;
-					BuildStillRunningScript();
-					HasStarted(this, new EventArgs());
-				}
-				else
+				_pid = shellStartProcess.StandardOutput.ReadToEnd();
+				if (_pid == "0" && string.IsNullOrEmpty(_pid))
 				{
 					_pid = null;
 					HasExited(this, new EventArgs());
 				}
-				Process senderProcess = sender as Process;
-				if (senderProcess != null)
+				else
 				{
-					senderProcess.Dispose();
+					BuildStillRunningScript();
+					HasStarted(this, new EventArgs());
 				}
+				shellStartProcess.WaitForExit();
 			}
+			shellStartProcess.Dispose();
 		}
-		
+			
+
+	
 		/// <summary>
 		/// Stops the program.
 		/// </summary>
@@ -281,6 +261,8 @@ namespace MonoMultiJack.Common
 					HasExited(this, new EventArgs());
 					_pid = null;
 				}
+				killProgram.WaitForExit();
+				killProgram.Dispose();
 			}
 		}
 		
@@ -296,11 +278,20 @@ namespace MonoMultiJack.Common
 			pgrepProgram.StartInfo.RedirectStandardOutput = true;
 			pgrepProgram.EnableRaisingEvents = true;
 			pgrepProgram.StartInfo.UseShellExecute = false;
-			pgrepProgram.OutputDataReceived += HandleStartOutputDataReceived;	
 			if (pgrepProgram.Start())
 			{
-				pgrepProgram.BeginOutputReadLine();
+				_pid = pgrepProgram.StandardOutput.ReadToEnd();
+				if (_pid == "0" && string.IsNullOrEmpty(_pid))
+				{
+					_pid = null;
+				}
+				else
+				{
+					BuildStillRunningScript();
+				}
+				pgrepProgram.WaitForExit();
 			}
+			pgrepProgram.Dispose();
 		}
 		
 		/// <summary>
