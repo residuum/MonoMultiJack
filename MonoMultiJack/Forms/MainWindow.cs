@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using JackdCIL;
 
 namespace MonoMultiJack
 {
@@ -52,6 +53,11 @@ namespace MonoMultiJack
 		/// Instance for managing Jackd
 		/// </summary>
 		private ProgramManagement _jackd;
+		
+		/// <summary>
+		/// Client for Jackd instance
+		/// </summary>
+		private LibJackWrapper _jackClient;
 		
 		/// <summary>
 		/// Table for appWidgets
@@ -278,6 +284,27 @@ namespace MonoMultiJack
 		{
 			StopJackd();
 			_jackd.StartProgram();
+			//TODO: Switch to Idle handler
+			GLib.Timeout.Add(5000, new GLib.TimeoutHandler(CheckPorts));
+		}
+		
+		bool CheckPorts()
+		{
+			if (_jackd == null && !_jackd.IsRunning) return false;
+			try
+			{
+				if (_jackClient == null)
+				{
+					_jackClient = new LibJackWrapper("MonoMultiJack");
+				}
+				_jackClient.Activate();
+				var ports =_jackClient.GetPorts();					
+			}
+			catch (Exception ex)
+			{
+				
+			}
+			return true;
 		}
 		
 		/// <summary>
@@ -285,6 +312,10 @@ namespace MonoMultiJack
 		/// </summary>
 		private void CleanUpJackd()
 		{
+			if (_jackClient != null)
+			{
+				_jackClient.Close();
+			}
 			stopJackdAction.Sensitive = false;
 			_statusbar.Push(0, JackdStatusStopped);
 		}

@@ -4,7 +4,7 @@
         <name>/home/thomas/dev/mono/MonoMultiJack/Jackd-CIL/bin/Debug/Jackd-CIL</name>
     </assembly>
     <members>
-        <member name="M:JackdCIL.LibJackWrapper.jack_activate(System.IntPtr@)">
+        <member name="M:JackdCIL.LibJackWrapper.jack_client_new(System.String)">
             <summary>
             http://jackaudio.org/files/docs/html/group__ClientFunctions.html
             </summary>

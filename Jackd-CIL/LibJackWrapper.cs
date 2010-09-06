@@ -27,36 +27,77 @@
 using System;
 using System.Text;
 using System.Runtime.InteropServices;
+using JackdCIL;
 
 namespace JackdCIL
 {
-	public static class LibJackWrapper
+	public class LibJackWrapper
 	{		
-		public const string JackLibName = "libjack.so.0";
+		private const string _jackLibName = "libjack.so.0";
+		private IntPtr _jackdClient;
+		
+		public LibJackWrapper(string clientName)
+		{
+			_jackdClient = jack_client_open(clientName, IntPtr.Zero, IntPtr.Zero);
+			if (_jackdClient == IntPtr.Zero)
+			{
+				throw new JackdClientException("Could not create Jackd client.");
+			}
+		}
+		
+		~LibJackWrapper()
+		{
+			Close();
+		}
+		
+		public void Close()
+		{
+			jack_client_close(_jackdClient);
+		}
+		
+		public void Activate()
+		{
+			var result = jack_activate(_jackdClient);			
+		}
+		
+		public string[] GetPorts()
+		{
+			//TODO: Not really working
+			var ports = jack_get_ports(_jackdClient, null, null, 0);
+			return (string[])Marshal.PtrToStructure(ports, typeof(string[]));
+		}
+		
+		
 		
 		/// <summary>
 		/// http://jackaudio.org/files/docs/html/group__ClientFunctions.html
 		/// </summary>
-		[DllImport(JackLibName)]
-		public static extern int jack_activate(ref IntPtr jack_client_t);
-		[DllImport(JackLibName)]
-		public static extern int jack_client_close(ref IntPtr jack_client_t);
-		[DllImport(JackLibName)]
-		public static extern IntPtr jack_client_open(ref StringBuilder client_name, 
-		                                             IntPtr jack_options_t, 
-		                                             ref IntPtr jack_status_t);		
-		[DllImport(JackLibName)]
-		public static extern string jack_client_thread_id(ref IntPtr jack_client_t);
-		[DllImport(JackLibName)]
-		public static extern int jack_deactivate(ref IntPtr jack_client_t);
-		[DllImport(JackLibName)]
-		public static extern void jack_internal_client_close(ref StringBuilder client_name);
-		[DllImport(JackLibName)]
-		public static extern int jack_internal_client_new(ref StringBuilder client_name,
-		                                                  ref StringBuilder load_name,
-		                                                  ref StringBuilder load_init);
+		[DllImport(_jackLibName)]
+		private static extern IntPtr jack_client_new(string client_name);
 		
-		//[DllImport(JackLibName)]
-		//public static extern string jack_get_ports();
+		[DllImport(_jackLibName)]
+		private static extern int jack_activate(IntPtr jack_client_t);
+		
+		[DllImport(_jackLibName)]
+		private static extern int jack_client_close(IntPtr jack_client_t);
+		
+		[DllImport(_jackLibName)]
+		private static extern IntPtr jack_client_open(string client_name, 
+		                                             IntPtr jack_options_t, 
+		                                             IntPtr jack_status_t);		
+		[DllImport(_jackLibName)]
+		private static extern string jack_client_thread_id(IntPtr jack_client_t);
+		
+		[DllImport(_jackLibName)]
+		private static extern int jack_deactivate(IntPtr jack_client_t);
+		
+		[DllImport(_jackLibName)]
+		private static extern IntPtr jack_get_ports(IntPtr jack_client_t, 
+		                                     string port_name_pattern,
+		                                     string type_name_pattern,
+		                                     long flags);
+		
+		//[DllImport(_jackLibName)]
+		//private static extern string jack_get_ports();
 	}
 }
