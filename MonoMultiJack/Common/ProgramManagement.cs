@@ -208,11 +208,12 @@ namespace MonoMultiJack.Common
 		/// </summary>
 		public void StartProgram()
 		{
-			if (!string.IsNullOrEmpty(_startScriptFile) && File.Exists(_startScriptFile))
+			if (string.IsNullOrEmpty(_startScriptFile) || !File.Exists(_startScriptFile))
 			{
 				BuildStartScript();
 			}
 			ExecuteShellScript(_startScriptFile);
+			GLib.Timeout.Add(1000, new GLib.TimeoutHandler(IsStillRunning));
 		}
 		
 		/// <summary>
@@ -306,6 +307,22 @@ namespace MonoMultiJack.Common
 			{
 				ExecuteShellScript(_testingScriptFile);
 			}
+		}
+		
+		/// <summary>
+		/// Tests for still running and invokes the HasExited event, if not.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		private bool IsStillRunning()
+		{
+			bool isRunning = IsRunning;
+			if (!isRunning)
+			{
+				HasExited(this, new EventArgs());
+			}
+			return isRunning;
 		}
 	}
 }

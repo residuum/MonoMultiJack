@@ -74,12 +74,13 @@ namespace MonoMultiJack.Widgets
 
 		void AppInstanceHasExited (object sender, EventArgs e)
 		{
-			ResetWidget();
-			
+			ResetWidget();			
 		}
 
 		void AppInstanceHasStarted (object sender, EventArgs e)
 		{
+			_startButton.Active = true;
+			_startButton.Clicked -= StopApplication;
 			_startButton.Clicked -= StartApplication;
 			_startButton.Clicked += StopApplication;			
 		}
@@ -107,6 +108,7 @@ namespace MonoMultiJack.Widgets
 		{
 			_startButton.Active = false;
 			_startButton.Clicked -= StopApplication;
+			_startButton.Clicked -= StartApplication;
 			_startButton.Clicked += StartApplication;
 		}
 
