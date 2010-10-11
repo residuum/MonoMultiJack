@@ -26,10 +26,10 @@
 using System;
 namespace JackdCIL
 {
-	[Serializable]
 	/// <summary>
 	/// Class for exception in Jackd client.
 	/// </summary>
+	[Serializable]
 	public class JackdClientException : Exception
 	{
 		public JackdClientException (string message) : base(message)

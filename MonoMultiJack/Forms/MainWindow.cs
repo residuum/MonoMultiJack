@@ -284,7 +284,6 @@ namespace MonoMultiJack
 		{
 			StopJackd();
 			_jackd.StartProgram();
-			//TODO: Switch to Idle handler
 			GLib.Timeout.Add(5000, new GLib.TimeoutHandler(CheckPorts));
 		}
 		
@@ -297,12 +296,15 @@ namespace MonoMultiJack
 				{
 					_jackClient = new LibJackWrapper("MonoMultiJack");
 				}
-				_jackClient.Activate();
-				var ports =_jackClient.GetPorts();					
+				var ports =_jackClient.GetPorts();
+				foreach(var port in ports)
+				{
+					Console.WriteLine(port);
+				}
 			}
-			catch (Exception ex)
+			catch
 			{
-				
+				return false;				
 			}
 			return true;
 		}
@@ -314,7 +316,7 @@ namespace MonoMultiJack
 		{
 			if (_jackClient != null)
 			{
-				_jackClient.Close();
+				_jackClient.Dispose();
 			}
 			stopJackdAction.Sensitive = false;
 			_statusbar.Push(0, JackdStatusStopped);
@@ -325,6 +327,10 @@ namespace MonoMultiJack
 		/// </summary>
 		private void StopJackd ()
 		{
+			if (_jackClient != null)
+			{
+				_jackClient.Dispose();
+			}
 			if (_jackd != null && _jackd.IsRunning)
 			{
 				_jackd.StopProgram();
@@ -359,10 +365,6 @@ namespace MonoMultiJack
 			MessageDialog popup = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, message);
 			popup.Run();
 			popup.Destroy();
-		}
-		
-		private void RefreshConnectionTree()
-		{
 		}
 		
 		/// <summary>

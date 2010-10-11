@@ -4,9 +4,48 @@
         <name>/home/thomas/dev/mono/MonoMultiJack/Jackd-CIL/bin/Debug/Jackd-CIL</name>
     </assembly>
     <members>
+        <member name="T:JackdCIL.LibJackWrapper">
+            <summary>
+            Wrapper class for libjack
+            </summary>
+        </member>
+        <member name="M:JackdCIL.LibJackWrapper.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the LibJackWrapper class.
+            </summary>
+            <param name="clientName">
+            A <see cref="T:System.String" /> containing the name of the new jack client.
+            </param>
+        </member>
+        <member name="M:JackdCIL.LibJackWrapper.Finalize">
+            <summary>
+            Desctructor for LibJackWrapper class.
+            </summary>
+        </member>
+        <member name="M:JackdCIL.LibJackWrapper.Dispose">
+            <summary>
+            Disposes the instance
+            </summary>
+        </member>
+        <member name="M:JackdCIL.LibJackWrapper.Close">
+            <summary>
+            Closes jack client
+            </summary>
+        </member>
+        <member name="M:JackdCIL.LibJackWrapper.Activate">
+            <summary>
+            Activates jack client
+            </summary>
+        </member>
+        <!--FIXME: Invalid documentation markup was found for member M:JackdCIL.LibJackWrapper.GetPorts-->
         <member name="M:JackdCIL.LibJackWrapper.jack_client_new(System.String)">
             <summary>
             http://jackaudio.org/files/docs/html/group__ClientFunctions.html
+            </summary>
+        </member>
+        <member name="T:JackdCIL.JackdClientException">
+            <summary>
+            Class for exception in Jackd client.
             </summary>
         </member>
     </members>
