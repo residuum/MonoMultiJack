@@ -26,16 +26,28 @@
 
 using System;
 using System.Text;
+using System.Linq;
 using System.Runtime.InteropServices;
 using JackdCIL;
+using System.Collections.Generic;
+using Mono.Unix;
 
 namespace JackdCIL
 {
-	public class LibJackWrapper
+	/// <summary>
+	/// Wrapper class for libjack
+	/// </summary>
+	public class LibJackWrapper : IDisposable
 	{		
 		private const string _jackLibName = "libjack.so.0";
 		private IntPtr _jackdClient;
 		
+		/// <summary>
+		/// Creates a new instance of the LibJackWrapper class.
+		/// </summary>
+		/// <param name="clientName">
+		/// A <see cref="System.String"/> containing the name of the new jack client.
+		/// </param>
 		public LibJackWrapper(string clientName)
 		{
 			_jackdClient = jack_client_open(clientName, IntPtr.Zero, IntPtr.Zero);
@@ -43,28 +55,61 @@ namespace JackdCIL
 			{
 				throw new JackdClientException("Could not create Jackd client.");
 			}
+			else
+			{
+				Activate();
+			}
 		}
 		
+		/// <summary>
+		/// Desctructor for LibJackWrapper class.
+		/// </summary>
 		~LibJackWrapper()
 		{
-			Close();
+			Dispose();
 		}
 		
-		public void Close()
+		#region IDisposable implementation
+		/// <summary>
+		/// Disposes the instance
+		/// </summary>
+		public void Dispose ()
+		{
+			Close();
+			_jackdClient = IntPtr.Zero;
+		}
+		#endregion
+
+		/// <summary>
+		/// Closes jack client
+		/// </summary>
+		private void Close()
 		{
 			jack_client_close(_jackdClient);
 		}
 		
-		public void Activate()
+		/// <summary>
+		/// Activates jack client
+		/// </summary>
+		private void Activate()
 		{
 			var result = jack_activate(_jackdClient);			
 		}
 		
-		public string[] GetPorts()
+		/// <summary>
+		/// Gets all jackd ports
+		/// </summary>
+		/// <returns>
+		/// A <see cref="IEnumerable<System.String>"/>
+		/// </returns>
+		public IEnumerable<string> GetPorts()
 		{
-			//TODO: Not really working
-			var ports = jack_get_ports(_jackdClient, null, null, 0);
-			return (string[])Marshal.PtrToStructure(ports, typeof(string[]));
+			if (_jackdClient == IntPtr.Zero)
+			{
+				return null;
+			}
+			IntPtr ports = jack_get_ports(_jackdClient, IntPtr.Zero, IntPtr.Zero, 0);
+			return UnixMarshal.PtrToStringArray(ports);		
 		}
 		
 		
@@ -93,8 +138,8 @@ namespace JackdCIL
 		
 		[DllImport(_jackLibName)]
 		private static extern IntPtr jack_get_ports(IntPtr jack_client_t, 
-		                                     string port_name_pattern,
-		                                     string type_name_pattern,
+		                                     IntPtr port_name_pattern,
+		                                     IntPtr type_name_pattern,
 		                                     long flags);
 		
 		//[DllImport(_jackLibName)]
