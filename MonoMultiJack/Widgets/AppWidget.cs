@@ -67,17 +67,35 @@ namespace MonoMultiJack.Widgets
 			string[] appConfigValues = appConfig.Command.Split(new char[]{' '}, 2);
 			_appInstance = new ProgramManagement(appConfigValues[0], 
 			                    appConfigValues.Count() > 1? appConfigValues[1] : string.Empty);
-			_appInstance.HasStarted += AppInstanceHasStarted;
-			_appInstance.HasExited += AppInstanceHasExited;
+			_appInstance.HasStarted += OnAppInstanceHasStarted;
+			_appInstance.HasExited += OnAppInstanceHasExited;
 		
 		}
 
-		void AppInstanceHasExited (object sender, EventArgs e)
+		/// <summary>
+		/// Handles the Edited event of the application.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="EventArgs"/>
+		/// </param>
+		void OnAppInstanceHasExited (object sender, EventArgs e)
 		{
 			ResetWidget();			
 		}
 
-		void AppInstanceHasStarted (object sender, EventArgs e)
+		/// <summary>
+		/// Handles the start event of the application.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="EventArgs"/>
+		/// </param>
+		void OnAppInstanceHasStarted (object sender, EventArgs e)
 		{
 			_startButton.Active = true;
 			_startButton.Clicked -= StopApplication;

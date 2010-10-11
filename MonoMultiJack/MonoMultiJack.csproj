@@ -72,10 +72,12 @@
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Widgets\JackConnectionsWidget.cs" />
-    <Compile Include="Common\Enums.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="Configuration\PersistantConfiguration.cs" />
     <Compile Include="Common\ProgramManagement.cs" />
+    <Compile Include="Connections\IClient.cs" />
+    <Compile Include="Connections\IPort.cs" />
+    <Compile Include="Connections\PortType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -83,6 +85,7 @@
     <Folder Include="Configuration\" />
     <Folder Include="Widgets\" />
     <Folder Include="Common\" />
+    <Folder Include="Connections\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jackd-CIL\Jackd-CIL.csproj">

@@ -1,10 +1,10 @@
 // 
-// JackConnectionsWidget.cs
+// IPort.cs
 //  
 // Author:
-//       Thomas Mayer <thomas@residuum.org>
+//       thomas <${AuthorEmail}>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2010 thomas
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 using System.Collections.Generic;
-using MonoMultiJack.Common;
-using Gtk;
-
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Connections
 {
-
-
-	public class JackConnectionsWidget : TreeView
+	public interface IPort
 	{
-//		
-//		protected ConnectionType _connectionType;
-//		
-//		//public JackdClientTree _subtree;
-//		
-//		public JackConnectionsWidget(ConnectionType type)
-//		{
-//			_connectionType = type;
-//			TreeViewColumn column = new TreeViewColumn();
-//			column.Title = "Jackd Client";
-//			AppendColumn(column);
-//			CreateSubTree();
-//		}
-//		
-//		protected void CreateSubTree()
-//		{
-//			//_subtree = new JackdClientTree(_connectionType);
-//			//Add(_subtree);
-//		}
+		string Name {get;set;}
+		PortType PortType {get;}
+		List<IPort> Connections {get; set;}
 	}
 }
+

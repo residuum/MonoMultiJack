@@ -147,8 +147,8 @@ namespace MonoMultiJack
 			newHBox.Add (_connectorArea);
 			newHBox.Visible = true;
 			_connectorArea.Visible = true;
-			_clientsInput.Visible = true;
-			_clientsOutput.Visible = true;
+			//_clientsInput.Visible = true;
+			//_clientsOutput.Visible = true;
 		}
 		
 		/// <summary>
@@ -160,9 +160,9 @@ namespace MonoMultiJack
 		private void MakeConnectorArea ()
 		{
 			_connectorArea = new Fixed();
-			_clientsOutput = new JackConnectionsWidget(ConnectionType.Outlet);
+			//_clientsOutput = new JackConnectionsWidget(ConnectionType.Outlet);
 			_connectorArea.Put(_clientsOutput, 0, 0);
-			_clientsInput = new JackConnectionsWidget(ConnectionType.Inlet);
+			//_clientsInput = new JackConnectionsWidget(ConnectionType.Inlet);
 			_connectorArea.Put(_clientsInput, 200, 0);
 		}
 		
@@ -233,8 +233,8 @@ namespace MonoMultiJack
 				_jackd.StopProgram();
 			}
 			_jackd = new ProgramManagement(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true);
-			_jackd.HasStarted += JackdHasStarted;
-			_jackd.HasExited += JackdHasExited;
+			_jackd.HasStarted += OnJackdHasStarted;
+			_jackd.HasExited += OnJackdHasExited;
 			reStartJackdAction.Sensitive = true;
 		}
 
@@ -247,7 +247,7 @@ namespace MonoMultiJack
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void JackdHasExited (object sender, EventArgs e)
+		void OnJackdHasExited (object sender, EventArgs e)
 		{
 			CleanUpJackd();	
 		}
@@ -261,7 +261,7 @@ namespace MonoMultiJack
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void JackdHasStarted (object sender, EventArgs e)
+		void OnJackdHasStarted (object sender, EventArgs e)
 		{
 			stopJackdAction.Sensitive = true;
 			stopAllAction.Sensitive =  true;
