@@ -1,10 +1,10 @@
 // 
-// PortType.cs
+// JackClientException.cs
 //  
 // Author:
-//       thomas <${AuthorEmail}>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.Connections
+namespace JackdCIL
 {
-	public enum PortType
+	/// <summary>
+	/// Class for exception in Jackd client.
+	/// </summary>
+	[Serializable]
+	public class JackdClientException : Exception
 	{
-		Undefined,
-		Outlet,
-		Inlet
+		public JackdClientException (string message) : base(message)
+		{}
+		public JackdClientException (string message, Exception innerException) : base(message, innerException)
+		{}
 	}
 }
 

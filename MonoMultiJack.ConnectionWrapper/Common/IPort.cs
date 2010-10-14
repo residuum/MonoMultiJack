@@ -2,7 +2,7 @@
 // IPort.cs
 //  
 // Author:
-//       thomas <${AuthorEmail}>
+//       thomas <>
 // 
 // Copyright (c) 2010 thomas
 // 
@@ -25,13 +25,20 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-namespace MonoMultiJack.Connections
+
+namespace MonoMultiJack.ConnectionWrapper
 {
-	public interface IPort
+	public interface IPort<T> where T:IConnectionType
 	{
-		string Name {get;set;}
+		void Connect (IPort<T> port);
+		void Disconnect (IPort<T> port);
+
+		string Name {get;}
+		string ClientName {get;}
+
 		PortType PortType {get;}
-		List<IPort> Connections {get; set;}
+
+		List<IPort<T>> Connections {get;}
 	}
 }
 

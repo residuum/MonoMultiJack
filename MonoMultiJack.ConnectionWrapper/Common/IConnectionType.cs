@@ -1,8 +1,8 @@
 // 
-// Client.cs
+// IConnectionType.cs
 //  
 // Author:
-//       thomas <${AuthorEmail}>
+//       thomas <>
 // 
 // Copyright (c) 2010 thomas
 // 
@@ -24,13 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack
+namespace MonoMultiJack.ConnectionWrapper
 {
-	public class Client
+	public interface IConnectionType
 	{
-		public Client ()
-		{
-		}
+		string Name {get;}
 	}
 }
 

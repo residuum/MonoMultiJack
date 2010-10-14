@@ -35,7 +35,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using JackdCIL;
 
 namespace MonoMultiJack
 {
@@ -55,23 +54,9 @@ namespace MonoMultiJack
 		private ProgramManagement _jackd;
 		
 		/// <summary>
-		/// Client for Jackd instance
-		/// </summary>
-		private LibJackWrapper _jackClient;
-		
-		/// <summary>
 		/// Table for appWidgets
 		/// </summary>
 		private VButtonBox _appButtonBox;
-		
-		/// <summary>
-		/// Area for Jackd Connectors
-		/// </summary>
-		private Fixed _connectorArea;
-		
-		private JackConnectionsWidget _clientsOutput;
-		
-		private JackConnectionsWidget _clientsInput;
 		
 		/// <summary>
 		/// statusbar
@@ -143,27 +128,7 @@ namespace MonoMultiJack
 			_statusbar.ShowAll();
 			_statusbar.Push(0, JackdStatusStopped);
 			ReadConfiguration ();
-			MakeConnectorArea ();
-			newHBox.Add (_connectorArea);
 			newHBox.Visible = true;
-			_connectorArea.Visible = true;
-			//_clientsInput.Visible = true;
-			//_clientsOutput.Visible = true;
-		}
-		
-		/// <summary>
-		/// Creates connector area
-		/// </summary>
-		/// <returns>
-		/// A <see cref="Fixed"/>
-		/// </returns>
-		private void MakeConnectorArea ()
-		{
-			_connectorArea = new Fixed();
-			//_clientsOutput = new JackConnectionsWidget(ConnectionType.Outlet);
-			_connectorArea.Put(_clientsOutput, 0, 0);
-			//_clientsInput = new JackConnectionsWidget(ConnectionType.Inlet);
-			_connectorArea.Put(_clientsInput, 200, 0);
 		}
 		
 		/// <summary>
@@ -264,8 +229,8 @@ namespace MonoMultiJack
 		void OnJackdHasStarted (object sender, EventArgs e)
 		{
 			stopJackdAction.Sensitive = true;
-			stopAllAction.Sensitive =  true;
-			_statusbar.Push(0, JackdStatusRunning);
+			stopAllAction.Sensitive = true;
+			_statusbar.Push (0, JackdStatusRunning);
 		}
 		
 		/// <summary>
@@ -287,24 +252,14 @@ namespace MonoMultiJack
 			GLib.Timeout.Add(5000, new GLib.TimeoutHandler(CheckPorts));
 		}
 		
-		bool CheckPorts()
+		bool CheckPorts ()
 		{
-			if (_jackd == null && !_jackd.IsRunning) return false;
-			try
+			if (_jackd == null && !_jackd.IsRunning)
+				return false;
+			var myConn = new MonoMultiJack.ConnectionWrapper.Jack.JackdAudioManager ();
+			foreach (var port in myConn.Ports) 
 			{
-				if (_jackClient == null)
-				{
-					_jackClient = new LibJackWrapper("MonoMultiJack");
-				}
-				var ports =_jackClient.GetPorts();
-				foreach(var port in ports)
-				{
-					Console.WriteLine(port);
-				}
-			}
-			catch
-			{
-				return false;				
+				Console.WriteLine (port.Name + ", " + port.ClientName + "," + port.PortType);
 			}
 			return true;
 		}
@@ -314,10 +269,6 @@ namespace MonoMultiJack
 		/// </summary>
 		private void CleanUpJackd()
 		{
-			if (_jackClient != null)
-			{
-				_jackClient.Dispose();
-			}
 			stopJackdAction.Sensitive = false;
 			_statusbar.Push(0, JackdStatusStopped);
 		}
@@ -327,10 +278,6 @@ namespace MonoMultiJack
 		/// </summary>
 		private void StopJackd ()
 		{
-			if (_jackClient != null)
-			{
-				_jackClient.Dispose();
-			}
 			if (_jackd != null && _jackd.IsRunning)
 			{
 				_jackd.StopProgram();

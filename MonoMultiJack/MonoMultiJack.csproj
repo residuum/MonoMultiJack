@@ -71,13 +71,9 @@
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="Widgets\JackConnectionsWidget.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="Configuration\PersistantConfiguration.cs" />
     <Compile Include="Common\ProgramManagement.cs" />
-    <Compile Include="Connections\IClient.cs" />
-    <Compile Include="Connections\IPort.cs" />
-    <Compile Include="Connections\PortType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -85,12 +81,11 @@
     <Folder Include="Configuration\" />
     <Folder Include="Widgets\" />
     <Folder Include="Common\" />
-    <Folder Include="Connections\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jackd-CIL\Jackd-CIL.csproj">
-      <Project>{1E9573E6-09B5-4B38-8C08-84C1D565FA65}</Project>
-      <Name>Jackd-CIL</Name>
+    <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">
+      <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
+      <Name>MonoMultiJack.ConnectionWrapper</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
