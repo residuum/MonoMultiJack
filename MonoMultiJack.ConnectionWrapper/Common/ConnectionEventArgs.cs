@@ -24,12 +24,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
+
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public class ConnectionEventArgs<T> : EventArgs where T: IConnectionType
+	public class ConnectionEventArgs : EventArgs
 	{
 		public string Message { get; set; }
-		public IPort<T> Ports {get;set;}
+		public IEnumerable<IPort> Ports { get; set; }
+		public IConnectionType ConnectionType {get;set;}
 	}
 }
 

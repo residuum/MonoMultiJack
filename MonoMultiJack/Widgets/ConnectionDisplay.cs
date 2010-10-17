@@ -1,5 +1,5 @@
 // 
-// AssemblyInfo.cs
+// ConnectionDisplay.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,29 +23,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using MonoMultiJack.ConnectionWrapper;
 
-// Information about this assembly is defined by the following attributes. 
-// Change them to the values specific to your project.
+namespace MonoMultiJack
+{
+	[System.ComponentModel.ToolboxItem(true)]
+	public partial class ConnectionDisplay : Gtk.Bin
+	{
+		private IConnectionManager _connectionManager;
+		
+		public ConnectionDisplay ()
+		{
+			this.Build ();
+		}
+		
+		public ConnectionDisplay (IConnectionManager connectionManager)
+		{
+			_connectionManager = connectionManager;
+			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
+			UpdatePorts(_connectionManager.Ports);
+		}
 
-[assembly: AssemblyTitle("Jackd-CIL")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
+		{
+			UpdatePorts (e.Ports);
+		}
+		
+		private void UpdatePorts (IEnumerable<IPort> ports)
+		{
+			if (ports != null)
+			{
+				var outPorts = ports.Where (p => p.PortType == PortType.Output);
+				var inPorts = ports.Where (p => p.PortType == PortType.Input);
+			}
+		}
+	}
+}
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion("1.0.*")]
-
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
-
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]

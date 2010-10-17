@@ -28,16 +28,16 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public delegate void ConnectionEventHandler<T>(object sender, ConnectionEventArgs<T> e) where T : IConnectionType;
+	public delegate void ConnectionEventHandler(object sender, ConnectionEventArgs e);
 		
-	public interface IConnectionManager<T> where T: IConnectionType
+	public interface IConnectionManager
 	{		
-		event ConnectionEventHandler<T> ConnectionHasChanged;
-		event ConnectionEventHandler<T> BackendHasExited;
-
-		string TypeName { get;}
+		event ConnectionEventHandler ConnectionHasChanged;
+		event ConnectionEventHandler BackendHasExited;
+		
+		IConnectionType ConnectionType {get;}
 		bool IsActive { get;}
-		IEnumerable<IPort<T>> Ports {get;}
+		IEnumerable<IPort> Ports {get;}
 	}
 }
 

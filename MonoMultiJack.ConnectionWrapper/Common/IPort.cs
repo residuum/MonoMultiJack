@@ -28,17 +28,16 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public interface IPort<T> where T:IConnectionType
+	public interface IPort
 	{
-		void Connect (IPort<T> port);
-		void Disconnect (IPort<T> port);
+		void Connect (IPort port);
+		void Disconnect (IPort port);
 
 		string Name {get;}
 		string ClientName {get;}
 
-		PortType PortType {get;}
-
-		List<IPort<T>> Connections {get;}
+		PortType PortType { get; }
+		IConnectionType ConnectionType {get;}
 	}
 }
 

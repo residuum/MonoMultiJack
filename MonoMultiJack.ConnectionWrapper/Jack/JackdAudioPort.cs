@@ -28,15 +28,21 @@ using System.Collections.Generic;
 	
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	public class JackdAudioPort : IPort<JackdAudioConnectionType>
+	public class JackdAudioPort : IPort
 	{
+		private readonly IConnectionType _connectionType = new JackdAudioConnectionType();
+		
 		#region IPort implementation
-		public void Connect (IPort<JackdAudioConnectionType> port)
+		public void Connect (IPort port)
 		{
+			if (PortType == port.PortType)
+			{
+				throw new ArgumentOutOfRangeException("Cannot Connect two " + PortType.ToString() + " ports.");
+			}
 			throw new NotImplementedException ();
 		}
 
-		public void Disconnect (IPort<JackdAudioConnectionType> port)
+		public void Disconnect (IPort port)
 		{
 			throw new NotImplementedException ();
 		}
@@ -55,8 +61,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			get; private set;
 		}
+		
+		public IConnectionType ConnectionType
+		{
+			get {return _connectionType;}
+		}
 
-		public List<IPort<JackdAudioConnectionType>> Connections 
+		public List<IPort> Connections 
 		{
 			get; private set;
 		}

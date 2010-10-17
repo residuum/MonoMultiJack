@@ -74,6 +74,8 @@
     <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="Configuration\PersistantConfiguration.cs" />
     <Compile Include="Common\ProgramManagement.cs" />
+    <Compile Include="Widgets\ConnectionDisplay.cs" />
+    <Compile Include="gtk-gui\MonoMultiJack.ConnectionDisplay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

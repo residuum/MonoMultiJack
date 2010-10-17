@@ -30,6 +30,8 @@ using MonoMultiJack;
 using MonoMultiJack.Common;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
+using MonoMultiJack.ConnectionWrapper;
+using MonoMultiJack.ConnectionWrapper.Jack;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,16 +54,6 @@ namespace MonoMultiJack
 		/// Instance for managing Jackd
 		/// </summary>
 		private ProgramManagement _jackd;
-		
-		/// <summary>
-		/// Table for appWidgets
-		/// </summary>
-		private VButtonBox _appButtonBox;
-		
-		/// <summary>
-		/// statusbar
-		/// </summary>
-		private Statusbar _statusbar;
 		
 		/// <summary>
 		/// Jackd status messages
@@ -117,18 +109,10 @@ namespace MonoMultiJack
 		{
 			Title = "MonoMultiJack";
 			Icon = ProgramIcon;
-			HBox newHBox = new HBox (false, 2);
-			mainVbox.Add (newHBox);
-	        _appButtonBox = new VButtonBox();
-			_appButtonBox.Spacing = 2;
-	        _appButtonBox.Name = "appTable";
-			newHBox.Add (_appButtonBox);
-			_statusbar = new Statusbar();
-			mainVbox.PackEnd(_statusbar,false, false, 0);
-			_statusbar.ShowAll();
-			_statusbar.Push(0, JackdStatusStopped);
+			_statusbar.Push (0, JackdStatusStopped);
 			ReadConfiguration ();
-			newHBox.Visible = true;
+			IConnectionManager jackdAudio = new JackdAudioManager();
+			_connectionNotebook.AppendPage(new ConnectionDisplay(jackdAudio), new Label(jackdAudio.ConnectionType.Name));
 		}
 		
 		/// <summary>
@@ -249,19 +233,6 @@ namespace MonoMultiJack
 		{
 			StopJackd();
 			_jackd.StartProgram();
-			GLib.Timeout.Add(5000, new GLib.TimeoutHandler(CheckPorts));
-		}
-		
-		bool CheckPorts ()
-		{
-			if (_jackd == null && !_jackd.IsRunning)
-				return false;
-			var myConn = new MonoMultiJack.ConnectionWrapper.Jack.JackdAudioManager ();
-			foreach (var port in myConn.Ports) 
-			{
-				Console.WriteLine (port.Name + ", " + port.ClientName + "," + port.PortType);
-			}
-			return true;
 		}
 		
 		/// <summary>

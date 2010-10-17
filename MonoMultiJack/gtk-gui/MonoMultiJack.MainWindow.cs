@@ -6,7 +6,7 @@ namespace MonoMultiJack
 	{
 		private global::Gtk.UIManager UIManager;
 
-		private global::Gtk.Action fileAction;
+		private global::Gtk.Action FileAction;
 
 		private global::Gtk.Action reStartJackdAction;
 
@@ -30,15 +30,23 @@ namespace MonoMultiJack
 
 		private global::Gtk.MenuBar menubar1;
 
+		private global::Gtk.HBox mainHbox;
+
+		private global::Gtk.VButtonBox _appButtonBox;
+
+		private global::Gtk.Notebook _connectionNotebook;
+
+		private global::Gtk.Statusbar _statusbar;
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget MonoMultiJack.MainWindow
 			this.UIManager = new global::Gtk.UIManager ();
 			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-			this.fileAction = new global::Gtk.Action ("fileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
-			this.fileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
-			w1.Add (this.fileAction, null);
+			this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
+			this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
+			w1.Add (this.FileAction, null);
 			this.reStartJackdAction = new global::Gtk.Action ("reStartJackdAction", global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd"), null, "gtk-refresh");
 			this.reStartJackdAction.Sensitive = false;
 			this.reStartJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd");
@@ -78,7 +86,7 @@ namespace MonoMultiJack
 			this.mainVbox = new global::Gtk.VBox ();
 			this.mainVbox.Name = "mainVbox";
 			// Container child mainVbox.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><menubar name='menubar1'><menu name='fileAction' action='fileAction'><menuitem name='reStartJackdAction' action='reStartJackdAction'/><menuitem name='stopJackdAction' action='stopJackdAction'/><menuitem name='stopAllAction' action='stopAllAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='ConfigurationAction' action='ConfigurationAction'><menuitem name='configureJackdAction' action='configureJackdAction'/><menuitem name='addRemoveApplicationsAction' action='addRemoveApplicationsAction'/></menu><menu name='helpAction' action='helpAction'><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
+			this.UIManager.AddUiFromString ("<ui><menubar name='menubar1'><menu name='FileAction' action='FileAction'><menuitem name='reStartJackdAction' action='reStartJackdAction'/><menuitem name='stopJackdAction' action='stopJackdAction'/><menuitem name='stopAllAction' action='stopAllAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='ConfigurationAction' action='ConfigurationAction'><menuitem name='configureJackdAction' action='configureJackdAction'/><menuitem name='addRemoveApplicationsAction' action='addRemoveApplicationsAction'/></menu><menu name='helpAction' action='helpAction'><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
 			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar1")));
 			this.menubar1.Name = "menubar1";
 			this.mainVbox.Add (this.menubar1);
@@ -86,12 +94,49 @@ namespace MonoMultiJack
 			w2.Position = 0;
 			w2.Expand = false;
 			w2.Fill = false;
+			// Container child mainVbox.Gtk.Box+BoxChild
+			this.mainHbox = new global::Gtk.HBox ();
+			this.mainHbox.Name = "mainHbox";
+			this.mainHbox.Spacing = 6;
+			// Container child mainHbox.Gtk.Box+BoxChild
+			this._appButtonBox = new global::Gtk.VButtonBox ();
+			this._appButtonBox.Name = "_appButtonBox";
+			this._appButtonBox.Spacing = 2;
+			this._appButtonBox.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(3));
+			this.mainHbox.Add (this._appButtonBox);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._appButtonBox]));
+			w3.Position = 0;
+			w3.Padding = ((uint)(2));
+			// Container child mainHbox.Gtk.Box+BoxChild
+			this._connectionNotebook = new global::Gtk.Notebook ();
+			this._connectionNotebook.CanFocus = true;
+			this._connectionNotebook.Name = "_connectionNotebook";
+			this._connectionNotebook.CurrentPage = -1;
+			this.mainHbox.Add (this._connectionNotebook);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._connectionNotebook]));
+			w4.Position = 1;
+			w4.Expand = false;
+			w4.Fill = false;
+			this.mainVbox.Add (this.mainHbox);
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this.mainHbox]));
+			w5.Position = 1;
+			w5.Expand = false;
+			w5.Fill = false;
+			// Container child mainVbox.Gtk.Box+BoxChild
+			this._statusbar = new global::Gtk.Statusbar ();
+			this._statusbar.Name = "_statusbar";
+			this._statusbar.Spacing = 6;
+			this.mainVbox.Add (this._statusbar);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this._statusbar]));
+			w6.Position = 2;
+			w6.Expand = false;
+			w6.Fill = false;
 			this.Add (this.mainVbox);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 275;
-			this.DefaultHeight = 175;
+			this.DefaultWidth = 589;
+			this.DefaultHeight = 215;
 			this.Show ();
 			this.reStartJackdAction.Activated += new global::System.EventHandler (this.RestartJackd);
 			this.stopJackdAction.Activated += new global::System.EventHandler (this.StopJackd);

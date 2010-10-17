@@ -53,7 +53,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		private static IntPtr _jackdClient;
 		
-		public static void ConnectToServer ()
+		public static bool ConnectToServer ()
 		{
 			if (_jackdClient == IntPtr.Zero)
 			{
@@ -61,8 +61,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			if (_jackdClient != IntPtr.Zero)
 			{
-				Activate ();
+				return Activate ();
 			}
+			return false;
 		}
 
 		/// <summary>
@@ -76,9 +77,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// <summary>
 		/// Activates jack client
 		/// </summary>
-		private static void Activate ()
+		private static bool Activate ()
 		{
-			var result = jack_activate (_jackdClient);
+			return jack_activate (_jackdClient) == 0;
 		}
 		
 		public static bool IsActive
