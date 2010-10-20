@@ -1,10 +1,10 @@
 // 
-// IPort.cs
+// MessageType.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
-
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public interface IPort
+	public enum MessageType
 	{
-		void Connect (IPort port);
-		void Disconnect (IPort port);
-
-		string Name {get;}
-		string ClientName {get;}
-
-		PortType PortType { get; }
-		IConnectionType ConnectionType {get;}
+		Undefined,
+		Debug,
+		Info,
+		Warning,
+		Error
 	}
 }
 

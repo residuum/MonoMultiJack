@@ -1,5 +1,5 @@
 // 
-// JackdAudioPorts.cs
+// IConnectionType.cs
 //  
 // Author:
 //       thomas <>
@@ -24,61 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
-	
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper
 {
-	public class JackdAudioPort : IPort
+	public enum ConnectionType
 	{
-		private readonly IConnectionType _connectionType = new JackdAudioConnectionType();
-		
-		#region IPort implementation
-		public void Connect (IPort port)
-		{
-			if (PortType == port.PortType)
-			{
-				throw new ArgumentOutOfRangeException("Cannot Connect two " + PortType.ToString() + " ports.");
-			}
-			throw new NotImplementedException ();
-		}
-
-		public void Disconnect (IPort port)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public string Name 
-		{
-			get; private set;
-		}
-
-		public string ClientName 
-		{
-			get; private set;
-		}
-
-		public PortType PortType 
-		{
-			get; private set;
-		}
-		
-		public IConnectionType ConnectionType
-		{
-			get {return _connectionType;}
-		}
-
-		public List<IPort> Connections 
-		{
-			get; private set;
-		}
-		#endregion
-
-		public JackdAudioPort (string name, string clientName, PortType portType)
-		{
-			Name = name;
-			ClientName = clientName;
-			PortType = portType;
-		}
+		Undefined,
+		JackdAudio,
+		JackdMidi,
+		AlsaMidi
 	}
 }
 

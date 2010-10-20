@@ -31,8 +31,10 @@ namespace MonoMultiJack.ConnectionWrapper
 	public class ConnectionEventArgs : EventArgs
 	{
 		public string Message { get; set; }
-		public IEnumerable<IPort> Ports { get; set; }
-		public IConnectionType ConnectionType {get;set;}
+		public IEnumerable<Port> Ports { get; set; }
+		public ConnectionType ConnectionType { get; set; }
+		public MessageType MessageType { get; set; }
+		public IEnumerable<IConnection> Connections {get;set;}
 	}
 }
 

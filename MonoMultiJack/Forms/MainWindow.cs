@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using MessageType = Gtk.MessageType;
 
 namespace MonoMultiJack
 {
@@ -112,7 +113,7 @@ namespace MonoMultiJack
 			_statusbar.Push (0, JackdStatusStopped);
 			ReadConfiguration ();
 			IConnectionManager jackdAudio = new JackdAudioManager();
-			_connectionNotebook.AppendPage(new ConnectionDisplay(jackdAudio), new Label(jackdAudio.ConnectionType.Name));
+			_connectionNotebook.AppendPage(new ConnectionDisplay(jackdAudio), new Label(jackdAudio.ConnectionType.ToString()));
 		}
 		
 		/// <summary>

@@ -1,10 +1,10 @@
 // 
-// JackAudioConnection.cs
+// IConnection.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper
 {
-	public class JackdAudioConnectionType : IConnectionType
+	public interface IConnection
 	{
-		public string Name
-		{
-			get
-			{
-				return "Jack Audio";
-			}
-		}
+		Port OutPort { get; set; }
+		Port InPort { get; set; }
+		ConnectionType ConnectionType {get;}
 	}
 }
 

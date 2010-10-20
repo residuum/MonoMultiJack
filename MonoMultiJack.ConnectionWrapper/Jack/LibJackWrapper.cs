@@ -25,10 +25,9 @@
 // THE SOFTWARE.
 
 using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 using Mono.Unix;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
@@ -51,7 +50,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
 		private const string JACK_DEFAULT_MIDI_TYPE = "32 bit float mono audio";
 		
-		private static IntPtr _jackdClient;
+		private static IntPtr _jackdClient = IntPtr.Zero;
+		private static Dictionary<Port, IntPtr> _portMapper = new Dictionary<Port, IntPtr>();
 		
 		public static bool ConnectToServer ()
 		{
@@ -96,8 +96,15 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// <returns>
 		/// A <see cref="IEnumerable<System.String>"/>
 		/// </returns>
-		internal static IEnumerable<string> GetPorts(PortType portType, bool isAudio)
+		internal static IEnumerable<Port> GetPorts(PortType portType, ConnectionType connectionType)
 		{
+			var mappedPorts = _portMapper.Where(portMap => portMap.Key.PortType == portType
+				&& portMap.Key.ConnectionType == connectionType).Select(portMap => portMap.Key);
+
+			if (mappedPorts.Any())
+			{
+				return mappedPorts;
+			}
 			if (_jackdClient == IntPtr.Zero)
 			{
 				ConnectToServer();
@@ -112,12 +119,52 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					flags = (long)JackPortFlags.JackPortIsOutput;
 					break;
 			}
-			string typeName = isAudio ? JACK_DEFAULT_AUDIO_TYPE : JACK_DEFAULT_MIDI_TYPE;
-			IntPtr ports = jack_get_ports(_jackdClient, null, typeName, flags);
-			return UnixMarshal.PtrToStringArray(ports);		
+			string typeName = string.Empty;
+			switch (connectionType)
+			{
+				case ConnectionType.JackdAudio:
+					typeName = JACK_DEFAULT_AUDIO_TYPE;
+					break;
+				case ConnectionType.JackdMidi:
+						typeName = JACK_DEFAULT_MIDI_TYPE;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("LibJackWrapper only connects to libjack");
+			}
+			string[] portStrings = UnixMarshal.PtrToStringArray(jack_get_ports(_jackdClient, null, typeName, flags));
+			List<Port> newPorts = new List<Port>();
+			foreach(string portString in portStrings)
+			{
+				string[] splittedString = portString.Split (new[] { ':' });
+				Port newPort = new Port (splittedString[1], splittedString[0], portType, ConnectionType.JackdAudio);
+				_portMapper.Add(newPort, jack_port_by_name(_jackdClient, portString));
+				newPorts.Add(newPort);
+			}
+			return newPorts;
 		}
 		
-		
+		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
+		{
+			GetPorts(PortType.Input, connectionType);
+			GetPorts(PortType.Output, connectionType);
+			List<IConnection> connections = new List<IConnection>();
+			foreach(var portMap in _portMapper)
+			{
+				if (portMap.Key.PortType == PortType.Output)
+				{
+					string[] connectedPorts = UnixMarshal.PtrToStringArray(jack_port_get_all_connections(_jackdClient, portMap.Value));
+					foreach (string portString in connectedPorts)
+					{
+						string[] splittedString = portString.Split (new[] { ':' });
+						var connection = new JackdAudioConnection();
+						connection.OutPort = portMap.Key;
+						connection.InPort = new Port(splittedString[1], splittedString[0], PortType.Input, connectionType);
+						connections.Add(connection);
+					}					
+				}
+			}
+			return connections;
+		}
 		
 		/// <summary>
 		/// http://jackaudio.org/files/docs/html/group__ClientFunctions.html
@@ -146,5 +193,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		                                     string port_name_pattern,
 		                                     string type_name_pattern,
 		                                     ulong flags);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern IntPtr jack_port_by_name(IntPtr jack_client_t, 
+		                                     string port_name);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern IntPtr jack_port_get_all_connections(IntPtr jack_client_t, 
+		                                     IntPtr jack_port_t);
 	}
 }

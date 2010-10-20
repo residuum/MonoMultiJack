@@ -97,15 +97,17 @@ namespace MonoMultiJack
 			// Container child mainVbox.Gtk.Box+BoxChild
 			this.mainHbox = new global::Gtk.HBox ();
 			this.mainHbox.Name = "mainHbox";
-			this.mainHbox.Spacing = 6;
+			this.mainHbox.Spacing = 2;
 			// Container child mainHbox.Gtk.Box+BoxChild
 			this._appButtonBox = new global::Gtk.VButtonBox ();
 			this._appButtonBox.Name = "_appButtonBox";
+			this._appButtonBox.Homogeneous = true;
 			this._appButtonBox.Spacing = 2;
 			this._appButtonBox.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(3));
 			this.mainHbox.Add (this._appButtonBox);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._appButtonBox]));
 			w3.Position = 0;
+			w3.Fill = false;
 			w3.Padding = ((uint)(2));
 			// Container child mainHbox.Gtk.Box+BoxChild
 			this._connectionNotebook = new global::Gtk.Notebook ();

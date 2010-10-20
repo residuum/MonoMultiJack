@@ -1,5 +1,5 @@
 // 
-// IConnectionType.cs
+// IPort.cs
 //  
 // Author:
 //       thomas <>
@@ -24,11 +24,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
+
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public interface IConnectionType
+	public class Port
 	{
-		string Name {get;}
+		public string Name {get;private set;}
+		public string ClientName {get; private set;}
+
+		public PortType PortType { get; private set; }
+		public ConnectionType ConnectionType {get; private set;}
+		
+		public Port (string name, string clientName, PortType portType, ConnectionType connectionType)
+		{
+			Name = name;
+			ClientName = clientName;
+			PortType = portType;
+			ConnectionType = connectionType;
+		}
 	}
 }
 

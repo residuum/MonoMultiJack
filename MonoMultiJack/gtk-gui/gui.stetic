@@ -113,17 +113,19 @@
         <child>
           <widget class="Gtk.HBox" id="mainHbox">
             <property name="MemberName" />
-            <property name="Spacing">6</property>
+            <property name="Spacing">2</property>
             <child>
               <widget class="Gtk.VButtonBox" id="_appButtonBox">
                 <property name="MemberName" />
+                <property name="Homogeneous">True</property>
                 <property name="Spacing">2</property>
                 <property name="Size">0</property>
                 <property name="LayoutStyle">Start</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
-                <property name="AutoSize">True</property>
+                <property name="AutoSize">False</property>
+                <property name="Fill">False</property>
                 <property name="Padding">2</property>
               </packing>
             </child>
@@ -169,9 +171,10 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="MonoMultiJack.ConnectionDisplay" design-size="541 300">
+  <widget class="Gtk.Bin" id="MonoMultiJack.ConnectionDisplay" design-size="541 500">
     <property name="MemberName" />
-    <property name="Visible">False</property>
+    <property name="WidthRequest">500</property>
+    <property name="HeightRequest">200</property>
     <child>
       <widget class="Gtk.HBox" id="hbox1">
         <property name="MemberName" />
@@ -185,16 +188,26 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
+                <property name="EnableSearch">False</property>
+                <property name="HeadersVisible">False</property>
               </widget>
             </child>
           </widget>
           <packing>
             <property name="Position">0</property>
-            <property name="AutoSize">True</property>
+            <property name="AutoSize">False</property>
           </packing>
         </child>
         <child>
-          <placeholder />
+          <widget class="Gtk.Fixed" id="_connectionArea">
+            <property name="MemberName" />
+            <property name="WidthRequest">200</property>
+            <property name="HasWindow">False</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
         </child>
         <child>
           <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
@@ -205,12 +218,14 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
+                <property name="EnableSearch">False</property>
+                <property name="HeadersVisible">False</property>
               </widget>
             </child>
           </widget>
           <packing>
             <property name="Position">2</property>
-            <property name="AutoSize">True</property>
+            <property name="AutoSize">False</property>
           </packing>
         </child>
       </widget>

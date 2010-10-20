@@ -23,29 +23,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using GLib;
 using System;
 using System.Collections.Generic;
+using GLib;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	public class JackdAudioManager : IConnectionManager
 	{
-		private readonly IConnectionType _connectionType = new JackdAudioConnectionType();
 		
 		public JackdAudioManager ()
 		{
 		}
-				
-		
-		#region IConnectionManager implementation
+				#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
 
 		public event ConnectionEventHandler BackendHasExited;
 		
-		public IConnectionType ConnectionType
+		public ConnectionType ConnectionType
 		{
-			get {return _connectionType;}
+			get {return ConnectionType.JackdAudio;}
 		}
 
 		public bool IsActive 
@@ -53,46 +50,63 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			get { return LibJackWrapper.IsActive; }
 		}
 		
-		public IEnumerable<IPort> Ports 
+		public IEnumerable<Port> Ports 
 		{
 			get 
 			{
 				if (IsActive)
 				{
-					var ports = new List<IPort> ();
-					var portStrings = LibJackWrapper.GetPorts (PortType.Input, true);
-					foreach (var portString in portStrings) 
-					{
-						string[] splittedString = portString.Split (new[] { ':' });
-						ports.Add (new JackdAudioPort (splittedString[1], splittedString[0], PortType.Input));
-					}
-				
-					portStrings = LibJackWrapper.GetPorts (PortType.Output, true);
-					foreach (var portString in portStrings) 
-					{
-						string[] splittedString = portString.Split (new[] { ':' });
-						ports.Add (new JackdAudioPort (splittedString[1], splittedString[0], PortType.Output));
-					}
+					var ports = new List<Port> ();
+					var inPorts = LibJackWrapper.GetPorts (PortType.Input, ConnectionType);
+					ports.AddRange (inPorts);
+					var outPorts = LibJackWrapper.GetPorts (PortType.Output, ConnectionType);
+					ports.AddRange(outPorts);
 					return ports;
 				}
 				else
 				{
-					GLib.Timeout.Add(2000, new GLib.TimeoutHandler(ConnectToServer));
-					LibJackWrapper.ConnectToServer();
+					GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
+					LibJackWrapper.ConnectToServer ();
 					return null;
 				}
 			}
 		}
-		
+		public bool Connect (Port outPort, Port inPort)
+		{
+			if (outPort.ConnectionType != ConnectionType.JackdAudio && outPort.PortType != PortType.Output
+				&& inPort.ConnectionType != ConnectionType.JackdAudio && outPort.PortType != PortType.Input)
+			{
+				return false;
+			}
+			else
+			{
+				throw new NotImplementedException ();
+			}
+		}
+
+		public bool Disconnect (IConnection connection)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public IEnumerable<IConnection> Connections 
+		{
+			get 
+			{
+				return LibJackWrapper.GetConnections (ConnectionType);
+			}
+		}
 		#endregion
-		
+
 		private bool ConnectToServer ()
 		{
 			if (LibJackWrapper.ConnectToServer ())
 			{
 				var eventArgs = new ConnectionEventArgs ();
 				eventArgs.Ports = Ports;
+				eventArgs.Connections = Connections;
 				eventArgs.Message = "Connection to Jackd established";
+				eventArgs.MessageType = MessageType.Info;
 				ConnectionHasChanged(this, eventArgs);				
 				return false;
 			}

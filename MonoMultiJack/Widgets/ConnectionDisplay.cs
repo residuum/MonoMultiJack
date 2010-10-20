@@ -26,12 +26,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gtk;
 using MonoMultiJack.ConnectionWrapper;
 
 namespace MonoMultiJack
 {
 	[System.ComponentModel.ToolboxItem(true)]
-	public partial class ConnectionDisplay : Gtk.Bin
+	public partial class ConnectionDisplay : Bin
 	{
 		private IConnectionManager _connectionManager;
 		
@@ -40,24 +41,52 @@ namespace MonoMultiJack
 			this.Build ();
 		}
 		
-		public ConnectionDisplay (IConnectionManager connectionManager)
+		public ConnectionDisplay (IConnectionManager connectionManager) : this()
 		{
 			_connectionManager = connectionManager;
 			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
+			
+			var inClientColumn = new TreeViewColumn ();
+			var inClientCell = new CellRendererText ();
+			inClientColumn.PackStart (inClientCell, true);
+			inClientColumn.AddAttribute (inClientCell, "text", 0);
+			_inputTreeview.AppendColumn (inClientColumn);
+			
+			var outClientColumn = new TreeViewColumn ();
+			var outClientCell = new CellRendererText ();
+			outClientColumn.PackStart (outClientCell, true);
+			outClientColumn.AddAttribute (outClientCell, "text", 0);
+			_outputTreeview.AppendColumn(outClientColumn);
 			UpdatePorts(_connectionManager.Ports);
 		}
 
 		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
 		{
 			UpdatePorts (e.Ports);
+			//UpdateConnections (e.Connections);
+			
 		}
 		
-		private void UpdatePorts (IEnumerable<IPort> ports)
+		private void FillTreeView (TreeView treeview, IEnumerable<IGrouping<System.String,Port>> clients)
+		{
+			var store = new TreeStore (typeof(string));
+			foreach (var client in clients) {
+				TreeIter clientIter = store.AppendValues (client.First ().ClientName);
+				foreach (var portName in client.Select (port => port.Name)) {
+					store.AppendValues (clientIter, portName);
+				}
+			}
+			treeview.Model = store;
+		}
+
+		private void UpdatePorts (IEnumerable<Port> ports)
 		{
 			if (ports != null)
 			{
-				var outPorts = ports.Where (p => p.PortType == PortType.Output);
-				var inPorts = ports.Where (p => p.PortType == PortType.Input);
+				var outClients = ports.Where (p => p.PortType == PortType.Output).GroupBy (port => port.ClientName);
+				FillTreeView (_outputTreeview, outClients);				
+				var inClients = ports.Where (p => p.PortType == PortType.Input).GroupBy (port => port.ClientName);
+				FillTreeView(_inputTreeview, inClients);
 			}
 		}
 	}

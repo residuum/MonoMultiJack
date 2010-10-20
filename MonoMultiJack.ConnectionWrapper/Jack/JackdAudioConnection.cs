@@ -1,10 +1,10 @@
 // 
-// IConnectionManager.cs
+// JackdAudioConnection.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,63 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
-
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public delegate void ConnectionEventHandler(object sender, ConnectionEventArgs e);
+	public class JackdAudioConnection : IConnection
+	{
+		private Port _outPort;
+		private Port _inPort;
 		
-	public interface IConnectionManager
-	{		
-		event ConnectionEventHandler ConnectionHasChanged;
-		event ConnectionEventHandler BackendHasExited;
+		#region IConnection implementation
+		public Port OutPort 
+		{
+			get 
+			{
+				if (_inPort != null)
+				{
+					return _outPort;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			set 
+			{
+				if (value.ConnectionType == ConnectionType.JackdAudio && value.PortType == PortType.Output)
+				{
+					_outPort = value;					
+				}
+			}
+		}
+
+		public Port InPort 
+		{
+			get 
+			{
+				if (_outPort != null) 
+				{
+					return _inPort;
+				} 
+				else 
+				{
+					return null;
+				}
+			}
+			set 
+			{
+				if (value.ConnectionType == ConnectionType.JackdAudio && value.PortType == PortType.Input) 
+				{
+					_inPort = value;
+				}
+			}
+		}
 		
-		ConnectionType ConnectionType {get;}
-		bool IsActive { get;}
-		IEnumerable<Port> Ports { get; }
-		IEnumerable<IConnection> Connections {get;}
-		bool Connect(Port outPort, Port inPort);
-		bool Disconnect(IConnection connection);
+		public ConnectionType ConnectionType
+		{
+			get { return ConnectionType.JackdAudio; }
+		}
+		#endregion
 	}
 }
 
