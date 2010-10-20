@@ -33,7 +33,7 @@ using Mono.Unix;
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	[Flags]
-	public enum JackPortFlags : ulong
+	internal enum JackPortFlags : ulong
 	{
 		JackPortIsInput = 0x1,
 		JackPortIsOutput = 0x2,
@@ -41,6 +41,10 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		JackPortCanMonitor = 0x8,
 		JackPortIsTerminal = 0x10
 	}
+		
+	internal delegate void JackPortRegistrationCallback (IntPtr port, int register, IntPtr args);
+	internal delegate void JackPortConnectCallback (IntPtr a, IntPtr b, int connect, IntPtr args);
+	
 	/// <summary>
 	/// Wrapper class for libjack
 	/// </summary>
@@ -52,6 +56,16 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		private static IntPtr _jackdClient = IntPtr.Zero;
 		private static Dictionary<Port, IntPtr> _portMapper = new Dictionary<Port, IntPtr>();
+		
+		public static void OnPortRegistration (IntPtr port, int register, IntPtr args)
+		{
+			Console.WriteLine ("Port (un)registered.");
+		}
+		
+		public static void OnPortConnect (IntPtr a, IntPtr b, int connect, IntPtr args)
+		{
+			Console.WriteLine("Port (dis)connected.");
+		}
 		
 		public static bool ConnectToServer ()
 		{
@@ -79,7 +93,10 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// </summary>
 		private static bool Activate ()
 		{
-			return jack_activate (_jackdClient) == 0;
+			jack_set_port_connect_callback (_jackdClient, OnPortConnect, IntPtr.Zero);
+			jack_set_port_registration_callback(_jackdClient, OnPortRegistration, IntPtr.Zero);
+			int jackActivateStatus = jack_activate (_jackdClient);
+			return jackActivateStatus == 0;
 		}
 		
 		public static bool IsActive
@@ -201,5 +218,15 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_port_get_all_connections(IntPtr jack_client_t, 
 		                                     IntPtr jack_port_t);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern int jack_set_port_registration_callback(IntPtr jack_client_t, 
+											JackPortRegistrationCallback registration_callback,
+		                                     IntPtr args);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern int jack_set_port_connect_callback(IntPtr jack_client_t, 
+											JackPortConnectCallback connect_callback,
+											IntPtr args);
 	}
 }
