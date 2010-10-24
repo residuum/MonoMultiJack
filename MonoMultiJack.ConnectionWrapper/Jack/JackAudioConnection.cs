@@ -1,10 +1,10 @@
 // 
-// IConnectionType.cs
+// JackdAudioConnection.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,61 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public enum ConnectionType
+	public class JackAudioConnection : IConnection
 	{
-		Undefined,
-		JackAudio,
-		JackMidi,
-		AlsaMidi
+		private Port _outPort;
+		private Port _inPort;
+		
+		#region IConnection implementation
+		public Port OutPort 
+		{
+			get 
+			{
+				if (_inPort != null)
+				{
+					return _outPort;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			set 
+			{
+				if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Output)
+				{
+					_outPort = value;					
+				}
+			}
+		}
+
+		public Port InPort 
+		{
+			get 
+			{
+				if (_outPort != null) 
+				{
+					return _inPort;
+				} 
+				else 
+				{
+					return null;
+				}
+			}
+			set 
+			{
+				if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Input) 
+				{
+					_inPort = value;
+				}
+			}
+		}
+		
+		public ConnectionType ConnectionType
+		{
+			get { return ConnectionType.JackAudio; }
+		}
+		#endregion
 	}
 }
 

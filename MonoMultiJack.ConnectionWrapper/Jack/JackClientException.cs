@@ -1,5 +1,5 @@
 // 
-// JackdAudioConnection.cs
+// JackClientException.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,63 +24,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper
+namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	public class JackdAudioConnection : IConnection
+	/// <summary>
+	/// Class for exception in Jackd client.
+	/// </summary>
+	[Serializable]
+	public class JackClientException : Exception
 	{
-		private Port _outPort;
-		private Port _inPort;
-		
-		#region IConnection implementation
-		public Port OutPort 
-		{
-			get 
-			{
-				if (_inPort != null)
-				{
-					return _outPort;
-				}
-				else
-				{
-					return null;
-				}
-			}
-			set 
-			{
-				if (value.ConnectionType == ConnectionType.JackdAudio && value.PortType == PortType.Output)
-				{
-					_outPort = value;					
-				}
-			}
-		}
-
-		public Port InPort 
-		{
-			get 
-			{
-				if (_outPort != null) 
-				{
-					return _inPort;
-				} 
-				else 
-				{
-					return null;
-				}
-			}
-			set 
-			{
-				if (value.ConnectionType == ConnectionType.JackdAudio && value.PortType == PortType.Input) 
-				{
-					_inPort = value;
-				}
-			}
-		}
-		
-		public ConnectionType ConnectionType
-		{
-			get { return ConnectionType.JackdAudio; }
-		}
-		#endregion
+		public JackClientException (string message) : base(message)
+		{}
+		public JackClientException (string message, Exception innerException) : base(message, innerException)
+		{}
 	}
 }
 

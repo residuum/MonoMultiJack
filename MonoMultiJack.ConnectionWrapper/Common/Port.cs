@@ -43,6 +43,10 @@ namespace MonoMultiJack.ConnectionWrapper
 			PortType = portType;
 			ConnectionType = connectionType;
 		}
+		
+		public Port()
+		{			
+		}
 	}
 }
 

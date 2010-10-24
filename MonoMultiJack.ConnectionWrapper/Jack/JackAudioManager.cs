@@ -1,10 +1,10 @@
 // 
-// JackClientException.cs
+// JackdAudioConnection.cs
 //  
 // Author:
-//       Thomas Mayer <thomas@residuum.org>
+//       thomas <>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2010 thomas
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
+
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	/// <summary>
-	/// Class for exception in Jackd client.
-	/// </summary>
-	[Serializable]
-	public class JackdClientException : Exception
+	public class JackAudioManager : JackConnectionManager, IConnectionManager
 	{
-		public JackdClientException (string message) : base(message)
-		{}
-		public JackdClientException (string message, Exception innerException) : base(message, innerException)
-		{}
+		public JackAudioManager () : base()
+		{
+		}
+		
+		public override ConnectionType ConnectionType
+		{
+			get {return ConnectionType.JackAudio;}
+		}
 	}
 }
-

@@ -1,10 +1,10 @@
 // 
-// IConnectionType.cs
+// LibJackWrapperClasses.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,14 +24,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper
+
+namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	public enum ConnectionType
+	internal static partial class LibJackWrapper
 	{
-		Undefined,
-		JackAudio,
-		JackMidi,
-		AlsaMidi
+		[Flags]
+		private enum JackPortFlags
+		{
+			JackPortIsInput = 0x1,
+			JackPortIsOutput = 0x2,
+			JackPortIsPhysical = 0x4,
+			JackPortCanMonitor = 0x8,
+			JackPortIsTerminal = 0x10
+		}
+			
+		private delegate void JackPortRegistrationCallback (uint port, int register, IntPtr args);
+		private delegate void JackPortConnectCallback (IntPtr a, IntPtr b, int connect, IntPtr args);
+		
+		private class JackPort : Port
+		{
+			public uint JackPortId
+			{
+				get;
+				set;
+			}
+			
+			public IntPtr JackPortPointer
+			{
+				get;set;
+			}
+		
+			public JackPort (string name, string clientName, PortType portType, ConnectionType connectionType) : base (name, clientName, portType, connectionType)
+			{
+			}
+			
+		}
 	}
 }
-

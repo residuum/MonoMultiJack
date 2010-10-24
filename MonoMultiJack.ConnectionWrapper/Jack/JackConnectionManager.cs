@@ -1,10 +1,10 @@
 // 
-// JackdAudioConnection.cs
+// JackConnectionManager.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,20 +29,21 @@ using GLib;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	public class JackdAudioManager : IConnectionManager
+	public abstract class JackConnectionManager : IConnectionManager
 	{
-		
-		public JackdAudioManager ()
+		protected JackConnectionManager()
 		{
+			LibJackWrapper.PortOrConnectionHasChanged += LibJackWrapperHasChanged;
 		}
-				#region IConnectionManager implementation
+		
+		#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
 
 		public event ConnectionEventHandler BackendHasExited;
 		
-		public ConnectionType ConnectionType
+		public virtual ConnectionType ConnectionType
 		{
-			get {return ConnectionType.JackdAudio;}
+			get {return ConnectionType.Undefined;}
 		}
 
 		public bool IsActive 
@@ -56,12 +57,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			{
 				if (IsActive)
 				{
-					var ports = new List<Port> ();
-					var inPorts = LibJackWrapper.GetPorts (PortType.Input, ConnectionType);
-					ports.AddRange (inPorts);
-					var outPorts = LibJackWrapper.GetPorts (PortType.Output, ConnectionType);
-					ports.AddRange(outPorts);
-					return ports;
+					return LibJackWrapper.GetPorts (ConnectionType);
 				}
 				else
 				{
@@ -73,8 +69,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		}
 		public bool Connect (Port outPort, Port inPort)
 		{
-			if (outPort.ConnectionType != ConnectionType.JackdAudio && outPort.PortType != PortType.Output
-				&& inPort.ConnectionType != ConnectionType.JackdAudio && outPort.PortType != PortType.Input)
+			if (outPort.ConnectionType != ConnectionType.JackAudio && outPort.PortType != PortType.Output
+				&& inPort.ConnectionType != ConnectionType.JackAudio && outPort.PortType != PortType.Input)
 			{
 				return false;
 			}
@@ -107,12 +103,20 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.Connections = Connections;
 				eventArgs.Message = "Connection to Jackd established";
 				eventArgs.MessageType = MessageType.Info;
-				ConnectionHasChanged(this, eventArgs);				
+				ConnectionHasChanged (this, eventArgs);
 				return false;
 			}
 			else
 			{
 				return true;
+			}
+		}
+		
+		private void LibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
+		{
+			if (args.ConnectionType == ConnectionType)
+			{
+				ConnectionHasChanged (this, args);
 			}
 		}
 	}

@@ -27,53 +27,63 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Mono.Unix;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	[Flags]
-	internal enum JackPortFlags : ulong
-	{
-		JackPortIsInput = 0x1,
-		JackPortIsOutput = 0x2,
-		JackPortIsPhysical = 0x4,
-		JackPortCanMonitor = 0x8,
-		JackPortIsTerminal = 0x10
-	}
-		
-	internal delegate void JackPortRegistrationCallback (IntPtr port, int register, IntPtr args);
-	internal delegate void JackPortConnectCallback (IntPtr a, IntPtr b, int connect, IntPtr args);
-	
 	/// <summary>
 	/// Wrapper class for libjack
 	/// </summary>
-	internal static class LibJackWrapper
-	{		
-		private const string JACK_LIB_NAME = "libjack.so.0";
-		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		private const string JACK_DEFAULT_MIDI_TYPE = "32 bit float mono audio";
+	internal static partial class LibJackWrapper
+	{
 		
-		private static IntPtr _jackdClient = IntPtr.Zero;
-		private static Dictionary<Port, IntPtr> _portMapper = new Dictionary<Port, IntPtr>();
+		private static IntPtr _jackClient = IntPtr.Zero;
+		private static List<JackPort> _portMapper = new List<JackPort>();
 		
-		public static void OnPortRegistration (IntPtr port, int register, IntPtr args)
+		public static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
-			Console.WriteLine ("Port (un)registered.");
+			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
+			ConnectionType connectionType = ConnectionType.Undefined;
+			if (register > 0)
+			{
+				JackPort newPort = GetJackPortData (port);
+				_portMapper.Add (newPort);
+				eventArgs.Message = "New port registered.";
+				connectionType = newPort.ConnectionType;
+			}
+			else
+			{
+				var oldPort = _portMapper.Where (map => map.JackPortId == port).FirstOrDefault ();
+				if (oldPort != null)
+				{
+					connectionType = oldPort.ConnectionType;
+					_portMapper.Remove(oldPort);
+				}
+				eventArgs.Message = "Port unregistered.";
+			}
+			
+			if (connectionType != ConnectionType.Undefined)
+			{
+				eventArgs.Ports = GetPorts (connectionType);
+			}
+			eventArgs.ConnectionType = connectionType;
+			PortOrConnectionHasChanged(null, eventArgs);			
 		}
 		
 		public static void OnPortConnect (IntPtr a, IntPtr b, int connect, IntPtr args)
 		{
-			Console.WriteLine("Port (dis)connected.");
+			Console.WriteLine ("Port (dis)connected.");
 		}
 		
-		public static bool ConnectToServer ()
+		internal static event ConnectionEventHandler PortOrConnectionHasChanged;
+		
+		internal static bool ConnectToServer ()
 		{
-			if (_jackdClient == IntPtr.Zero)
+			if (_jackClient == IntPtr.Zero)
 			{
-				_jackdClient = jack_client_new ("MonoMultiJack");
+				_jackClient = jack_client_new ("MonoMultiJack");
 			}
-			if (_jackdClient != IntPtr.Zero)
+			if (_jackClient != IntPtr.Zero)
 			{
 				return Activate ();
 			}
@@ -85,7 +95,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// </summary>
 		private static void Close()
 		{
-			jack_client_close(_jackdClient);
+			jack_client_close(_jackClient);
 		}
 		
 		/// <summary>
@@ -93,9 +103,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// </summary>
 		private static bool Activate ()
 		{
-			jack_set_port_connect_callback (_jackdClient, OnPortConnect, IntPtr.Zero);
-			jack_set_port_registration_callback(_jackdClient, OnPortRegistration, IntPtr.Zero);
-			int jackActivateStatus = jack_activate (_jackdClient);
+			jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
+			jack_set_port_registration_callback(_jackClient, OnPortRegistration, IntPtr.Zero);
+			int jackActivateStatus = jack_activate (_jackClient);
 			return jackActivateStatus == 0;
 		}
 		
@@ -103,78 +113,92 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			get 
 			{
-				return _jackdClient != IntPtr.Zero;
+				return _jackClient != IntPtr.Zero;
 			}
 		}
 		
-		/// <summary>
-		/// Gets all jackd ports
-		/// </summary>
-		/// <returns>
-		/// A <see cref="IEnumerable<System.String>"/>
-		/// </returns>
-		internal static IEnumerable<Port> GetPorts(PortType portType, ConnectionType connectionType)
+				
+		private static JackPort GetJackPortData (uint portId)
 		{
-			var mappedPorts = _portMapper.Where(portMap => portMap.Key.PortType == portType
-				&& portMap.Key.ConnectionType == connectionType).Select(portMap => portMap.Key);
+			IntPtr portPointer = jack_port_by_id (_jackClient, portId);
+			if (portPointer != IntPtr.Zero)
+			{
+				string portName = UnixMarshal.PtrToString (jack_port_name (portPointer));
+				string[] splittedName = portName.Split (new[] { ':' });
+				PortType portType = PortType.Undefined;
+				JackPortFlags portFlags = (JackPortFlags)jack_port_flags (portPointer);
+				if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput)
+				{
+					portType = PortType.Input;
+				}
+				else if ((portFlags & JackPortFlags.JackPortIsOutput) == JackPortFlags.JackPortIsOutput)
+				{
+					portType = PortType.Output;
+				}
+				ConnectionType connectionType = ConnectionType.Undefined;
+				string connectionTypeName = UnixMarshal.PtrToString (jack_port_type (portPointer));
+				if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE)
+				{
+					connectionType = ConnectionType.JackAudio;
+				}
+				else if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE)
+				{
+					connectionType = ConnectionType.JackMidi;
+				}
+				JackPort newPort = new JackPort (splittedName[1], splittedName[0], portType, connectionType);
+				newPort.JackPortId = portId;
+				newPort.JackPortPointer = portPointer;
+				return newPort;
+			}
+			else
+			{
+				return null;
+			}
+		}
 
-			if (mappedPorts.Any())
+		internal static IEnumerable<Port> GetPorts(ConnectionType connectionType)
+		{		
+			var mappedPorts = _portMapper.Where (portMap => portMap.ConnectionType == connectionType).Select (portMap => portMap as Port);
+			if (mappedPorts != null && mappedPorts.Any())
 			{
 				return mappedPorts;
 			}
-			if (_jackdClient == IntPtr.Zero)
+			else
 			{
-				ConnectToServer();
+				var ports = new List<Port>();
+				for (uint i = 0; true; i++)
+				{
+					var newPort = GetJackPortData(i);
+					if (newPort == null)
+					{
+						break;
+					}
+					else
+					{
+						_portMapper.Add(newPort);
+						if (newPort.ConnectionType == connectionType)
+						{
+							ports.Add(newPort as Port);
+						}
+					}
+				}
+				return ports;
 			}
-			ulong flags = 0;
-			switch(portType)
-			{
-				case PortType.Input:
-					flags = (long)JackPortFlags.JackPortIsInput;
-					break;
-				case PortType.Output:
-					flags = (long)JackPortFlags.JackPortIsOutput;
-					break;
-			}
-			string typeName = string.Empty;
-			switch (connectionType)
-			{
-				case ConnectionType.JackdAudio:
-					typeName = JACK_DEFAULT_AUDIO_TYPE;
-					break;
-				case ConnectionType.JackdMidi:
-						typeName = JACK_DEFAULT_MIDI_TYPE;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("LibJackWrapper only connects to libjack");
-			}
-			string[] portStrings = UnixMarshal.PtrToStringArray(jack_get_ports(_jackdClient, null, typeName, flags));
-			List<Port> newPorts = new List<Port>();
-			foreach(string portString in portStrings)
-			{
-				string[] splittedString = portString.Split (new[] { ':' });
-				Port newPort = new Port (splittedString[1], splittedString[0], portType, ConnectionType.JackdAudio);
-				_portMapper.Add(newPort, jack_port_by_name(_jackdClient, portString));
-				newPorts.Add(newPort);
-			}
-			return newPorts;
 		}
 		
 		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
 		{
-			GetPorts(PortType.Input, connectionType);
-			GetPorts(PortType.Output, connectionType);
 			List<IConnection> connections = new List<IConnection>();
 			foreach(var portMap in _portMapper)
 			{
-				if (portMap.Key.PortType == PortType.Output)
+				if (portMap.PortType == PortType.Output)
 				{
-					string[] connectedPorts = UnixMarshal.PtrToStringArray(jack_port_get_all_connections(_jackdClient, portMap.Value));
+					string[] connectedPorts = UnixMarshal.PtrToStringArray(jack_port_get_all_connections(_jackClient, portMap.JackPortPointer));
 					foreach (string portString in connectedPorts)
 					{
 						string[] splittedString = portString.Split (new[] { ':' });
-						var connection = new JackdAudioConnection();
-						connection.OutPort = portMap.Key;
+						var connection = new JackAudioConnection();
+						connection.OutPort = portMap as Port;
 						connection.InPort = new Port(splittedString[1], splittedString[0], PortType.Input, connectionType);
 						connections.Add(connection);
 					}					
@@ -182,51 +206,5 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			return connections;
 		}
-		
-		/// <summary>
-		/// http://jackaudio.org/files/docs/html/group__ClientFunctions.html
-		/// </summary>
-		[DllImport(JACK_LIB_NAME)]
-		private static extern IntPtr jack_client_new(string client_name);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern int jack_activate(IntPtr jack_client_t);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern int jack_client_close(IntPtr jack_client_t);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern IntPtr jack_client_open(string client_name, 
-		                                             IntPtr jack_options_t, 
-		                                             IntPtr jack_status_t);		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern string jack_client_thread_id(IntPtr jack_client_t);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern int jack_deactivate(IntPtr jack_client_t);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern IntPtr jack_get_ports(IntPtr jack_client_t, 
-		                                     string port_name_pattern,
-		                                     string type_name_pattern,
-		                                     ulong flags);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern IntPtr jack_port_by_name(IntPtr jack_client_t, 
-		                                     string port_name);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern IntPtr jack_port_get_all_connections(IntPtr jack_client_t, 
-		                                     IntPtr jack_port_t);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern int jack_set_port_registration_callback(IntPtr jack_client_t, 
-											JackPortRegistrationCallback registration_callback,
-		                                     IntPtr args);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern int jack_set_port_connect_callback(IntPtr jack_client_t, 
-											JackPortConnectCallback connect_callback,
-											IntPtr args);
 	}
 }
