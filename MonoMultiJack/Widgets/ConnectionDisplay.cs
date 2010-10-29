@@ -36,6 +36,9 @@ namespace MonoMultiJack
 	{
 		private IConnectionManager _connectionManager;
 		
+		private TreeStore _outputStore = new TreeStore(typeof(string));
+		private TreeStore _inputStore = new TreeStore (typeof(string));
+		
 		public ConnectionDisplay ()
 		{
 			this.Build ();
@@ -51,42 +54,90 @@ namespace MonoMultiJack
 			inClientColumn.PackStart (inClientCell, true);
 			inClientColumn.AddAttribute (inClientCell, "text", 0);
 			_inputTreeview.AppendColumn (inClientColumn);
+			_inputTreeview.Model = _inputStore;
 			
 			var outClientColumn = new TreeViewColumn ();
 			var outClientCell = new CellRendererText ();
 			outClientColumn.PackStart (outClientCell, true);
 			outClientColumn.AddAttribute (outClientCell, "text", 0);
-			_outputTreeview.AppendColumn(outClientColumn);
-			UpdatePorts(_connectionManager.Ports);
+			_outputTreeview.AppendColumn (outClientColumn);
+			_outputTreeview.Model = _outputStore;
+			UpdatePorts(_connectionManager.Ports, ChangeType.New);
 		}
 
 		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
 		{
-			UpdatePorts (e.Ports);
+			Console.WriteLine (e.Message);
+			if (e.Ports != null && e.Ports.Any ())
+			{
+				UpdatePorts (e.Ports, e.ChangeType);				
+			}			
 			//UpdateConnections (e.Connections);
+			Console.WriteLine (e.Message);
 			
 		}
-		
-		private void FillTreeView (TreeView treeview, IEnumerable<IGrouping<System.String,Port>> clients)
+			
+		private void RemoveTreeStoreValues (TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
 		{
-			var store = new TreeStore (typeof(string));
-			foreach (var client in clients) {
-				TreeIter clientIter = store.AppendValues (client.First ().ClientName);
-				foreach (var portName in client.Select (port => port.Name)) {
+			foreach (var client in clients)
+			{
+				TreeIter clientIter;
+				string clientName = client.First ().ClientName;
+				if (store.GetIterFromString (out clientIter, clientName))
+				{
+					foreach (var portName in client.Select (port => port.Name))
+					{
+						TreeIter portIter;
+						if (store.GetIterFromString (out portIter, portName))
+						{
+							store.Remove (ref portIter);
+						}
+					}
+					if (!store.IterHasChild (clientIter))
+					{
+						store.Remove(ref clientIter);			
+					}
+				}
+			}
+		}
+		
+		private void AddTreeStoreValues (TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
+		{
+			foreach (var client in clients)
+			{
+				TreeIter clientIter;
+				string clientName = client.First ().ClientName;
+				if (!store.GetIterFromString (out clientIter, clientName))
+				{
+					clientIter = store.AppendValues (clientName);
+				}
+				foreach (var portName in client.Select (port => port.Name))
+				{
 					store.AppendValues (clientIter, portName);
 				}
 			}
-			treeview.Model = store;
 		}
-
-		private void UpdatePorts (IEnumerable<Port> ports)
+		
+		private void UpdatePorts (IEnumerable<Port> updatedPorts, ChangeType changeType)
 		{
-			if (ports != null)
+			if (updatedPorts != null && updatedPorts.Any ())
 			{
-				var outClients = ports.Where (p => p.PortType == PortType.Output).GroupBy (port => port.ClientName);
-				FillTreeView (_outputTreeview, outClients);				
-				var inClients = ports.Where (p => p.PortType == PortType.Input).GroupBy (port => port.ClientName);
-				FillTreeView(_inputTreeview, inClients);
+				switch (changeType)
+				{
+					case ChangeType.New:
+						var newOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output).GroupBy (port => port.ClientName);
+						AddTreeStoreValues (_outputStore, newOutputClients);
+						var newInputClients = updatedPorts.Where (p => p.PortType == PortType.Input).GroupBy (port => port.ClientName);
+						AddTreeStoreValues (_inputStore, newInputClients);
+						break;
+			
+				case ChangeType.Deleted:
+						var oldOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output).GroupBy (port => port.ClientName);
+						RemoveTreeStoreValues (_outputStore, oldOutputClients);
+						var oldInputClients = updatedPorts.Where (p => p.PortType == PortType.Input).GroupBy (port => port.ClientName);
+						RemoveTreeStoreValues (_inputStore, oldInputClients);
+						break;
+				}
 			}
 		}
 	}

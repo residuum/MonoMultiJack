@@ -26,6 +26,9 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
+	/// <summary>
+	/// The Type of connection to manage
+	/// </summary>
 	public enum ConnectionType
 	{
 		Undefined,

@@ -53,6 +53,7 @@
     <Compile Include="Jack\LibJackWrapper.Definitions.cs" />
     <Compile Include="Jack\LibJackWrapper.PInvoke.cs" />
     <Compile Include="Jack\JackConnectionManager.cs" />
+    <Compile Include="Common\ChangeType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

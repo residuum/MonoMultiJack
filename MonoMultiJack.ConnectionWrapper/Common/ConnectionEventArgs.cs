@@ -28,13 +28,65 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
+	/// <summary>
+	/// Event arguments for connection management.
+	/// </summary>
 	public class ConnectionEventArgs : EventArgs
 	{
-		public string Message { get; set; }
-		public IEnumerable<Port> Ports { get; set; }
-		public ConnectionType ConnectionType { get; set; }
-		public MessageType MessageType { get; set; }
-		public IEnumerable<IConnection> Connections {get;set;}
+		/// <summary>
+		/// The message for the event.
+		/// </summary>
+		public string Message
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The changed Ports
+		/// </summary>
+		public IEnumerable<Port> Ports
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The affected ConnectionType
+		/// </summary>
+		public ConnectionType ConnectionType
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The Type of message
+		/// </summary>
+		public MessageType MessageType
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The connections affected by the event.
+		/// </summary>
+		public IEnumerable<IConnection> Connections
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The type of change of the ports or connections.
+		/// </summary>
+		public ChangeType ChangeType
+		{
+			get;
+			set;
+		}
+		
 	}
 }
 

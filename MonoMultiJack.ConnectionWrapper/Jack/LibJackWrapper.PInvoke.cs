@@ -30,17 +30,12 @@ using System.Runtime.InteropServices;
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	/// <summary>
-	/// Wrapper class for libjack
+	/// Wrapper class for libjack, this file contains the wrapped API function of libjack.
 	/// </summary>
 	internal static partial class LibJackWrapper
-	{
-		
-		private const string JACK_LIB_NAME = "libjack.so.0";
-		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		private const string JACK_DEFAULT_MIDI_TYPE = "32 bit float mono audio";
-		
+	{		
 		/// <summary>
-		/// http://jackaudio.org/files/docs/html/group__ClientFunctions.html
+		/// For a full list of functions see http://jackaudio.org/files/docs/html/index.html
 		/// </summary>
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_client_new(string client_name);
@@ -66,10 +61,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		                                     string port_name_pattern,
 		                                     string type_name_pattern,
 		                                     ulong flags);
-		
-		[DllImport(JACK_LIB_NAME)]
-		private static extern IntPtr jack_port_by_name(IntPtr jack_client_t, 
-		                                     string port_name);
 		
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_port_by_id(IntPtr jack_client_t, 

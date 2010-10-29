@@ -1,5 +1,5 @@
 // 
-// LibJackWrapperClasses.cs
+// ChangeType.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,48 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper
 {
-	/// <summary>
-	/// Wrapper class for libjack. This file contains definitions for private classes, enums and constants.
-	/// </summary>
-	internal static partial class LibJackWrapper
-	{		
-		private const string JACK_LIB_NAME = "libjack.so.0";
-		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		private const string JACK_DEFAULT_MIDI_TYPE = "32 bit float mono audio";
-		
-		[Flags]
-		private enum JackPortFlags
-		{
-			JackPortIsInput = 0x1,
-			JackPortIsOutput = 0x2,
-			JackPortIsPhysical = 0x4,
-			JackPortCanMonitor = 0x8,
-			JackPortIsTerminal = 0x10
-		}
-			
-		private delegate void JackPortRegistrationCallback (uint port, int register, IntPtr args);
-		private delegate void JackPortConnectCallback (int a, int b, int connect, IntPtr args);
-		
-		private class JackPort : Port
-		{
-			public uint JackPortId
-			{
-				get;
-				set;
-			}
-			
-			public IntPtr JackPortPointer
-			{
-				get;set;
-			}
-		
-			public JackPort (string name, string clientName, PortType portType, ConnectionType connectionType) : base (name, clientName, portType, connectionType)
-			{
-			}
-			
-		}
+	public enum ChangeType
+	{
+		Undefined,
+		New,
+		Deleted
 	}
 }
+
