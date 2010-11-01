@@ -83,19 +83,39 @@ namespace MonoMultiJack
 			{
 				TreeIter clientIter;
 				string clientName = client.First ().ClientName;
-				if (store.GetIterFromString (out clientIter, clientName))
+				if (store.GetIterFirst (out clientIter))
 				{
-					foreach (var portName in client.Select (port => port.Name))
+					while (store.GetValue (clientIter, 0).ToString () != clientName)
 					{
-						TreeIter portIter;
-						if (store.GetIterFromString (out portIter, portName))
+						if (!store.IterNext (ref clientIter))
 						{
-							store.Remove (ref portIter);
+							break;
+						}
+					}
+					if (store.IterHasChild (clientIter))
+					{
+						foreach (var portName in client.Select (port => port.Name))
+						{
+							TreeIter portIter;
+							if (store.IterChildren (out portIter, clientIter))
+							{
+								while (store.GetValue (portIter, 0).ToString () != portName)
+								{
+									if (!store.IterNext (ref portIter))
+									{
+										break;
+									}
+								}
+								if (store.GetValue (portIter, 0).ToString () == portName)
+								{
+									store.Remove (ref portIter);
+								}
+							}
 						}
 					}
 					if (!store.IterHasChild (clientIter))
 					{
-						store.Remove(ref clientIter);			
+						store.Remove (ref clientIter);
 					}
 				}
 			}
@@ -107,9 +127,20 @@ namespace MonoMultiJack
 			{
 				TreeIter clientIter;
 				string clientName = client.First ().ClientName;
-				if (!store.GetIterFromString (out clientIter, clientName))
+				if (store.GetIterFirst (out clientIter))
 				{
-					clientIter = store.AppendValues (clientName);
+					while (store.GetValue (clientIter, 0).ToString() != clientName)
+					{
+						if (!store.IterNext (ref clientIter))
+						{
+							clientIter = store.AppendValues (clientName);
+							break;
+						}
+					}
+				}
+				else
+				{
+					clientIter = store.AppendValues(clientName);
 				}
 				foreach (var portName in client.Select (port => port.Name))
 				{
@@ -131,7 +162,7 @@ namespace MonoMultiJack
 						AddTreeStoreValues (_inputStore, newInputClients);
 						break;
 			
-				case ChangeType.Deleted:
+					case ChangeType.Deleted:
 						var oldOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output).GroupBy (port => port.ClientName);
 						RemoveTreeStoreValues (_outputStore, oldOutputClients);
 						var oldInputClients = updatedPorts.Where (p => p.PortType == PortType.Input).GroupBy (port => port.ClientName);

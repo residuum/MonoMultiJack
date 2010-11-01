@@ -80,7 +80,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				var eventArgs = new ConnectionEventArgs ();
 				var outPort = _portMapper.Where (map => map.JackPortId == a).First ();
 				var inPort = _portMapper.Where (map => map.JackPortId == b).First ();
-				eventArgs.Ports = GetPorts (outPort.ConnectionType);
 				if (connect != 0)
 				{
 					IConnection newConn = new JackAudioConnection ();
