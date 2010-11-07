@@ -33,7 +33,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	/// Wrapper class for libjack, this file contains the wrapped API function of libjack.
 	/// </summary>
 	internal static partial class LibJackWrapper
-	{		
+	{
+				
 		/// <summary>
 		/// For a full list of functions see http://jackaudio.org/files/docs/html/index.html
 		/// </summary>
@@ -78,6 +79,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_port_get_all_connections(IntPtr jack_client_t, 
 		                                     IntPtr jack_port_t);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern int jack_connect(IntPtr jack_client_t, string source_port, string destination_port);
+	
+		[DllImport(JACK_LIB_NAME)]
+		private static extern int jack_disconnect(IntPtr jack_client_t, string source_port, string destination_port);
 		
 		[DllImport(JACK_LIB_NAME)]
 		private static extern int jack_set_port_registration_callback(IntPtr jack_client_t, 

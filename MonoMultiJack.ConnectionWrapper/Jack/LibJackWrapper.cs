@@ -162,7 +162,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				if (portPointer != IntPtr.Zero)
 				{
 					string portName = UnixMarshal.PtrToString (jack_port_name (portPointer));
-					string[] splittedName = portName.Split (new[] { ':' });
 					PortType portType = PortType.Undefined;
 					JackPortFlags portFlags = (JackPortFlags)jack_port_flags (portPointer);
 					if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput)
@@ -183,9 +182,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					{
 						connectionType = ConnectionType.JackMidi;
 					}
-					JackPort newPort = new JackPort (splittedName[1], splittedName[0], portType, connectionType);
-					newPort.JackPortId = portId;
-					newPort.JackPortPointer = portPointer;
+					JackPort newPort = new JackPort (portName, portId, portPointer, portType, connectionType);
 					return newPort;
 				}
 				else
@@ -193,13 +190,47 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					return null;
 				}
 			}
-			catch (Exception e)			
+			catch (Exception e)
 			{
 				Console.WriteLine (e.Message);
 				return null;
 			}
 		}
-
+		
+		internal static bool Disconnect(Port outputPort, Port inputPort)
+		{
+			if (outputPort.PortType != PortType.Output || inputPort.PortType != PortType.Input || outputPort.ConnectionType != inputPort.ConnectionType)
+			{
+				return false;
+			}
+			string outPortName = _portMapper.Where(map => map.ClientName == outputPort.ClientName 
+				&& map.Name == outputPort.Name 
+				&& map.ConnectionType == outputPort.ConnectionType 
+				&& map.PortType == outputPort.PortType).Select(map => map.JackPortName).First();
+			string inPortName = _portMapper.Where(map => map.ClientName == inputPort.ClientName 
+				&& map.Name == inputPort.Name 
+				&& map.ConnectionType == inputPort.ConnectionType 
+				&& map.PortType == inputPort.PortType).Select(map => map.JackPortName).First();
+			return jack_disconnect(_jackClient, outPortName, inPortName) == 0;			
+		}
+		
+		internal static bool Connect(Port outputPort, Port inputPort)
+		{
+			if (outputPort.PortType != PortType.Output || inputPort.PortType != PortType.Input || outputPort.ConnectionType != inputPort.ConnectionType)
+			{
+				return false;
+			}
+			string outPortName = _portMapper.Where(map => map.ClientName == outputPort.ClientName 
+				&& map.Name == outputPort.Name 
+				&& map.ConnectionType == outputPort.ConnectionType 
+				&& map.PortType == outputPort.PortType).Select(map => map.JackPortName).First();
+			string inPortName = _portMapper.Where(map => map.ClientName == inputPort.ClientName 
+				&& map.Name == inputPort.Name 
+				&& map.ConnectionType == inputPort.ConnectionType 
+				&& map.PortType == inputPort.PortType).Select(map => map.JackPortName).First();
+			return jack_connect(_jackClient, outPortName, inPortName) == 0;
+		}
+		
 		internal static IEnumerable<Port> GetPorts(ConnectionType connectionType)
 		{		
 			var mappedPorts = _portMapper.Where (portMap => portMap.ConnectionType == connectionType).Select (portMap => portMap as Port);

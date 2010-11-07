@@ -30,11 +30,11 @@ namespace MonoMultiJack.ConnectionWrapper
 {
 	public class Port
 	{
-		public string Name {get;private set;}
-		public string ClientName {get; private set;}
+		public string Name {get; protected set;}
+		public string ClientName {get; protected set;}
 
-		public PortType PortType { get; private set; }
-		public ConnectionType ConnectionType {get; private set;}
+		public PortType PortType { get; protected set; }
+		public ConnectionType ConnectionType {get; protected set;}
 		
 		public Port (string name, string clientName, PortType portType, ConnectionType connectionType)
 		{

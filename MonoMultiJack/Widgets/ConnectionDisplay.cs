@@ -62,7 +62,8 @@ namespace MonoMultiJack
 			outClientColumn.AddAttribute (outClientCell, "text", 0);
 			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
-			UpdatePorts(_connectionManager.Ports, ChangeType.New);
+			UpdatePorts (_connectionManager.Ports, ChangeType.New);
+			UpdateConnections(_connectionManager.Connections, ChangeType.New);
 		}
 
 		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
@@ -70,9 +71,12 @@ namespace MonoMultiJack
 			Console.WriteLine (e.Message);
 			if (e.Ports != null && e.Ports.Any ())
 			{
-				UpdatePorts (e.Ports, e.ChangeType);				
-			}			
-			//UpdateConnections (e.Connections);
+				UpdatePorts (e.Ports, e.ChangeType);
+			}
+			if (e.Connections != null && e.Connections.Any ())
+			{
+				UpdateConnections(e.Connections, e.ChangeType);
+			}
 			Console.WriteLine (e.Message);
 			
 		}
@@ -171,6 +175,68 @@ namespace MonoMultiJack
 				}
 			}
 		}
+		
+		private Port GetSelectedPort (TreeStore connectionStore, TreeIter selectedIter, PortType portType)
+		{
+			TreePath iterPath = connectionStore.GetPath (selectedIter);
+			Port selectedPort = null;
+			TreeIter outParentIter;
+			if (iterPath.Up () && connectionStore.GetIter (out outParentIter, iterPath))
+			{
+				selectedPort = new Port (connectionStore.GetValue (selectedIter, 0).ToString (),
+					connectionStore.GetValue (outParentIter, 0).ToString (),
+					portType, _connectionManager.ConnectionType);
+			}
+			return selectedPort;
+		}
+
+		private void UpdateConnections (IEnumerable<IConnection> updatedConnections, ChangeType changeType)
+		{
+			if (updatedConnections != null && updatedConnections.Any ())
+			{
+				switch (changeType)
+				{
+					case ChangeType.New:
+						foreach (IConnection conn in updatedConnections)
+						{
+							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " is connected to " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+						}
+						break;
+					case ChangeType.Deleted:
+						foreach (IConnection conn in updatedConnections)
+						{
+							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " has been disconnected from " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+						}
+						break;
+				}
+			}
+		}
+		protected virtual void ConnectButton_Click (object sender, System.EventArgs e)
+		{
+			TreeIter selectedOutIter;
+			TreeIter selectedInIter;
+			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter))
+			{
+				Port outPort = GetSelectedPort (_outputStore, selectedOutIter, PortType.Output);
+				Port inPort = GetSelectedPort(_inputStore, selectedInIter, PortType.Input);
+				_connectionManager.Connect (outPort, inPort);
+			}
+		}
+		
+		protected virtual void DisconnectButton_Click (object sender, System.EventArgs e)
+		{
+			TreeIter selectedOutIter;
+			TreeIter selectedInIter;
+			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter))
+			{
+				Port outPort = GetSelectedPort (_outputStore, selectedOutIter, PortType.Output);
+				Port inPort = GetSelectedPort (_inputStore, selectedInIter, PortType.Input);
+				_connectionManager.Disconnect (outPort, inPort);
+			}
+		}
+		
+		
+		
 	}
 }
 

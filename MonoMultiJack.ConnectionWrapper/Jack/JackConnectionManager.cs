@@ -76,13 +76,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			else
 			{
-				throw new NotImplementedException ();
+				return LibJackWrapper.Connect(outPort, inPort);
 			}
 		}
 
-		public bool Disconnect (IConnection connection)
+		public bool Disconnect (Port outPort, Port inPort)
 		{
-			throw new NotImplementedException ();
+			return LibJackWrapper.Disconnect(outPort, inPort);
 		}
 
 		public IEnumerable<IConnection> Connections 

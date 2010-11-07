@@ -54,16 +54,30 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			public uint JackPortId
 			{
 				get;
-				set;
+				private set;
 			}
 			
 			public IntPtr JackPortPointer
 			{
-				get;set;
+				get;
+				private set;
+			}
+			
+			public string JackPortName
+			{
+				get; private set;
 			}
 		
-			public JackPort (string name, string clientName, PortType portType, ConnectionType connectionType) : base (name, clientName, portType, connectionType)
-			{
+			public JackPort (string jackPortName, uint jackPortId, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
+			{				
+				JackPortName = jackPortName;
+				JackPortId = jackPortId;
+				JackPortPointer = jackPortPtr;
+				PortType = portType;
+				ConnectionType = connectionType;
+				string[] splittedName = jackPortName.Split (new[] { ':' });
+				ClientName = splittedName[0];
+				Name = splittedName[1];				
 			}
 			
 		}
