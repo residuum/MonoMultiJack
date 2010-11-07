@@ -26,7 +26,7 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public class JackAudioConnection : IConnection
+	public class JackMidiConnection : IConnection
 	{
 		private Port _outPort;
 		private Port _inPort;
@@ -47,7 +47,7 @@ namespace MonoMultiJack.ConnectionWrapper
 			}
 			set 
 			{
-				if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Output)
+				if (value.ConnectionType == ConnectionType.JackMidi && value.PortType == PortType.Output)
 				{
 					_outPort = value;					
 				}
@@ -69,7 +69,7 @@ namespace MonoMultiJack.ConnectionWrapper
 			}
 			set 
 			{
-				if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Input) 
+				if (value.ConnectionType == ConnectionType.JackMidi && value.PortType == PortType.Input) 
 				{
 					_inPort = value;
 				}
@@ -78,7 +78,7 @@ namespace MonoMultiJack.ConnectionWrapper
 		
 		public ConnectionType ConnectionType
 		{
-			get { return ConnectionType.JackAudio; }
+			get { return ConnectionType.JackMidi; }
 		}
 		#endregion
 	}
