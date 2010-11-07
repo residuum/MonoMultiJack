@@ -54,6 +54,8 @@
     <Compile Include="Jack\LibJackWrapper.PInvoke.cs" />
     <Compile Include="Jack\JackConnectionManager.cs" />
     <Compile Include="Common\ChangeType.cs" />
+    <Compile Include="Jack\JackMidiManager.cs" />
+    <Compile Include="Jack\JackMidiConnection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

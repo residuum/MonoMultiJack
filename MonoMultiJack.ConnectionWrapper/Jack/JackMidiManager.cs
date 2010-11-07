@@ -2,9 +2,9 @@
 // JackdAudioConnection.cs
 //  
 // Author:
-//       Thomas Mayer <thomas@residuum.org>
+//       thomas <>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2010 thomas
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,64 +23,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-namespace MonoMultiJack.ConnectionWrapper
-{
-	public class JackMidiConnection : IConnection
-	{
-		private Port _outPort;
-		private Port _inPort;
-		
-		#region IConnection implementation
-		public Port OutPort 
-		{
-			get 
-			{
-				if (_inPort != null)
-				{
-					return _outPort;
-				}
-				else
-				{
-					return null;
-				}
-			}
-			set 
-			{
-				if (value.ConnectionType == ConnectionType.JackMidi && value.PortType == PortType.Output)
-				{
-					_outPort = value;					
-				}
-			}
-		}
 
-		public Port InPort 
+namespace MonoMultiJack.ConnectionWrapper.Jack
+{
+	public class JackMidiManager : JackConnectionManager, IConnectionManager
+	{
+		public JackMidiManager () : base()
 		{
-			get 
-			{
-				if (_outPort != null) 
-				{
-					return _inPort;
-				} 
-				else 
-				{
-					return null;
-				}
-			}
-			set 
-			{
-				if (value.ConnectionType == ConnectionType.JackMidi && value.PortType == PortType.Input) 
-				{
-					_inPort = value;
-				}
-			}
 		}
 		
-		public ConnectionType ConnectionType
+		public override ConnectionType ConnectionType
 		{
-			get { return ConnectionType.JackMidi; }
+			get {return ConnectionType.JackMidi;}
 		}
-		#endregion
 	}
 }
-

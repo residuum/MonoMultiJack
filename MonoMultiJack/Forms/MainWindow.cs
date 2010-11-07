@@ -112,8 +112,10 @@ namespace MonoMultiJack
 			Icon = ProgramIcon;
 			_statusbar.Push (0, JackdStatusStopped);
 			ReadConfiguration ();
-			IConnectionManager jackdAudio = new JackAudioManager();
-			_connectionNotebook.AppendPage(new ConnectionDisplay(jackdAudio), new Label(jackdAudio.ConnectionType.ToString()));
+			IConnectionManager jackAudio = new JackAudioManager ();
+			IConnectionManager jackMidi = new JackMidiManager();
+			_connectionNotebook.AppendPage (new ConnectionDisplay (jackAudio), new Label (jackAudio.ConnectionType.ToString ()));
+			_connectionNotebook.AppendPage (new ConnectionDisplay (jackMidi), new Label (jackMidi.ConnectionType.ToString ()));
 		}
 		
 		/// <summary>
