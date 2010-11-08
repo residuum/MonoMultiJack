@@ -48,6 +48,7 @@ namespace MonoMultiJack
 		{
 			_connectionManager = connectionManager;
 			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
+			_connectionManager.BackendHasExited += Handle_connectionManagerBackendHasExited;
 			
 			var inClientColumn = new TreeViewColumn ();
 			var inClientCell = new CellRendererText ();
@@ -64,6 +65,12 @@ namespace MonoMultiJack
 			_outputTreeview.Model = _outputStore;
 			UpdatePorts (_connectionManager.Ports, ChangeType.New);
 			UpdateConnections(_connectionManager.Connections, ChangeType.New);
+		}
+
+		void Handle_connectionManagerBackendHasExited (object sender, ConnectionEventArgs e)
+		{
+			_outputStore.Clear ();
+			_inputStore.Clear();
 		}
 
 		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)

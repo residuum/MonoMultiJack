@@ -31,9 +31,10 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	public abstract class JackConnectionManager : IConnectionManager
 	{
-		protected JackConnectionManager()
+		protected JackConnectionManager ()
 		{
 			LibJackWrapper.PortOrConnectionHasChanged += LibJackWrapperHasChanged;
+			LibJackWrapper.JackHasShutdown += OnJackShutdown;
 		}
 		
 		#region IConnectionManager implementation
@@ -115,11 +116,16 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		private void LibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
 		{
-			Console.WriteLine(args.Message);
+			Console.WriteLine (args.Message);
 			if (args.ConnectionType == ConnectionType)
 			{
 				ConnectionHasChanged (this, args);
 			}
+		}
+		
+		private void OnJackShutdown(object sender, ConnectionEventArgs args)
+		{
+			BackendHasExited(this, args);
 		}
 	}
 }

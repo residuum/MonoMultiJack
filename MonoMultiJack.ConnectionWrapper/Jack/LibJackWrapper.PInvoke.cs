@@ -95,5 +95,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		private static extern int jack_set_port_connect_callback(IntPtr jack_client_t, 
 											JackPortConnectCallback connect_callback,
 											IntPtr args);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern void jack_on_shutdown(IntPtr jack_client_t, JackShutdownCallback function, IntPtr args);
 	}
 }

@@ -40,7 +40,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		private static List<JackPort> _portMapper = new List<JackPort>();
 		private static List<IConnection> _connections = new List<IConnection>();
 		
-		public static void OnPortRegistration (uint port, int register, IntPtr args)
+		private static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
 			ConnectionType connectionType = ConnectionType.Undefined;
@@ -73,7 +73,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			PortOrConnectionHasChanged(null, eventArgs);			
 		}
 		
-		public static void OnPortConnect (int a, int b, int connect, IntPtr args)
+		private static void OnPortConnect (int a, int b, int connect, IntPtr args)
 		{
 			try
 			{
@@ -97,7 +97,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					var oldConn = _connections.Where (conn => conn.InPort.ClientName == inPort.ClientName && conn.InPort.Name == inPort.Name
 						&& conn.OutPort.ClientName == outPort.ClientName && conn.OutPort.Name == outPort.Name);
 					eventArgs.Connections = oldConn;
-					eventArgs.ChangeType = ChangeType.Deleted;					
+					eventArgs.ChangeType = ChangeType.Deleted;
 					_connections = _connections.Where (conn => conn.InPort.ClientName != inPort.ClientName || conn.InPort.Name != inPort.Name
 						|| conn.OutPort.ClientName != outPort.ClientName || conn.OutPort.Name != outPort.Name).ToList ();
 					eventArgs.Message = "Connection deleted";
@@ -107,11 +107,19 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.Message);
+				Console.WriteLine (e.Message);
 			}
 		}
 		
-		internal static event ConnectionEventHandler PortOrConnectionHasChanged;
+		private static void OnJackShutdown (IntPtr args)
+		{
+			_jackClient = IntPtr.Zero;
+			_portMapper.Clear ();
+			JackHasShutdown(null, new ConnectionEventArgs());
+		}
+		
+		internal static event ConnectionEventHandler PortOrConnectionHasChanged;		
+		internal static event ConnectionEventHandler JackHasShutdown;
 		
 		internal static bool ConnectToServer ()
 		{
@@ -140,7 +148,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		private static bool Activate ()
 		{
 			jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
-			jack_set_port_registration_callback(_jackClient, OnPortRegistration, IntPtr.Zero);
+			jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
+			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = jack_activate (_jackClient);
 			return jackActivateStatus == 0;
 		}

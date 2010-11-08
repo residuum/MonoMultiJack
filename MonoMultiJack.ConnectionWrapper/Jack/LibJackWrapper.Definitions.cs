@@ -48,6 +48,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			
 		private delegate void JackPortRegistrationCallback (uint port, int register, IntPtr args);
 		private delegate void JackPortConnectCallback (int a, int b, int connect, IntPtr args);
+		private delegate void JackShutdownCallback (IntPtr args);
 		
 		private class JackPort : Port
 		{
