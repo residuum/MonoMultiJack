@@ -116,7 +116,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		private void LibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
 		{
+#if DEBUG
 			Console.WriteLine (args.Message);
+#endif
 			if (args.ConnectionType == ConnectionType)
 			{
 				ConnectionHasChanged (this, args);

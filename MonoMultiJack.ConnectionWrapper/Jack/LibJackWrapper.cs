@@ -107,7 +107,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			catch (Exception e)
 			{
+#if DEBUG
 				Console.WriteLine (e.Message);
+#endif
 			}
 		}
 		
@@ -201,7 +203,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			catch (Exception e)
 			{
+#if DEBUG
 				Console.WriteLine (e.Message);
+#endif
 				return null;
 			}
 		}

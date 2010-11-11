@@ -75,7 +75,9 @@ namespace MonoMultiJack
 
 		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
 		{
+#if DEBUG
 			Console.WriteLine (e.Message);
+#endif
 			if (e.Ports != null && e.Ports.Any ())
 			{
 				UpdatePorts (e.Ports, e.ChangeType);
@@ -84,7 +86,6 @@ namespace MonoMultiJack
 			{
 				UpdateConnections(e.Connections, e.ChangeType);
 			}
-			Console.WriteLine (e.Message);
 			
 		}
 			
@@ -206,13 +207,17 @@ namespace MonoMultiJack
 					case ChangeType.New:
 						foreach (IConnection conn in updatedConnections)
 						{
+#if DEBUG
 							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " is connected to " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+#endif
 						}
 						break;
 					case ChangeType.Deleted:
 						foreach (IConnection conn in updatedConnections)
 						{
-							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " has been disconnected from " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+#if DEBUG
+						Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " has been disconnected from " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+#endif
 						}
 						break;
 				}
