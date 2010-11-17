@@ -32,6 +32,7 @@ using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.ConnectionWrapper.Jack;
+using MonoMultiJack.ConnectionWrapper.Alsa;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -113,9 +114,11 @@ namespace MonoMultiJack
 			_statusbar.Push (0, JackdStatusStopped);
 			ReadConfiguration ();
 			IConnectionManager jackAudio = new JackAudioManager ();
-			IConnectionManager jackMidi = new JackMidiManager();
+			IConnectionManager jackMidi = new JackMidiManager ();
+			IConnectionManager alsaMidi = new AlsaMidiManager();
 			_connectionNotebook.AppendPage (new ConnectionDisplay (jackAudio), new Label (jackAudio.ConnectionType.ToString ()));
 			_connectionNotebook.AppendPage (new ConnectionDisplay (jackMidi), new Label (jackMidi.ConnectionType.ToString ()));
+			_connectionNotebook.AppendPage (new ConnectionDisplay (alsaMidi), new Label (alsaMidi.ConnectionType.ToString ()));
 		}
 		
 		/// <summary>

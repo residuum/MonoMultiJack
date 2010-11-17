@@ -56,6 +56,11 @@
     <Compile Include="Common\ChangeType.cs" />
     <Compile Include="Jack\JackMidiManager.cs" />
     <Compile Include="Jack\JackMidiConnection.cs" />
+    <Compile Include="Alsa\AlsaMidiManager.cs" />
+    <Compile Include="Alsa\AlsaMidiConnection.cs" />
+    <Compile Include="Alsa\LibAsoundWrapper.cs" />
+    <Compile Include="Alsa\LibAsoundWrapper.Definitions.cs" />
+    <Compile Include="Alsa\LibAsoundWrapper.Pinvoke.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
