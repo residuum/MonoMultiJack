@@ -75,8 +75,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		{
 			get 
 			{
-				return null;
-				//throw new NotImplementedException ();
+				return LibAsoundWrapper.GetPorts();
 			}
 		}
 
