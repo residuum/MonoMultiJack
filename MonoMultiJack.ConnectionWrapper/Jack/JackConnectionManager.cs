@@ -128,6 +128,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		private void OnJackShutdown(object sender, ConnectionEventArgs args)
 		{
 			BackendHasExited(this, args);
+			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
 		}
 	}
 }
