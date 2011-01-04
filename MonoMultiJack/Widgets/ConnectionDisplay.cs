@@ -245,10 +245,6 @@ namespace MonoMultiJack
 				Port inPort = GetSelectedPort (_inputStore, selectedInIter, PortType.Input);
 				_connectionManager.Disconnect (outPort, inPort);
 			}
-		}
-		
-		
-		
+		}		
 	}
 }
-

@@ -121,7 +121,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 #endif
 			if (args.ConnectionType == ConnectionType)
 			{
-				ConnectionHasChanged (this, args);
+				ConnectionHasChanged (this, args);	
 			}
 		}
 		
