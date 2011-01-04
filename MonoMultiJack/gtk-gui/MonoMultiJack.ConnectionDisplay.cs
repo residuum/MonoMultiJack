@@ -20,7 +20,7 @@ namespace MonoMultiJack
 
 		private global::Gtk.TreeView _outputTreeview;
 
-		private global::Gtk.Fixed _connectionArea;
+		private global::Gtk.DrawingArea _connectionArea;
 
 		private global::Gtk.ScrolledWindow GtkScrolledWindow1;
 
@@ -97,10 +97,9 @@ namespace MonoMultiJack
 			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.GtkScrolledWindow]));
 			w6.Position = 0;
 			// Container child hbox4.Gtk.Box+BoxChild
-			this._connectionArea = new global::Gtk.Fixed ();
+			this._connectionArea = new global::Gtk.DrawingArea ();
 			this._connectionArea.WidthRequest = 200;
 			this._connectionArea.Name = "_connectionArea";
-			this._connectionArea.HasWindow = false;
 			this.hbox4.Add (this._connectionArea);
 			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox4[this._connectionArea]));
 			w7.Position = 1;
@@ -128,6 +127,10 @@ namespace MonoMultiJack
 			this.Show ();
 			this._connectButton.Clicked += new global::System.EventHandler (this.ConnectButton_Click);
 			this._disconnectButton.Clicked += new global::System.EventHandler (this.DisconnectButton_Click);
+			this._outputTreeview.RowExpanded += new global::Gtk.RowExpandedHandler (this.OnTreeViewRowExpanded);
+			this._outputTreeview.RowCollapsed += new global::Gtk.RowCollapsedHandler (this.OnTreeViewRowCollapsed);
+			this._inputTreeview.RowExpanded += new global::Gtk.RowExpandedHandler (this.OnTreeViewRowExpanded);
+			this._inputTreeview.RowCollapsed += new global::Gtk.RowCollapsedHandler (this.OnTreeViewRowCollapsed);
 		}
 	}
 }

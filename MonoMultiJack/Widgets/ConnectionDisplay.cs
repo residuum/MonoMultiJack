@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gtk;
 using MonoMultiJack.ConnectionWrapper;
+using Cairo;
 
 namespace MonoMultiJack
 {
@@ -38,6 +39,8 @@ namespace MonoMultiJack
 		
 		private TreeStore _outputStore = new TreeStore(typeof(string));
 		private TreeStore _inputStore = new TreeStore (typeof(string));
+		
+		private List<IConnection> _connections = new List<IConnection>();
 		
 		public ConnectionDisplay ()
 		{
@@ -181,6 +184,7 @@ namespace MonoMultiJack
 						RemoveTreeStoreValues (_inputStore, oldInputClients);
 						break;
 				}
+				UpdateConnectionLines ();
 			}
 		}
 		
@@ -205,22 +209,27 @@ namespace MonoMultiJack
 				switch (changeType)
 				{
 					case ChangeType.New:
+						
+#if DEBUG
 						foreach (IConnection conn in updatedConnections)
 						{
-#if DEBUG
 							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " is connected to " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
-#endif
 						}
+#endif
+						_connections.AddRange(updatedConnections);
 						break;
 					case ChangeType.Deleted:
+#if DEBUG
 						foreach (IConnection conn in updatedConnections)
 						{
-#if DEBUG
-						Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " has been disconnected from " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
-#endif
+							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " has been disconnected from " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
 						}
+#endif
+						var oldConnectionHashes = new HashSet<IConnection>(updatedConnections);
+						_connections.RemoveAll(c => oldConnectionHashes.Contains(c));					
 						break;
 				}
+				UpdateConnectionLines ();
 			}
 		}
 		protected virtual void ConnectButton_Click (object sender, System.EventArgs e)
@@ -233,6 +242,7 @@ namespace MonoMultiJack
 				Port inPort = GetSelectedPort(_inputStore, selectedInIter, PortType.Input);
 				_connectionManager.Connect (outPort, inPort);
 			}
+			UpdateConnectionLines ();
 		}
 		
 		protected virtual void DisconnectButton_Click (object sender, System.EventArgs e)
@@ -245,6 +255,38 @@ namespace MonoMultiJack
 				Port inPort = GetSelectedPort (_inputStore, selectedInIter, PortType.Input);
 				_connectionManager.Disconnect (outPort, inPort);
 			}
-		}		
+			UpdateConnectionLines ();
+		}	
+		
+		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
+		{
+			UpdateConnectionLines();
+		}
+		
+		void UpdateConnectionLines ()
+		{
+			using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow))
+			{
+				foreach (IConnection conn in _connections)
+				{
+					g.Save ();
+					g.MoveTo (0, 0);
+					g.LineTo(_connectionArea.WidthRequest, 0);
+					g.Restore ();
+				}
+				g.Color = new Color (0, 0, 0);
+				g.LineWidth = 1;
+				g.Stroke();
+			}
+
+		}
+
+		protected virtual void OnTreeViewRowCollapsed (object o, Gtk.RowCollapsedArgs args)
+		{
+			UpdateConnectionLines();
+		}
+		
+		
+		
 	}
 }

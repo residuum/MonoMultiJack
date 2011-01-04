@@ -122,8 +122,6 @@ namespace MonoMultiJack
 			this.mainVbox.Add (this.mainHbox);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this.mainHbox]));
 			w5.Position = 1;
-			w5.Expand = false;
-			w5.Fill = false;
 			// Container child mainVbox.Gtk.Box+BoxChild
 			this._statusbar = new global::Gtk.Statusbar ();
 			this._statusbar.Name = "_statusbar";
