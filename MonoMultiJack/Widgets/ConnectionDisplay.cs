@@ -70,7 +70,7 @@ namespace MonoMultiJack
 			UpdateConnections(_connectionManager.Connections, ChangeType.New);
 		}
 
-		void Handle_connectionManagerBackendHasExited (object sender, ConnectionEventArgs e)
+		private void Handle_connectionManagerBackendHasExited (object sender, ConnectionEventArgs e)
 		{
 			_outputStore.Clear ();
 			_inputStore.Clear();
@@ -80,6 +80,7 @@ namespace MonoMultiJack
 		{
 #if DEBUG
 			Console.WriteLine (e.Message);
+			Console.WriteLine (e.ConnectionType.ToString ());
 #endif
 			if (e.Ports != null && e.Ports.Any ())
 			{
@@ -265,6 +266,7 @@ namespace MonoMultiJack
 		
 		void UpdateConnectionLines ()
 		{
+			_connectionArea.GdkWindow.Clear ();
 			using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow))
 			{
 				foreach (IConnection conn in _connections)
@@ -275,7 +277,7 @@ namespace MonoMultiJack
 					g.Restore ();
 				}
 				g.Color = new Color (0, 0, 0);
-				g.LineWidth = 1;
+				g.LineWidth = 2;
 				g.Stroke();
 			}
 
