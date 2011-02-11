@@ -16,13 +16,13 @@ namespace MonoMultiJack
 
 		private global::Gtk.HBox hbox4;
 
-		private global::Gtk.ScrolledWindow GtkScrolledWindow;
+		private global::Gtk.ScrolledWindow _outputScrolledWindow;
 
 		private global::Gtk.TreeView _outputTreeview;
 
 		private global::Gtk.DrawingArea _connectionArea;
 
-		private global::Gtk.ScrolledWindow GtkScrolledWindow1;
+		private global::Gtk.ScrolledWindow _inputScrolledWindow;
 
 		private global::Gtk.TreeView _inputTreeview;
 
@@ -83,18 +83,18 @@ namespace MonoMultiJack
 			this.hbox4.Name = "hbox4";
 			this.hbox4.Spacing = 6;
 			// Container child hbox4.Gtk.Box+BoxChild
-			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this._outputScrolledWindow = new global::Gtk.ScrolledWindow ();
+			this._outputScrolledWindow.Name = "_outputScrolledWindow";
+			this._outputScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child _outputScrolledWindow.Gtk.Container+ContainerChild
 			this._outputTreeview = new global::Gtk.TreeView ();
 			this._outputTreeview.CanFocus = true;
 			this._outputTreeview.Name = "_outputTreeview";
 			this._outputTreeview.EnableSearch = false;
 			this._outputTreeview.HeadersVisible = false;
-			this.GtkScrolledWindow.Add (this._outputTreeview);
-			this.hbox4.Add (this.GtkScrolledWindow);
-			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.GtkScrolledWindow]));
+			this._outputScrolledWindow.Add (this._outputTreeview);
+			this.hbox4.Add (this._outputScrolledWindow);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox4[this._outputScrolledWindow]));
 			w6.Position = 0;
 			// Container child hbox4.Gtk.Box+BoxChild
 			this._connectionArea = new global::Gtk.DrawingArea ();
@@ -104,18 +104,18 @@ namespace MonoMultiJack
 			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox4[this._connectionArea]));
 			w7.Position = 1;
 			// Container child hbox4.Gtk.Box+BoxChild
-			this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
-			this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
+			this._inputScrolledWindow = new global::Gtk.ScrolledWindow ();
+			this._inputScrolledWindow.Name = "_inputScrolledWindow";
+			this._inputScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child _inputScrolledWindow.Gtk.Container+ContainerChild
 			this._inputTreeview = new global::Gtk.TreeView ();
 			this._inputTreeview.CanFocus = true;
 			this._inputTreeview.Name = "_inputTreeview";
 			this._inputTreeview.EnableSearch = false;
 			this._inputTreeview.HeadersVisible = false;
-			this.GtkScrolledWindow1.Add (this._inputTreeview);
-			this.hbox4.Add (this.GtkScrolledWindow1);
-			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.GtkScrolledWindow1]));
+			this._inputScrolledWindow.Add (this._inputTreeview);
+			this.hbox4.Add (this._inputScrolledWindow);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox4[this._inputScrolledWindow]));
 			w9.Position = 2;
 			this.vbox1.Add (this.hbox4);
 			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.hbox4]));

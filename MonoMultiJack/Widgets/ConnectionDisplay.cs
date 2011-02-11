@@ -42,16 +42,28 @@ namespace MonoMultiJack
 		
 		private List<IConnection> _connections = new List<IConnection>();
 		
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
 		public ConnectionDisplay ()
 		{
 			this.Build ();
 		}
 		
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="connectionManager">
+		/// A <see cref="IConnectionManager"/> whose ports and connection are displayed.
+		/// </param>
 		public ConnectionDisplay (IConnectionManager connectionManager) : this()
 		{
 			_connectionManager = connectionManager;
 			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
 			_connectionManager.BackendHasExited += Handle_connectionManagerBackendHasExited;
+			
+			_outputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
+			_inputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
 			
 			var inClientColumn = new TreeViewColumn ();
 			var inClientCell = new CellRendererText ();
@@ -68,6 +80,11 @@ namespace MonoMultiJack
 			_outputTreeview.Model = _outputStore;
 			UpdatePorts (_connectionManager.Ports, ChangeType.New);
 			UpdateConnections(_connectionManager.Connections, ChangeType.New);
+		}
+
+		void Handle_scrolledWindowScrollEvent (object o, ScrollEventArgs args)
+		{
+			UpdateConnectionLines();
 		}
 
 		private void Handle_connectionManagerBackendHasExited (object sender, ConnectionEventArgs e)
@@ -202,6 +219,41 @@ namespace MonoMultiJack
 			}
 			return selectedPort;
 		}
+		
+		private int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
+		{
+			int cellHeight = 24;
+			//We start in the middle of the first Treeview item
+			int position = cellHeight/2;
+			TreeIter clientIter;
+			TreeIter portIter;
+			if (store.GetIterFirst (out clientIter))
+			{
+				do
+				{
+					if (store.IterHasChild (clientIter) && tree.GetRowExpanded (store.GetPath (clientIter)))
+					{
+						if (store.IterChildren (out portIter, clientIter))
+						{
+							do
+							{
+								position += cellHeight;
+							}
+							while ((store.GetValue (portIter, 0).ToString () != selectedPort.Name || store.GetValue (clientIter, 0).ToString () != selectedPort.ClientName)
+								&& store.IterNext(ref portIter));
+						}
+					}
+					//Necessary because the first Treeview item only counts as 1/2 cell height.
+					if (store.GetValue (clientIter, 0).ToString () == selectedPort.ClientName)
+					{
+						break;
+					}
+					position += cellHeight;
+				} 
+				while (store.IterNext (ref clientIter) );
+			}
+			return position;
+		}
 
 		private void UpdateConnections (IEnumerable<IConnection> updatedConnections, ChangeType changeType)
 		{
@@ -214,7 +266,7 @@ namespace MonoMultiJack
 #if DEBUG
 						foreach (IConnection conn in updatedConnections)
 						{
-							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " is connected to " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+							Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " is connected to " + conn.InPort.ClientName + ":" + conn.InPort.Name);
 						}
 #endif
 						_connections.AddRange(updatedConnections);
@@ -223,7 +275,7 @@ namespace MonoMultiJack
 #if DEBUG
 						foreach (IConnection conn in updatedConnections)
 						{
-							Console.WriteLine (conn.InPort.ClientName + ":" + conn.InPort.Name + " has been disconnected from " + conn.OutPort.ClientName + ":" + conn.OutPort.Name);
+							Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " has been disconnected from " + conn.InPort.ClientName + ":" + conn.InPort.Name);
 						}
 #endif
 						var oldConnectionHashes = new HashSet<IConnection>(updatedConnections);
@@ -243,7 +295,6 @@ namespace MonoMultiJack
 				Port inPort = GetSelectedPort(_inputStore, selectedInIter, PortType.Input);
 				_connectionManager.Connect (outPort, inPort);
 			}
-			UpdateConnectionLines ();
 		}
 		
 		protected virtual void DisconnectButton_Click (object sender, System.EventArgs e)
@@ -256,7 +307,6 @@ namespace MonoMultiJack
 				Port inPort = GetSelectedPort (_inputStore, selectedInIter, PortType.Input);
 				_connectionManager.Disconnect (outPort, inPort);
 			}
-			UpdateConnectionLines ();
 		}	
 		
 		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
@@ -271,10 +321,16 @@ namespace MonoMultiJack
 			{
 				foreach (IConnection conn in _connections)
 				{
-					g.Save ();
-					g.MoveTo (0, 0);
-					g.LineTo(_connectionArea.WidthRequest, 0);
-					g.Restore ();
+					int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
+					int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
+					if (outY != -1 && inY != -1)
+					{
+						g.Save ();
+						//connectionOutIter.
+						g.MoveTo (0, outY);
+						g.LineTo (_connectionArea.Allocation.Width, inY);
+						g.Restore ();
+					}
 				}
 				g.Color = new Color (0, 0, 0);
 				g.LineWidth = 2;

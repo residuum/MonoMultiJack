@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/MonoMultiJack.exe" internal="true" />
+    <widget-library name="../bin/Release/MonoMultiJack.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MonoMultiJack.MainWindow" design-size="589 215">
     <action-group name="Default">
@@ -241,7 +241,7 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+              <widget class="Gtk.ScrolledWindow" id="_outputScrolledWindow">
                 <property name="MemberName" />
                 <property name="ShadowType">In</property>
                 <child>
@@ -272,7 +272,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+              <widget class="Gtk.ScrolledWindow" id="_inputScrolledWindow">
                 <property name="MemberName" />
                 <property name="ShadowType">In</property>
                 <child>
