@@ -62,8 +62,11 @@ namespace MonoMultiJack
 			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
 			_connectionManager.BackendHasExited += Handle_connectionManagerBackendHasExited;
 			
-			_outputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
-			_inputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
+//			_outputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
+//			_inputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
+			
+			_outputScrolledWindow.VScrollbar.ScrollEvent += Handle_scrolledWindowScrollEvent;
+			_inputScrolledWindow.VScrollbar.ScrollEvent += Handle_scrolledWindowScrollEvent;
 			
 			var inClientColumn = new TreeViewColumn ();
 			var inClientCell = new CellRendererText ();
@@ -224,7 +227,13 @@ namespace MonoMultiJack
 		{
 			int cellHeight = 24;
 			//We start in the middle of the first Treeview item
-			int position = cellHeight/2;
+			int position = cellHeight / 2;
+			
+			ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
+			if (treeParent != null)
+			{
+				position -= Convert.ToInt32(treeParent.Vadjustment.Value);
+			}
 			TreeIter clientIter;
 			TreeIter portIter;
 			if (store.GetIterFirst (out clientIter))
@@ -326,14 +335,13 @@ namespace MonoMultiJack
 					if (outY != -1 && inY != -1)
 					{
 						g.Save ();
-						//connectionOutIter.
 						g.MoveTo (0, outY);
 						g.LineTo (_connectionArea.Allocation.Width, inY);
 						g.Restore ();
 					}
 				}
 				g.Color = new Color (0, 0, 0);
-				g.LineWidth = 2;
+				g.LineWidth = 1;
 				g.Stroke();
 			}
 
