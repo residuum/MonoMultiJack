@@ -61,13 +61,7 @@ namespace MonoMultiJack
 			_connectionManager = connectionManager;
 			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
 			_connectionManager.BackendHasExited += Handle_connectionManagerBackendHasExited;
-			
-//			_outputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
-//			_inputScrolledWindow.ScrollEvent += Handle_scrolledWindowScrollEvent;
-			
-			_outputScrolledWindow.VScrollbar.ScrollEvent += Handle_scrolledWindowScrollEvent;
-			_inputScrolledWindow.VScrollbar.ScrollEvent += Handle_scrolledWindowScrollEvent;
-			
+						
 			var inClientColumn = new TreeViewColumn ();
 			var inClientCell = new CellRendererText ();
 			inClientColumn.PackStart (inClientCell, true);
@@ -82,7 +76,7 @@ namespace MonoMultiJack
 			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
 			UpdatePorts (_connectionManager.Ports, ChangeType.New);
-			UpdateConnections(_connectionManager.Connections, ChangeType.New);
+			UpdateConnections (_connectionManager.Connections, ChangeType.New);
 		}
 
 		void Handle_scrolledWindowScrollEvent (object o, ScrollEventArgs args)
@@ -318,12 +312,7 @@ namespace MonoMultiJack
 			}
 		}	
 		
-		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
-		{
-			UpdateConnectionLines();
-		}
-		
-		void UpdateConnectionLines ()
+		private void UpdateConnectionLines ()
 		{
 			_connectionArea.GdkWindow.Clear ();
 			using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow))
@@ -347,12 +336,19 @@ namespace MonoMultiJack
 
 		}
 
+		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
+		{
+			UpdateConnectionLines ();
+		}
+
 		protected virtual void OnTreeViewRowCollapsed (object o, Gtk.RowCollapsedArgs args)
 		{
 			UpdateConnectionLines();
 		}
 		
-		
-		
+		protected virtual void OnWidgetEvent (object o, Gtk.WidgetEventArgs args)
+		{
+			UpdateConnectionLines();
+		}
 	}
 }

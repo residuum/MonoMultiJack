@@ -173,6 +173,7 @@
     <property name="MemberName" />
     <property name="WidthRequest">500</property>
     <property name="HeightRequest">200</property>
+    <signal name="WidgetEvent" handler="OnWidgetEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
@@ -282,8 +283,8 @@
                     <property name="ShowScrollbars">True</property>
                     <property name="EnableSearch">False</property>
                     <property name="HeadersVisible">False</property>
-                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
                     <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
+                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
                   </widget>
                 </child>
               </widget>
