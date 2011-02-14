@@ -173,7 +173,7 @@
     <property name="MemberName" />
     <property name="WidthRequest">500</property>
     <property name="HeightRequest">200</property>
-    <signal name="WidgetEvent" handler="OnWidgetEvent" />
+    <signal name="ExposeEvent" handler="Handle_ExposeEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />

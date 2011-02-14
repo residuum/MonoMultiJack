@@ -345,10 +345,12 @@ namespace MonoMultiJack
 		{
 			UpdateConnectionLines();
 		}
-		
-		protected virtual void OnWidgetEvent (object o, Gtk.WidgetEventArgs args)
+
+		protected virtual void Handle_ExposeEvent (object o, Gtk.ExposeEventArgs args)
 		{
 			UpdateConnectionLines();
 		}
+		
+		
 	}
 }
