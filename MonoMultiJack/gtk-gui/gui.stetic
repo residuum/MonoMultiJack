@@ -145,9 +145,7 @@
           </widget>
           <packing>
             <property name="Position">1</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
+            <property name="AutoSize">False</property>
           </packing>
         </child>
         <child>
@@ -175,36 +173,17 @@
     <property name="MemberName" />
     <property name="WidthRequest">500</property>
     <property name="HeightRequest">200</property>
+    <signal name="ExposeEvent" handler="Handle_ExposeEvent" />
     <child>
-      <widget class="Gtk.HBox" id="hbox1">
+      <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+          <widget class="Gtk.HBox" id="hbox2">
             <property name="MemberName" />
-            <property name="ShadowType">In</property>
+            <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.TreeView" id="_outputTreeview">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="ShowScrollbars">True</property>
-                <property name="EnableSearch">False</property>
-                <property name="HeadersVisible">False</property>
-              </widget>
-            </child>
-          </widget>
-          <packing>
-            <property name="Position">0</property>
-            <property name="AutoSize">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.Fixed" id="_connectionArea">
-            <property name="MemberName" />
-            <property name="WidthRequest">200</property>
-            <property name="HasWindow">False</property>
-            <child>
-              <widget class="Gtk.HBox" id="hbox2">
+              <widget class="Gtk.HBox" id="hbox3">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
@@ -239,37 +218,84 @@
                     <property name="Fill">False</property>
                   </packing>
                 </child>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">False</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder />
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox4">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="_outputScrolledWindow">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
                 <child>
-                  <placeholder />
+                  <widget class="Gtk.TreeView" id="_outputTreeview">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                    <property name="EnableSearch">False</property>
+                    <property name="HeadersVisible">False</property>
+                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
+                    <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
+                  </widget>
                 </child>
               </widget>
               <packing>
-                <property name="X">1</property>
-                <property name="Y">4</property>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.DrawingArea" id="_connectionArea">
+                <property name="MemberName" />
+                <property name="WidthRequest">200</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="_inputScrolledWindow">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="_inputTreeview">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                    <property name="EnableSearch">False</property>
+                    <property name="HeadersVisible">False</property>
+                    <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
+                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
               </packing>
             </child>
           </widget>
           <packing>
             <property name="Position">1</property>
-            <property name="AutoSize">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
-            <property name="MemberName" />
-            <property name="ShadowType">In</property>
-            <child>
-              <widget class="Gtk.TreeView" id="_inputTreeview">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="ShowScrollbars">True</property>
-                <property name="EnableSearch">False</property>
-                <property name="HeadersVisible">False</property>
-              </widget>
-            </child>
-          </widget>
-          <packing>
-            <property name="Position">2</property>
             <property name="AutoSize">False</property>
           </packing>
         </child>

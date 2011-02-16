@@ -82,12 +82,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				var inPort = _portMapper.Where (map => map.JackPortId == b).First ();
 				if (connect != 0)
 				{
+					var connections = new List<IConnection> ();
 					IConnection newConn = new JackAudioConnection ();
 					newConn.OutPort = outPort;
 					newConn.InPort = inPort;
 					_connections.Add (newConn);
-					var connections = new List<IConnection> ();
-					eventArgs.Connections = connections;
+					connections.Add (newConn);
+					eventArgs.Connections = connections;					
 					eventArgs.ConnectionType = _portMapper.Where (map => map.JackPortId == a).First ().ConnectionType;
 					eventArgs.ChangeType = ChangeType.New;
 					eventArgs.Message = "New Connection established";
@@ -96,8 +97,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				{
 					var oldConn = _connections.Where (conn => conn.InPort.ClientName == inPort.ClientName && conn.InPort.Name == inPort.Name
 						&& conn.OutPort.ClientName == outPort.ClientName && conn.OutPort.Name == outPort.Name);
-					eventArgs.Connections = oldConn;
-					eventArgs.ChangeType = ChangeType.Deleted;
+					eventArgs.Connections = oldConn.ToList();
+					eventArgs.ChangeType = ChangeType.Deleted;					
+					eventArgs.ConnectionType = _portMapper.Where (map => map.JackPortId == a).First ().ConnectionType;
 					_connections = _connections.Where (conn => conn.InPort.ClientName != inPort.ClientName || conn.InPort.Name != inPort.Name
 						|| conn.OutPort.ClientName != outPort.ClientName || conn.OutPort.Name != outPort.Name).ToList ();
 					eventArgs.Message = "Connection deleted";
@@ -149,9 +151,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// </summary>
 		private static bool Activate ()
 		{
+			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
 			jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
-			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = jack_activate (_jackClient);
 			return jackActivateStatus == 0;
 		}

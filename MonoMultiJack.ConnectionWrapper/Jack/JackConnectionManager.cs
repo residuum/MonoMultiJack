@@ -121,13 +121,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 #endif
 			if (args.ConnectionType == ConnectionType)
 			{
-				ConnectionHasChanged (this, args);
+				ConnectionHasChanged (this, args);	
 			}
 		}
 		
 		private void OnJackShutdown(object sender, ConnectionEventArgs args)
 		{
 			BackendHasExited(this, args);
+			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
 		}
 	}
 }

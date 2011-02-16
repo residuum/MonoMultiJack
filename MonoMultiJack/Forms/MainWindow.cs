@@ -97,9 +97,9 @@ namespace MonoMultiJack
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public MainWindow () : base (Gtk.WindowType.Toplevel)
+		public MainWindow () : base(Gtk.WindowType.Toplevel)
 		{
-			Build ();	
+			Build ();
 			BuildWindowContent ();
 			DeleteEvent += OnDelete;
 		}
