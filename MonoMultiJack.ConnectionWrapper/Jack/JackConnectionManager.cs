@@ -70,8 +70,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		}
 		public bool Connect (Port outPort, Port inPort)
 		{
-			if (outPort.ConnectionType != ConnectionType.JackAudio && outPort.PortType != PortType.Output
-				&& inPort.ConnectionType != ConnectionType.JackAudio && outPort.PortType != PortType.Input)
+			if (outPort.ConnectionType != ConnectionType && outPort.PortType != PortType.Output
+				&& inPort.ConnectionType != ConnectionType && outPort.PortType != PortType.Input)
 			{
 				return false;
 			}

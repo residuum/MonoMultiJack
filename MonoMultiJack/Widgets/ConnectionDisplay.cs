@@ -437,6 +437,8 @@ namespace MonoMultiJack
 		
 		private void UpdateConnectionLines ()
 		{
+			if (_connectionArea.GdkWindow == null)
+				return;
 			_connectionArea.GdkWindow.Clear ();
 			using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow))
 			{
@@ -454,7 +456,8 @@ namespace MonoMultiJack
 				}
 				g.Color = new Color (0, 0, 0);
 				g.LineWidth = 1;
-				g.Stroke();
+				g.Stroke ();
+				g.Target.Dispose();
 			}
 
 		}

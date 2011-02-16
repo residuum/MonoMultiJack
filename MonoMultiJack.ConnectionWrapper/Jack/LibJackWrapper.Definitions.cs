@@ -34,7 +34,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	{		
 		private const string JACK_LIB_NAME = "libjack.so.0";
 		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		private const string JACK_DEFAULT_MIDI_TYPE = "32 bit float mono audio";
+		private const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";
 		
 		[Flags]
 		private enum JackPortFlags
