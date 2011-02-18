@@ -83,7 +83,16 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				if (connect != 0)
 				{
 					var connections = new List<IConnection> ();
-					IConnection newConn = new JackAudioConnection ();
+					IConnection newConn = null;
+					switch (outPort.ConnectionType)
+					{
+						case ConnectionType.JackAudio:
+							newConn = new JackAudioConnection ();
+							break;
+						case ConnectionType.JackMidi:
+							newConn = new JackMidiConnection ();
+							break;
+					}
 					newConn.OutPort = outPort;
 					newConn.InPort = inPort;
 					_connections.Add (newConn);
@@ -248,6 +257,10 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		internal static IEnumerable<Port> GetPorts(ConnectionType connectionType)
 		{		
+			foreach (JackPort port in _portMapper)
+			{
+				Console.WriteLine(port.ConnectionType + ":" + port.PortType + ":" + port.Name);
+			}
 			var mappedPorts = _portMapper.Where (portMap => portMap.ConnectionType == connectionType).Select (portMap => portMap as Port);
 			if (mappedPorts != null && mappedPorts.Any())
 			{

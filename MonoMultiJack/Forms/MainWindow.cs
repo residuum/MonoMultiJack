@@ -187,7 +187,7 @@ namespace MonoMultiJack
 			{
 				_jackd.StopProgram();
 			}
-			_jackd = new ProgramManagement(jackdConfig.Path, "-d " + jackdConfig.Driver + " -r "+jackdConfig.Audiorate, true);
+			_jackd = new ProgramManagement(jackdConfig.Path, jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " "+jackdConfig.DriverOptions, true);
 			_jackd.HasStarted += OnJackdHasStarted;
 			_jackd.HasExited += OnJackdHasExited;
 			reStartJackdAction.Sensitive = true;

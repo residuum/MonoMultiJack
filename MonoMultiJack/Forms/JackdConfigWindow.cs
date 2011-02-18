@@ -36,8 +36,9 @@ namespace MonoMultiJack
 	public class JackdConfigWindow : Gtk.Dialog
 	{
 		private Gtk.Entry _jackdPathEntry;
-		private Gtk.Entry _jackdAudiorateEntry;
+		private Gtk.Entry _jackdGeneralOptionsEntry;
 		private Gtk.Entry _jackdDriverEntry;
+		private Gtk.Entry _jackdDriverOptionsEntry;
 		
 		//// <value>
 		/// returns values of entry fields as jackdConfiguration
@@ -46,7 +47,7 @@ namespace MonoMultiJack
 		{ 
 			get 
 			{
-				return new JackdConfiguration(_jackdPathEntry.Text.Trim(), _jackdDriverEntry.Text.Trim(), _jackdAudiorateEntry.Text.Trim());
+				return new JackdConfiguration(_jackdPathEntry.Text.Trim(), _jackdGeneralOptionsEntry.Text.Trim(), _jackdDriverEntry.Text.Trim(), _jackdDriverOptionsEntry.Text.Trim());
 			}
 		}
 		
@@ -71,7 +72,7 @@ namespace MonoMultiJack
 		/// </param>
 		private void BuildDialog (JackdConfiguration jackdConfig)
 		{
-			Table table = new Table (3, 2, false);
+			Table table = new Table (5, 2, false);
 			table.RowSpacing = 2;
 		    table.ColumnSpacing = 3;
 			VBox.PackStart (table, false, false, 0);
@@ -83,12 +84,12 @@ namespace MonoMultiJack
 			label.MnemonicWidget = _jackdPathEntry;
 			_jackdPathEntry.Text = jackdConfig.Path;
 			
-			label = new Label ("Audiorate");
+			label = new Label ("General Options");
 			table.Attach (label, 0, 1, 1, 2);
-			_jackdAudiorateEntry = new Entry ();
-			table.Attach (_jackdAudiorateEntry, 1, 2, 1, 2);
-			label.MnemonicWidget = _jackdAudiorateEntry;
-			_jackdAudiorateEntry.Text = jackdConfig.Audiorate;
+			_jackdGeneralOptionsEntry = new Entry ();
+			table.Attach (_jackdGeneralOptionsEntry, 1, 2, 1, 2);
+			label.MnemonicWidget = _jackdGeneralOptionsEntry;
+			_jackdGeneralOptionsEntry.Text = jackdConfig.GeneralOptions;
 			
 			label = new Label ("Driver Infrastructure");
 			table.Attach (label, 0, 1, 2, 3);
@@ -96,6 +97,13 @@ namespace MonoMultiJack
 			table.Attach (_jackdDriverEntry, 1, 2, 2, 3);
 			label.MnemonicWidget = _jackdDriverEntry;
 			_jackdDriverEntry.Text = jackdConfig.Driver;
+			
+			label = new Label ("Driver Options");
+			table.Attach (label, 0, 1, 3, 4);
+			_jackdDriverOptionsEntry = new Entry ();
+			table.Attach (_jackdDriverOptionsEntry, 1, 2, 3, 4);
+			label.MnemonicWidget = _jackdDriverOptionsEntry;
+			_jackdDriverOptionsEntry.Text = jackdConfig.DriverOptions;
 			
 			AddButton(Stock.Ok, ResponseType.Ok);
 			AddButton(Stock.Cancel, ResponseType.Cancel);
