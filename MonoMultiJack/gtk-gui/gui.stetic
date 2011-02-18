@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/MonoMultiJack.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MonoMultiJack.MainWindow" design-size="589 215">
+  <widget class="Gtk.Window" id="MonoMultiJack.MainWindow" design-size="606 215">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -117,6 +117,7 @@
             <child>
               <widget class="Gtk.VButtonBox" id="_appButtonBox">
                 <property name="MemberName" />
+                <property name="WidthRequest">100</property>
                 <property name="Homogeneous">True</property>
                 <property name="Spacing">2</property>
                 <property name="Size">0</property>
@@ -125,21 +126,20 @@
               <packing>
                 <property name="Position">0</property>
                 <property name="AutoSize">False</property>
-                <property name="Fill">False</property>
+                <property name="Expand">False</property>
                 <property name="Padding">2</property>
               </packing>
             </child>
             <child>
               <widget class="Gtk.Notebook" id="_connectionNotebook">
                 <property name="MemberName" />
+                <property name="WidthRequest">500</property>
                 <property name="CanFocus">True</property>
                 <property name="CurrentPage">-1</property>
               </widget>
               <packing>
                 <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
+                <property name="AutoSize">False</property>
               </packing>
             </child>
           </widget>

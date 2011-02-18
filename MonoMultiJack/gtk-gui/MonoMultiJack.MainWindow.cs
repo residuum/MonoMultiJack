@@ -100,6 +100,7 @@ namespace MonoMultiJack
 			this.mainHbox.Spacing = 2;
 			// Container child mainHbox.Gtk.Box+BoxChild
 			this._appButtonBox = new global::Gtk.VButtonBox ();
+			this._appButtonBox.WidthRequest = 100;
 			this._appButtonBox.Name = "_appButtonBox";
 			this._appButtonBox.Homogeneous = true;
 			this._appButtonBox.Spacing = 2;
@@ -107,18 +108,17 @@ namespace MonoMultiJack
 			this.mainHbox.Add (this._appButtonBox);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._appButtonBox]));
 			w3.Position = 0;
-			w3.Fill = false;
+			w3.Expand = false;
 			w3.Padding = ((uint)(2));
 			// Container child mainHbox.Gtk.Box+BoxChild
 			this._connectionNotebook = new global::Gtk.Notebook ();
+			this._connectionNotebook.WidthRequest = 500;
 			this._connectionNotebook.CanFocus = true;
 			this._connectionNotebook.Name = "_connectionNotebook";
 			this._connectionNotebook.CurrentPage = -1;
 			this.mainHbox.Add (this._connectionNotebook);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._connectionNotebook]));
 			w4.Position = 1;
-			w4.Expand = false;
-			w4.Fill = false;
 			this.mainVbox.Add (this.mainHbox);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this.mainHbox]));
 			w5.Position = 1;
@@ -135,7 +135,7 @@ namespace MonoMultiJack
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 589;
+			this.DefaultWidth = 606;
 			this.DefaultHeight = 215;
 			this.Show ();
 			this.reStartJackdAction.Activated += new global::System.EventHandler (this.RestartJackd);

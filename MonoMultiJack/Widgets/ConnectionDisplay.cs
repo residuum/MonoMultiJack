@@ -446,11 +446,14 @@ namespace MonoMultiJack
 				{
 					int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 					int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
+					int areaWidth = _connectionArea.Allocation.Width;
+					
 					if (outY != -1 && inY != -1)
 					{
 						g.Save ();
 						g.MoveTo (0, outY);
-						g.LineTo (_connectionArea.Allocation.Width, inY);
+						//g.LineTo (areaWidth, inY);
+						g.CurveTo(new PointD(areaWidth/4, outY), new PointD(3*areaWidth/4, inY), new PointD(areaWidth, inY));
 						g.Restore ();
 					}
 				}
