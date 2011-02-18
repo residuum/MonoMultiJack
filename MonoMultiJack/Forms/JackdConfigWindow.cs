@@ -98,7 +98,7 @@ namespace MonoMultiJack
 			label.MnemonicWidget = _jackdDriverEntry;
 			_jackdDriverEntry.Text = jackdConfig.Driver;
 			
-			label = new Label ("Audiorate");
+			label = new Label ("Driver Options");
 			table.Attach (label, 0, 1, 3, 4);
 			_jackdDriverOptionsEntry = new Entry ();
 			table.Attach (_jackdDriverOptionsEntry, 1, 2, 3, 4);
