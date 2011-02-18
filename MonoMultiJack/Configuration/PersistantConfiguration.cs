@@ -93,8 +93,9 @@ namespace MonoMultiJack.Configuration
 			try
 			{
 				string path = String.Empty;
+				string generalOptions = String.Empty;
 				string driver = String.Empty;
-				string audiorate = String.Empty;
+				string driverOptions = String.Empty;
 				foreach (XmlNode nodeThird in jackdNode.ChildNodes)
 				{
 					switch (nodeThird.Name)						
@@ -102,22 +103,25 @@ namespace MonoMultiJack.Configuration
 						case "path":
 							path = nodeThird.InnerText;
 							break;
+						case "general-options":
+							generalOptions = nodeThird.InnerText;
+							break;						
 						case "driver":
 							driver = nodeThird.InnerText;
 							break;
-						case "audiorate":
-							audiorate = nodeThird.InnerText;
+						case "driver-options":
+							driverOptions = nodeThird.InnerText;
 							break;
 						default:
 							break;
 					}
 				}
-				JackdConfig = new JackdConfiguration(path, driver, audiorate);
+				JackdConfig = new JackdConfiguration(path,generalOptions,driver,driverOptions);
 				return true;
 			}
 			catch
 			{
-				JackdConfig = new JackdConfiguration(String.Empty, String.Empty, String.Empty);
+				JackdConfig = new JackdConfiguration(string.Empty, string.Empty, string.Empty, string.Empty);
 				return false;
 			}
 		}
@@ -242,8 +246,9 @@ namespace MonoMultiJack.Configuration
 					writer.WriteStartElement("monomultijack");
 					writer.WriteStartElement("jackd");
 					writer.WriteElementString("path", JackdConfig.Path);
+					writer.WriteElementString("general-options", JackdConfig.GeneralOptions);
 					writer.WriteElementString("driver", JackdConfig.Driver);
-					writer.WriteElementString("audiorate", JackdConfig.Audiorate);
+					writer.WriteElementString("driver-options", JackdConfig.DriverOptions);
 					writer.WriteEndElement();
 					writer.WriteStartElement("applications");
 					foreach (AppConfiguration appConfig in AppConfigs)

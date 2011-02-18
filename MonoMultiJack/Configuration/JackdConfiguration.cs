@@ -39,32 +39,41 @@ namespace MonoMultiJack.Configuration
 		public string Path {get; private set;}
 		
 		/// <summary>
-		/// driver infrastructure for jacdk
+		/// General oprions for jackd
+		/// </summary>
+		public string GeneralOptions {get;private set;}
+		
+		/// <summary>
+		/// Driver infrastructure for jackd
 		/// </summary>
 		public string Driver {get; private set;}
 		
 		/// <summary>
-		/// audiorate to run jackd at
+		/// Options for jackd driver
 		/// </summary>
-		public string Audiorate {get; private set;}
+		public string DriverOptions {get; private set;}
 		
 		/// <summary>
-		/// constructor
+		/// Constructor
 		/// </summary>
 		/// <param name="newPath">
-		/// A <see cref="System.String"/> indicating path to jackd executable
+		/// A <see cref="System.String"/> indicating the path to jackd executable
+		/// </param>
+		/// <param name="newGeneralOptions">
+		/// A <see cref="System.String"/> indicating the new general options
 		/// </param>
 		/// <param name="newDriver">
-		/// A <see cref="System.String"/> indicating driver infrastructure for jackd
+		/// A <see cref="System.String"/> indicating the driver infrastructure
 		/// </param>
-		/// <param name="newAudiorate">
-		/// A <see cref="System.String"/> indicating audiorate for jackd
+		/// <param name="newDriverOptions">
+		/// A <see cref="System.String"/> indicating the new driver options
 		/// </param>
-		public JackdConfiguration (string newPath, string newDriver, string newAudiorate)
+		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions)
 		{			
 			Path = newPath;
+			GeneralOptions = newGeneralOptions;
 			Driver = newDriver;
-			Audiorate = newAudiorate;
+			DriverOptions = newDriverOptions;
 		}
 	}
 }
