@@ -257,10 +257,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		internal static IEnumerable<Port> GetPorts(ConnectionType connectionType)
 		{		
-			foreach (JackPort port in _portMapper)
-			{
-				Console.WriteLine(port.ConnectionType + ":" + port.PortType + ":" + port.Name);
-			}
 			var mappedPorts = _portMapper.Where (portMap => portMap.ConnectionType == connectionType).Select (portMap => portMap as Port);
 			if (mappedPorts != null && mappedPorts.Any())
 			{
