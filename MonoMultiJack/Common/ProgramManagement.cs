@@ -152,7 +152,7 @@ namespace MonoMultiJack.Common
 		{
 			StringBuilder bashScript = new StringBuilder();
 			bashScript.AppendLine("#!/bin/sh");
-			if (_isSingleton)
+			if (_isSingleton && !string.IsNullOrEmpty(_commandName))
 			{
 				string[] commandPaths = _commandName.Split(Path.DirectorySeparatorChar);
 				bashScript.AppendLine("if pgrep " + commandPaths[commandPaths.Length - 1]);
