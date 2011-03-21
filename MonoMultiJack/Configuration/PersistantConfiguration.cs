@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Linq;
 
 namespace MonoMultiJack.Configuration
 {
@@ -88,34 +89,14 @@ namespace MonoMultiJack.Configuration
 		/// <returns>
 		/// A <see cref="System.Boolean"/> indicating success of parsing XML
 		/// </returns>
-		private bool LoadJackdXml(XmlNode jackdNode)
+		private bool LoadJackdXml (XmlNode jackdNode)
 		{
 			try
 			{
-				string path = String.Empty;
-				string generalOptions = String.Empty;
-				string driver = String.Empty;
-				string driverOptions = String.Empty;
-				foreach (XmlNode nodeThird in jackdNode.ChildNodes)
-				{
-					switch (nodeThird.Name)						
-					{
-						case "path":
-							path = nodeThird.InnerText;
-							break;
-						case "general-options":
-							generalOptions = nodeThird.InnerText;
-							break;						
-						case "driver":
-							driver = nodeThird.InnerText;
-							break;
-						case "driver-options":
-							driverOptions = nodeThird.InnerText;
-							break;
-						default:
-							break;
-					}
-				}
+				string path = jackdNode.SelectNodes("path").Item(0).InnerText;
+				string generalOptions = jackdNode.SelectNodes("general-options").Item(0).InnerText;
+				string driver = jackdNode.SelectNodes("driver").Item(0).InnerText;
+				string driverOptions = jackdNode.SelectNodes("driver-options").Item(0).InnerText;
 				JackdConfig = new JackdConfiguration(path,generalOptions,driver,driverOptions);
 				return true;
 			}
@@ -135,33 +116,16 @@ namespace MonoMultiJack.Configuration
 		/// <returns>
 		/// A <see cref="System.Boolean"/> indicating success of parsing XML
 		/// </returns>		
-		private bool LoadApplicationsXml(XmlNode applicationsNode)
+		private bool LoadApplicationsXml (XmlNodeList applicationNodes)
 		{
 			try
 			{
-				foreach (XmlNode applicationNode in applicationsNode.ChildNodes)
-				{
-					if (applicationNode.Name == "application")
-					{
-						string name = String.Empty;
-						string command = String.Empty;
-						foreach (XmlNode subnode in applicationNode.ChildNodes)						
-						{				
-							switch (subnode.Name)						
-							{
-								case "name":
-									name = subnode.InnerText;
-									break;
-								case "command":
-									command = subnode.InnerText;
-									break;
-								default:
-									break;
-							}
-						}
-						AppConfiguration newApp = new AppConfiguration(name, command);
-						AppConfigs.Add(newApp);
-					}
+				foreach (XmlNode applicationNode in applicationNodes)
+				{					
+					string name = applicationNode.SelectNodes("name").Item(0).InnerText;
+					string command = applicationNode.SelectNodes("command").Item(0).InnerText;
+					AppConfiguration newApp = new AppConfiguration(name, command);
+					AppConfigs.Add(newApp);
 				}
 				return true;
 			}
@@ -177,42 +141,19 @@ namespace MonoMultiJack.Configuration
 		/// <returns>
 		/// A <see cref="System.Boolean"/> indicating success of parsing configuration file.
 		/// </returns>
-		private bool ReadXml()
+		private bool ReadXml ()
 		{
-			if (File.Exists(_configFile))
+			if (File.Exists (_configFile))
 			{
-				XmlDocument xmlConfigFile = new XmlDocument();
+				XmlDocument xmlConfigFile = new XmlDocument ();
 				try
 				{
-					xmlConfigFile.Load(_configFile);
-					foreach (XmlNode nodeFirst in xmlConfigFile.ChildNodes)
+					xmlConfigFile.Load (_configFile);
+					XmlNode firstNode = xmlConfigFile.DocumentElement;
+					if (firstNode.Name == "monomultijack")
 					{
-						switch (nodeFirst.Name)
-						{
-							case "monomultijack":
-								foreach (XmlNode nodeSecond in nodeFirst.ChildNodes)
-								{
-									switch (nodeSecond.Name)
-									{
-										case "jackd":
-											if (!LoadJackdXml(nodeSecond))
-											{
-												throw new XmlException();
-											}
-											break;
-										case "applications":
-											if (!LoadApplicationsXml(nodeSecond))
-											{
-												throw new XmlException();
-											}
-											break;
-									}								
-								}
-								break;
-							default:
-								break;
-						}
-							
+						LoadJackdXml (firstNode.SelectNodes ("jackd").Item(0));
+						LoadApplicationsXml(firstNode.SelectNodes("applications").Item(0).SelectNodes("application"));
 					}
 					return true;
 				}
