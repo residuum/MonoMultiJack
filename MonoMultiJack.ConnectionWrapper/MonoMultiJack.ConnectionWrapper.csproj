@@ -31,31 +31,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Posix" />
-    <Reference Include="System.Core" />
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>glib-sharp-2.0</Package>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Jack\LibJackWrapper.cs" />
-    <Compile Include="Common\IConnectionManager.cs" />
-    <Compile Include="Common\PortType.cs" />
-    <Compile Include="Common\ConnectionEventArgs.cs" />
-    <Compile Include="Common\ConnectionType.cs" />
-    <Compile Include="Common\IConnection.cs" />
-    <Compile Include="Common\Port.cs" />
-    <Compile Include="Common\MessageType.cs" />
-    <Compile Include="Jack\JackAudioManager.cs" />
-    <Compile Include="Jack\JackClientException.cs" />
-    <Compile Include="Jack\JackAudioConnection.cs" />
-    <Compile Include="Jack\LibJackWrapper.Definitions.cs" />
-    <Compile Include="Jack\LibJackWrapper.PInvoke.cs" />
-    <Compile Include="Jack\JackConnectionManager.cs" />
-    <Compile Include="Common\ChangeType.cs" />
-    <Compile Include="Jack\JackMidiManager.cs" />
-    <Compile Include="Jack\JackMidiConnection.cs" />
+    <Compile Include="ChangeType.cs" />
+    <Compile Include="ConnectionEventArgs.cs" />
+    <Compile Include="ConnectionType.cs" />
+    <Compile Include="IConnection.cs" />
+    <Compile Include="IConnectionManager.cs" />
+    <Compile Include="MessageType.cs" />
+    <Compile Include="Port.cs" />
+    <Compile Include="PortType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

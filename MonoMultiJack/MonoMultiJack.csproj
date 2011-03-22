@@ -70,7 +70,6 @@
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="Widgets\ConnectionDisplay.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.Forms.MainWindow.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.Widgets.ConnectionDisplay.cs" />
@@ -88,6 +87,10 @@
     <ProjectReference Include="..\MonoMultiJack.BusinessLogic\MonoMultiJack.BusinessLogic.csproj">
       <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
       <Name>MonoMultiJack.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj">
+      <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
+      <Name>MonoMultiJack.ConnectionWrapper.Jack</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
