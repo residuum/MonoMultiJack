@@ -24,22 +24,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Gdk;
 using Gtk;
 using MonoMultiJack;
-using MonoMultiJack.Common;
-using MonoMultiJack.Configuration;
-using MonoMultiJack.Widgets;
+using MonoMultiJack.BusinessLogic.Common;
+using MonoMultiJack.BusinessLogic.Configuration;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.ConnectionWrapper.Jack;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
+using MonoMultiJack.Widgets;
 using MessageType = Gtk.MessageType;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Forms
 {
 	/// <summary>
 	/// Main Window 

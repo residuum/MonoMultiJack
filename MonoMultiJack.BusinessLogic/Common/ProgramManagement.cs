@@ -28,7 +28,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 
-namespace MonoMultiJack.Common
+namespace MonoMultiJack.BusinessLogic.Common
 {
 	/// <summary>
 	/// Delegate to signal stopped program.

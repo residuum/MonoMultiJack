@@ -1,10 +1,10 @@
 // 
-// AppConfiguration.cs
+// AssemblyInfo.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2011 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-using System;
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
 
-namespace MonoMultiJack.Configuration
-{
-	/// <summary>
-	/// Configuration of an application
-	/// </summary>
-	public struct AppConfiguration
-	{
-		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name {get; private set;}
-		
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command {get; private set;}
+[assembly: AssemblyTitle("MonoMultiJack.BusinessLogic")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
-		public AppConfiguration (string newName, string newCommand)
-		{
-			Name = newName;
-			Command = newCommand;
-		}
-	}
-}
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+
+[assembly: AssemblyVersion("1.0.*")]
+
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
+

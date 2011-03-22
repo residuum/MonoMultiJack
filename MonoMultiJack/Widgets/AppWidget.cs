@@ -29,8 +29,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Gtk;
-using MonoMultiJack.Common;
-using MonoMultiJack.Configuration;
+using MonoMultiJack.BusinessLogic.Common;
+using MonoMultiJack.BusinessLogic.Configuration;
 
 namespace MonoMultiJack.Widgets
 {	

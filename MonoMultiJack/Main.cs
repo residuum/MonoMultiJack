@@ -43,7 +43,7 @@ namespace MonoMultiJack
 		public static void Main (string[] args)
 		{
 			Application.Init ();
-			MainWindow win = new MainWindow ();
+			Forms.MainWindow win = new Forms.MainWindow ();
 			win.ShowAll ();
 			Application.Run ();
 		}

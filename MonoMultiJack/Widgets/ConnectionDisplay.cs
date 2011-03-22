@@ -30,7 +30,7 @@ using Gtk;
 using MonoMultiJack.ConnectionWrapper;
 using Cairo;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Widgets
 {
 	/// <summary>
 	/// Widget for displaying and managing connections.

@@ -26,9 +26,9 @@
 
 using Gtk;
 using MonoMultiJack;
-using MonoMultiJack.Configuration;
+using MonoMultiJack.BusinessLogic.Configuration;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Forms
 {
 	/// <summary>
 	/// Jackd Config Window

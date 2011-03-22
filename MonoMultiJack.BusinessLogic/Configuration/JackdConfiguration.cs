@@ -26,7 +26,7 @@
 
 using System;
 
-namespace MonoMultiJack.Configuration
+namespace MonoMultiJack.BusinessLogic.Configuration
 {
 	/// <summary>
 	/// jackd configuration

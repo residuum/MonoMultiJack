@@ -27,12 +27,12 @@
 
 using Gtk;
 using MonoMultiJack;
-using MonoMultiJack.Configuration;
+using MonoMultiJack.BusinessLogic.Configuration;
 using MonoMultiJack.Widgets;
 using System;
 using System.Collections.Generic;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Forms
 {
 	/// <summary>
 	/// dialog for application configuration

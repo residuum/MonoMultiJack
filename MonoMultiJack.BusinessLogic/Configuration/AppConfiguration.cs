@@ -1,5 +1,5 @@
 // 
-// ConnectionType.cs
+// AppConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -26,11 +26,36 @@
 
 using System;
 
-namespace MonoMultiJack.Common
+namespace MonoMultiJack.BusinessLogic.Configuration
 {
-	public enum ConnectionType
+	/// <summary>
+	/// Configuration of an application
+	/// </summary>
+	public struct AppConfiguration
 	{
-		Inlet,
-		Outlet
+		/// <summary>
+		/// name of the application
+		/// </summary>
+		public string Name {get; private set;}
+		
+		/// <summary>
+		/// command to launch the application
+		/// </summary>
+		public string Command {get; private set;}
+
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="newName">
+		/// A <see cref="System.String"/> indicating name of application
+		/// </param>
+		/// <param name="newCommand">
+		/// A <see cref="System.String"/> indicating command to lauch the application
+		/// </param>
+		public AppConfiguration (string newName, string newCommand)
+		{
+			Name = newName;
+			Command = newCommand;
+		}
 	}
 }
