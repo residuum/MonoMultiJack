@@ -10,12 +10,20 @@ ASSEMBLY = bin/Debug/MonoMultiJack.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = winexe
 PROJECT_REFERENCES =  \
-	../Jackd-CIL/bin/Debug/Jackd-CIL.dll
+	../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll \
+	../MonoMultiJack.BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll \
+	../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll
 BUILD_DIR = bin/Debug
 
-JACKD_CIL_DLL_SOURCE=../Jackd-CIL/bin/Debug/Jackd-CIL.dll
-JACKD_CIL_DLL_MDB_SOURCE=../Jackd-CIL/bin/Debug/Jackd-CIL.dll.mdb
-JACKD_CIL_DLL_MDB=$(BUILD_DIR)/Jackd-CIL.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll.mdb
+MONOMULTIJACK_BUSINESSLOGIC_DLL_SOURCE=../MonoMultiJack.BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll
+MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB_SOURCE=../MonoMultiJack.BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll.mdb
+MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.BusinessLogic.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
 MONOMULTIJACK_EXE_MDB_SOURCE=bin/Debug/MonoMultiJack.exe.mdb
 MONOMULTIJACK_EXE_MDB=$(BUILD_DIR)/MonoMultiJack.exe.mdb
 
@@ -23,16 +31,22 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
 ASSEMBLY = bin/Release/MonoMultiJack.exe
 ASSEMBLY_MDB = 
 COMPILE_TARGET = winexe
 PROJECT_REFERENCES =  \
-	../Jackd-CIL/bin/Release/Jackd-CIL.dll
+	../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll \
+	../MonoMultiJack.BusinessLogic/bin/Release/MonoMultiJack.BusinessLogic.dll \
+	../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll
 BUILD_DIR = bin/Release
 
-JACKD_CIL_DLL_SOURCE=../Jackd-CIL/bin/Release/Jackd-CIL.dll
-JACKD_CIL_DLL_MDB=
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=
+MONOMULTIJACK_BUSINESSLOGIC_DLL_SOURCE=../MonoMultiJack.BusinessLogic/bin/Release/MonoMultiJack.BusinessLogic.dll
+MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=
 MONOMULTIJACK_EXE_MDB=
 
 endif
@@ -41,8 +55,12 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(JACKD_CIL_DLL) \
-	$(JACKD_CIL_DLL_MDB) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB) \
+	$(MONOMULTIJACK_BUSINESSLOGIC_DLL) \
+	$(MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB) \
 	$(MONOMULTIJACK_EXE_MDB)  
 
 BINARIES = \
@@ -57,18 +75,14 @@ FILES = \
 	Main.cs \
 	AssemblyInfo.cs \
 	Forms/MainWindow.cs \
-	Configuration/XmlConfiguration.cs \
-	Configuration/JackdConfiguration.cs \
-	Configuration/AppConfiguration.cs \
 	Forms/AppConfigWindow.cs \
 	Forms/JackdConfigWindow.cs \
 	Widgets/AppWidget.cs \
 	Widgets/AppConfigWidget.cs \
 	gtk-gui/generated.cs \
-	Common/JackdInterop.cs \
-	Widgets/JackConnectionsWidget.cs \
-	Common/Enums.cs \
-	gtk-gui/MonoMultiJack.MainWindow.cs 
+	Widgets/ConnectionDisplay.cs \
+	gtk-gui/MonoMultiJack.Forms.MainWindow.cs \
+	gtk-gui/MonoMultiJack.Widgets.ConnectionDisplay.cs 
 
 DATA_FILES = 
 
@@ -77,9 +91,7 @@ RESOURCES = \
 
 EXTRAS = \
 	Forms \
-	Configuration \
 	Widgets \
-	Common \
 	monomultijack.in 
 
 REFERENCES =  \
@@ -89,7 +101,8 @@ REFERENCES =  \
 	Mono.Posix \
 	System.Xml \
 	System.Core \
-	System
+	System \
+	$(MONO_CAIRO_LIBS)
 
 DLL_REFERENCES = 
 
@@ -97,11 +110,17 @@ CLEANFILES = $(PROGRAMFILES) $(BINARIES)
 
 include $(top_srcdir)/Makefile.include
 
-JACKD_CIL_DLL = $(BUILD_DIR)/Jackd-CIL.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll
+MONOMULTIJACK_BUSINESSLOGIC_DLL = $(BUILD_DIR)/MonoMultiJack.BusinessLogic.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll
 MONOMULTIJACK = $(BUILD_DIR)/monomultijack
 
-$(eval $(call emit-deploy-target,JACKD_CIL_DLL))
-$(eval $(call emit-deploy-target,JACKD_CIL_DLL_MDB))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_BUSINESSLOGIC_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB))
 $(eval $(call emit-deploy-wrapper,MONOMULTIJACK,monomultijack,x))
 
 

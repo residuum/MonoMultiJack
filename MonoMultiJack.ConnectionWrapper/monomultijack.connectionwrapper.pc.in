@@ -3,4 +3,4 @@ Description: MonoMultiJack.ConnectionWrapper
 Version: 0.1
 
 Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/Jackd-CIL.dll
+Libs: -r:@expanded_libdir@/@PACKAGE@/MonoMultiJack.ConnectionWrapper.dll

@@ -46,16 +46,21 @@ fi
 
 
 dnl package checks, common for all configs
-PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 PKG_CHECK_MODULES([GLADE_SHARP_20], [glade-sharp-2.0])
+PKG_CHECK_MODULES([MONO_CAIRO], [mono-cairo])
 
 dnl package checks, per config
 
 
 AC_CONFIG_FILES([
-Jackd-CIL/jackd-cil.pc
-Jackd-CIL/Makefile
+MonoMultiJack.ConnectionWrapper/monomultijack.connectionwrapper.pc
+MonoMultiJack.ConnectionWrapper/Makefile
+MonoMultiJack.BusinessLogic/monomultijack.businesslogic.pc
+MonoMultiJack.BusinessLogic/Makefile
+MonoMultiJack.ConnectionWrapper.Jack/monomultijack.connectionwrapper.jack.pc
+MonoMultiJack.ConnectionWrapper.Jack/Makefile
 MonoMultiJack/monomultijack
 MonoMultiJack/Makefile
 Makefile
