@@ -135,8 +135,8 @@ namespace MonoMultiJack
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 606;
-			this.DefaultHeight = 215;
+			this.DefaultWidth = 801;
+			this.DefaultHeight = 349;
 			this.Show ();
 			this.reStartJackdAction.Activated += new global::System.EventHandler (this.RestartJackd);
 			this.stopJackdAction.Activated += new global::System.EventHandler (this.StopJackd);

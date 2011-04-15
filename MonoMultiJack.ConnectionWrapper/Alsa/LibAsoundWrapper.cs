@@ -40,7 +40,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		internal static bool Activate ()
 		{
 			int activation = snd_seq_open (out _alsaClient, "default", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK);
+#if DEBUG
 			Console.WriteLine ("Alsa Activation: " + activation);
+#endif
 			if (activation == 0)
 			{
 				snd_seq_set_client_name(_alsaClient, "MonoMultiJack");
@@ -63,23 +65,42 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		{
 			if (_alsaClient != IntPtr.Zero || Activate())
 			{
+				IntPtr clientInfo = IntPtr.Zero;
+				IntPtr portInfo = IntPtr.Zero;
 				var ports = new List<Port>();
-				IntPtr clientInfo = Marshal.AllocHGlobal(100);
-				IntPtr portInfo = Marshal.AllocHGlobal(100);
-				snd_seq_client_info_set_client(out clientInfo, -1);
-				while (snd_seq_query_next_client(_alsaClient, out clientInfo) == 0)
+				
+				try
 				{
-					int clientId = snd_seq_client_info_get_client(clientInfo);
-					snd_seq_port_info_set_client(out portInfo, clientId);
-					snd_seq_port_info_set_port(out portInfo, -1);
-					while (snd_seq_query_next_port(_alsaClient, out portInfo) == 0)
+					int clientInfoSize = snd_seq_client_info_sizeof().ToInt32();
+					int portInfoSize = snd_seq_port_info_sizeof().ToInt32();
+					clientInfo = Marshal.AllocHGlobal(clientInfoSize);
+					portInfo = Marshal.AllocHGlobal(portInfoSize);
+					snd_seq_client_info_set_client(out clientInfo, -1);
+					snd_seq_set_client_info(_alsaClient, out clientInfo);
+					
+					while (snd_seq_query_next_client(_alsaClient, out clientInfo) == 0)
 					{
-						ports.Add(new Port(snd_seq_port_info_get_name(portInfo), snd_seq_client_info_get_name(clientInfo),
-								PortType.Output, ConnectionType.AlsaMidi));
-					}				
+ 						int clientId = snd_seq_client_info_get_client(clientInfo);
+						snd_seq_port_info_set_client(out portInfo, clientId);
+						snd_seq_port_info_set_port(out portInfo, -1);
+					
+						while (snd_seq_query_next_port(_alsaClient, out portInfo) == 0)
+						{
+							ports.Add(new Port(snd_seq_port_info_get_name(portInfo).ToString(), snd_seq_client_info_get_name(clientInfo).ToString(),
+									PortType.Output, ConnectionType.AlsaMidi));
+						}				
+					}
 				}
-				Marshal.FreeHGlobal(clientInfo);
-				Marshal.FreeHGlobal(portInfo);
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					return new Port[0];
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(clientInfo);
+					Marshal.FreeHGlobal(portInfo);
+				}
 				return ports;
 			}
 			return new Port[0];
