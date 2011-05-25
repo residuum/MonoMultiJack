@@ -22,7 +22,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		private static extern int snd_seq_query_next_client(IntPtr seq, out IntPtr info);
 		
 		[DllImport(ASOUND_LIB_NAME)]
-		private static extern int snd_seq_client_info_get_client(IntPtr info);
+		private static extern IntPtr snd_seq_client_info_get_client(out IntPtr info);
 		
 		[DllImport(ASOUND_LIB_NAME)]
 		private static extern void snd_seq_client_info_set_client(out IntPtr info, int client);
@@ -37,10 +37,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		private static extern int snd_seq_query_next_port(IntPtr seq, out IntPtr info);
 		
 		[DllImport(ASOUND_LIB_NAME)]
-		private static extern StringBuilder snd_seq_client_info_get_name(IntPtr info);
+		private static extern IntPtr snd_seq_client_info_get_name(out IntPtr info);
 		
 		[DllImport(ASOUND_LIB_NAME)]
-		private static extern StringBuilder snd_seq_port_info_get_name(IntPtr info);
+		private static extern IntPtr snd_seq_port_info_get_name(out IntPtr info);
+		
+		[DllImport(ASOUND_LIB_NAME)]
+		private static extern IntPtr snd_seq_port_info_get_addr(IntPtr info);
 		
 		[DllImport(ASOUND_LIB_NAME)]
 		private static extern IntPtr snd_seq_client_info_sizeof();

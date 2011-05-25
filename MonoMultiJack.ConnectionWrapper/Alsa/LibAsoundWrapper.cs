@@ -37,6 +37,10 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		private static List<AlsaPort> _portMapper = new List<AlsaPort>();
 		private static List<IConnection> _connections = new List<IConnection>();
 		
+		private static int _clientInfoSize;
+		
+		private static int _portInfoSize;
+		
 		internal static bool Activate ()
 		{
 			int activation = snd_seq_open (out _alsaClient, "default", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK);
@@ -71,23 +75,32 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				
 				try
 				{
-					int clientInfoSize = snd_seq_client_info_sizeof().ToInt32();
-					int portInfoSize = snd_seq_port_info_sizeof().ToInt32();
-					clientInfo = Marshal.AllocHGlobal(clientInfoSize);
-					portInfo = Marshal.AllocHGlobal(portInfoSize);
+					if (_clientInfoSize == 0)
+					{
+						_clientInfoSize = snd_seq_client_info_sizeof().ToInt32();
+					}
+					if (_portInfoSize == 0)
+					{
+						_portInfoSize = snd_seq_port_info_sizeof().ToInt32();
+					}
+					clientInfo = Marshal.AllocHGlobal(_clientInfoSize);
+					portInfo = Marshal.AllocHGlobal (_portInfoSize);
 					snd_seq_client_info_set_client(out clientInfo, -1);
-					snd_seq_set_client_info(_alsaClient, out clientInfo);
-					
 					while (snd_seq_query_next_client(_alsaClient, out clientInfo) == 0)
 					{
- 						int clientId = snd_seq_client_info_get_client(clientInfo);
+ 						int clientId = snd_seq_client_info_get_client(out clientInfo).ToInt32();
 						snd_seq_port_info_set_client(out portInfo, clientId);
 						snd_seq_port_info_set_port(out portInfo, -1);
 					
 						while (snd_seq_query_next_port(_alsaClient, out portInfo) == 0)
 						{
-							ports.Add(new Port(snd_seq_port_info_get_name(portInfo).ToString(), snd_seq_client_info_get_name(clientInfo).ToString(),
-									PortType.Output, ConnectionType.AlsaMidi));
+							IntPtr portAddrPtr = snd_seq_port_info_get_addr(portInfo);
+							Port newPort = CreatePort (portAddrPtr);
+							
+							if (newPort != null)
+							{
+								ports.Add(newPort);
+							}
 						}				
 					}
 				}
@@ -98,12 +111,42 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				}
 				finally
 				{
-					Marshal.FreeHGlobal(clientInfo);
-					Marshal.FreeHGlobal(portInfo);
+//					if (clientInfo != IntPtr.Zero)
+//					{
+//						Marshal.FreeHGlobal(clientInfo);
+//					}
+//					if (portInfo != IntPtr.Zero)
+//					{
+//						Marshal.FreeHGlobal(portInfo);
+//					}
 				}
 				return ports;
 			}
 			return new Port[0];
+		}
+		
+		private static Port CreatePort (IntPtr addrPtr)
+		{
+			var portAddress = Marshal.PtrToStructure (addrPtr, typeof(SndSeqAddr));
+			IntPtr clientInfo = IntPtr.Zero;
+			IntPtr portInfo = IntPtr.Zero;
+			clientInfo = Marshal.AllocHGlobal (_clientInfoSize);
+			snd_seq_client_info_set_client (out clientInfo, ((SndSeqAddr)portAddress).client);
+			snd_seq_port_info_set_client (out portInfo, ((SndSeqAddr)portAddress).client);
+			snd_seq_port_info_set_port (out portInfo, ((SndSeqAddr)portAddress).port);
+			IntPtr clientNamePtr = snd_seq_client_info_get_name (out clientInfo);
+			string clientName = UnixMarshal.PtrToString (clientNamePtr);
+			IntPtr portNamePtr = snd_seq_port_info_get_name (out portInfo);
+			string portName = UnixMarshal.PtrToString (portNamePtr);
+			Port newPort = new Port (portName, clientName, PortType.Output, ConnectionType.AlsaMidi);
+			return newPort;
+		}
+		
+		[StructLayout(LayoutKind.Sequential)]
+		private struct SndSeqAddr
+		{
+			public byte client;
+			public byte port;
 		}
 	}
 }
