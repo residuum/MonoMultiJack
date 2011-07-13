@@ -121,16 +121,19 @@ namespace MonoMultiJack.Configuration
 			try
 			{
 				foreach (XmlNode applicationNode in applicationNodes)
-				{					
-					string name = applicationNode.SelectNodes("name").Item(0).InnerText;
-					string command = applicationNode.SelectNodes("command").Item(0).InnerText;
-					AppConfiguration newApp = new AppConfiguration(name, command);
-					AppConfigs.Add(newApp);
+				{
+					string name = applicationNode.SelectNodes ("name").Item (0).InnerText;
+					string command = applicationNode.SelectNodes ("command").Item (0).InnerText;
+					AppConfiguration newApp = new AppConfiguration (name, command);
+					AppConfigs.Add (newApp);
 				}
 				return true;
 			}
-			catch
+			catch (Exception e)
 			{
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				return false;
 			}
 		}
@@ -157,8 +160,11 @@ namespace MonoMultiJack.Configuration
 					}
 					return true;
 				}
-				catch
+				catch (Exception e)
 				{
+					#if DEBUG
+					Console.WriteLine (e.Message);
+					#endif
 					return false;
 				}
 			}
@@ -205,8 +211,11 @@ namespace MonoMultiJack.Configuration
 				}
 				return true;
 			}
-			catch
+			catch (Exception e)
 			{
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				return false;
 			}
 		}
