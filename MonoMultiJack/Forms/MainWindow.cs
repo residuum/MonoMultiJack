@@ -132,8 +132,11 @@ namespace MonoMultiJack
 				UpdateAppWidgets(_config.AppConfigs);
 				UpdateJackd(_config.JackdConfig);
 			}
-			catch (System.Xml.XmlException)
+			catch (System.Xml.XmlException e)
 			{
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
 				_config = new PersistantConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
 			}
