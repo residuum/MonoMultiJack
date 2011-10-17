@@ -52,7 +52,7 @@ namespace MonoMultiJack.Configuration
 		/// <param name="newCommand">
 		/// A <see cref="System.String"/> indicating command to lauch the application
 		/// </param>
-		public AppConfiguration (string newName, string newCommand)
+		public AppConfiguration (string newName, string newCommand) : this()
 		{
 			Name = newName;
 			Command = newCommand;

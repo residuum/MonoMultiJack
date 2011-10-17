@@ -51,10 +51,9 @@
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Mono.Cairo, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
+    <Reference Include="Mono.Cairo" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -67,15 +66,16 @@
     <Compile Include="Forms\MainWindow.cs" />
     <Compile Include="Configuration\JackdConfiguration.cs" />
     <Compile Include="Configuration\AppConfiguration.cs" />
-    <Compile Include="Forms\AppConfigWindow.cs" />
     <Compile Include="Forms\JackdConfigWindow.cs" />
     <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="Configuration\PersistantConfiguration.cs" />
     <Compile Include="Common\ProgramManagement.cs" />
     <Compile Include="Widgets\ConnectionDisplay.cs" />
+    <Compile Include="gtk-gui\MonoMultiJack.AppConfigWindow.cs" />
+    <Compile Include="Forms\AppConfigWindow.cs" />
+    <Compile Include="gtk-gui\MonoMultiJack.MainWindow.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.ConnectionDisplay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
