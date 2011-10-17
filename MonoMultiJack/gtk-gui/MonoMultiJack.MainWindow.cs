@@ -5,39 +5,23 @@ namespace MonoMultiJack
 	public partial class MainWindow
 	{
 		private global::Gtk.UIManager UIManager;
-
 		private global::Gtk.Action FileAction;
-
 		private global::Gtk.Action reStartJackdAction;
-
 		private global::Gtk.Action stopJackdAction;
-
 		private global::Gtk.Action stopAllAction;
-
 		private global::Gtk.Action quitAction;
-
 		private global::Gtk.Action ConfigurationAction;
-
 		private global::Gtk.Action configureJackdAction;
-
 		private global::Gtk.Action addRemoveApplicationsAction;
-
 		private global::Gtk.Action helpAction;
-
 		private global::Gtk.Action aboutAction;
-
 		private global::Gtk.VBox mainVbox;
-
 		private global::Gtk.MenuBar menubar1;
-
 		private global::Gtk.HBox mainHbox;
-
 		private global::Gtk.VButtonBox _appButtonBox;
-
 		private global::Gtk.Notebook _connectionNotebook;
-
 		private global::Gtk.Statusbar _statusbar;
-
+        
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -90,7 +74,7 @@ namespace MonoMultiJack
 			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar1")));
 			this.menubar1.Name = "menubar1";
 			this.mainVbox.Add (this.menubar1);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this.menubar1]));
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.mainVbox [this.menubar1]));
 			w2.Position = 0;
 			w2.Expand = false;
 			w2.Fill = false;
@@ -106,7 +90,7 @@ namespace MonoMultiJack
 			this._appButtonBox.Spacing = 2;
 			this._appButtonBox.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(3));
 			this.mainHbox.Add (this._appButtonBox);
-			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._appButtonBox]));
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.mainHbox [this._appButtonBox]));
 			w3.Position = 0;
 			w3.Expand = false;
 			w3.Padding = ((uint)(2));
@@ -117,17 +101,17 @@ namespace MonoMultiJack
 			this._connectionNotebook.Name = "_connectionNotebook";
 			this._connectionNotebook.CurrentPage = -1;
 			this.mainHbox.Add (this._connectionNotebook);
-			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.mainHbox[this._connectionNotebook]));
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.mainHbox [this._connectionNotebook]));
 			w4.Position = 1;
 			this.mainVbox.Add (this.mainHbox);
-			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this.mainHbox]));
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.mainVbox [this.mainHbox]));
 			w5.Position = 1;
 			// Container child mainVbox.Gtk.Box+BoxChild
 			this._statusbar = new global::Gtk.Statusbar ();
 			this._statusbar.Name = "_statusbar";
 			this._statusbar.Spacing = 6;
 			this.mainVbox.Add (this._statusbar);
-			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.mainVbox[this._statusbar]));
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.mainVbox [this._statusbar]));
 			w6.Position = 2;
 			w6.Expand = false;
 			w6.Fill = false;
