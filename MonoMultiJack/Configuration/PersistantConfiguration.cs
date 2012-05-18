@@ -51,13 +51,15 @@ namespace MonoMultiJack.Configuration
 		/// <summary>
 		/// Path to config file
 		/// </summary>
-		private string _configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".monomultijack.xml");
+		private readonly string _applicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MonoMultiJack");
+		private readonly string _configFile;
 		
 		/// <summary>
 		/// constructor
 		/// </summary>
 		public PersistantConfiguration ()
 		{
+			_configFile = Path.Combine (_applicationFolder, "configuration.xml");
 			AppConfigs = new List<AppConfiguration>();
 			if (!ReadXml())
 			{
@@ -76,6 +78,7 @@ namespace MonoMultiJack.Configuration
 		/// </param>
 		public PersistantConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
 		{
+			_configFile = Path.Combine (_applicationFolder, "configuration.xml");
 			AppConfigs = newAppConfigs;
 			JackdConfig = newJackdConfig;
 		}
@@ -180,34 +183,45 @@ namespace MonoMultiJack.Configuration
 		/// <returns>
 		/// A <see cref="System.Boolean"/> indicating Success of writing XML file
 		/// </returns>
-		private bool WriteXml()
+		private bool WriteXml ()
 		{
 			try
 			{
+				if (!Directory.Exists (_applicationFolder))
+				{
+					Directory.CreateDirectory (_applicationFolder);
+				}
+				if (!File.Exists (_configFile))
+				{
+					using (var fs = File.Create(_configFile))
+					{
+						fs.Close ();
+					}
+				}
 				using (XmlTextWriter writer = new XmlTextWriter(_configFile, System.Text.Encoding.UTF8))
 				{
 					writer.Formatting = Formatting.Indented;
 					writer.IndentChar = '\t';
 					writer.Indentation = 1;
-					writer.WriteStartDocument();
-					writer.WriteStartElement("monomultijack");
-					writer.WriteStartElement("jackd");
-					writer.WriteElementString("path", JackdConfig.Path);
-					writer.WriteElementString("general-options", JackdConfig.GeneralOptions);
-					writer.WriteElementString("driver", JackdConfig.Driver);
-					writer.WriteElementString("driver-options", JackdConfig.DriverOptions);
-					writer.WriteEndElement();
-					writer.WriteStartElement("applications");
+					writer.WriteStartDocument ();
+					writer.WriteStartElement ("monomultijack");
+					writer.WriteStartElement ("jackd");
+					writer.WriteElementString ("path", JackdConfig.Path);
+					writer.WriteElementString ("general-options", JackdConfig.GeneralOptions);
+					writer.WriteElementString ("driver", JackdConfig.Driver);
+					writer.WriteElementString ("driver-options", JackdConfig.DriverOptions);
+					writer.WriteEndElement ();
+					writer.WriteStartElement ("applications");
 					foreach (AppConfiguration appConfig in AppConfigs)
 					{
-						writer.WriteStartElement("application");
-						writer.WriteElementString("name", appConfig.Name);
-						writer.WriteElementString("command", appConfig.Command);
-						writer.WriteEndElement();
+						writer.WriteStartElement ("application");
+						writer.WriteElementString ("name", appConfig.Name);
+						writer.WriteElementString ("command", appConfig.Command);
+						writer.WriteEndElement ();
 					}
-					writer.WriteEndElement();
-					writer.WriteEndElement();
-					writer.Flush();
+					writer.WriteEndElement ();
+					writer.WriteEndElement ();
+					writer.Flush ();
 				}
 				return true;
 			}

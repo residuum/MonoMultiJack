@@ -15,7 +15,7 @@ namespace MonoMultiJack
 		private global::Gtk.DrawingArea _connectionArea;
 		private global::Gtk.ScrolledWindow _inputScrolledWindow;
 		private global::Gtk.TreeView _inputTreeview;
-        
+		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
