@@ -1,10 +1,10 @@
 // 
-// AppConfiguration.cs
+// AlsaMidiManager.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,71 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
-
-namespace MonoMultiJack.BusinessLogic.Configuration
+using System.Collections.Generic;
+namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-	/// <summary>
-	/// Configuration of an application
-	/// </summary>
-	public struct AppConfiguration
+	public class AlsaMidiManager : IConnectionManager
 	{
-		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name {get; private set;}
-		
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command {get; private set;}
-
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
-		public AppConfiguration (string newName, string newCommand) : this()
+		public AlsaMidiManager ()
 		{
-			Name = newName;
-			Command = newCommand;
+			LibAsoundWrapper.Activate ();
 		}
-	}
+		
+		~AlsaMidiManager () 
+		{
+			LibAsoundWrapper.DeActivate();
+		}
+		
+		#region IConnectionManager implementation
+		public event ConnectionEventHandler ConnectionHasChanged;
+
+		public event ConnectionEventHandler BackendHasExited;
+
+		public bool Connect (Port outPort, Port inPort)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public bool Disconnect (Port outPort, Port inPort)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public ConnectionType ConnectionType
+		{
+			get 
+			{
+				return ConnectionType.AlsaMidi;
+			}
+		}
+
+		public bool IsActive
+		{
+			get 
+			{
+				//throw new NotImplementedException ();
+				return true;
+			}
+		}
+
+		public IEnumerable<Port> Ports
+		{
+			get 
+			{
+				return LibAsoundWrapper.GetPorts();
+			}
+		}
+
+		public IEnumerable<IConnection> Connections
+		{
+			get 
+			{
+				return null;
+				//throw new NotImplementedException ();
+			}
+		}
+		#endregion
 }
+}
+

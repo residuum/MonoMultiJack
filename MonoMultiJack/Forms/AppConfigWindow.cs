@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2011 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-
+using System;
+using System.Collections.Generic;
 using Gtk;
 using MonoMultiJack;
 using MonoMultiJack.BusinessLogic.Configuration;
 using MonoMultiJack.Widgets;
-using System;
-using System.Collections.Generic;
 
 namespace MonoMultiJack.Forms
 {
-	/// <summary>
-	/// dialog for application configuration
-	/// </summary>
-	public class AppConfigWindow : Gtk.Dialog
+	public partial class AppConfigWindow : Gtk.Dialog
 	{
 		//// <value>
 		/// table for layout
@@ -54,9 +49,9 @@ namespace MonoMultiJack.Forms
 		/// </value>
 		public List<AppConfiguration> AppConfigs
 		{
-			get 
+			get
 			{
-				List<AppConfiguration> newAppConfigs = new List<AppConfiguration>();
+				List<AppConfiguration > newAppConfigs = new List<AppConfiguration> ();
 				AppConfiguration newAppConfig;
 				
 				foreach (Widget child in _configTable.Children)
@@ -65,21 +60,26 @@ namespace MonoMultiJack.Forms
 					if (appConfigWidget != null)
 					{
 						newAppConfig = appConfigWidget.appConfig;
-						if (!string.IsNullOrEmpty(newAppConfig.Name) && !string.IsNullOrEmpty(newAppConfig.Command))
+						if (!string.IsNullOrEmpty (newAppConfig.Name) && !string.IsNullOrEmpty (newAppConfig.Command))
 						{
-							newAppConfigs.Add(newAppConfig);
+							newAppConfigs.Add (newAppConfig);
 						}
 					}
 				}
 				return newAppConfigs;
 			}
 		}
+		
+		public AppConfigWindow ()
+		{
+			this.Build ();
+		}
 				
-		public AppConfigWindow (List<AppConfiguration> appConfigs)
+		public AppConfigWindow (List<AppConfiguration> appConfigs) : this()
 		{
 			Title = "Configure Applications";
-			Resizable = false;
-			BuildDialog(appConfigs);
+			Resizable = true;
+			BuildDialog (appConfigs);
 		}
 		
 		/// <summary>
@@ -93,7 +93,6 @@ namespace MonoMultiJack.Forms
 			_configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
 			_configTable.ColumnSpacing = 10;
 			_configTable.RowSpacing = 10;
-			VBox.PackStart (_configTable, false, false, 0);
 			AppConfigWidget appConfigWidget;
 			uint count = 0;
 			foreach (AppConfiguration appConfig in appConfigs)
@@ -104,8 +103,7 @@ namespace MonoMultiJack.Forms
 			}
 			CreateAddButton ();
 			_configTable.Attach (_addWidget, 0, 1, count, count + 1);
-			AddButton (Stock.Ok, ResponseType.Ok);
-			AddButton (Stock.Cancel, ResponseType.Cancel);
+			_appScrolledWindow.AddWithViewport (_configTable);
 		}
 		
 		/// <summary>
@@ -124,11 +122,11 @@ namespace MonoMultiJack.Forms
 		/// <summary>
 		/// creates and attaches new application configuration widget
 		/// </summary>
-		private void AddNewConfigWidget()
+		private void AddNewConfigWidget ()
 		{
 			_configTable.NRows++;
-			AppConfigWidget appConfigWidget = new AppConfigWidget();
-			_configTable.Attach (appConfigWidget, 0, 1, _configTable.NRows - 2, _configTable.NRows -1);
+			AppConfigWidget appConfigWidget = new AppConfigWidget ();
+			_configTable.Attach (appConfigWidget, 0, 1, _configTable.NRows - 2, _configTable.NRows - 1);
 			CreateAddButton ();
 			_configTable.Attach (_addWidget, 0, 1, _configTable.NRows - 1, _configTable.NRows);
 			_configTable.ShowAll ();
@@ -149,3 +147,4 @@ namespace MonoMultiJack.Forms
 		}
 	}
 }
+

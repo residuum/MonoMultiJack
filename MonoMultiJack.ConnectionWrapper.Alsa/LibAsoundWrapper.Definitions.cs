@@ -1,10 +1,10 @@
 // 
-// AppConfiguration.cs
+// LibAsoundWrapper.Definitions.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
-
-namespace MonoMultiJack.BusinessLogic.Configuration
+namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-	/// <summary>
-	/// Configuration of an application
-	/// </summary>
-	public struct AppConfiguration
+	internal static partial class LibAsoundWrapper
 	{
-		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name {get; private set;}
+		private const string ASOUND_LIB_NAME = "libasound.so.2";
 		
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command {get; private set;}
-
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
-		public AppConfiguration (string newName, string newCommand) : this()
+		private const int SND_SEQ_NONBLOCK = 1;
+		private const int SND_SEQ_OPEN_DUPLEX = 3;
+				
+		private class AlsaPort : Port
 		{
-			Name = newName;
-			Command = newCommand;
+			
 		}
+		
 	}
 }
+

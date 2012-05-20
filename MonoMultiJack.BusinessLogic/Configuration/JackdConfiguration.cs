@@ -68,7 +68,7 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 		/// <param name="newDriverOptions">
 		/// A <see cref="System.String"/> indicating the new driver options
 		/// </param>
-		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions)
+		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions): this()
 		{			
 			Path = newPath;
 			GeneralOptions = newGeneralOptions;

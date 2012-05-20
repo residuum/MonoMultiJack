@@ -1,10 +1,10 @@
 // 
-// AppConfiguration.cs
+// AlsaMidiConnection.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2010 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,39 +23,63 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
-
-namespace MonoMultiJack.BusinessLogic.Configuration
+namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-	/// <summary>
-	/// Configuration of an application
-	/// </summary>
-	public struct AppConfiguration
+	public class AlsaMidiConnection : IConnection
 	{
-		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name {get; private set;}
+		private Port _outPort;
+		private Port _inPort;
 		
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command {get; private set;}
-
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
-		public AppConfiguration (string newName, string newCommand) : this()
+		#region IConnection implementation
+		public Port OutPort 
 		{
-			Name = newName;
-			Command = newCommand;
+			get 
+			{
+				if (_inPort != null)
+				{
+					return _outPort;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			set 
+			{
+				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output)
+				{
+					_outPort = value;					
+				}
+			}
 		}
-	}
-}
+
+		public Port InPort 
+		{
+			get 
+			{
+				if (_outPort != null) 
+				{
+					return _inPort;
+				} 
+				else 
+				{
+					return null;
+				}
+			}
+			set 
+			{
+				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) 
+				{
+					_inPort = value;
+				}
+			}
+		}
+		
+		public ConnectionType ConnectionType
+		{
+			get { return ConnectionType.AlsaMidi; }
+		}
+		#endregion
+	}}
+

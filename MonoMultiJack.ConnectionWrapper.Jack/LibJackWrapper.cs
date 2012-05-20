@@ -160,9 +160,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// </summary>
 		private static bool Activate ()
 		{
-			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
 			jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
+			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = jack_activate (_jackClient);
 			return jackActivateStatus == 0;
 		}

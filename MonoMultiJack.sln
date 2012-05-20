@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack", "MonoMultiJack\MonoMultiJack.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper", "MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
@@ -8,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.BusinessLogic", "MonoMultiJack.BusinessLogic\MonoMultiJack.BusinessLogic.csproj", "{0FF07842-6E86-40F0-998B-D376D50B83A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper.Jack", "MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj", "{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper.Alsa", "MonoMultiJack.ConnectionWrapper.Alsa\MonoMultiJack.ConnectionWrapper.Alsa.csproj", "{A8E040E6-F02C-40B3-A14A-D629B562BD9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E040E6-F02C-40B3-A14A-D629B562BD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E040E6-F02C-40B3-A14A-D629B562BD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E040E6-F02C-40B3-A14A-D629B562BD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E040E6-F02C-40B3-A14A-D629B562BD9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,7 +45,8 @@ Global
 		$1.DirectoryNamespaceAssociation = None
 		$1.ResourceNamePolicy = FileFormatDefault
 		$0.StandardHeader = $2
-		$2.inheritsSet = MITX11License
+		$2.Text = @\n${FileName}\n \nAuthor:\n      ${AuthorName} <${AuthorEmail}>\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.
+		$2.IncludeInNewFiles = True
 		$0.TextStylePolicy = $3
 		$3.FileWidth = 120
 		$3.TabWidth = 4

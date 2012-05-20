@@ -51,13 +51,15 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 		/// <summary>
 		/// Path to config file
 		/// </summary>
-		private string _configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".monomultijack.xml");
+		private readonly string _applicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MonoMultiJack");
+		private readonly string _configFile;
 		
 		/// <summary>
 		/// constructor
 		/// </summary>
 		public PersistantConfiguration ()
 		{
+			_configFile = Path.Combine (_applicationFolder, "configuration.xml");
 			AppConfigs = new List<AppConfiguration>();
 			if (!ReadXml())
 			{
@@ -76,6 +78,7 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 		/// </param>
 		public PersistantConfiguration(JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
 		{
+			_configFile = Path.Combine (_applicationFolder, "configuration.xml");
 			AppConfigs = newAppConfigs;
 			JackdConfig = newJackdConfig;
 		}
@@ -121,16 +124,19 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 			try
 			{
 				foreach (XmlNode applicationNode in applicationNodes)
-				{					
-					string name = applicationNode.SelectNodes("name").Item(0).InnerText;
-					string command = applicationNode.SelectNodes("command").Item(0).InnerText;
-					AppConfiguration newApp = new AppConfiguration(name, command);
-					AppConfigs.Add(newApp);
+				{
+					string name = applicationNode.SelectNodes ("name").Item (0).InnerText;
+					string command = applicationNode.SelectNodes ("command").Item (0).InnerText;
+					AppConfiguration newApp = new AppConfiguration (name, command);
+					AppConfigs.Add (newApp);
 				}
 				return true;
 			}
-			catch
+			catch (Exception e)
 			{
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				return false;
 			}
 		}
@@ -157,8 +163,11 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 					}
 					return true;
 				}
-				catch
+				catch (Exception e)
 				{
+					#if DEBUG
+					Console.WriteLine (e.Message);
+					#endif
 					return false;
 				}
 			}
@@ -174,39 +183,53 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 		/// <returns>
 		/// A <see cref="System.Boolean"/> indicating Success of writing XML file
 		/// </returns>
-		private bool WriteXml()
+		private bool WriteXml ()
 		{
 			try
 			{
+				if (!Directory.Exists (_applicationFolder))
+				{
+					Directory.CreateDirectory (_applicationFolder);
+				}
+				if (!File.Exists (_configFile))
+				{
+					using (var fs = File.Create(_configFile))
+					{
+						fs.Close ();
+					}
+				}
 				using (XmlTextWriter writer = new XmlTextWriter(_configFile, System.Text.Encoding.UTF8))
 				{
 					writer.Formatting = Formatting.Indented;
 					writer.IndentChar = '\t';
 					writer.Indentation = 1;
-					writer.WriteStartDocument();
-					writer.WriteStartElement("monomultijack");
-					writer.WriteStartElement("jackd");
-					writer.WriteElementString("path", JackdConfig.Path);
-					writer.WriteElementString("general-options", JackdConfig.GeneralOptions);
-					writer.WriteElementString("driver", JackdConfig.Driver);
-					writer.WriteElementString("driver-options", JackdConfig.DriverOptions);
-					writer.WriteEndElement();
-					writer.WriteStartElement("applications");
+					writer.WriteStartDocument ();
+					writer.WriteStartElement ("monomultijack");
+					writer.WriteStartElement ("jackd");
+					writer.WriteElementString ("path", JackdConfig.Path);
+					writer.WriteElementString ("general-options", JackdConfig.GeneralOptions);
+					writer.WriteElementString ("driver", JackdConfig.Driver);
+					writer.WriteElementString ("driver-options", JackdConfig.DriverOptions);
+					writer.WriteEndElement ();
+					writer.WriteStartElement ("applications");
 					foreach (AppConfiguration appConfig in AppConfigs)
 					{
-						writer.WriteStartElement("application");
-						writer.WriteElementString("name", appConfig.Name);
-						writer.WriteElementString("command", appConfig.Command);
-						writer.WriteEndElement();
+						writer.WriteStartElement ("application");
+						writer.WriteElementString ("name", appConfig.Name);
+						writer.WriteElementString ("command", appConfig.Command);
+						writer.WriteEndElement ();
 					}
-					writer.WriteEndElement();
-					writer.WriteEndElement();
-					writer.Flush();
+					writer.WriteEndElement ();
+					writer.WriteEndElement ();
+					writer.Flush ();
 				}
 				return true;
 			}
-			catch
+			catch (Exception e)
 			{
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				return false;
 			}
 		}

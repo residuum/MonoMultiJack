@@ -173,6 +173,9 @@ namespace MonoMultiJack.BusinessLogic.Common
 			}
 			catch (Exception ex)
 			{
+				#if DEBUG
+				Console.WriteLine (ex.Message);
+				#endif
 				new IOException("Unable to write to temporary file.", ex);
 			}
 		}
@@ -199,6 +202,9 @@ namespace MonoMultiJack.BusinessLogic.Common
 			}
 			catch (Exception ex)
 			{
+				#if DEBUG
+				Console.WriteLine (ex.Message);
+				#endif
 				new IOException("Unable to write to temporary file.", ex);
 			}
 		}

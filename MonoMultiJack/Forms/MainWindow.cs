@@ -34,6 +34,7 @@ using MonoMultiJack;
 using MonoMultiJack.BusinessLogic.Common;
 using MonoMultiJack.BusinessLogic.Configuration;
 using MonoMultiJack.ConnectionWrapper;
+using MonoMultiJack.ConnectionWrapper.Alsa;
 using MonoMultiJack.ConnectionWrapper.Jack;
 using MonoMultiJack.Widgets;
 using MessageType = Gtk.MessageType;
@@ -97,7 +98,7 @@ namespace MonoMultiJack.Forms
 		/// </summary>
 		public MainWindow () : base(Gtk.WindowType.Toplevel)
 		{
-			Build ();
+			this.Build ();
 			BuildWindowContent ();
 			DeleteEvent += OnDelete;
 		}
@@ -112,9 +113,11 @@ namespace MonoMultiJack.Forms
 			_statusbar.Push (0, JackdStatusStopped);
 			ReadConfiguration ();
 			IConnectionManager jackAudio = new JackAudioManager ();
-			IConnectionManager jackMidi = new JackMidiManager();
+			IConnectionManager jackMidi = new JackMidiManager ();
+			//IConnectionManager alsaMidi = new AlsaMidiManager();
 			_connectionNotebook.AppendPage (new ConnectionDisplay (jackAudio), new Label (jackAudio.ConnectionType.ToString ()));
 			_connectionNotebook.AppendPage (new ConnectionDisplay (jackMidi), new Label (jackMidi.ConnectionType.ToString ()));
+			//_connectionNotebook.AppendPage (new ConnectionDisplay (alsaMidi), new Label (alsaMidi.ConnectionType.ToString ()));
 		}
 		
 		/// <summary>
@@ -128,8 +131,11 @@ namespace MonoMultiJack.Forms
 				UpdateAppWidgets(_config.AppConfigs);
 				UpdateJackd(_config.JackdConfig);
 			}
-			catch (System.Xml.XmlException)
+			catch (System.Xml.XmlException e)
 			{
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				InfoMessage("Configuration file is not readable, does not exist or is corrupt.");
 				_config = new PersistantConfiguration(new JackdConfiguration(), new List<AppConfiguration> ());
 			}
@@ -435,13 +441,13 @@ namespace MonoMultiJack.Forms
 		{
 			AboutDialog about = new AboutDialog();
 			about.ProgramName = "MonoMultiJack";
-			about.Version = "0.0.1";
-			about.Copyright = "(c) Thomas Mayer 2010";
+			about.Version = "0.0.2";
+			about.Copyright = "(c) Thomas Mayer 2011";
 			about.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
 	programs.";
 	        about.Website = "http://ix.residuum.org/";
 			about.Authors = new String[] {"Thomas Mayer"};
-			about.License = @"Copyright (c) 2010 Thomas Mayer
+			about.License = @"Copyright (c) 2011 Thomas Mayer
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the ""Software""), to deal
