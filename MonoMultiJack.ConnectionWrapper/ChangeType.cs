@@ -26,11 +26,10 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public enum ChangeType
-	{
-		Undefined,
-		New,
-		Deleted
-	}
+    public enum ChangeType
+    {
+	Undefined,
+	New,
+	Deleted
+    }
 }
-

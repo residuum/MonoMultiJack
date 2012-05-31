@@ -28,25 +28,26 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public class Port
+    public class Port
+    {
+	public string Name { get; protected set; }
+
+	public string ClientName { get; protected set; }
+
+	public PortType PortType { get; protected set; }
+
+	public ConnectionType ConnectionType { get; protected set; }
+		
+	public Port (string name, string clientName, PortType portType, ConnectionType connectionType)
 	{
-		public string Name {get; protected set;}
-		public string ClientName {get; protected set;}
-
-		public PortType PortType { get; protected set; }
-		public ConnectionType ConnectionType {get; protected set;}
-		
-		public Port (string name, string clientName, PortType portType, ConnectionType connectionType)
-		{
-			Name = name;
-			ClientName = clientName;
-			PortType = portType;
-			ConnectionType = connectionType;
-		}
-		
-		public Port()
-		{			
-		}
+	    Name = name;
+	    ClientName = clientName;
+	    PortType = portType;
+	    ConnectionType = connectionType;
 	}
+		
+	public Port ()
+	{			
+	}
+    }
 }
-

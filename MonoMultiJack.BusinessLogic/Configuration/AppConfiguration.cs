@@ -23,39 +23,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
 namespace MonoMultiJack.BusinessLogic.Configuration
 {
+    /// <summary>
+    /// Configuration of an application
+    /// </summary>
+    public struct AppConfiguration
+    {
 	/// <summary>
-	/// Configuration of an application
+	/// name of the application
 	/// </summary>
-	public struct AppConfiguration
-	{
-		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name {get; private set;}
+	public string Name { get; private set; }
 		
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command {get; private set;}
+	/// <summary>
+	/// command to launch the application
+	/// </summary>
+	public string Command { get; private set; }
 
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
-		public AppConfiguration (string newName, string newCommand) : this()
-		{
-			Name = newName;
-			Command = newCommand;
-		}
+	/// <summary>
+	/// constructor
+	/// </summary>
+	/// <param name="newName">
+	/// A <see cref="System.String"/> indicating name of application
+	/// </param>
+	/// <param name="newCommand">
+	/// A <see cref="System.String"/> indicating command to lauch the application
+	/// </param>
+	public AppConfiguration (string newName, string newCommand) : this()
+	{
+	    Name = newName;
+	    Command = newCommand;
 	}
+    }
 }

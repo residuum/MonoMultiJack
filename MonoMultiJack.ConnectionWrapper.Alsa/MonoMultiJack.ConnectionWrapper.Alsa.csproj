@@ -39,6 +39,7 @@
     <Compile Include="LibAsoundWrapper.cs" />
     <Compile Include="LibAsoundWrapper.Definitions.cs" />
     <Compile Include="LibAsoundWrapper.Pinvoke.cs" />
+    <Compile Include="TypeDefinitions\SndSeqT.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -46,5 +47,8 @@
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>MonoMultiJack.ConnectionWrapper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TypeDefinitions\" />
   </ItemGroup>
 </Project>

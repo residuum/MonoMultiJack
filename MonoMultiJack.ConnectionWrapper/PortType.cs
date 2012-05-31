@@ -26,11 +26,10 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public enum PortType
-	{
-		Undefined,
-		Input,
-		Output
-	}
+    public enum PortType
+    {
+	Undefined,
+	Input,
+	Output
+    }
 }
-

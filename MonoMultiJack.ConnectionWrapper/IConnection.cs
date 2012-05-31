@@ -26,33 +26,30 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
+    /// <summary>
+    /// Interface for connections.
+    /// </summary>
+    public interface IConnection
+    {
 	/// <summary>
-	/// Interface for connections.
+	/// Port of type outlet
 	/// </summary>
-	public interface IConnection
-	{
-		/// <summary>
-		/// Port of type outlet
-		/// </summary>
-		Port OutPort
-		{
-			get;
-			set;
-		}
-		
-		/// <summary>
-		/// Port of type inlet
-		/// </summary>
-		Port InPort
-		{
-			get;
-			set;
-		}
-		
-		/// <summary>
-		/// The connection type. 
-		/// </summary>
-		ConnectionType ConnectionType {get;}
+	Port OutPort {
+	    get;
+	    set;
 	}
+		
+	/// <summary>
+	/// Port of type inlet
+	/// </summary>
+	Port InPort {
+	    get;
+	    set;
+	}
+		
+	/// <summary>
+	/// The connection type. 
+	/// </summary>
+	ConnectionType ConnectionType { get; }
+    }
 }
-

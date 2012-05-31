@@ -23,57 +23,56 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 
 namespace MonoMultiJack.BusinessLogic.Configuration
 {
+    /// <summary>
+    /// jackd configuration
+    /// </summary>
+    public struct JackdConfiguration
+    {
 	/// <summary>
-	/// jackd configuration
+	/// path to jackd executable
 	/// </summary>
-	public struct JackdConfiguration
-	{
-		/// <summary>
-		/// path to jackd executable
-		/// </summary>
-		public string Path {get; private set;}
+	public string Path { get; private set; }
 		
-		/// <summary>
-		/// General oprions for jackd
-		/// </summary>
-		public string GeneralOptions {get;private set;}
+	/// <summary>
+	/// General oprions for jackd
+	/// </summary>
+	public string GeneralOptions { get; private set; }
 		
-		/// <summary>
-		/// Driver infrastructure for jackd
-		/// </summary>
-		public string Driver {get; private set;}
+	/// <summary>
+	/// Driver infrastructure for jackd
+	/// </summary>
+	public string Driver { get; private set; }
 		
-		/// <summary>
-		/// Options for jackd driver
-		/// </summary>
-		public string DriverOptions {get; private set;}
+	/// <summary>
+	/// Options for jackd driver
+	/// </summary>
+	public string DriverOptions { get; private set; }
 		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="newPath">
-		/// A <see cref="System.String"/> indicating the path to jackd executable
-		/// </param>
-		/// <param name="newGeneralOptions">
-		/// A <see cref="System.String"/> indicating the new general options
-		/// </param>
-		/// <param name="newDriver">
-		/// A <see cref="System.String"/> indicating the driver infrastructure
-		/// </param>
-		/// <param name="newDriverOptions">
-		/// A <see cref="System.String"/> indicating the new driver options
-		/// </param>
-		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions): this()
-		{			
-			Path = newPath;
-			GeneralOptions = newGeneralOptions;
-			Driver = newDriver;
-			DriverOptions = newDriverOptions;
-		}
+	/// <summary>
+	/// Constructor
+	/// </summary>
+	/// <param name="newPath">
+	/// A <see cref="System.String"/> indicating the path to jackd executable
+	/// </param>
+	/// <param name="newGeneralOptions">
+	/// A <see cref="System.String"/> indicating the new general options
+	/// </param>
+	/// <param name="newDriver">
+	/// A <see cref="System.String"/> indicating the driver infrastructure
+	/// </param>
+	/// <param name="newDriverOptions">
+	/// A <see cref="System.String"/> indicating the new driver options
+	/// </param>
+	public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions): this()
+	{			
+	    Path = newPath;
+	    GeneralOptions = newGeneralOptions;
+	    Driver = newDriver;
+	    DriverOptions = newDriverOptions;
 	}
+    }
 }

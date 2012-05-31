@@ -26,60 +26,45 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-	public class AlsaMidiConnection : IConnection
-	{
-		private Port _outPort;
-		private Port _inPort;
+    public class AlsaMidiConnection : IConnection
+    {
+	private Port _outPort;
+	private Port _inPort;
 		
 		#region IConnection implementation
-		public Port OutPort 
-		{
-			get 
-			{
-				if (_inPort != null)
-				{
-					return _outPort;
-				}
-				else
-				{
-					return null;
-				}
-			}
-			set 
-			{
-				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output)
-				{
-					_outPort = value;					
-				}
-			}
+	public Port OutPort {
+	    get {
+		if (_inPort != null) {
+		    return _outPort;
+		} else {
+		    return null;
 		}
+	    }
+	    set {
+		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output) {
+		    _outPort = value;					
+		}
+	    }
+	}
 
-		public Port InPort 
-		{
-			get 
-			{
-				if (_outPort != null) 
-				{
-					return _inPort;
-				} 
-				else 
-				{
-					return null;
-				}
-			}
-			set 
-			{
-				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) 
-				{
-					_inPort = value;
-				}
-			}
+	public Port InPort {
+	    get {
+		if (_outPort != null) {
+		    return _inPort;
+		} else {
+		    return null;
 		}
+	    }
+	    set {
+		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) {
+		    _inPort = value;
+		}
+	    }
+	}
 		
-		public ConnectionType ConnectionType
-		{
-			get { return ConnectionType.AlsaMidi; }
-		}
+	public ConnectionType ConnectionType {
+	    get { return ConnectionType.AlsaMidi; }
+	}
 		#endregion
-	}}
-
+    }
+}

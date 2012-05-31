@@ -26,18 +26,16 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-	internal static partial class LibAsoundWrapper
-	{
-		private const string ASOUND_LIB_NAME = "libasound.so.2";
-		
-		private const int SND_SEQ_NONBLOCK = 1;
-		private const int SND_SEQ_OPEN_DUPLEX = 3;
+    internal static partial class LibAsoundWrapper
+    {
+	private const string ASOUND_LIB_NAME = "libasound.so.2";
+	private const int SND_SEQ_NONBLOCK = 1;
+	private const int SND_SEQ_OPEN_DUPLEX = 3;
 				
-		private class AlsaPort : Port
-		{
+	private class AlsaPort : Port
+	{
 			
-		}
-		
 	}
+		
+    }
 }
-

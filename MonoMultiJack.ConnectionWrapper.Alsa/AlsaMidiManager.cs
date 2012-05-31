@@ -25,69 +25,60 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-	public class AlsaMidiManager : IConnectionManager
+    public class AlsaMidiManager : IConnectionManager
+    {
+	public AlsaMidiManager ()
 	{
-		public AlsaMidiManager ()
-		{
-			LibAsoundWrapper.Activate ();
-		}
+	    LibAsoundWrapper.Activate ();
+	}
 		
-		~AlsaMidiManager () 
-		{
-			LibAsoundWrapper.DeActivate();
-		}
+	~AlsaMidiManager ()
+	{
+	    LibAsoundWrapper.DeActivate ();
+	}
 		
 		#region IConnectionManager implementation
-		public event ConnectionEventHandler ConnectionHasChanged;
+	public event ConnectionEventHandler ConnectionHasChanged;
+	public event ConnectionEventHandler BackendHasExited;
 
-		public event ConnectionEventHandler BackendHasExited;
+	public bool Connect (Port outPort, Port inPort)
+	{
+	    throw new NotImplementedException ();
+	}
 
-		public bool Connect (Port outPort, Port inPort)
-		{
-			throw new NotImplementedException ();
-		}
+	public bool Disconnect (Port outPort, Port inPort)
+	{
+	    throw new NotImplementedException ();
+	}
 
-		public bool Disconnect (Port outPort, Port inPort)
-		{
-			throw new NotImplementedException ();
-		}
+	public ConnectionType ConnectionType {
+	    get {
+		return ConnectionType.AlsaMidi;
+	    }
+	}
 
-		public ConnectionType ConnectionType
-		{
-			get 
-			{
-				return ConnectionType.AlsaMidi;
-			}
-		}
+	public bool IsActive {
+	    get {
+		//throw new NotImplementedException ();
+		return true;
+	    }
+	}
 
-		public bool IsActive
-		{
-			get 
-			{
-				//throw new NotImplementedException ();
-				return true;
-			}
-		}
+	public IEnumerable<Port> Ports {
+	    get {
+		return LibAsoundWrapper.GetPorts ();
+	    }
+	}
 
-		public IEnumerable<Port> Ports
-		{
-			get 
-			{
-				return LibAsoundWrapper.GetPorts();
-			}
-		}
-
-		public IEnumerable<IConnection> Connections
-		{
-			get 
-			{
-				return null;
-				//throw new NotImplementedException ();
-			}
-		}
+	public IEnumerable<IConnection> Connections {
+	    get {
+		return null;
+		//throw new NotImplementedException ();
+	    }
+	}
 		#endregion
+    }
 }
-}
-

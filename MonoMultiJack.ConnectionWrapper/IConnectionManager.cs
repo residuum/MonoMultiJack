@@ -28,19 +28,23 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public delegate void ConnectionEventHandler(object sender, ConnectionEventArgs e);
+    public delegate void ConnectionEventHandler (object sender,ConnectionEventArgs e);
 		
-	public interface IConnectionManager
-	{		
-		event ConnectionEventHandler ConnectionHasChanged;
-		event ConnectionEventHandler BackendHasExited;
+    public interface IConnectionManager
+    {		
+	event ConnectionEventHandler ConnectionHasChanged;
+	event ConnectionEventHandler BackendHasExited;
 		
-		ConnectionType ConnectionType {get;}
-		bool IsActive { get;}
-		IEnumerable<Port> Ports { get; }
-		IEnumerable<IConnection> Connections {get;}
-		bool Connect(Port outPort, Port inPort);
-		bool Disconnect (Port outPort, Port inPort);		
-	}
-}
+	ConnectionType ConnectionType { get; }
 
+	bool IsActive { get; }
+
+	IEnumerable<Port> Ports { get; }
+
+	IEnumerable<IConnection> Connections { get; }
+
+	bool Connect (Port outPort, Port inPort);
+
+	bool Disconnect (Port outPort, Port inPort);		
+    }
+}

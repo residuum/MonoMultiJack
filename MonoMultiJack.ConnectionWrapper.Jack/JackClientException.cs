@@ -26,16 +26,18 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	/// <summary>
-	/// Class for exception in Jackd client.
-	/// </summary>
-	[Serializable]
-	public class JackClientException : Exception
+    /// <summary>
+    /// Class for exception in Jackd client.
+    /// </summary>
+    [Serializable]
+    public class JackClientException : Exception
+    {
+	public JackClientException (string message) : base(message)
 	{
-		public JackClientException (string message) : base(message)
-		{}
-		public JackClientException (string message, Exception innerException) : base(message, innerException)
-		{}
 	}
-}
 
+	public JackClientException (string message, Exception innerException) : base(message, innerException)
+	{
+	}
+    }
+}

@@ -23,29 +23,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 using Gtk;
 
 namespace MonoMultiJack
 {
+    /// <summary>
+    /// startup class
+    /// </summary>
+    class MainClass
+    {
 	/// <summary>
-	/// startup class
+	/// startup script, starts MainWindow
 	/// </summary>
-	class MainClass
+	/// <param name="args">
+	/// A <see cref="System.String"/>
+	/// </param>
+	public static void Main (string[] args)
 	{
-		/// <summary>
-		/// startup script, starts MainWindow
-		/// </summary>
-		/// <param name="args">
-		/// A <see cref="System.String"/>
-		/// </param>
-		public static void Main (string[] args)
-		{
-			Application.Init ();
-			Forms.MainWindow win = new Forms.MainWindow ();
-			win.ShowAll ();
-			Application.Run ();
-		}
+	    Application.Init ();
+	    Forms.MainWindow win = new Forms.MainWindow ();
+	    win.ShowAll ();
+	    Application.Run ();
 	}
+    }
 }

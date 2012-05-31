@@ -26,15 +26,14 @@
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-	public class JackAudioManager : JackConnectionManager, IConnectionManager
+    public class JackAudioManager : JackConnectionManager, IConnectionManager
+    {
+	public JackAudioManager () : base()
 	{
-		public JackAudioManager () : base()
-		{
-		}
-		
-		public override ConnectionType ConnectionType
-		{
-			get {return ConnectionType.JackAudio;}
-		}
 	}
+		
+	public override ConnectionType ConnectionType {
+	    get { return ConnectionType.JackAudio;}
+	}
+    }
 }

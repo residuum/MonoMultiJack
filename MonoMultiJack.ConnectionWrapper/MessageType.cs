@@ -26,13 +26,12 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public enum MessageType
-	{
-		Undefined,
-		Debug,
-		Info,
-		Warning,
-		Error
-	}
+    public enum MessageType
+    {
+	Undefined,
+	Debug,
+	Info,
+	Warning,
+	Error
+    }
 }
-
