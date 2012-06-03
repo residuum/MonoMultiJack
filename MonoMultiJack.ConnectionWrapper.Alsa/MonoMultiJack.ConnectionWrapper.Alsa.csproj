@@ -39,7 +39,7 @@
     <Compile Include="LibAsoundWrapper.cs" />
     <Compile Include="LibAsoundWrapper.Definitions.cs" />
     <Compile Include="LibAsoundWrapper.Pinvoke.cs" />
-    <Compile Include="TypeDefinitions\SndSeqT.cs" />
+    <Compile Include="TypeDefinitions\SndSeqAddr.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -17,9 +17,9 @@ SHAMROCK_EXPAND_DATADIR
 
 AC_PROG_INSTALL
 
-AC_PATH_PROG(GMCS, gmcs, no)
-if test "x$GMCS" = "xno"; then
-        AC_MSG_ERROR([gmcs Not found])
+AC_PATH_PROG(DMCS, dmcs, no)
+if test "x$DMCS" = "xno"; then
+        AC_MSG_ERROR([dmcs Not found])
 fi
 
 
@@ -49,7 +49,6 @@ dnl package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 PKG_CHECK_MODULES([GLADE_SHARP_20], [glade-sharp-2.0])
-PKG_CHECK_MODULES([MONO_CAIRO], [mono-cairo])
 
 dnl package checks, per config
 
@@ -61,6 +60,8 @@ MonoMultiJack.BusinessLogic/monomultijack.businesslogic.pc
 MonoMultiJack.BusinessLogic/Makefile
 MonoMultiJack.ConnectionWrapper.Jack/monomultijack.connectionwrapper.jack.pc
 MonoMultiJack.ConnectionWrapper.Jack/Makefile
+MonoMultiJack.ConnectionWrapper.Alsa/monomultijack.connectionwrapper.alsa.pc
+MonoMultiJack.ConnectionWrapper.Alsa/Makefile
 MonoMultiJack/monomultijack
 MonoMultiJack/Makefile
 Makefile

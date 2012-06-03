@@ -29,40 +29,95 @@ namespace MonoMultiJack.Forms
 			// Widget MonoMultiJack.Forms.MainWindow
 			this.UIManager = new global::Gtk.UIManager ();
 			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-			this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
+			this.FileAction = new global::Gtk.Action (
+				"FileAction",
+				global::Mono.Unix.Catalog.GetString("File"),
+				null,
+				null
+			);
 			this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
 			w1.Add (this.FileAction, null);
-			this.reStartJackdAction = new global::Gtk.Action ("reStartJackdAction", global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd"), null, "gtk-refresh");
+			this.reStartJackdAction = new global::Gtk.Action (
+				"reStartJackdAction",
+				global::Mono.Unix.Catalog.GetString("(Re)Start Jackd"),
+				null,
+				"gtk-refresh"
+			);
 			this.reStartJackdAction.Sensitive = false;
 			this.reStartJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd");
 			w1.Add (this.reStartJackdAction, null);
-			this.stopJackdAction = new global::Gtk.Action ("stopJackdAction", global::Mono.Unix.Catalog.GetString ("Stop Jackd"), null, "gtk-stop");
+			this.stopJackdAction = new global::Gtk.Action (
+				"stopJackdAction",
+				global::Mono.Unix.Catalog.GetString("Stop Jackd"),
+				null,
+				"gtk-stop"
+			);
 			this.stopJackdAction.Sensitive = false;
 			this.stopJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Stop Jackd");
 			w1.Add (this.stopJackdAction, null);
-			this.stopAllAction = new global::Gtk.Action ("stopAllAction", global::Mono.Unix.Catalog.GetString ("Stop All"), null, "gtk-stop");
+			this.stopAllAction = new global::Gtk.Action (
+				"stopAllAction",
+				global::Mono.Unix.Catalog.GetString("Stop All"),
+				null,
+				"gtk-stop"
+			);
 			this.stopAllAction.Sensitive = false;
 			this.stopAllAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Stop All");
 			w1.Add (this.stopAllAction, null);
-			this.quitAction = new global::Gtk.Action ("quitAction", global::Mono.Unix.Catalog.GetString ("Quit"), null, "gtk-quit");
+			this.quitAction = new global::Gtk.Action (
+				"quitAction",
+				global::Mono.Unix.Catalog.GetString("Quit"),
+				null,
+				"gtk-quit"
+			);
 			this.quitAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Quit");
 			w1.Add (this.quitAction, null);
-			this.ConfigurationAction = new global::Gtk.Action ("ConfigurationAction", global::Mono.Unix.Catalog.GetString ("Configuration"), null, null);
+			this.ConfigurationAction = new global::Gtk.Action (
+				"ConfigurationAction",
+				global::Mono.Unix.Catalog.GetString("Configuration"),
+				null,
+				null
+			);
 			this.ConfigurationAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Configuration");
 			w1.Add (this.ConfigurationAction, null);
-			this.configureJackdAction = new global::Gtk.Action ("configureJackdAction", global::Mono.Unix.Catalog.GetString ("Configure Jackd"), null, "gtk-preferences");
+			this.configureJackdAction = new global::Gtk.Action (
+				"configureJackdAction",
+				global::Mono.Unix.Catalog.GetString("Configure Jackd"),
+				null,
+				"gtk-preferences"
+			);
 			this.configureJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Configure Jackd");
 			w1.Add (this.configureJackdAction, null);
-			this.addRemoveApplicationsAction = new global::Gtk.Action ("addRemoveApplicationsAction", global::Mono.Unix.Catalog.GetString ("Add / Remove Applications"), null, "gtk-preferences");
+			this.addRemoveApplicationsAction = new global::Gtk.Action (
+				"addRemoveApplicationsAction",
+				global::Mono.Unix.Catalog.GetString("Add / Remove Applications"),
+				null,
+				"gtk-preferences"
+			);
 			this.addRemoveApplicationsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add / Remove Applications");
 			w1.Add (this.addRemoveApplicationsAction, null);
-			this.helpAction = new global::Gtk.Action ("helpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
+			this.helpAction = new global::Gtk.Action (
+				"helpAction",
+				global::Mono.Unix.Catalog.GetString("Help"),
+				null,
+				null
+			);
 			this.helpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
 			w1.Add (this.helpAction, null);
-			this.aboutAction = new global::Gtk.Action ("aboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, "gtk-about");
+			this.aboutAction = new global::Gtk.Action (
+				"aboutAction",
+				global::Mono.Unix.Catalog.GetString("About"),
+				null,
+				"gtk-about"
+			);
 			this.aboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
 			w1.Add (this.aboutAction, null);
-			this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
+			this.HelpAction = new global::Gtk.Action (
+				"HelpAction",
+				global::Mono.Unix.Catalog.GetString("Help"),
+				null,
+				null
+			);
 			this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
 			w1.Add (this.HelpAction, null);
 			this.UIManager.InsertActionGroup (w1, 0);
