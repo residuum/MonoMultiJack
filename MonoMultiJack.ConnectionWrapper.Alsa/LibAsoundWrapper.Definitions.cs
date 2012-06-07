@@ -31,11 +31,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	private const string ASOUND_LIB_NAME = "libasound.so.2";
 	private const int SND_SEQ_NONBLOCK = 1;
 	private const int SND_SEQ_OPEN_DUPLEX = 3;
-				
-	private class AlsaPort : Port
-	{
-			
-	}
-		
+	private const int SND_SEQ_PORT_CAP_NO_EXPORT = (1<<7);
+	private const int SND_SEQ_PORT_CAP_READ = (1<<0);
+	private const int SND_SEQ_PORT_CAP_WRITE = (1<<1);
+	private const int SND_SEQ_PORT_CAP_DUPLEX = (1<<4);
+	private const int SND_SEQ_USER_CLIENT = 1;
+	private const int SND_SEQ_PORT_SYSTEM_TIMER = 0;
+	private const int SND_SEQ_PORT_SYSTEM_ANNOUNCE = 1;
+	private const int SND_SEQ_PORT_TYPE_APPLICATION = (1<<20);	
     }
 }

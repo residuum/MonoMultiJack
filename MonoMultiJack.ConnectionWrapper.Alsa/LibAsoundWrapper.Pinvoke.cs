@@ -59,5 +59,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		
 	[DllImport(ASOUND_LIB_NAME)]
 	private static extern int snd_seq_port_info_sizeof ();
+		
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern int snd_seq_port_info_get_capability (IntPtr info);
+		
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern int snd_seq_port_info_get_type (IntPtr info);
     }
 }

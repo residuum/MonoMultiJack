@@ -1,10 +1,10 @@
 // 
-// AlsaMidiManager.cs
+// AlsaPort.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,60 +24,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
-
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-    public class AlsaMidiManager : IConnectionManager
+    internal class AlsaPort : Port
     {
-	public AlsaMidiManager ()
-	{
-	    LibAsoundWrapper.Activate ();
-	}
+	public SndSeqAddr AlsaAddress { get; private set; }
 		
-	~AlsaMidiManager ()
-	{
-	    LibAsoundWrapper.DeActivate ();
+	public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, PortType portType)
+	{				
+	    AlsaAddress = alsaAdress;
+	    PortType = portType;
+	    ConnectionType = ConnectionType.AlsaMidi;
+	    ClientName = clientName;
+	    Name = portName;				
 	}
-		
-		#region IConnectionManager implementation
-	public event ConnectionEventHandler ConnectionHasChanged;
-	public event ConnectionEventHandler BackendHasExited;
-
-	public bool Connect (Port outPort, Port inPort)
-	{
-	    throw new NotImplementedException ();
-	}
-
-	public bool Disconnect (Port outPort, Port inPort)
-	{
-	    throw new NotImplementedException ();
-	}
-
-	public ConnectionType ConnectionType {
-	    get {
-		return ConnectionType.AlsaMidi;
-	    }
-	}
-
-	public bool IsActive {
-	    get {
-		//throw new NotImplementedException ();
-		return true;
-	    }
-	}
-
-	public IEnumerable<Port> Ports {
-	    get {
-		return LibAsoundWrapper.GetPorts ();
-	    }
-	}
-
-	public IEnumerable<IConnection> Connections {
-	    get {
-		return LibAsoundWrapper.GetConnections ();
-	    }
-	}
-		#endregion
-    }
+			
+    }	
 }

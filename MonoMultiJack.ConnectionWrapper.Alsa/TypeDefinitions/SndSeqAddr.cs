@@ -25,13 +25,14 @@
 // THE SOFTWARE.
 using System;
 using System.Runtime.InteropServices;
+
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct SndSeqAddr
 	{
-	    public byte client;
-	    public byte port;
+	    public byte Client;
+	    public byte Port;
 	}
 }
 
