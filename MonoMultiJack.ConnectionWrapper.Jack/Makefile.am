@@ -63,7 +63,9 @@ FILES = \
 	JackMidiManager.cs \
 	LibJackWrapper.cs \
 	LibJackWrapper.Definitions.cs \
-	LibJackWrapper.PInvoke.cs 
+	LibJackWrapper.PInvoke.cs \
+	TypeDefinitions/JackPortFlags.cs \
+	TypeDefinitions/JackPort.cs 
 
 DATA_FILES = 
 

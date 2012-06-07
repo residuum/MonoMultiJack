@@ -60,7 +60,8 @@ FILES = \
 	LibAsoundWrapper.cs \
 	LibAsoundWrapper.Definitions.cs \
 	LibAsoundWrapper.Pinvoke.cs \
-	TypeDefinitions/SndSeqT.cs 
+	TypeDefinitions/SndSeqAddr.cs \
+	TypeDefinitions/AlsaPort.cs 
 
 DATA_FILES = 
 

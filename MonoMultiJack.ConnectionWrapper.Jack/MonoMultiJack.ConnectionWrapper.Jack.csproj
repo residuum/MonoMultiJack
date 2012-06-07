@@ -47,6 +47,8 @@
     <Compile Include="LibJackWrapper.cs" />
     <Compile Include="LibJackWrapper.Definitions.cs" />
     <Compile Include="LibJackWrapper.PInvoke.cs" />
+    <Compile Include="TypeDefinitions\JackPortFlags.cs" />
+    <Compile Include="TypeDefinitions\JackPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">
@@ -55,4 +57,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="TypeDefinitions\" />
+  </ItemGroup>
 </Project>
