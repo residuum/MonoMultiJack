@@ -94,9 +94,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		eventArgs.MessageType = MessageType.Info;
 		ConnectionHasChanged (this, eventArgs);
 		return false;
-	    } else {
-		return true;
-	    }
+	    } 
+	    return true;
 	}
 		
 	private void LibJackWrapperHasChanged (object sender, ConnectionEventArgs args)

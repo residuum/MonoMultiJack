@@ -24,7 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper
+namespace MonoMultiJack.ConnectionWrapper.Jack
 {
     public class JackMidiConnection : IConnection
     {
@@ -36,9 +36,8 @@ namespace MonoMultiJack.ConnectionWrapper
 	    get {
 		if (_inPort != null) {
 		    return _outPort;
-		} else {
-		    return null;
-		}
+		} 
+		return null;
 	    }
 	    set {
 		if (value.ConnectionType == ConnectionType.JackMidi && value.PortType == PortType.Output) {
@@ -51,9 +50,8 @@ namespace MonoMultiJack.ConnectionWrapper
 	    get {
 		if (_outPort != null) {
 		    return _inPort;
-		} else {
-		    return null;
 		}
+		return null;
 	    }
 	    set {
 		if (value.ConnectionType == ConnectionType.JackMidi && value.PortType == PortType.Input) {

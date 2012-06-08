@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mono.Unix;
+using System.Runtime.InteropServices;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
@@ -53,7 +53,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		ports.Add (newPort);
 		eventArgs.Ports = ports;
 	    } else {
-		var oldPort = _portMapper.Where (map => map.JackPortId == port).FirstOrDefault ();
+		var oldPort = _portMapper.FirstOrDefault (map => map.JackPortId == port);
 		if (oldPort != null) {
 		    var ports = new List<Port> ();
 		    ports.Add (oldPort);
@@ -72,8 +72,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	{
 	    try {
 		var eventArgs = new ConnectionEventArgs ();
-		var outPort = _portMapper.Where (map => map.JackPortId == a).First ();
-		var inPort = _portMapper.Where (map => map.JackPortId == b).First ();
+		var outPort = _portMapper.First (map => map.JackPortId == a);
+		var inPort = _portMapper.First (map => map.JackPortId == b);
 		if (connect != 0) {
 		    var connections = new List<IConnection> ();
 		    IConnection newConn = null;
@@ -90,8 +90,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		    _connections.Add (newConn);
 		    connections.Add (newConn);
 		    eventArgs.Connections = connections;					
-		    eventArgs.ConnectionType = _portMapper.Where (map => map.JackPortId == a)
-			.First ().ConnectionType;
+		    eventArgs.ConnectionType = _portMapper.First (map => map.JackPortId == a).ConnectionType;
 		    eventArgs.ChangeType = ChangeType.New;
 		    eventArgs.Message = "New Connection established";
 		} else {
@@ -100,8 +99,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		    );
 		    eventArgs.Connections = oldConn.ToList ();
 		    eventArgs.ChangeType = ChangeType.Deleted;					
-		    eventArgs.ConnectionType = _portMapper.Where (map => map.JackPortId == a)
-			.First ().ConnectionType;
+		    eventArgs.ConnectionType = _portMapper.First (map => map.JackPortId == a).ConnectionType;
 		    _connections = _connections.Where (conn => conn.InPort.ClientName != inPort.ClientName || conn.InPort.Name != inPort.Name
 			|| conn.OutPort.ClientName != outPort.ClientName || conn.OutPort.Name != outPort.Name
 		    )
@@ -173,7 +171,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	    try {
 		IntPtr portPointer = jack_port_by_id (_jackClient, portId);
 		if (portPointer != IntPtr.Zero) {
-		    string portName = UnixMarshal.PtrToString (jack_port_name (portPointer));
+		    string portName = Marshal.PtrToStringAnsi (jack_port_name (portPointer));
 		    PortType portType = PortType.Undefined;
 		    JackPortFlags portFlags = (JackPortFlags)jack_port_flags (portPointer);
 		    if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput) {
@@ -182,7 +180,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			portType = PortType.Output;
 		    }
 		    ConnectionType connectionType = ConnectionType.Undefined;
-		    string connectionTypeName = UnixMarshal.PtrToString (jack_port_type (portPointer));
+		    string connectionTypeName = Marshal.PtrToStringAnsi (jack_port_type (portPointer));
 		    if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE) {
 			connectionType = ConnectionType.JackAudio;
 		    } else if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
@@ -196,9 +194,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			connectionType
 		    );
 		    return newPort;
-		} else {
-		    return null;
 		}
+		return null;
 	    } catch (Exception e) {
 #if DEBUG
 				Console.WriteLine (e.Message);
@@ -247,23 +244,21 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	{		
 	    var mappedPorts = _portMapper.Where (portMap => portMap.ConnectionType == connectionType)
 		.Select (portMap => portMap as Port);
-	    if (mappedPorts != null && mappedPorts.Any ()) {
+	    if (mappedPorts.Any ()) {
 		return mappedPorts;
-	    } else {
-		var ports = new List<Port> ();
-		for (uint i = 0; true; i++) {
-		    var newPort = GetJackPortData (i);
-		    if (newPort == null) {
-			break;
-		    } else {
-			_portMapper.Add (newPort);
-			if (newPort.ConnectionType == connectionType) {
-			    ports.Add (newPort as Port);
-			}
-		    }
-		}
-		return ports;
 	    }
+	    var ports = new List<Port> ();
+	    for (uint i = 0; true; i++) {
+		var newPort = GetJackPortData (i);
+		if (newPort == null) {
+		    break;
+		}
+		_portMapper.Add (newPort);
+		if (newPort.ConnectionType == connectionType) {
+		    ports.Add (newPort);
+		}
+	    }
+	    return ports;
 	}
 		
 	internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
