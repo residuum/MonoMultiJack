@@ -24,15 +24,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using GLib;
 
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
     public class AlsaMidiManager : IConnectionManager
     {
+	private List<AlsaPort> _portMapper = new List<AlsaPort> ();
+	private List<IConnection> _connections = new List<IConnection> ();
+	
 	public AlsaMidiManager ()
 	{
 	    LibAsoundWrapper.Activate ();
+			
+	    GLib.Timeout.Add (2000, new GLib.TimeoutHandler (CheckForChanges));
 	}
 		
 	~AlsaMidiManager ()
@@ -69,7 +76,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public IEnumerable<Port> Ports {
 	    get {
-		return LibAsoundWrapper.GetPorts ();
+		_portMapper = LibAsoundWrapper.GetPorts ().ToList ();
+		return _portMapper.Cast<Port> ();
 	    }
 	}
 
@@ -79,5 +87,50 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    }
 	}
 		#endregion
+
+	bool CheckForChanges ()
+	{
+	    IEnumerable<AlsaPort> allPorts = LibAsoundWrapper.GetPorts ();
+	    var mappedPorts = new List<AlsaPort> ();
+	    var newPorts = new List<Port> ();
+	    var obsoletePorts = new List<Port> ();
+
+	    foreach (AlsaPort port in allPorts) {
+		AlsaPort foundPort = _portMapper.FirstOrDefault (p => p.Equals (port));
+				
+		mappedPorts.Add (port);
+		if (foundPort == null) {
+		    newPorts.Add (port);
+		    _portMapper.Add (port);
+		}
+	    }
+	    
+	    foreach (AlsaPort oldPort in _portMapper) {
+		AlsaPort mappedPort = mappedPorts.FirstOrDefault (p => p.Equals(oldPort));
+		if (mappedPort == null) {
+		    obsoletePorts.Add (oldPort);
+		}
+	    }
+	    // Remove obsolete ports
+	    foreach (AlsaPort obsoletePort in obsoletePorts) {
+		_portMapper.Remove (obsoletePort);
+	    }
+
+	    //TODO: Connections
+	    if (newPorts.Any ()) {
+		var newEventArgs = new ConnectionEventArgs ();
+		newEventArgs.ChangeType = ChangeType.New;
+		newEventArgs.Ports = newPorts;
+		ConnectionHasChanged (this, newEventArgs);
+	    }
+	    if (obsoletePorts.Any ()) {
+		var oldEventArgs = new ConnectionEventArgs ();
+		oldEventArgs.ChangeType = ChangeType.Deleted;
+		oldEventArgs.Ports = obsoletePorts;
+		ConnectionHasChanged (this, oldEventArgs);
+	    }
+
+	    return true;
+	}
     }
 }

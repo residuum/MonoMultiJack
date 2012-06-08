@@ -36,9 +36,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    get {
 		if (_inPort != null) {
 		    return _outPort;
-		} else {
+		} 
 		    return null;
-		}
 	    }
 	    set {
 		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output) {
@@ -49,11 +48,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public Port InPort {
 	    get {
-		if (_outPort != null) {
-		    return _inPort;
-		} else {
-		    return null;
-		}
+            if (_outPort != null)
+            {
+                return _inPort;
+            }
+	        return null;
 	    }
 	    set {
 		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) {

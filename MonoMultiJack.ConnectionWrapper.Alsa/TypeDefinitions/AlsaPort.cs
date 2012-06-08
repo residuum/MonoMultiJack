@@ -38,6 +38,26 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    ClientName = clientName;
 	    Name = portName;				
 	}
-			
+
+	public override bool Equals (object obj)
+	{
+	    var otherPort = obj as AlsaPort;
+	    if (otherPort == null) {
+		return false;
+	    }
+	    return Equals (otherPort);
+	}
+
+	public bool Equals (AlsaPort other)
+	{
+	    return AlsaAddress.Client.Equals (other.AlsaAddress.Client) 
+		&& AlsaAddress.Port.Equals (other.AlsaAddress.Port)
+		&& PortType.Equals (other.PortType);
+	}
+
+	public override int GetHashCode ()
+	{
+	    return AlsaAddress.Port * AlsaAddress.Port * (int)PortType;
+	}
     }	
 }

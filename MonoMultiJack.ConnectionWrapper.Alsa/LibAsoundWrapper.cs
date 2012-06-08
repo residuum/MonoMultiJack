@@ -34,8 +34,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
     internal static partial class LibAsoundWrapper
     {		
 	private static IntPtr _alsaClient = IntPtr.Zero;
-	private static List<AlsaPort> _portMapper = new List<AlsaPort> ();
-	private static List<IConnection> _connections = new List<IConnection> ();
 	private static int _clientInfoSize;
 	private static int _portInfoSize;
 		
@@ -64,12 +62,12 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    }
 	}
 		
-	internal static IEnumerable<Port> GetPorts ()
+	internal static IEnumerable<AlsaPort> GetPorts ()
 	{
 	    if (_alsaClient != IntPtr.Zero || Activate ()) {
 		IntPtr clientInfo = IntPtr.Zero;
 		IntPtr portInfo = IntPtr.Zero;
-		var ports = new List<Port> ();
+		var ports = new List<AlsaPort> ();
 				
 		try {
 		    if (_clientInfoSize == 0) {
@@ -91,13 +89,12 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			    IEnumerable<AlsaPort> newPorts = CreatePorts (portAddrPtr);
 			    if (newPorts != null) {
 				ports.AddRange (newPorts);
-				_portMapper.AddRange (newPorts);
 			    }
 			}				
 		    }
 		} catch (Exception ex) {
 		    Console.WriteLine (ex.Message);
-		    return new Port[0];
+		    return new AlsaPort[0];
 		} finally {
 		    if (clientInfo != IntPtr.Zero) {
 			Marshal.FreeHGlobal (clientInfo);
@@ -108,7 +105,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		}
 		return ports;
 	    }
-	    return new Port[0];
+	    return new AlsaPort[0];
 	}
 		
 	private static IEnumerable<AlsaPort> CreatePorts (IntPtr addrPtr)
@@ -135,9 +132,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		);
 
 		IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo);
-		string clientName = UnixMarshal.PtrToString (clientNamePtr);
+		string clientName = Marshal.PtrToStringAnsi (clientNamePtr);
 		IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo);
-		string portName = UnixMarshal.PtrToString (portNamePtr);
+		string portName = Marshal.PtrToStringAnsi (portNamePtr);
 
 		int portCaps = snd_seq_port_info_get_capability (portInfo);
 		//int portType = snd_seq_port_info_get_type (portInfo);
@@ -178,6 +175,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		    Marshal.FreeHGlobal (portInfo);
 		}
 	    }
+	}
+
+	public static void MonitorPortChanges ()
+	{
+		throw new NotImplementedException ();
 	}
 
 	internal static IEnumerable<IConnection> GetConnections ()
