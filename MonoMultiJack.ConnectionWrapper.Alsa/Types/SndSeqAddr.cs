@@ -1,5 +1,5 @@
 // 
-// JackPortFlags.cs
+// SndSeqAddr.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,17 +24,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper.Jack
+using System.Runtime.InteropServices;
+
+namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
-	[Flags]
-	internal enum JackPortFlags
+	[StructLayout(LayoutKind.Sequential)]
+	internal struct SndSeqAddr
 	{
-	    JackPortIsInput = 0x1,
-	    JackPortIsOutput = 0x2,
-	    JackPortIsPhysical = 0x4,
-	    JackPortCanMonitor = 0x8,
-	    JackPortIsTerminal = 0x10
+	    public byte Client;
+	    public byte Port;
 	}
-	
 }
 

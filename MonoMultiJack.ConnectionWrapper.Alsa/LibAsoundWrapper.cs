@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Unix;
 using System.Runtime.InteropServices;
+using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
@@ -182,13 +183,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		throw new NotImplementedException ();
 	}
 
-	internal static IEnumerable<IConnection> GetConnections ()
+	internal static IEnumerable<AlsaMidiConnection> GetConnections ()
 	{
 	    if (_alsaClient != IntPtr.Zero || Activate ()) {
-		var connections = new List<IConnection> ();
+		var connections = new List<AlsaMidiConnection> ();
 		return connections;
 	    }
-	    return new IConnection[0];
+	    return new AlsaMidiConnection[0];
 	}
     }
 }

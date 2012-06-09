@@ -39,22 +39,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="AlsaMidiConnection.cs" />
     <Compile Include="AlsaMidiManager.cs" />
     <Compile Include="LibAsoundWrapper.cs" />
     <Compile Include="LibAsoundWrapper.Definitions.cs" />
     <Compile Include="LibAsoundWrapper.Pinvoke.cs" />
-    <Compile Include="TypeDefinitions\SndSeqAddr.cs" />
-    <Compile Include="TypeDefinitions\AlsaPort.cs" />
+    <Compile Include="Types\SndSeqAddr.cs" />
+    <Compile Include="Types\AlsaPort.cs" />
+    <Compile Include="Types\AlsaMidiConnection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Types\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>MonoMultiJack.ConnectionWrapper</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TypeDefinitions\" />
   </ItemGroup>
 </Project>

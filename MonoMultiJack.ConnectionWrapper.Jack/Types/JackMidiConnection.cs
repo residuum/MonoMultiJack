@@ -24,14 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
     public class JackMidiConnection : IConnection
     {
 	private Port _outPort;
 	private Port _inPort;
 		
-		#region IConnection implementation
+	#region IConnection implementation
 	public Port OutPort {
 	    get {
 		if (_inPort != null) {
@@ -63,6 +63,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	public ConnectionType ConnectionType {
 	    get { return ConnectionType.JackMidi; }
 	}
-		#endregion
+	#endregion
     }
 }

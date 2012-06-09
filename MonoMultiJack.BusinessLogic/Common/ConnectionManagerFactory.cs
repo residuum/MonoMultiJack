@@ -1,5 +1,5 @@
 // 
-// SndSeqAddr.cs
+// ConnectionManagerFactory.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,15 +24,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Runtime.InteropServices;
+using MonoMultiJack.ConnectionWrapper;
+using MonoMultiJack.ConnectionWrapper.Alsa;
+using MonoMultiJack.ConnectionWrapper.Jack;
 
-namespace MonoMultiJack.ConnectionWrapper.Alsa
+namespace MonoMultiJack.BusinessLogic.Common
 {
-	[StructLayout(LayoutKind.Sequential)]
-	internal struct SndSeqAddr
+    /// <summary>
+    /// Connection manager factory.
+    /// </summary>
+    public static class ConnectionManagerFactory
+    {
+	/// <summary>
+	/// Gets the connection manager.
+	/// </summary>
+	/// <returns>
+	/// The connection manager.
+	/// </returns>
+	/// <param name='connType'>
+	/// The connection type.
+	/// </param>
+	public static IConnectionManager GetConnectionManager (ConnectionType connType)
 	{
-	    public byte Client;
-	    public byte Port;
+	    switch (connType) {
+	    case ConnectionType.JackAudio:
+		return new JackAudioManager ();
+	    case ConnectionType.JackMidi:
+		return new JackMidiManager ();
+	    case ConnectionType.AlsaMidi:
+		return new AlsaMidiManager ();
+	    default:
+		return null;
+	    }
 	}
+    }
 }
 

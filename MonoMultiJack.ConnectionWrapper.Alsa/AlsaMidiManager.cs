@@ -27,13 +27,14 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using GLib;
+using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
     public class AlsaMidiManager : IConnectionManager
     {
 	private List<AlsaPort> _portMapper = new List<AlsaPort> ();
-	private List<IConnection> _connections = new List<IConnection> ();
+	private List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
 	
 	public AlsaMidiManager ()
 	{
@@ -83,54 +84,101 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public IEnumerable<IConnection> Connections {
 	    get {
-		return LibAsoundWrapper.GetConnections ();
+		_connections = LibAsoundWrapper.GetConnections ().ToList ();
+		return _connections.Cast<IConnection> ();
 	    }
 	}
 		#endregion
 
 	bool CheckForChanges ()
 	{
-	    IEnumerable<AlsaPort> allPorts = LibAsoundWrapper.GetPorts ();
-	    var mappedPorts = new List<AlsaPort> ();
-	    var newPorts = new List<Port> ();
-	    var obsoletePorts = new List<Port> ();
-
-	    foreach (AlsaPort port in allPorts) {
-		AlsaPort foundPort = _portMapper.FirstOrDefault (p => p.Equals (port));
-				
-		mappedPorts.Add (port);
-		if (foundPort == null) {
-		    newPorts.Add (port);
-		    _portMapper.Add (port);
-		}
-	    }
-	    
-	    foreach (AlsaPort oldPort in _portMapper) {
-		AlsaPort mappedPort = mappedPorts.FirstOrDefault (p => p.Equals(oldPort));
-		if (mappedPort == null) {
-		    obsoletePorts.Add (oldPort);
-		}
-	    }
-	    // Remove obsolete ports
-	    foreach (AlsaPort obsoletePort in obsoletePorts) {
-		_portMapper.Remove (obsoletePort);
-	    }
+	    List<Port> newPorts;
+	    List<Port> obsoletePorts;
+	    UpdatePortInformation (
+		LibAsoundWrapper.GetPorts (),
+		ref _portMapper,
+		out newPorts,
+		out obsoletePorts
+	    );
+	    List<IConnection> newConnections;
+	    List<IConnection> obsoleteConnections;
+			
+	    UpdateConnectionInformation (
+		LibAsoundWrapper.GetConnections (),
+		ref _connections,
+		out newConnections,
+		out obsoleteConnections
+	    );
 
 	    //TODO: Connections
-	    if (newPorts.Any ()) {
+	    if (newPorts.Any () || newConnections.Any ()) {
 		var newEventArgs = new ConnectionEventArgs ();
 		newEventArgs.ChangeType = ChangeType.New;
 		newEventArgs.Ports = newPorts;
+		newEventArgs.Connections = newConnections;
 		ConnectionHasChanged (this, newEventArgs);
 	    }
 	    if (obsoletePorts.Any ()) {
 		var oldEventArgs = new ConnectionEventArgs ();
 		oldEventArgs.ChangeType = ChangeType.Deleted;
 		oldEventArgs.Ports = obsoletePorts;
+		oldEventArgs.Connections = obsoleteConnections;
 		ConnectionHasChanged (this, oldEventArgs);
 	    }
 
 	    return true;
+	}
+
+	void UpdatePortInformation (IEnumerable<AlsaPort> allPorts, ref List<AlsaPort> mappedPorts, out List<Port> newPorts, out List<Port> obsoletePorts)
+	{
+	    newPorts = new List<Port> ();
+	    obsoletePorts = new List<Port> ();
+
+	    foreach (AlsaPort port in allPorts) {
+		AlsaPort foundPort = mappedPorts.FirstOrDefault (p => p == port);
+
+		if (foundPort == null) {
+		    newPorts.Add (port);
+		    mappedPorts.Add (port);
+		}
+	    }
+	    
+	    foreach (AlsaPort oldPort in mappedPorts) {
+		AlsaPort mappedPort = allPorts.FirstOrDefault (p => p == oldPort);
+		if (mappedPort == null) {
+		    obsoletePorts.Add (oldPort);
+		}
+	    }
+	    // Remove obsolete ports
+	    foreach (AlsaPort obsoletePort in obsoletePorts) {
+		mappedPorts.Remove (obsoletePort);
+	    }
+	}
+
+	void UpdateConnectionInformation (IEnumerable<AlsaMidiConnection> allConnections, ref List<AlsaMidiConnection> mappedConnections, out List<IConnection> newConnections, out List<IConnection> obsoleteConnections)
+	{
+	    newConnections = new List<IConnection> ();
+	    obsoleteConnections = new List<IConnection> ();
+
+	    foreach (AlsaMidiConnection conn in allConnections) {
+		AlsaMidiConnection foundConn = mappedConnections.FirstOrDefault (p => p == conn);
+
+		if (foundConn == null) {
+		    newConnections.Add (conn);
+		    mappedConnections.Add (conn);
+		}
+	    }
+	    
+	    foreach (AlsaMidiConnection oldConn in mappedConnections) {
+		AlsaMidiConnection mappedPort = allConnections.FirstOrDefault (p => p == oldConn);
+		if (mappedPort == null) {
+		    obsoleteConnections.Add (oldConn);
+		}
+	    }
+	    // Remove obsolete connections
+	    foreach (AlsaMidiConnection obsoletePort in obsoleteConnections) {
+		mappedConnections.Remove (obsoletePort);
+	    }
 	}
     }
 }

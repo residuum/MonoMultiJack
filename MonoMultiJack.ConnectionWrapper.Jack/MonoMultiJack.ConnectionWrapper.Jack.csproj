@@ -38,26 +38,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="JackAudioConnection.cs" />
     <Compile Include="JackAudioManager.cs" />
     <Compile Include="JackClientException.cs" />
     <Compile Include="JackConnectionManager.cs" />
-    <Compile Include="JackMidiConnection.cs" />
     <Compile Include="JackMidiManager.cs" />
     <Compile Include="LibJackWrapper.cs" />
     <Compile Include="LibJackWrapper.Definitions.cs" />
     <Compile Include="LibJackWrapper.PInvoke.cs" />
-    <Compile Include="TypeDefinitions\JackPortFlags.cs" />
-    <Compile Include="TypeDefinitions\JackPort.cs" />
+    <Compile Include="Types\JackPortFlags.cs" />
+    <Compile Include="Types\JackPort.cs" />
+    <Compile Include="Types\JackMidiConnection.cs" />
+    <Compile Include="Types\JackAudioConnection.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Types\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>MonoMultiJack.ConnectionWrapper</Name>
     </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="TypeDefinitions\" />
   </ItemGroup>
 </Project>

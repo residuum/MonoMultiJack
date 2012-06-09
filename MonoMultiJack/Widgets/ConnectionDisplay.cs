@@ -146,7 +146,7 @@ namespace MonoMultiJack.Widgets
 	/// <param name="clients">
 	/// A <see cref="IEnumerable<IGrouping<System.String, Port>>"/> determining the values to remove. 
 	/// </param>
-	private void RemoveTreeStoreValues (TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
+	private void RemoveTreeStoreValues (ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
 	{
 	    foreach (var client in clients) {
 		TreeIter clientIter;
@@ -188,7 +188,7 @@ namespace MonoMultiJack.Widgets
 	/// <param name="clients">
 	/// A <see cref="IEnumerable<IGrouping<System.String, Port>>"/> determining the values to add to the treestore.
 	/// </param>
-	private void AddTreeStoreValues (TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
+	private void AddTreeStoreValues (ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
 	{
 	    foreach (var client in clients) {
 		TreeIter clientIter;
@@ -225,19 +225,19 @@ namespace MonoMultiJack.Widgets
 		case ChangeType.New:
 		    var newOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output)
 			.GroupBy (port => port.ClientName);
-		    AddTreeStoreValues (_outputStore, newOutputClients);
+		    AddTreeStoreValues (ref _outputStore, newOutputClients);
 		    var newInputClients = updatedPorts.Where (p => p.PortType == PortType.Input)
 			.GroupBy (port => port.ClientName);
-		    AddTreeStoreValues (_inputStore, newInputClients);
+		    AddTreeStoreValues (ref _inputStore, newInputClients);
 		    break;
 					
 		case ChangeType.Deleted:
 		    var oldOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output)
 			.GroupBy (port => port.ClientName);
-		    RemoveTreeStoreValues (_outputStore, oldOutputClients);
+		    RemoveTreeStoreValues (ref _outputStore, oldOutputClients);
 		    var oldInputClients = updatedPorts.Where (p => p.PortType == PortType.Input)
 			.GroupBy (port => port.ClientName);
-		    RemoveTreeStoreValues (_inputStore, oldInputClients);
+		    RemoveTreeStoreValues (ref _inputStore, oldInputClients);
 		    break;
 		}
 		UpdateConnectionLines ();
@@ -340,25 +340,21 @@ namespace MonoMultiJack.Widgets
 	{
 	    if (updatedConnections != null && updatedConnections.Any ()) {
 		switch (changeType) {
-		case ChangeType.New:
-						
-						#if DEBUG
-						foreach (IConnection conn in updatedConnections)
-						{
-							Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " is connected to " + conn.InPort.ClientName + ":" + conn.InPort.Name);
-						}
-
-						#endif
+		case ChangeType.New:		
+		    #if DEBUG
+		    foreach (IConnection conn in updatedConnections) {
+			Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " is connected to " + conn.InPort.ClientName + ":" + conn.InPort.Name);
+		    }
+		    #endif
 		    _connections.AddRange (updatedConnections);
 		    break;
 		case ChangeType.Deleted:
-						#if DEBUG
-						foreach (IConnection conn in updatedConnections)
-						{
-							Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " has been disconnected from " + conn.InPort.ClientName + ":" + conn.InPort.Name);
-						}
-
-						#endif
+		    #if DEBUG
+		    foreach (IConnection conn in updatedConnections)
+		    {
+			Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " has been disconnected from " + conn.InPort.ClientName + ":" + conn.InPort.Name);
+		    }
+		    #endif
 		    var oldConnectionHashes = new HashSet<IConnection> (updatedConnections);
 		    _connections.RemoveAll (c => oldConnectionHashes.Contains (c));
 		    break;
@@ -466,7 +462,7 @@ namespace MonoMultiJack.Widgets
 		}
 	    } catch (Exception ex) {
 		#if DEBUG
-				Console.WriteLine (ex.Message);
+		Console.WriteLine (ex.Message);
 		#endif				
 	    }	
 	}

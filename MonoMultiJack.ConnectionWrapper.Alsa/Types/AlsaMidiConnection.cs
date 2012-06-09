@@ -24,20 +24,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper.Alsa
+namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
     public class AlsaMidiConnection : IConnection
     {
 	private Port _outPort;
 	private Port _inPort;
 		
-		#region IConnection implementation
+	#region IConnection implementation
 	public Port OutPort {
 	    get {
 		if (_inPort != null) {
 		    return _outPort;
 		} 
-		    return null;
+		return null;
 	    }
 	    set {
 		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output) {
@@ -48,11 +48,10 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public Port InPort {
 	    get {
-            if (_outPort != null)
-            {
-                return _inPort;
-            }
-	        return null;
+		if (_outPort != null) {
+		    return _inPort;
+		}
+		return null;
 	    }
 	    set {
 		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) {
@@ -64,6 +63,43 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	public ConnectionType ConnectionType {
 	    get { return ConnectionType.AlsaMidi; }
 	}
-		#endregion
+	#endregion
+
+	public override bool Equals (object obj)
+	{
+	    var otherConn = obj as AlsaMidiConnection;
+	    if (otherConn == null) {
+		return false;
+	    }
+	    return Equals (otherConn);
+	}
+
+	public bool Equals (AlsaMidiConnection other)
+	{
+	    return OutPort.Equals (other.OutPort)
+		&& InPort.Equals (other.InPort);
+	}
+
+	public override int GetHashCode ()
+	{
+	    return InPort.GetHashCode () * OutPort.GetHashCode ();
+	}
+
+	public static bool operator == (AlsaMidiConnection a, AlsaMidiConnection b)
+	{
+	    if (object.ReferenceEquals (a, b)) {
+		return true;
+	    }
+
+	    if (((object)a == null) || ((object)b == null)) {
+		return false;
+	    }
+	    return (a.Equals (b));
+	}
+
+	public static bool operator != (AlsaMidiConnection a, AlsaMidiConnection b)
+	{
+	    return !(a == b);
+	}
     }
 }

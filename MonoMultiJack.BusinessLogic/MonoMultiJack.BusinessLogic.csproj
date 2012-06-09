@@ -41,6 +41,21 @@
     <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Configuration\JackdConfiguration.cs" />
     <Compile Include="Configuration\PersistantConfiguration.cs" />
+    <Compile Include="Common\ConnectionManagerFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">
+      <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
+      <Name>MonoMultiJack.ConnectionWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper.Alsa\MonoMultiJack.ConnectionWrapper.Alsa.csproj">
+      <Project>{A8E040E6-F02C-40B3-A14A-D629B562BD9B}</Project>
+      <Name>MonoMultiJack.ConnectionWrapper.Alsa</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj">
+      <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
+      <Name>MonoMultiJack.ConnectionWrapper.Jack</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

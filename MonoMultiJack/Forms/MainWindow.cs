@@ -107,21 +107,15 @@ namespace MonoMultiJack.Forms
 	    Icon = ProgramIcon;
 	    _statusbar.Push (0, JackdStatusStopped);
 	    ReadConfiguration ();
-	    IConnectionManager jackAudio = new JackAudioManager ();
-	    IConnectionManager jackMidi = new JackMidiManager ();
-	    IConnectionManager alsaMidi = new AlsaMidiManager ();
-	    _connectionNotebook.AppendPage (
-		new ConnectionDisplay (jackAudio),
-		new Label (jackAudio.ConnectionType.ToString ())
-	    );
-	    _connectionNotebook.AppendPage (
-		new ConnectionDisplay (jackMidi),
-		new Label (jackMidi.ConnectionType.ToString ())
-	    );
-	    _connectionNotebook.AppendPage (
-		new ConnectionDisplay (alsaMidi),
-		new Label (alsaMidi.ConnectionType.ToString ())
-	    );
+	    foreach (ConnectionType connType in Enum.GetValues(typeof(ConnectionType))) {
+		IConnectionManager connManager = ConnectionManagerFactory.GetConnectionManager (connType);
+		if (connManager != null) {					
+		    _connectionNotebook.AppendPage (
+			new ConnectionDisplay (connManager),
+			new Label (connManager.ConnectionType.ToString ())
+		    );
+		}
+	    }
 	}
 		
 	/// <summary>

@@ -1,5 +1,5 @@
 // 
-// JackPort.cs
+// JackPortFlags.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,36 +24,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
-	internal class JackPort : Port
+	[Flags]
+	internal enum JackPortFlags
 	{
-	    public uint JackPortId {
-		get;
-		private set;
-	    }
-			
-	    public IntPtr JackPortPointer {
-		get;
-		private set;
-	    }
-			
-	    public string JackPortName {
-		get;
-		private set;
-	    }
-		
-	    public JackPort (string jackPortName, uint jackPortId, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
-	    {				
-		JackPortName = jackPortName;
-		JackPortId = jackPortId;
-		JackPortPointer = jackPortPtr;
-		PortType = portType;
-		ConnectionType = connectionType;
-		string[] splittedName = jackPortName.Split (new[] { ':' });
-		ClientName = splittedName [0];
-		Name = splittedName [1];				
-	    }
+	    JackPortIsInput = 0x1,
+	    JackPortIsOutput = 0x2,
+	    JackPortIsPhysical = 0x4,
+	    JackPortCanMonitor = 0x8,
+	    JackPortIsTerminal = 0x10
 	}
+	
 }
 

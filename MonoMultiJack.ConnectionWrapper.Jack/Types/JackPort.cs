@@ -1,10 +1,10 @@
 // 
-// IConnectionType.cs
+// JackPort.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper
+namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
-    /// <summary>
-    /// The Type of connection to manage
-    /// </summary>
-    public enum ConnectionType
-    {
-	Undefined = 0,
-	JackAudio = 1,
-	JackMidi = 2,
-	AlsaMidi = 3
-    }
+	internal class JackPort : Port
+	{
+	    public uint JackPortId {
+		get;
+		private set;
+	    }
+			
+	    public IntPtr JackPortPointer {
+		get;
+		private set;
+	    }
+			
+	    public string JackPortName {
+		get;
+		private set;
+	    }
+		
+	    public JackPort (string jackPortName, uint jackPortId, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
+	    {				
+		JackPortName = jackPortName;
+		JackPortId = jackPortId;
+		JackPortPointer = jackPortPtr;
+		PortType = portType;
+		ConnectionType = connectionType;
+		string[] splittedName = jackPortName.Split (new[] { ':' });
+		ClientName = splittedName [0];
+		Name = splittedName [1];				
+	    }
+	}
 }
+

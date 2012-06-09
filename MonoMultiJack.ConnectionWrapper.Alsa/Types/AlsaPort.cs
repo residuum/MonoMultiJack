@@ -24,7 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper.Alsa
+namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
     internal class AlsaPort : Port
     {
@@ -58,6 +58,23 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	public override int GetHashCode ()
 	{
 	    return AlsaAddress.Port * AlsaAddress.Port * (int)PortType;
+	}
+
+	public static bool operator == (AlsaPort a, AlsaPort b)
+	{
+	    if (object.ReferenceEquals (a, b)) {
+		return true;
+	    }
+
+	    if (((object)a == null) || ((object)b == null)) {
+		return false;
+	    }
+	    return (a.Equals (b));
+	}
+
+	public static bool operator != (AlsaPort a, AlsaPort b)
+	{
+	    return !(a == b);
 	}
     }	
 }
