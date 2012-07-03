@@ -35,4 +35,3 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 	    public byte Port;
 	}
 }
-

@@ -84,7 +84,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public IEnumerable<IConnection> Connections {
 	    get {
-		_connections = LibAsoundWrapper.GetConnections ().ToList ();
+		_connections = LibAsoundWrapper.GetConnections (_portMapper).ToList ();
 		return _connections.Cast<IConnection> ();
 	    }
 	}
@@ -104,7 +104,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    List<IConnection> obsoleteConnections;
 			
 	    UpdateConnectionInformation (
-		LibAsoundWrapper.GetConnections (),
+		LibAsoundWrapper.GetConnections (_portMapper),
 		ref _connections,
 		out newConnections,
 		out obsoleteConnections

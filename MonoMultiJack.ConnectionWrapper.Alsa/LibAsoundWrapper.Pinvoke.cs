@@ -16,7 +16,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	private static extern int snd_seq_set_client_info (IntPtr seq, out IntPtr info);
 		
 	[DllImport(ASOUND_LIB_NAME)]
-	private static extern int snd_seq_info_get_client(IntPtr info);
+	private static extern int snd_seq_info_get_client (IntPtr info);
 		
 	[DllImport(ASOUND_LIB_NAME)]
 	private static extern int snd_seq_set_client_name (IntPtr seq, string name);
@@ -43,7 +43,10 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	private static extern IntPtr snd_seq_client_info_get_name (IntPtr info);
 		
 	[DllImport(ASOUND_LIB_NAME)]
-	private static extern IntPtr snd_seq_port_info_get_name (IntPtr info);		
+	private static extern int snd_seq_client_info_get_type (IntPtr info);
+		
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern IntPtr snd_seq_port_info_get_name (IntPtr info);
 		
 	[DllImport(ASOUND_LIB_NAME)]
 	private static extern IntPtr snd_seq_get_any_client_info (IntPtr seq, int client, IntPtr info);
@@ -61,9 +64,30 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	private static extern int snd_seq_port_info_sizeof ();
 		
 	[DllImport(ASOUND_LIB_NAME)]
+	private static extern int snd_seq_port_subscribe_sizeof ();
+		
+	[DllImport(ASOUND_LIB_NAME)]
 	private static extern int snd_seq_port_info_get_capability (IntPtr info);
 		
 	[DllImport(ASOUND_LIB_NAME)]
 	private static extern int snd_seq_port_info_get_type (IntPtr info);
+		
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern void snd_seq_query_subscribe_set_root (IntPtr info, IntPtr addr);
+		
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern void snd_seq_query_subscribe_set_type (IntPtr info, int type);
+
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern void snd_seq_query_subscribe_set_index (IntPtr info, int index);
+
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern int snd_seq_query_subscribe_get_index (IntPtr info);
+
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern int snd_seq_query_port_subscribers (IntPtr seq, IntPtr subs);
+
+	[DllImport(ASOUND_LIB_NAME)]
+	private static extern IntPtr snd_seq_query_subscribe_get_addr (IntPtr subs);
     }
 }

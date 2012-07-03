@@ -57,7 +57,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 
 	public override int GetHashCode ()
 	{
-	    return AlsaAddress.Port * AlsaAddress.Port * (int)PortType;
+	    return AlsaAddress.Port * AlsaAddress.Client * (int)PortType;
 	}
 
 	public static bool operator == (AlsaPort a, AlsaPort b)
