@@ -160,7 +160,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		if ((portCaps & SND_SEQ_PORT_CAP_NO_EXPORT) != 0 
 		    || ((snd_seq_client_info_get_type (clientInfo) != SND_SEQ_USER_CLIENT)
-		    	&& ((portType == SND_SEQ_PORT_SYSTEM_TIMER) || portType == SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
+		    && ((portType == SND_SEQ_PORT_SYSTEM_TIMER) || portType == SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
 		    return new List<AlsaPort> ();
 		}
 
@@ -259,5 +259,78 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    return connections;
 	}
 
+	public static bool Connect (AlsaPort outPort, AlsaPort inPort)
+	{
+	    IntPtr subscriberInfo = IntPtr.Zero;
+	    IntPtr outPortAddr = IntPtr.Zero;
+	    IntPtr inPortAddr = IntPtr.Zero;
+	    try {
+		subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
+		outPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
+		inPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
+		Marshal.StructureToPtr (outPort.AlsaAddress, outPortAddr, false);
+		Marshal.StructureToPtr (inPort.AlsaAddress, inPortAddr, false);
+
+		snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
+		snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);
+		snd_seq_port_subscribe_set_exclusive (subscriberInfo, 0);
+		snd_seq_port_subscribe_set_time_update (subscriberInfo, 0);
+		snd_seq_port_subscribe_set_time_real (subscriberInfo, 0);
+		return  snd_seq_subscribe_port (_alsaClient, subscriberInfo) == 0;
+
+	    } catch (Exception e) {
+#if DEBUG
+		Console.WriteLine (e.Message);
+		return false;
+#endif	
+	    } finally {	
+		if (subscriberInfo != IntPtr.Zero) {
+		    Marshal.FreeHGlobal (subscriberInfo);
+		}
+		if (outPortAddr != IntPtr.Zero) {
+		    Marshal.FreeHGlobal (outPortAddr);
+		}
+		if (inPortAddr != IntPtr.Zero) {
+		    Marshal.FreeHGlobal (inPortAddr);
+		}
+	    }
+	}
+
+	public static bool Disconnect (AlsaPort outPort, AlsaPort inPort)
+	{
+	    IntPtr subscriberInfo = IntPtr.Zero;
+	    IntPtr outPortAddr = IntPtr.Zero;
+	    IntPtr inPortAddr = IntPtr.Zero;
+	    try {
+		subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
+		outPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
+		inPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
+		Marshal.StructureToPtr (outPort.AlsaAddress, outPortAddr, false);
+		Marshal.StructureToPtr (inPort.AlsaAddress, inPortAddr, false);
+
+		snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
+		snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);
+		snd_seq_port_subscribe_set_exclusive (subscriberInfo, 0);
+		snd_seq_port_subscribe_set_time_update (subscriberInfo, 0);
+		snd_seq_port_subscribe_set_time_real (subscriberInfo, 0);
+		return  snd_seq_unsubscribe_port (_alsaClient, subscriberInfo) == 0;
+
+	    } catch (Exception e) {
+#if DEBUG
+		Console.WriteLine (e.Message);
+		return false;
+#endif	
+	    } finally {	
+		if (subscriberInfo != IntPtr.Zero) {
+		    Marshal.FreeHGlobal (subscriberInfo);
+		}
+		if (outPortAddr != IntPtr.Zero) {
+		    Marshal.FreeHGlobal (outPortAddr);
+		}
+		if (inPortAddr != IntPtr.Zero) {
+		    Marshal.FreeHGlobal (inPortAddr);
+		}
+	    }
+	}
     }
 }

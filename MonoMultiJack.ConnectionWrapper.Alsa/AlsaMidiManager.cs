@@ -54,12 +54,31 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public bool Connect (Port outPort, Port inPort)
 	{
-	    throw new NotImplementedException ();
+	    AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
+		&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
+	    );
+	    AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
+		&& p.ClientName == inPort.ClientName && p.Name == inPort.Name
+	    );
+	    if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
+		|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
+		return false;
+	    }
+	    return LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
 	}
 
 	public bool Disconnect (Port outPort, Port inPort)
 	{
-	    throw new NotImplementedException ();
+	    AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
+		&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
+	    );
+	    AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
+		&& p.ClientName == inPort.ClientName && p.Name == inPort.Name);
+	    if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
+		|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
+		return false;
+	    }
+	    return LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
 	}
 
 	public ConnectionType ConnectionType {
@@ -70,7 +89,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 	public bool IsActive {
 	    get {
-		//throw new NotImplementedException ();
 		return true;
 	    }
 	}
@@ -110,7 +128,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		out obsoleteConnections
 	    );
 
-	    //TODO: Connections
 	    if (newPorts.Any () || newConnections.Any ()) {
 		var newEventArgs = new ConnectionEventArgs ();
 		newEventArgs.ChangeType = ChangeType.New;
@@ -125,7 +142,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		oldEventArgs.Connections = obsoleteConnections;
 		ConnectionHasChanged (this, oldEventArgs);
 	    }
-
 	    return true;
 	}
 
