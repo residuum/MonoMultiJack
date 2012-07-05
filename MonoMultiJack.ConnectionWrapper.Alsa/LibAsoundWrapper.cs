@@ -281,8 +281,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    } catch (Exception e) {
 #if DEBUG
 		Console.WriteLine (e.Message);
-		return false;
 #endif	
+		return false;
 	    } finally {	
 		if (subscriberInfo != IntPtr.Zero) {
 		    Marshal.FreeHGlobal (subscriberInfo);
@@ -318,8 +318,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	    } catch (Exception e) {
 #if DEBUG
 		Console.WriteLine (e.Message);
-		return false;
 #endif	
+		return false;
 	    } finally {	
 		if (subscriberInfo != IntPtr.Zero) {
 		    Marshal.FreeHGlobal (subscriberInfo);
