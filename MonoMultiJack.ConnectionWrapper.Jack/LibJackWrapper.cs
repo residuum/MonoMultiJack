@@ -140,9 +140,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	/// <summary>
 	/// Closes jack client
 	/// </summary>
-	private static void Close ()
+	internal static void Close ()
 	{
-	    jack_client_close (_jackClient);
+	    if (_jackClient != IntPtr.Zero) {
+		jack_client_close (_jackClient);
+	    }
 	}
 		
 	/// <summary>

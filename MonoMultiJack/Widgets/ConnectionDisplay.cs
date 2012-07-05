@@ -67,6 +67,12 @@ namespace MonoMultiJack.Widgets
 	    this.Build ();
 	}
 
+	public override void Dispose ()
+	{
+	    _connectionManager.Dispose ();
+	    base.Dispose ();
+	}
+
 	/// <summary>
 	/// Constructor.
 	/// </summary>

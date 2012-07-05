@@ -33,8 +33,29 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
     {
 	protected JackConnectionManager ()
 	{
-	    LibJackWrapper.PortOrConnectionHasChanged += LibJackWrapperHasChanged;
+	    LibJackWrapper.PortOrConnectionHasChanged += OnLibJackWrapperHasChanged;
 	    LibJackWrapper.JackHasShutdown += OnJackShutdown;
+	}    
+
+	~JackConnectionManager()
+	{
+		Dispose (false);
+	}
+
+	public void Dispose ()
+	{
+	    Dispose (true);
+	    GC.SuppressFinalize (this);
+	}
+	
+	protected virtual void Dispose (bool isDisposing)
+	{
+	    if (isDisposing) {
+		LibJackWrapper.PortOrConnectionHasChanged -= OnLibJackWrapperHasChanged;
+		LibJackWrapper.JackHasShutdown -= OnJackShutdown;
+		}
+
+	    LibJackWrapper.Close();
 	}
 		
 		#region IConnectionManager implementation
@@ -98,7 +119,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	    return true;
 	}
 		
-	private void LibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
+	private void OnLibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
 	{
 #if DEBUG
 			Console.WriteLine (args.Message);

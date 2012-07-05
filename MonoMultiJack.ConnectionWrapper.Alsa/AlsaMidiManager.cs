@@ -45,10 +45,21 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		
 	~AlsaMidiManager ()
 	{
+	    Dispose (false);
+	}
+
+	public void Dispose ()
+	{
+	    Dispose (true);
+	    GC.SuppressFinalize (this);
+	}
+	
+	protected virtual void Dispose (bool isDisposing)
+	{
 	    LibAsoundWrapper.DeActivate ();
 	}
 		
-		#region IConnectionManager implementation
+	#region IConnectionManager implementation
 	public event ConnectionEventHandler ConnectionHasChanged;
 	public event ConnectionEventHandler BackendHasExited;
 

@@ -30,7 +30,7 @@ namespace MonoMultiJack.ConnectionWrapper
 {
     public delegate void ConnectionEventHandler (object sender,ConnectionEventArgs e);
 		
-    public interface IConnectionManager
+    public interface IConnectionManager : IDisposable
     {		
 	event ConnectionEventHandler ConnectionHasChanged;
 	event ConnectionEventHandler BackendHasExited;
