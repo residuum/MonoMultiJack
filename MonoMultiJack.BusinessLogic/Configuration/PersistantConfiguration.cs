@@ -32,225 +32,234 @@ using System.Linq;
 
 namespace MonoMultiJack.BusinessLogic.Configuration
 {
-    /// <summary>
-    /// Class for managing configuration.
-    /// </summary>
-    public class PersistantConfiguration
-    {
 	/// <summary>
-	/// Jackd Configuration
+	/// Class for managing configuration.
 	/// </summary>
-	public JackdConfiguration JackdConfig { get; set; }
-		
-	/// <summary>
-	/// Collection of Application Configurations
-	/// </summary>
-	public List<AppConfiguration> AppConfigs { get ; set; }
-		
-	/// <summary>
-	/// Path to config file
-	/// </summary>
-	private readonly string _applicationFolder = Path.Combine (
+	public static class PersistantConfiguration
+	{
+		static readonly string _applicationFolder = Path.Combine (
 		Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
 		"MonoMultiJack"
-	    );
-	private readonly string _configFile;
-		
-	/// <summary>
-	/// constructor
-	/// </summary>
-	public PersistantConfiguration ()
-	{
-	    _configFile = Path.Combine (_applicationFolder, "configuration.xml");
-	    AppConfigs = new List<AppConfiguration> ();
-	    if (!ReadXml ()) {
-		throw new XmlException ("Error reading XML configuration file.");
-	    }
-	}
-		
-	/// <summary>
-	/// Constructor with setting of new configurations
-	/// </summary>
-	/// <param name="newJackdConfig">
-	/// The new <see cref="JackdConfiguration"/>
-	/// </param>
-	/// <param name="newAppConfigs">
-	/// The new <see cref="List<AppConfiguration>"/>
-	/// </param>
-	public PersistantConfiguration (JackdConfiguration newJackdConfig, List<AppConfiguration> newAppConfigs)
-	{
-	    _configFile = Path.Combine (_applicationFolder, "configuration.xml");
-	    AppConfigs = newAppConfigs;
-	    JackdConfig = newJackdConfig;
-	}
-		
-	/// <summary>
-	/// Creates <seealso cref="jackdConfig"/> jackdConfiguration from XML
-	/// </summary>
-	/// <param name="jackdNode">
-	/// A <see cref="XmlNode"/> with the jackd configuration values
-	/// </param>
-	/// <returns>
-	/// A <see cref="System.Boolean"/> indicating success of parsing XML
-	/// </returns>
-	private bool LoadJackdXml (XmlNode jackdNode)
-	{
-	    try {
-		string path = jackdNode.SelectNodes ("path").Item (0).InnerText;
-		string generalOptions = jackdNode.SelectNodes ("general-options").Item (0).InnerText;
-		string driver = jackdNode.SelectNodes ("driver").Item (0).InnerText;
-		string driverOptions = jackdNode.SelectNodes ("driver-options").Item (0).InnerText;
-		JackdConfig = new JackdConfiguration (
+			);
+		static string _jackdConfigFile;
+
+		static string JackdConfigFile {
+			get {
+				if (string.IsNullOrEmpty (_jackdConfigFile)) {
+					_jackdConfigFile = Path.Combine (_applicationFolder, "jack.xml");
+				}
+				return _jackdConfigFile;
+			}
+		}
+
+		static string _applicationsConfigFile;
+
+		static string ApplicationsConfigFile {
+			get {
+				if (string.IsNullOrEmpty (_applicationsConfigFile)) {
+					_applicationsConfigFile = Path.Combine (_applicationFolder, "applications.xml");
+				}
+				return _applicationsConfigFile;
+			}
+		}
+
+		static string _windowSizeFile;
+
+		static string WindowSizeFile {
+			get {
+				if (string.IsNullOrEmpty (_windowSizeFile)) {
+					_windowSizeFile = Path.Combine (_applicationFolder, "window.xml");
+				}
+				return _windowSizeFile;
+			}
+		}
+
+		/// <summary>
+		/// Loads the jackd configuration.
+		/// </summary>
+		/// <returns>
+		/// The jackd configuration.
+		/// </returns>
+		public static JackdConfiguration LoadJackdConfiguration ()
+		{
+			if (File.Exists (JackdConfigFile)) {
+				return ReadJackdFile (JackdConfigFile);
+			}
+			throw new FileNotFoundException ();
+		}
+
+		static JackdConfiguration ReadJackdFile (string jackdConfigFile)
+		{
+			XmlDocument jackdConfigXml = new XmlDocument ();
+			jackdConfigXml.Load (jackdConfigFile);
+			XmlNode firstNode = jackdConfigXml.DocumentElement;
+			if (firstNode.Name == "jackd") {
+				string path = firstNode.SelectSingleNode ("path").InnerText;
+				string generalOptions = firstNode.SelectSingleNode ("general-options").InnerText;
+				string driver = firstNode.SelectSingleNode ("driver").InnerText;
+				string driverOptions = firstNode.SelectSingleNode ("driver-options").InnerText;
+				return new JackdConfiguration (
 		    path,
 		    generalOptions,
 		    driver,
 		    driverOptions
-		);
-		return true;
-	    } catch {
-		JackdConfig = new JackdConfiguration (
-		    string.Empty,
-		    string.Empty,
-		    string.Empty,
-		    string.Empty
-		);
-		return false;
-	    }
-	}
-		
-	/// <summary>
-	/// Creates <seealso cref="appConfigs"/> List of AppConfigurations from XML
-	/// </summary>
-	/// <param name="applicationNode">
-	/// A <see cref="XmlNode"/> with the AppConfigurations values
-	/// </param>
-	/// <returns>
-	/// A <see cref="System.Boolean"/> indicating success of parsing XML
-	/// </returns>		
-	private bool LoadApplicationsXml (XmlNodeList applicationNodes)
-	{
-	    try {
-		foreach (XmlNode applicationNode in applicationNodes) {
-		    string name = applicationNode.SelectNodes ("name").Item (0).InnerText;
-		    string command = applicationNode.SelectNodes ("command").Item (0).InnerText;
-		    AppConfiguration newApp = new AppConfiguration (name, command);
-		    AppConfigs.Add (newApp);
+				);
+			}
+			throw new XmlException ("XML file is corrupt.");
+
 		}
-		return true;
-	    } catch (Exception e) {
-		#if DEBUG
-				Console.WriteLine (e.Message);
-		#endif
-		return false;
-	    }
-	}
-		
-	/// <summary>
-	/// Reads XML configuration
-	/// </summary>
-	/// <returns>
-	/// A <see cref="System.Boolean"/> indicating success of parsing configuration file.
-	/// </returns>
-	private bool ReadXml ()
-	{
-	    if (File.Exists (_configFile)) {
-		XmlDocument xmlConfigFile = new XmlDocument ();
-		try {
-		    xmlConfigFile.Load (_configFile);
-		    XmlNode firstNode = xmlConfigFile.DocumentElement;
-		    if (firstNode.Name == "monomultijack") {
-			LoadJackdXml (firstNode.SelectNodes ("jackd").Item (0));
-			LoadApplicationsXml (firstNode.SelectNodes ("applications").Item (0).SelectNodes ("application"));
-		    }
-		    return true;
-		} catch (Exception e) {
-		    #if DEBUG
-					Console.WriteLine (e.Message);
-		    #endif
-		    return false;
+
+		/// <summary>
+		/// Saves the jackd config.
+		/// </summary>
+		/// <param name='newJackdConfig'>
+		/// New jackd config.
+		/// </param>
+		public static void SaveJackdConfig (JackdConfiguration newJackdConfig)
+		{
+			if (!Directory.Exists (_applicationFolder)) {
+				Directory.CreateDirectory (_applicationFolder);
+			}
+			if (!File.Exists (JackdConfigFile)) {
+				using (var fs = File.Create(JackdConfigFile)) {
+					fs.Close ();
+				}
+			}
+			using (XmlTextWriter writer = new XmlTextWriter(JackdConfigFile, System.Text.Encoding.UTF8)) {
+				writer.Formatting = Formatting.Indented;
+				writer.IndentChar = '\t';
+				writer.WriteStartDocument ();
+				writer.WriteStartElement ("jackd");
+				writer.WriteElementString ("path", newJackdConfig.Path);
+				writer.WriteElementString ("general-options", newJackdConfig.GeneralOptions);
+				writer.WriteElementString ("driver", newJackdConfig.Driver);
+				writer.WriteElementString ("driver-options", newJackdConfig.DriverOptions);
+				writer.WriteEndElement ();
+				writer.Flush ();
+			}
 		}
-	    } else {
-		return false;
-	    }
-	}
-		
-	/// <summary>
-	/// Writes XML configuration file
-	/// </summary>
-	/// <returns>
-	/// A <see cref="System.Boolean"/> indicating Success of writing XML file
-	/// </returns>
-	private bool WriteXml ()
-	{
-	    try {
-		if (!Directory.Exists (_applicationFolder)) {
-		    Directory.CreateDirectory (_applicationFolder);
+
+		public static List<AppConfiguration> LoadAppConfigurations ()
+		{
+			if (File.Exists (ApplicationsConfigFile)) {
+				return ReadAppConfigXml (ApplicationsConfigFile);
+			}
+			throw new FileNotFoundException ();
 		}
-		if (!File.Exists (_configFile)) {
-		    using (var fs = File.Create(_configFile)) {
-			fs.Close ();
-		    }
+
+		static List<AppConfiguration> ReadAppConfigXml (string appConfigFile)
+		{
+			XmlDocument windowSizeXml = new XmlDocument ();
+			windowSizeXml.Load (appConfigFile);
+			XmlNode firstNode = windowSizeXml.DocumentElement;
+			if (firstNode.Name == "applications") {
+				List<AppConfiguration> appConfigs = new List<AppConfiguration> ();
+				XmlNodeList appNodes = firstNode.SelectNodes ("application");
+				foreach (XmlNode appNode in appNodes) {
+					string name = appNode.SelectSingleNode ("name").InnerText;
+					string command = appNode.SelectSingleNode ("command").InnerText;
+					appConfigs.Add (new AppConfiguration (name, command));
+				}
+				return appConfigs;
+			}
+			throw new XmlException ("XML file is corrupt.");
 		}
-		using (XmlTextWriter writer = new XmlTextWriter(_configFile, System.Text.Encoding.UTF8)) {
-		    writer.Formatting = Formatting.Indented;
-		    writer.IndentChar = '\t';
-		    writer.Indentation = 1;
-		    writer.WriteStartDocument ();
-		    writer.WriteStartElement ("monomultijack");
-		    writer.WriteStartElement ("jackd");
-		    writer.WriteElementString ("path", JackdConfig.Path);
-		    writer.WriteElementString ("general-options", JackdConfig.GeneralOptions);
-		    writer.WriteElementString ("driver", JackdConfig.Driver);
-		    writer.WriteElementString ("driver-options", JackdConfig.DriverOptions);
-		    writer.WriteEndElement ();
-		    writer.WriteStartElement ("applications");
-		    foreach (AppConfiguration appConfig in AppConfigs) {
-			writer.WriteStartElement ("application");
-			writer.WriteElementString ("name", appConfig.Name);
-			writer.WriteElementString ("command", appConfig.Command);
-			writer.WriteEndElement ();
-		    }
-		    writer.WriteEndElement ();
-		    writer.WriteEndElement ();
-		    writer.Flush ();
+
+		public static void SaveAppConfiguations (List<AppConfiguration> newAppConfigurations)
+		{
+			if (!Directory.Exists (_applicationFolder)) {
+				Directory.CreateDirectory (_applicationFolder);
+			}
+			if (!File.Exists (ApplicationsConfigFile)) {
+				using (var fs = File.Create(ApplicationsConfigFile)) {
+					fs.Close ();
+				}
+			}
+			using (XmlTextWriter writer = new XmlTextWriter(ApplicationsConfigFile, System.Text.Encoding.UTF8)) {
+				writer.Formatting = Formatting.Indented;
+				writer.IndentChar = '\t';
+				writer.WriteStartDocument ();
+				writer.WriteStartElement ("applications");
+				foreach (AppConfiguration appConfig in newAppConfigurations) {
+					writer.WriteStartElement ("application");
+					writer.WriteElementString ("name", appConfig.Name);
+					writer.WriteElementString ("command", appConfig.Command);
+					writer.WriteEndElement ();
+				}
+				writer.WriteEndElement ();
+				writer.Flush ();
+			}
 		}
-		return true;
-	    } catch (Exception e) {
-		#if DEBUG
-				Console.WriteLine (e.Message);
-		#endif
-		return false;
-	    }
+
+		/// <summary>
+		/// Loads the size of the window.
+		/// </summary>
+		/// <returns>
+		/// The window size.
+		/// </returns>
+		public static WindowConfiguration LoadWindowSize ()
+		{
+			if (File.Exists (WindowSizeFile)) {
+				return ReadWindowSizeXml (WindowSizeFile);
+			}
+			return new WindowConfiguration ();
+		}
+
+		static WindowConfiguration ReadWindowSizeXml (string windowSizeFile)
+		{
+			XmlDocument windowSizeXml = new XmlDocument ();
+			windowSizeXml.Load (windowSizeFile);
+			XmlNode firstNode = windowSizeXml.DocumentElement;
+			if (firstNode.Name == "window") {
+				int xPos, yPos, xSize, ySize;
+				string xPosS = firstNode.SelectSingleNode ("x-position").InnerText;
+				string yPosS = firstNode.SelectSingleNode ("y-position").InnerText;
+				string xSizeS = firstNode.SelectSingleNode ("x-size").InnerText;
+				string ySizeS = firstNode.SelectSingleNode ("y-size").InnerText;
+				if (int.TryParse (xPosS, out xPos)
+					&& int.TryParse (yPosS, out yPos)
+					&& int.TryParse (xSizeS, out xSize)
+					&& int.TryParse (ySizeS, out ySize)) {
+					return new WindowConfiguration (xPos, yPos, xSize, ySize);
+				}
+
+			}
+			return new WindowConfiguration ();
+		}
+
+		/// <summary>
+		/// Saves the size of the window.
+		/// </summary>
+		/// <param name='newWindowConfig'>
+		/// New window config.
+		/// </param>
+		public static void SaveWindowSize (WindowConfiguration newWindowConfig)
+		{
+			if (!Directory.Exists (_applicationFolder)) {
+				Directory.CreateDirectory (_applicationFolder);
+			}
+			if (!File.Exists (WindowSizeFile)) {
+				using (var fs = File.Create(WindowSizeFile)) {
+					fs.Close ();
+				}
+			}
+			using (XmlTextWriter writer = new XmlTextWriter(WindowSizeFile, System.Text.Encoding.UTF8)) {
+				writer.Formatting = Formatting.Indented;
+				writer.IndentChar = '\t';
+				writer.WriteStartDocument ();
+				writer.WriteStartElement ("window");
+				writer.WriteElementString (
+		    "x-position",
+		    newWindowConfig.XPosition.ToString ()
+				);
+				writer.WriteElementString (
+		    "y-position",
+		    newWindowConfig.YPosition.ToString ());
+				writer.WriteElementString ("x-size", newWindowConfig.XSize.ToString ());
+				writer.WriteElementString ("y-size", newWindowConfig.YSize.ToString ());
+				writer.WriteEndElement ();
+				writer.Flush ();
+			}
+		}
 	}
-		
-	/// <summary>
-	/// Updates Configuration
-	/// </summary>
-	/// <param name="newJackdConfig">
-	/// The new <see cref="JackdConfiguration"/>
-	/// </param>
-	/// <returns>
-	/// A <see cref="System.Boolean"/> indicating success of update
-	/// </returns>
-	public bool UpdateConfiguration (JackdConfiguration newJackdConfig)
-	{
-	    JackdConfig = newJackdConfig;
-	    return WriteXml ();
-	}
-		
-	/// <summary>
-	/// Updates configuration
-	/// </summary>
-	/// <param name="newAppConfigs">
-	/// The new <see cref="List<AppConfiguration>"/>
-	/// </param>
-	/// <returns>
-	/// A <see cref="System.Boolean"/> indicating success of update
-	/// </returns>
-	public bool UpdateConfiguration (List<AppConfiguration> newAppConfigs)
-	{
-	    AppConfigs = newAppConfigs;
-	    return WriteXml ();
-	}
-    }
 }
