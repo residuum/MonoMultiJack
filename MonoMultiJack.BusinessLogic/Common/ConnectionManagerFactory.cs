@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,33 +30,33 @@ using MonoMultiJack.ConnectionWrapper.Jack;
 
 namespace MonoMultiJack.BusinessLogic.Common
 {
-    /// <summary>
-    /// Connection manager factory.
-    /// </summary>
-    public static class ConnectionManagerFactory
-    {
 	/// <summary>
-	/// Gets the connection manager.
+	/// Connection manager factory.
 	/// </summary>
-	/// <returns>
-	/// The connection manager.
-	/// </returns>
-	/// <param name='connType'>
-	/// The connection type.
-	/// </param>
-	public static IConnectionManager GetConnectionManager (ConnectionType connType)
+	public static class ConnectionManagerFactory
 	{
-	    switch (connType) {
-	    case ConnectionType.JackAudio:
-		return new JackAudioManager ();
-	    case ConnectionType.JackMidi:
-		return new JackMidiManager ();
-	    case ConnectionType.AlsaMidi:
-		return new AlsaMidiManager ();
-	    default:
-		return null;
-	    }
+		/// <summary>
+		/// Gets the connection manager.
+		/// </summary>
+		/// <returns>
+		/// The connection manager.
+		/// </returns>
+		/// <param name='connType'>
+		/// The connection type.
+		/// </param>
+		public static IConnectionManager GetConnectionManager(ConnectionType connType)
+		{
+			switch (connType) {
+				case ConnectionType.JackAudio:
+					return new JackAudioManager();
+				case ConnectionType.JackMidi:
+					return new JackMidiManager();
+				case ConnectionType.AlsaMidi:
+					return new AlsaMidiManager();
+				default:
+					return null;
+			}
+		}
 	}
-    }
 }
 

@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,43 +26,43 @@
 
 namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
-    public class JackAudioConnection : IConnection
-    {
-	private Port _outPort;
-	private Port _inPort;
+	public class JackAudioConnection : IConnection
+	{
+		private Port _outPort;
+		private Port _inPort;
 		
 		#region IConnection implementation
-	public Port OutPort {
-	    get {
-		if (_inPort != null) {
-		    return _outPort;
+		public Port OutPort {
+			get {
+				if (_inPort != null) {
+					return _outPort;
+				}
+				return null;
+			}
+			set {
+				if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Output) {
+					_outPort = value;					
+				}
+			}
 		}
-		return null;
-	    }
-	    set {
-		if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Output) {
-		    _outPort = value;					
-		}
-	    }
-	}
 
-	public Port InPort {
-	    get {
-		if (_outPort != null) {
-		    return _inPort;
+		public Port InPort {
+			get {
+				if (_outPort != null) {
+					return _inPort;
+				}
+				return null;
+			}
+			set {
+				if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Input) {
+					_inPort = value;
+				}
+			}
 		}
-		return null;
-	    }
-	    set {
-		if (value.ConnectionType == ConnectionType.JackAudio && value.PortType == PortType.Input) {
-		    _inPort = value;
-		}
-	    }
-	}
 		
-	public ConnectionType ConnectionType {
-	    get { return ConnectionType.JackAudio; }
-	}
+		public ConnectionType ConnectionType {
+			get { return ConnectionType.JackAudio; }
+		}
 		#endregion
-    }
+	}
 }

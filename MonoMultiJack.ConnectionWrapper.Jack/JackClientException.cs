@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,18 +26,18 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-    /// <summary>
-    /// Class for exception in Jackd client.
-    /// </summary>
-    [Serializable]
-    public class JackClientException : Exception
-    {
-	public JackClientException (string message) : base(message)
+	/// <summary>
+	/// Class for exception in Jackd client.
+	/// </summary>
+	[Serializable]
+	public class JackClientException : Exception
 	{
-	}
+		public JackClientException(string message) : base(message)
+		{
+		}
 
-	public JackClientException (string message, Exception innerException) : base(message, innerException)
-	{
+		public JackClientException(string message, Exception innerException) : base(message, innerException)
+		{
+		}
 	}
-    }
 }

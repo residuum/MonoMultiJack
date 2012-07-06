@@ -2,9 +2,9 @@
 // IConnectionManager.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,23 +28,23 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-    public delegate void ConnectionEventHandler (object sender,ConnectionEventArgs e);
+	public delegate void ConnectionEventHandler(object sender,ConnectionEventArgs e);
 		
-    public interface IConnectionManager : IDisposable
-    {		
-	event ConnectionEventHandler ConnectionHasChanged;
-	event ConnectionEventHandler BackendHasExited;
+	public interface IConnectionManager : IDisposable
+	{		
+		event ConnectionEventHandler ConnectionHasChanged;
+		event ConnectionEventHandler BackendHasExited;
 		
-	ConnectionType ConnectionType { get; }
+		ConnectionType ConnectionType { get; }
 
-	bool IsActive { get; }
+		bool IsActive { get; }
 
-	IEnumerable<Port> Ports { get; }
+		IEnumerable<Port> Ports { get; }
 
-	IEnumerable<IConnection> Connections { get; }
+		IEnumerable<IConnection> Connections { get; }
 
-	bool Connect (Port outPort, Port inPort);
+		bool Connect(Port outPort, Port inPort);
 
-	bool Disconnect (Port outPort, Port inPort);		
-    }
+		bool Disconnect(Port outPort, Port inPort);		
+	}
 }

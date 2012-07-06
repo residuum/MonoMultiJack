@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,55 +26,55 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
-    internal class AlsaPort : Port
-    {
-	public SndSeqAddr AlsaAddress { get; private set; }
+	internal class AlsaPort : Port
+	{
+		public SndSeqAddr AlsaAddress { get; private set; }
 		
-	public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, PortType portType)
-	{				
-	    AlsaAddress = alsaAdress;
-	    PortType = portType;
-	    ConnectionType = ConnectionType.AlsaMidi;
-	    ClientName = clientName;
-	    Name = portName;				
-	}
+		public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, PortType portType)
+		{				
+			AlsaAddress = alsaAdress;
+			PortType = portType;
+			ConnectionType = ConnectionType.AlsaMidi;
+			ClientName = clientName;
+			Name = portName;				
+		}
 
-	public override bool Equals (object obj)
-	{
-	    var otherPort = obj as AlsaPort;
-	    if (otherPort == null) {
-		return false;
-	    }
-	    return Equals (otherPort);
-	}
+		public override bool Equals (object obj)
+		{
+			var otherPort = obj as AlsaPort;
+			if (otherPort == null) {
+				return false;
+			}
+			return Equals (otherPort);
+		}
 
-	public bool Equals (AlsaPort other)
-	{
-	    return AlsaAddress.Client.Equals (other.AlsaAddress.Client) 
-		&& AlsaAddress.Port.Equals (other.AlsaAddress.Port)
-		&& PortType.Equals (other.PortType);
-	}
+		public bool Equals (AlsaPort other)
+		{
+			return AlsaAddress.Client.Equals (other.AlsaAddress.Client) 
+				&& AlsaAddress.Port.Equals (other.AlsaAddress.Port)
+				&& PortType.Equals (other.PortType);
+		}
 
-	public override int GetHashCode ()
-	{
-	    return AlsaAddress.Port * AlsaAddress.Client * (int)PortType;
-	}
+		public override int GetHashCode ()
+		{
+			return AlsaAddress.Port * AlsaAddress.Client * (int)PortType;
+		}
 
-	public static bool operator == (AlsaPort a, AlsaPort b)
-	{
-	    if (object.ReferenceEquals (a, b)) {
-		return true;
-	    }
+		public static bool operator == (AlsaPort a, AlsaPort b)
+		{
+			if (object.ReferenceEquals (a, b)) {
+				return true;
+			}
 
-	    if (((object)a == null) || ((object)b == null)) {
-		return false;
-	    }
-	    return (a.Equals (b));
-	}
+			if (((object)a == null) || ((object)b == null)) {
+				return false;
+			}
+			return (a.Equals (b));
+		}
 
-	public static bool operator != (AlsaPort a, AlsaPort b)
-	{
-	    return !(a == b);
-	}
-    }	
+		public static bool operator != (AlsaPort a, AlsaPort b)
+		{
+			return !(a == b);
+		}
+	}	
 }

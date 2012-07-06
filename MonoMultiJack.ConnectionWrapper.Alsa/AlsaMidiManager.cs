@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,181 +31,182 @@ using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
-    public class AlsaMidiManager : IConnectionManager
-    {
-	private List<AlsaPort> _portMapper = new List<AlsaPort> ();
-	private List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
-	
-	public AlsaMidiManager ()
+	public class AlsaMidiManager : IConnectionManager
 	{
-	    LibAsoundWrapper.Activate ();
+		private List<AlsaPort> _portMapper = new List<AlsaPort> ();
+		private List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
+	
+		public AlsaMidiManager ()
+		{
+			LibAsoundWrapper.Activate ();
 			
-	    GLib.Timeout.Add (2000, new GLib.TimeoutHandler (CheckForChanges));
-	}
+			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (CheckForChanges));
+		}
 		
-	~AlsaMidiManager ()
-	{
-	    Dispose (false);
-	}
+		~AlsaMidiManager ()
+		{
+			Dispose (false);
+		}
 
-	public void Dispose ()
-	{
-	    Dispose (true);
-	    GC.SuppressFinalize (this);
-	}
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
 	
-	protected virtual void Dispose (bool isDisposing)
-	{
-	    LibAsoundWrapper.DeActivate ();
-	}
+		protected virtual void Dispose (bool isDisposing)
+		{
+			LibAsoundWrapper.DeActivate ();
+		}
 		
 	#region IConnectionManager implementation
-	public event ConnectionEventHandler ConnectionHasChanged;
-	public event ConnectionEventHandler BackendHasExited;
+		public event ConnectionEventHandler ConnectionHasChanged;
+		public event ConnectionEventHandler BackendHasExited;
 
-	public bool Connect (Port outPort, Port inPort)
-	{
-	    AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
-		&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
-	    );
-	    AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
-		&& p.ClientName == inPort.ClientName && p.Name == inPort.Name
-	    );
-	    if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
-		|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
-		return false;
-	    }
-	    return LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
-	}
+		public bool Connect (Port outPort, Port inPort)
+		{
+			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
+				&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
+			);
+			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
+				&& p.ClientName == inPort.ClientName && p.Name == inPort.Name
+			);
+			if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
+				|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
+				return false;
+			}
+			return LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
+		}
 
-	public bool Disconnect (Port outPort, Port inPort)
-	{
-	    AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
-		&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
-	    );
-	    AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
-		&& p.ClientName == inPort.ClientName && p.Name == inPort.Name);
-	    if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
-		|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
-		return false;
-	    }
-	    return LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
-	}
+		public bool Disconnect (Port outPort, Port inPort)
+		{
+			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
+				&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
+			);
+			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
+				&& p.ClientName == inPort.ClientName && p.Name == inPort.Name
+			);
+			if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
+				|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
+				return false;
+			}
+			return LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
+		}
 
-	public ConnectionType ConnectionType {
-	    get {
-		return ConnectionType.AlsaMidi;
-	    }
-	}
+		public ConnectionType ConnectionType {
+			get {
+				return ConnectionType.AlsaMidi;
+			}
+		}
 
-	public bool IsActive {
-	    get {
-		return true;
-	    }
-	}
+		public bool IsActive {
+			get {
+				return true;
+			}
+		}
 
-	public IEnumerable<Port> Ports {
-	    get {
-		_portMapper = LibAsoundWrapper.GetPorts ().ToList ();
-		return _portMapper.Cast<Port> ();
-	    }
-	}
+		public IEnumerable<Port> Ports {
+			get {
+				_portMapper = LibAsoundWrapper.GetPorts ().ToList ();
+				return _portMapper.Cast<Port> ();
+			}
+		}
 
-	public IEnumerable<IConnection> Connections {
-	    get {
-		_connections = LibAsoundWrapper.GetConnections (_portMapper).ToList ();
-		return _connections.Cast<IConnection> ();
-	    }
-	}
+		public IEnumerable<IConnection> Connections {
+			get {
+				_connections = LibAsoundWrapper.GetConnections (_portMapper).ToList ();
+				return _connections.Cast<IConnection> ();
+			}
+		}
 		#endregion
 
-	bool CheckForChanges ()
-	{
-	    List<Port> newPorts;
-	    List<Port> obsoletePorts;
-	    UpdatePortInformation (
+		bool CheckForChanges ()
+		{
+			List<Port> newPorts;
+			List<Port> obsoletePorts;
+			UpdatePortInformation (
 		LibAsoundWrapper.GetPorts (),
 		ref _portMapper,
 		out newPorts,
 		out obsoletePorts
-	    );
-	    List<IConnection> newConnections;
-	    List<IConnection> obsoleteConnections;
+			);
+			List<IConnection> newConnections;
+			List<IConnection> obsoleteConnections;
 			
-	    UpdateConnectionInformation (
+			UpdateConnectionInformation (
 		LibAsoundWrapper.GetConnections (_portMapper),
 		ref _connections,
 		out newConnections,
 		out obsoleteConnections
-	    );
+			);
 
-	    if (newPorts.Any () || newConnections.Any ()) {
-		var newEventArgs = new ConnectionEventArgs ();
-		newEventArgs.ChangeType = ChangeType.New;
-		newEventArgs.Ports = newPorts;
-		newEventArgs.Connections = newConnections;
-		ConnectionHasChanged (this, newEventArgs);
-	    }
-	    if (obsoletePorts.Any ()) {
-		var oldEventArgs = new ConnectionEventArgs ();
-		oldEventArgs.ChangeType = ChangeType.Deleted;
-		oldEventArgs.Ports = obsoletePorts;
-		oldEventArgs.Connections = obsoleteConnections;
-		ConnectionHasChanged (this, oldEventArgs);
-	    }
-	    return true;
-	}
-
-	void UpdatePortInformation (IEnumerable<AlsaPort> allPorts, ref List<AlsaPort> mappedPorts, out List<Port> newPorts, out List<Port> obsoletePorts)
-	{
-	    newPorts = new List<Port> ();
-	    obsoletePorts = new List<Port> ();
-
-	    foreach (AlsaPort port in allPorts) {
-		AlsaPort foundPort = mappedPorts.FirstOrDefault (p => p == port);
-
-		if (foundPort == null) {
-		    newPorts.Add (port);
-		    mappedPorts.Add (port);
+			if (newPorts.Any () || newConnections.Any ()) {
+				var newEventArgs = new ConnectionEventArgs ();
+				newEventArgs.ChangeType = ChangeType.New;
+				newEventArgs.Ports = newPorts;
+				newEventArgs.Connections = newConnections;
+				ConnectionHasChanged (this, newEventArgs);
+			}
+			if (obsoletePorts.Any ()) {
+				var oldEventArgs = new ConnectionEventArgs ();
+				oldEventArgs.ChangeType = ChangeType.Deleted;
+				oldEventArgs.Ports = obsoletePorts;
+				oldEventArgs.Connections = obsoleteConnections;
+				ConnectionHasChanged (this, oldEventArgs);
+			}
+			return true;
 		}
-	    }
+
+		void UpdatePortInformation (IEnumerable<AlsaPort> allPorts, ref List<AlsaPort> mappedPorts, out List<Port> newPorts, out List<Port> obsoletePorts)
+		{
+			newPorts = new List<Port> ();
+			obsoletePorts = new List<Port> ();
+
+			foreach (AlsaPort port in allPorts) {
+				AlsaPort foundPort = mappedPorts.FirstOrDefault (p => p == port);
+
+				if (foundPort == null) {
+					newPorts.Add (port);
+					mappedPorts.Add (port);
+				}
+			}
 	    
-	    foreach (AlsaPort oldPort in mappedPorts) {
-		AlsaPort mappedPort = allPorts.FirstOrDefault (p => p == oldPort);
-		if (mappedPort == null) {
-		    obsoletePorts.Add (oldPort);
+			foreach (AlsaPort oldPort in mappedPorts) {
+				AlsaPort mappedPort = allPorts.FirstOrDefault (p => p == oldPort);
+				if (mappedPort == null) {
+					obsoletePorts.Add (oldPort);
+				}
+			}
+			// Remove obsolete ports
+			foreach (AlsaPort obsoletePort in obsoletePorts) {
+				mappedPorts.Remove (obsoletePort);
+			}
 		}
-	    }
-	    // Remove obsolete ports
-	    foreach (AlsaPort obsoletePort in obsoletePorts) {
-		mappedPorts.Remove (obsoletePort);
-	    }
-	}
 
-	void UpdateConnectionInformation (IEnumerable<AlsaMidiConnection> allConnections, ref List<AlsaMidiConnection> mappedConnections, out List<IConnection> newConnections, out List<IConnection> obsoleteConnections)
-	{
-	    newConnections = new List<IConnection> ();
-	    obsoleteConnections = new List<IConnection> ();
+		void UpdateConnectionInformation (IEnumerable<AlsaMidiConnection> allConnections, ref List<AlsaMidiConnection> mappedConnections, out List<IConnection> newConnections, out List<IConnection> obsoleteConnections)
+		{
+			newConnections = new List<IConnection> ();
+			obsoleteConnections = new List<IConnection> ();
 
-	    foreach (AlsaMidiConnection conn in allConnections) {
-		AlsaMidiConnection foundConn = mappedConnections.FirstOrDefault (p => p == conn);
+			foreach (AlsaMidiConnection conn in allConnections) {
+				AlsaMidiConnection foundConn = mappedConnections.FirstOrDefault (p => p == conn);
 
-		if (foundConn == null) {
-		    newConnections.Add (conn);
-		    mappedConnections.Add (conn);
-		}
-	    }
+				if (foundConn == null) {
+					newConnections.Add (conn);
+					mappedConnections.Add (conn);
+				}
+			}
 	    
-	    foreach (AlsaMidiConnection oldConn in mappedConnections) {
-		AlsaMidiConnection mappedPort = allConnections.FirstOrDefault (p => p == oldConn);
-		if (mappedPort == null) {
-		    obsoleteConnections.Add (oldConn);
+			foreach (AlsaMidiConnection oldConn in mappedConnections) {
+				AlsaMidiConnection mappedPort = allConnections.FirstOrDefault (p => p == oldConn);
+				if (mappedPort == null) {
+					obsoleteConnections.Add (oldConn);
+				}
+			}
+			// Remove obsolete connections
+			foreach (AlsaMidiConnection obsoletePort in obsoleteConnections) {
+				mappedConnections.Remove (obsoletePort);
+			}
 		}
-	    }
-	    // Remove obsolete connections
-	    foreach (AlsaMidiConnection obsoletePort in obsoleteConnections) {
-		mappedConnections.Remove (obsoletePort);
-	    }
 	}
-    }
 }

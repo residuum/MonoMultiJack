@@ -1,10 +1,10 @@
 // 
-// IConnectionType.cs
+// ConnectionType.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,14 +26,14 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-    /// <summary>
-    /// The Type of connection to manage
-    /// </summary>
-    public enum ConnectionType
-    {
-	Undefined = 0,
-	JackAudio = 1,
-	JackMidi = 2,
-	AlsaMidi = 3
-    }
+	/// <summary>
+	/// The Type of connection to manage
+	/// </summary>
+	public enum ConnectionType
+	{
+		Undefined = 0,
+		JackAudio = 1,
+		JackMidi = 2,
+		AlsaMidi = 3
+	}
 }

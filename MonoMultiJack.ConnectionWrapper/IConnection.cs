@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +26,30 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper
 {
-    /// <summary>
-    /// Interface for connections.
-    /// </summary>
-    public interface IConnection
-    {
 	/// <summary>
-	/// Port of type outlet
+	/// Interface for connections.
 	/// </summary>
-	Port OutPort {
-	    get;
-	    set;
-	}
+	public interface IConnection
+	{
+		/// <summary>
+		/// Port of type outlet
+		/// </summary>
+		Port OutPort {
+			get;
+			set;
+		}
 		
-	/// <summary>
-	/// Port of type inlet
-	/// </summary>
-	Port InPort {
-	    get;
-	    set;
-	}
+		/// <summary>
+		/// Port of type inlet
+		/// </summary>
+		Port InPort {
+			get;
+			set;
+		}
 		
-	/// <summary>
-	/// The connection type. 
-	/// </summary>
-	ConnectionType ConnectionType { get; }
-    }
+		/// <summary>
+		/// The connection type. 
+		/// </summary>
+		ConnectionType ConnectionType { get; }
+	}
 }

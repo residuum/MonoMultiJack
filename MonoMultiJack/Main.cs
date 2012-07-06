@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,23 +28,23 @@ using Gtk;
 
 namespace MonoMultiJack
 {
-    /// <summary>
-    /// startup class
-    /// </summary>
-    class MainClass
-    {
 	/// <summary>
-	/// startup script, starts MainWindow
+	/// startup class
 	/// </summary>
-	/// <param name="args">
-	/// A <see cref="System.String"/>
-	/// </param>
-	public static void Main (string[] args)
+	class MainClass
 	{
-	    Application.Init ();
-	    Forms.MainWindow win = new Forms.MainWindow ();
-	    win.ShowAll ();
-	    Application.Run ();
+		/// <summary>
+		/// startup script, starts MainWindow
+		/// </summary>
+		/// <param name="args">
+		/// A <see cref="System.String"/>
+		/// </param>
+		public static void Main(string[] args)
+		{
+			Application.Init();
+			Forms.MainWindow win = new Forms.MainWindow();
+			win.ShowAll();
+			Application.Run();
+		}
 	}
-    }
 }

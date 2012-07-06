@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 	[Flags]
 	internal enum JackPortFlags
 	{
-	    JackPortIsInput = 0x1,
-	    JackPortIsOutput = 0x2,
-	    JackPortIsPhysical = 0x4,
-	    JackPortCanMonitor = 0x8,
-	    JackPortIsTerminal = 0x10
+		JackPortIsInput = 0x1,
+		JackPortIsOutput = 0x2,
+		JackPortIsPhysical = 0x4,
+		JackPortCanMonitor = 0x8,
+		JackPortIsTerminal = 0x10
 	}
 	
 }

@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,32 +28,32 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
 	internal class JackPort : Port
 	{
-	    public uint JackPortId {
-		get;
-		private set;
-	    }
+		public uint JackPortId {
+			get;
+			private set;
+		}
 			
-	    public IntPtr JackPortPointer {
-		get;
-		private set;
-	    }
+		public IntPtr JackPortPointer {
+			get;
+			private set;
+		}
 			
-	    public string JackPortName {
-		get;
-		private set;
-	    }
+		public string JackPortName {
+			get;
+			private set;
+		}
 		
-	    public JackPort (string jackPortName, uint jackPortId, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
-	    {				
-		JackPortName = jackPortName;
-		JackPortId = jackPortId;
-		JackPortPointer = jackPortPtr;
-		PortType = portType;
-		ConnectionType = connectionType;
-		string[] splittedName = jackPortName.Split (new[] { ':' });
-		ClientName = splittedName [0];
-		Name = splittedName [1];				
-	    }
+		public JackPort(string jackPortName, uint jackPortId, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
+		{				
+			JackPortName = jackPortName;
+			JackPortId = jackPortId;
+			JackPortPointer = jackPortPtr;
+			PortType = portType;
+			ConnectionType = connectionType;
+			string[] splittedName = jackPortName.Split(new[] { ':' });
+			ClientName = splittedName [0];
+			Name = splittedName [1];				
+		}
 	}
 }
 

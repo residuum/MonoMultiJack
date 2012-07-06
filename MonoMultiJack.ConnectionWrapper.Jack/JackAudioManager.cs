@@ -1,10 +1,10 @@
 // 
-// JackdAudioConnection.cs
+// JackdAudioManager.cs
 //  
 // Author:
-//       thomas <>
+//       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 thomas
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,14 +26,14 @@
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
-    public class JackAudioManager : JackConnectionManager, IConnectionManager
-    {
-	public JackAudioManager () : base()
+	public class JackAudioManager : JackConnectionManager, IConnectionManager
 	{
-	}
+		public JackAudioManager() : base()
+		{
+		}
 		
-	public override ConnectionType ConnectionType {
-	    get { return ConnectionType.JackAudio;}
+		public override ConnectionType ConnectionType {
+			get { return ConnectionType.JackAudio;}
+		}
 	}
-    }
 }

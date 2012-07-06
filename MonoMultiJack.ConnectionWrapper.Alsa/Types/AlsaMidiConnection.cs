@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2010 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,80 +26,80 @@
 using System;
 namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
-    public class AlsaMidiConnection : IConnection
-    {
-	private Port _outPort;
-	private Port _inPort;
+	public class AlsaMidiConnection : IConnection
+	{
+		private Port _outPort;
+		private Port _inPort;
 		
 	#region IConnection implementation
-	public Port OutPort {
-	    get {
-		if (_inPort != null) {
-		    return _outPort;
-		} 
-		return null;
-	    }
-	    set {
-		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output) {
-		    _outPort = value;					
+		public Port OutPort {
+			get {
+				if (_inPort != null) {
+					return _outPort;
+				} 
+				return null;
+			}
+			set {
+				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output) {
+					_outPort = value;					
+				}
+			}
 		}
-	    }
-	}
 
-	public Port InPort {
-	    get {
-		if (_outPort != null) {
-		    return _inPort;
+		public Port InPort {
+			get {
+				if (_outPort != null) {
+					return _inPort;
+				}
+				return null;
+			}
+			set {
+				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) {
+					_inPort = value;
+				}
+			}
 		}
-		return null;
-	    }
-	    set {
-		if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) {
-		    _inPort = value;
-		}
-	    }
-	}
 		
-	public ConnectionType ConnectionType {
-	    get { return ConnectionType.AlsaMidi; }
-	}
+		public ConnectionType ConnectionType {
+			get { return ConnectionType.AlsaMidi; }
+		}
 	#endregion
 
-	public override bool Equals (object obj)
-	{
-	    var otherConn = obj as AlsaMidiConnection;
-	    if (otherConn == null) {
-		return false;
-	    }
-	    return Equals (otherConn);
-	}
+		public override bool Equals (object obj)
+		{
+			var otherConn = obj as AlsaMidiConnection;
+			if (otherConn == null) {
+				return false;
+			}
+			return Equals (otherConn);
+		}
 
-	public bool Equals (AlsaMidiConnection other)
-	{
-	    return OutPort.Equals (other.OutPort)
-		&& InPort.Equals (other.InPort);
-	}
+		public bool Equals (AlsaMidiConnection other)
+		{
+			return OutPort.Equals (other.OutPort)
+				&& InPort.Equals (other.InPort);
+		}
 
-	public override int GetHashCode ()
-	{
-	    return InPort.GetHashCode () * OutPort.GetHashCode ();
-	}
+		public override int GetHashCode ()
+		{
+			return InPort.GetHashCode () * OutPort.GetHashCode ();
+		}
 
-	public static bool operator == (AlsaMidiConnection a, AlsaMidiConnection b)
-	{
-	    if (object.ReferenceEquals (a, b)) {
-		return true;
-	    }
+		public static bool operator == (AlsaMidiConnection a, AlsaMidiConnection b)
+		{
+			if (object.ReferenceEquals (a, b)) {
+				return true;
+			}
 
-	    if (((object)a == null) || ((object)b == null)) {
-		return false;
-	    }
-	    return (a.Equals (b));
-	}
+			if (((object)a == null) || ((object)b == null)) {
+				return false;
+			}
+			return (a.Equals (b));
+		}
 
-	public static bool operator != (AlsaMidiConnection a, AlsaMidiConnection b)
-	{
-	    return !(a == b);
+		public static bool operator != (AlsaMidiConnection a, AlsaMidiConnection b)
+		{
+			return !(a == b);
+		}
 	}
-    }
 }

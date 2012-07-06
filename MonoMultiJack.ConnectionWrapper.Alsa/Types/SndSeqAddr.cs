@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct SndSeqAddr
 	{
-	    public byte Client;
-	    public byte Port;
+		public byte Client;
+		public byte Port;
 	}
 }

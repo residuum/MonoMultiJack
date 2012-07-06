@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,34 @@ using System;
 
 namespace MonoMultiJack.BusinessLogic.Configuration
 {
-    /// <summary>
-    /// Configuration of an application
-    /// </summary>
-    public struct AppConfiguration
-    {
 	/// <summary>
-	/// name of the application
+	/// Configuration of an application
 	/// </summary>
-	public string Name { get; private set; }
-		
-	/// <summary>
-	/// command to launch the application
-	/// </summary>
-	public string Command { get; private set; }
-
-	/// <summary>
-	/// constructor
-	/// </summary>
-	/// <param name="newName">
-	/// A <see cref="System.String"/> indicating name of application
-	/// </param>
-	/// <param name="newCommand">
-	/// A <see cref="System.String"/> indicating command to lauch the application
-	/// </param>
-	public AppConfiguration (string newName, string newCommand) : this()
+	public struct AppConfiguration
 	{
-	    Name = newName;
-	    Command = newCommand;
+		/// <summary>
+		/// name of the application
+		/// </summary>
+		public string Name { get; private set; }
+		
+		/// <summary>
+		/// command to launch the application
+		/// </summary>
+		public string Command { get; private set; }
+
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="newName">
+		/// A <see cref="System.String"/> indicating name of application
+		/// </param>
+		/// <param name="newCommand">
+		/// A <see cref="System.String"/> indicating command to lauch the application
+		/// </param>
+		public AppConfiguration(string newName, string newCommand) : this()
+		{
+			Name = newName;
+			Command = newCommand;
+		}
 	}
-    }
 }
