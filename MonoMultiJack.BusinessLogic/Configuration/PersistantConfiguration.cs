@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009 Thomas Mayer
+// Copyright (c) 2009-2012 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -41,36 +41,22 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 		Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
 		"MonoMultiJack"
 			);
-		static string _jackdConfigFile;
 
 		static string JackdConfigFile {
 			get {
-				if (string.IsNullOrEmpty (_jackdConfigFile)) {
-					_jackdConfigFile = Path.Combine (_applicationFolder, "jack.xml");
-				}
-				return _jackdConfigFile;
+				return Path.Combine (_applicationFolder, "jack.xml");
 			}
 		}
-
-		static string _applicationsConfigFile;
-
+		
 		static string ApplicationsConfigFile {
 			get {
-				if (string.IsNullOrEmpty (_applicationsConfigFile)) {
-					_applicationsConfigFile = Path.Combine (_applicationFolder, "applications.xml");
-				}
-				return _applicationsConfigFile;
+				return Path.Combine (_applicationFolder, "applications.xml");
 			}
 		}
-
-		static string _windowSizeFile;
 
 		static string WindowSizeFile {
 			get {
-				if (string.IsNullOrEmpty (_windowSizeFile)) {
-					_windowSizeFile = Path.Combine (_applicationFolder, "window.xml");
-				}
-				return _windowSizeFile;
+				return Path.Combine (_applicationFolder, "window.xml");
 			}
 		}
 
