@@ -1,6 +1,6 @@
 Name: MonoMultiJack.ConnectionWrapper.Jack
 Description: MonoMultiJack.ConnectionWrapper.Jack
-Version: 0.1
+Version: 0.2
 
 Requires: 
 Libs: -r:@expanded_libdir@/@PACKAGE@/MonoMultiJack.ConnectionWrapper.Jack.dll

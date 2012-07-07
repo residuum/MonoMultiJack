@@ -55,23 +55,24 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	JackAudioConnection.cs \
 	JackAudioManager.cs \
 	JackClientException.cs \
 	JackConnectionManager.cs \
-	JackMidiConnection.cs \
 	JackMidiManager.cs \
 	LibJackWrapper.cs \
 	LibJackWrapper.Definitions.cs \
 	LibJackWrapper.PInvoke.cs \
-	TypeDefinitions/JackPortFlags.cs \
-	TypeDefinitions/JackPort.cs 
+	Types/JackPortFlags.cs \
+	Types/JackPort.cs \
+	Types/JackMidiConnection.cs \
+	Types/JackAudioConnection.cs 
 
 DATA_FILES = 
 
 RESOURCES = 
 
 EXTRAS = \
+	Types \
 	monomultijack.connectionwrapper.jack.pc.in 
 
 REFERENCES =  \

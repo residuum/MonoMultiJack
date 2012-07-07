@@ -55,25 +55,27 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	AlsaMidiConnection.cs \
 	AlsaMidiManager.cs \
 	LibAsoundWrapper.cs \
 	LibAsoundWrapper.Definitions.cs \
 	LibAsoundWrapper.Pinvoke.cs \
-	TypeDefinitions/SndSeqAddr.cs \
-	TypeDefinitions/AlsaPort.cs 
+	Types/SndSeqAddr.cs \
+	Types/AlsaPort.cs \
+	Types/AlsaMidiConnection.cs 
 
 DATA_FILES = 
 
 RESOURCES = 
 
 EXTRAS = \
-	TypeDefinitions \
+	Types \
 	monomultijack.connectionwrapper.alsa.pc.in 
 
 REFERENCES =  \
 	System \
-	Mono.Posix
+	Mono.Posix \
+	$(GLIB_SHARP_20_LIBS) \
+	System.Core
 
 DLL_REFERENCES = 
 

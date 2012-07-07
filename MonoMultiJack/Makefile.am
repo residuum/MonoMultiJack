@@ -10,26 +10,26 @@ ASSEMBLY = bin/Debug/MonoMultiJack.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = winexe
 PROJECT_REFERENCES =  \
-	ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll \
-	BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll \
-	ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll \
-	ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll
+	../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll \
+	../MonoMultiJack.BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll \
+	../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll \
+	../MonoMultiJack.ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll
 BUILD_DIR = bin/Debug
 
 MONOMULTIJACK_EXE_MDB_SOURCE=bin/Debug/MonoMultiJack.exe.mdb
 MONOMULTIJACK_EXE_MDB=$(BUILD_DIR)/MonoMultiJack.exe.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
-MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll.mdb
-MONOMULTIJACK_BUSINESSLOGIC_DLL_SOURCE=BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll
-MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB_SOURCE=BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll.mdb
-MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.BusinessLogic.dll.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll
-MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB_SOURCE=ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_SOURCE=ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB_SOURCE=ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
+MONOMULTIJACK_BUSINESSLOGIC_DLL_SOURCE=../MonoMultiJack.BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
+MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB_SOURCE=../MonoMultiJack.BusinessLogic/bin/Debug/MonoMultiJack.BusinessLogic.dll.mdb
+MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.BusinessLogic.dll.mdb
 
 endif
 
@@ -40,21 +40,21 @@ ASSEMBLY = bin/Release/MonoMultiJack.exe
 ASSEMBLY_MDB = 
 COMPILE_TARGET = winexe
 PROJECT_REFERENCES =  \
-	ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll \
-	BusinessLogic/bin/Release/MonoMultiJack.BusinessLogic.dll \
-	ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll \
-	ConnectionWrapper.Alsa/bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll
+	../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll \
+	../MonoMultiJack.BusinessLogic/bin/Release/MonoMultiJack.BusinessLogic.dll \
+	../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll \
+	../MonoMultiJack.ConnectionWrapper.Alsa/bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll
 BUILD_DIR = bin/Release
 
 MONOMULTIJACK_EXE_MDB=
-MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=
-MONOMULTIJACK_BUSINESSLOGIC_DLL_SOURCE=BusinessLogic/bin/Release/MonoMultiJack.BusinessLogic.dll
-MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=
-MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll
-MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_SOURCE=ConnectionWrapper.Alsa/bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll
+MONOMULTIJACK_BUSINESSLOGIC_DLL_SOURCE=../MonoMultiJack.BusinessLogic/bin/Release/MonoMultiJack.BusinessLogic.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB=
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=
+MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=
 
 endif
 
@@ -66,11 +66,11 @@ PROGRAMFILES = \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB) \
 	$(MONOMULTIJACK_BUSINESSLOGIC_DLL) \
-	$(MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB) \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL) \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB)  
+	$(MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB)  
 
 BINARIES = \
 	$(MONOMULTIJACK)  
@@ -122,18 +122,18 @@ include $(top_srcdir)/Makefile.include
 
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_BUSINESSLOGIC_DLL = $(BUILD_DIR)/MonoMultiJack.BusinessLogic.dll
-MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll
 MONOMULTIJACK = $(BUILD_DIR)/monomultijack
 
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_BUSINESSLOGIC_DLL))
-$(eval $(call emit-deploy-target,MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB))
-$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL))
-$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB))
 $(eval $(call emit-deploy-wrapper,MONOMULTIJACK,monomultijack,x))
 
 

@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([MonoMultiJack], [0.1])
+AC_INIT([MonoMultiJack], [0.2])
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
@@ -56,12 +56,12 @@ dnl package checks, per config
 AC_CONFIG_FILES([
 MonoMultiJack.ConnectionWrapper/monomultijack.connectionwrapper.pc
 MonoMultiJack.ConnectionWrapper/Makefile
-MonoMultiJack.BusinessLogic/monomultijack.businesslogic.pc
-MonoMultiJack.BusinessLogic/Makefile
 MonoMultiJack.ConnectionWrapper.Jack/monomultijack.connectionwrapper.jack.pc
 MonoMultiJack.ConnectionWrapper.Jack/Makefile
 MonoMultiJack.ConnectionWrapper.Alsa/monomultijack.connectionwrapper.alsa.pc
 MonoMultiJack.ConnectionWrapper.Alsa/Makefile
+MonoMultiJack.BusinessLogic/monomultijack.businesslogic.pc
+MonoMultiJack.BusinessLogic/Makefile
 MonoMultiJack/monomultijack
 MonoMultiJack/Makefile
 Makefile

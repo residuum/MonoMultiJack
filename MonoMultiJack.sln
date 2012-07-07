@@ -235,5 +235,6 @@ Global
 		$35.inheritsSet = Mono
 		$35.inheritsScope = application/xml
 		$35.scope = application/xml
+		version = 0.2
 	EndGlobalSection
 EndGlobal
