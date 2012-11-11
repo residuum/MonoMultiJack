@@ -81,6 +81,8 @@
     <Compile Include="Widgets\IConnectionDisplay.cs" />
     <Compile Include="Forms\IAboutWindow.cs" />
     <Compile Include="Forms\AboutWindow.cs" />
+    <Compile Include="Forms\IInfoWindow.cs" />
+    <Compile Include="Forms\InfoWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

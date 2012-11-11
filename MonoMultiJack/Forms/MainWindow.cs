@@ -73,6 +73,24 @@ namespace MonoMultiJack.Forms
 		}
 		#endregion
 
+		#region IWindow implementation
+		string IWindow.IconPath {
+			set {
+				if (File.Exists(value)) {
+					this.Icon = new Pixbuf(value);
+				}
+			}
+		}
+
+		bool IWindow.Sensitive {
+			set{
+				this.Sensitive = value;
+			}
+		}
+
+		public event EventHandler Closing;
+		#endregion
+
 		#region IMainWindow implementation		
 		IEnumerable<IAppStartWidget> IMainWindow.AppStartWidgets {
 			set {
@@ -115,14 +133,6 @@ namespace MonoMultiJack.Forms
 				stopAllAction.Sensitive = value;
 			}
 		}
-
-		string IWindow.IconPath {
-			set {
-				if (File.Exists(value)) {
-					this.Icon = new Pixbuf(value);
-				}
-			}
-		}
 		
 		public event EventHandler StartJackd;
 		public event EventHandler StopJackd;
@@ -132,7 +142,6 @@ namespace MonoMultiJack.Forms
 		public event EventHandler ShowAbout;
 		public event EventHandler ShowHelp;
 		public event EventHandler QuitApplication;
-		public event EventHandler Closing;
 		#endregion
 		
 		/// <summary>

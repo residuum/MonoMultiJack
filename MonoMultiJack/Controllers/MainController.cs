@@ -32,13 +32,13 @@ using MonoMultiJack.BusinessLogic.Common;
 using MonoMultiJack.Widgets;
 using Gtk;
 using System.Reflection;
+using System.IO;
 
 namespace MonoMultiJack.Controllers
 {
 	public class MainController :IDisposable
 	{				
 		readonly string IconFile = "monomultijack.png";
-
 		string _programIcon;
 
 		private string ProgramIconPath {
@@ -94,11 +94,13 @@ namespace MonoMultiJack.Controllers
 
 		public void Start()
 		{	
-			_jackdConfiguration = PersistantConfiguration.LoadJackdConfiguration();
-			_appConfigurations = PersistantConfiguration.LoadAppConfigurations();
+			WindowConfiguration windowConfiguration;
+			TryLoadJackdConfiguration(out _jackdConfiguration);
+			TryLoadAppConfigurations(out _appConfigurations);
+			if (TryLoadWindowConfiguration(out windowConfiguration)) {
+				_mainWindow.WindowConfiguration = windowConfiguration;
+			}
 
-			WindowConfiguration windowConfiguration = PersistantConfiguration.LoadWindowSize();
-			_mainWindow.WindowConfiguration = windowConfiguration;
 			_mainWindow.Show();
 
 			_startWidgetControllers = new List<AppStartWidgetController>();
@@ -121,10 +123,67 @@ namespace MonoMultiJack.Controllers
 
 			_mainWindow.Show();
 
-			StartJackd(_jackdConfiguration);
+			InitJackd(_jackdConfiguration);
 		}
 
-		void StartJackd(JackdConfiguration jackdConfig)
+		bool TryLoadJackdConfiguration(out JackdConfiguration jackdConfig)
+		{
+			try {
+				jackdConfig = PersistantConfiguration.LoadJackdConfiguration();
+				return true;
+			} catch (System.Xml.XmlException e) {
+#if DEBUG
+Console.WriteLine (e.Message);
+#endif
+				ShowInfoMessage("Jackd configuration File is corrupt.");
+				jackdConfig = new JackdConfiguration();
+			} catch (FileNotFoundException e) {
+#if DEBUG
+Console.WriteLine (e.Message);
+#endif
+				ShowInfoMessage("Jackd is not configured.");
+				jackdConfig = new JackdConfiguration();
+			}
+			return false;
+		}
+
+		bool TryLoadAppConfigurations(out List<AppConfiguration> appConfigs)
+		{
+			try {
+				appConfigs = PersistantConfiguration.LoadAppConfigurations();
+				return true;
+			} catch (System.Xml.XmlException e) {
+#if DEBUG
+Console.WriteLine (e.Message);
+#endif
+				ShowInfoMessage("Application configuration File is corrupt.");
+				appConfigs = new List<AppConfiguration>();
+			} catch (FileNotFoundException e) {
+#if DEBUG
+Console.WriteLine (e.Message);
+#endif
+				ShowInfoMessage("Applications are not configured.");
+				appConfigs = new List<AppConfiguration>();
+			}
+			return false;
+		}
+
+		bool TryLoadWindowConfiguration(out WindowConfiguration windowConfig)
+		{
+			try {
+				windowConfig = PersistantConfiguration.LoadWindowSize();
+				if (windowConfig.XSize != 0 && windowConfig.YSize != 0) {
+					return true;
+				}
+			} catch (Exception e) {
+#if DEBUG
+Console.WriteLine (e.Message);
+#endif
+			}
+			return false;
+		}
+
+		void InitJackd(JackdConfiguration jackdConfig)
 		{
 			if (_jackd != null) {
 				_jackd.StopProgram();
@@ -226,7 +285,7 @@ namespace MonoMultiJack.Controllers
 	THE SOFTWARE.";
 			AboutWindow.IconPath = ProgramIconPath;
 			AboutWindow.Show();
-			AboutWindow.Closing +=AboutWindow_HasBeenClosed;
+			AboutWindow.Closing += Window_Closing;
 		}
 
 		void MainWindow_ShowHelp(object sender, EventArgs e)
@@ -243,13 +302,15 @@ namespace MonoMultiJack.Controllers
 		}
 #endregion
 
-		void AboutWindow_HasBeenClosed(object sender, EventArgs e)
+		void Window_Closing(object sender, EventArgs e)
 		{
-			IAboutWindow aboutWindow = sender as IAboutWindow;
-			if (aboutWindow == null) return;
-
-			aboutWindow.Destroy();
-			aboutWindow.Dispose();
+			IWindow window = sender as IWindow;
+			if (window == null) {
+				return;
+			}
+			window.Destroy();
+			window.Dispose();
+			_mainWindow.Sensitive = true;
 		}
 
 		void AppStartController_StatusHasChanged(object sender, EventArgs e)
@@ -258,14 +319,22 @@ namespace MonoMultiJack.Controllers
 				_mainWindow.AppsAreRunning = true;
 				return;
 			}
-			foreach(AppStartWidgetController startWidgetController in _startWidgetControllers){
-				if (startWidgetController.IsRunning){
+			foreach (AppStartWidgetController startWidgetController in _startWidgetControllers) {
+				if (startWidgetController.IsRunning) {
 					_mainWindow.AppsAreRunning = true;
 					return;
 				}
 			}
 			_mainWindow.AppsAreRunning = false;
-
 		}
+
+		void ShowInfoMessage(string message)
+		{
+			IInfoWindow messageWindow = new InfoWindow();
+			messageWindow.Message = message;
+			messageWindow.Closing += Window_Closing;
+			messageWindow.Show();
+		}
+
 	}
 }

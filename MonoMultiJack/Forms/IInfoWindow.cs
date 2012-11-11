@@ -1,5 +1,5 @@
 //
-// IWindow.cs
+// IInfoMessage.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,17 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Forms
 {
-	public interface IWindow : IWidget
+	public interface IInfoWindow :IWindow
 	{
-		event EventHandler Closing;
-
-		string IconPath {set;}
-
-		bool Sensitive {set;}
+		string Message { set; }
 	}
 }
 
