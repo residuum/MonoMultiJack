@@ -27,6 +27,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
+using MonoMultiJack.BusinessLogic.Configuration;
 
 namespace MonoMultiJack.BusinessLogic.Common
 {
@@ -64,12 +65,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// Process ID of program
 		/// </summary>
 		private string _pid;
-		
-		/// <summary>
-		/// Indicates if only one instance is allowed.
-		/// </summary>
-		private bool _isSingleton;
-		
+				
 		/// <summary>
 		/// Signals the exit of program.
 		/// </summary>
@@ -90,41 +86,26 @@ namespace MonoMultiJack.BusinessLogic.Common
 			}
 		}
 		
-		/// <summary>
-		/// Creates a new instance
-		/// </summary>
-		/// <param name="commandName">
-		/// Name of the command.
-		/// </param>
-		/// <param name="commandArguments">
-		/// Arguments for the command
-		/// </param>
-		/// <param name="isSingleton">
-		/// If true, only one instance of the program may start
-		/// </param>
-		public ProgramManagement(string commandName, string commandArguments, bool isSingleton)
+		public ProgramManagement(JackdConfiguration jackdConfig)
 		{
-			_commandName = commandName;
-			_commandArguments = commandArguments;
-			_isSingleton = isSingleton;
-			BuildStartScript();
-			if (_isSingleton) {
-				TestForRunningSingleton();
-			}
+			_commandName = jackdConfig.Path;
+			_commandArguments = jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions;
+			BuildStartScript(true);
+			TestForRunningSingleton();
 		}
-		
-		/// <summary>
-		/// Creates a new instance
-		/// </summary>
-		/// <param name="commandName">
-		/// Name of the command.
-		/// </param>
-		/// <param name="commandArguments">
-		/// Arguments for the command
-		/// </param>
-		public ProgramManagement(string commandName, string commandArguments) 
-			: this(commandName, commandArguments, false)
+
+		public ProgramManagement(AppConfiguration appConfig)
 		{
+			if (string.IsNullOrEmpty(appConfig.Command)) {
+				return;
+			}
+
+			string[] appConfigValues = appConfig.Command.Split(new char[] { ' ' }, 2);
+			_commandName = appConfigValues [0];
+			_commandArguments = appConfigValues.Length > 1 
+				? appConfigValues [1]
+				: string.Empty;
+			BuildStartScript(false);
 		}
 		
 		/// <summary>
@@ -132,6 +113,18 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// </summary>
 		~ProgramManagement ()
 		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+	
+		protected virtual void Dispose(bool isDisposing)
+		{
+			StopProgram();
 			if (!string.IsNullOrEmpty(_startScriptFile) && File.Exists(_startScriptFile)) {
 				File.Delete(_startScriptFile);
 			}
@@ -144,11 +137,11 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// <summary>
 		/// Builds and saves the shell script for starting the program.
 		/// </summary>
-		private void BuildStartScript()
+		private void BuildStartScript(bool isJackd)
 		{
 			StringBuilder bashScript = new StringBuilder();
 			bashScript.AppendLine("#!/bin/sh");
-			if (_isSingleton && !string.IsNullOrEmpty(_commandName)) {
+			if (isJackd && !string.IsNullOrEmpty(_commandName)) {
 				string[] commandPaths = _commandName.Split(Path.DirectorySeparatorChar);
 				bashScript.AppendLine("if pgrep " + commandPaths [commandPaths.Length - 1]);
 				bashScript.AppendLine("then true");
@@ -156,7 +149,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 			}
 			bashScript.AppendLine(_commandName + " " + _commandArguments + " >> /dev/null 2>&1&");
 			bashScript.AppendLine("echo $!");
-			if (_isSingleton) {
+			if (isJackd) {
 				bashScript.AppendLine("fi");
 			}
 			
@@ -201,10 +194,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// </summary>
 		public void StartProgram()
 		{
-			if (string.IsNullOrEmpty(_startScriptFile) || !File.Exists(_startScriptFile)) {
-				BuildStartScript();
-			}
-			ExecuteShellScript(_startScriptFile);
+			ExecuteShellScript(_startScriptFile, true);
 			GLib.Timeout.Add(1000, new GLib.TimeoutHandler(IsStillRunning));
 		}
 		
@@ -214,7 +204,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// <param name="fileName">
 		/// A <see cref="System.String"/> holding the path to the shell script.
 		/// </param>
-		private void ExecuteShellScript(string fileName)
+		private void ExecuteShellScript(string fileName, bool sendEvents)
 		{
 			using (Process shellStartProcess = new Process ()) {
 				shellStartProcess.StartInfo.FileName = "sh";
@@ -224,12 +214,19 @@ namespace MonoMultiJack.BusinessLogic.Common
 				shellStartProcess.StartInfo.UseShellExecute = false;
 				if (shellStartProcess.Start()) {
 					_pid = shellStartProcess.StandardOutput.ReadToEnd().TrimEnd();
-					if (_pid == "0" || string.IsNullOrEmpty(_pid)) {
-						_pid = null;
-						HasExited(this, new EventArgs());
-					} else {
-						BuildStillRunningScript();
-						HasStarted(this, new EventArgs());
+					
+					if (sendEvents) {
+						if (_pid == "0" || string.IsNullOrEmpty(_pid)) {
+							_pid = null;
+							if (HasExited != null) {
+								HasExited(this, new EventArgs());
+							}
+						} else {
+							BuildStillRunningScript();
+							if (HasStarted != null) {
+								HasStarted(this, new EventArgs());
+							}
+						}
 					}
 					shellStartProcess.WaitForExit();
 				}
@@ -284,7 +281,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		private void TestForStillRunning()
 		{
 			if (!string.IsNullOrEmpty(_testingScriptFile) && File.Exists(_testingScriptFile)) {
-				ExecuteShellScript(_testingScriptFile);
+				ExecuteShellScript(_testingScriptFile, false);
 			}
 		}
 		

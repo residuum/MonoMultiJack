@@ -65,18 +65,28 @@
     <Compile Include="Forms\MainWindow.cs" />
     <Compile Include="Forms\AppConfigWindow.cs" />
     <Compile Include="Forms\JackdConfigWindow.cs" />
-    <Compile Include="Widgets\AppWidget.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Widgets\ConnectionDisplay.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.Forms.MainWindow.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.Widgets.ConnectionDisplay.cs" />
     <Compile Include="gtk-gui\MonoMultiJack.Forms.AppConfigWindow.cs" />
+    <Compile Include="Forms\IMainWindow.cs" />
+    <Compile Include="Forms\IWindow.cs" />
+    <Compile Include="Widgets\IWidget.cs" />
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\AppStartWidgetController.cs" />
+    <Compile Include="Widgets\AppStartWidget.cs" />
+    <Compile Include="Widgets\IAppStartWidget.cs" />
+    <Compile Include="Widgets\IConnectionDisplay.cs" />
+    <Compile Include="Forms\IAboutWindow.cs" />
+    <Compile Include="Forms\AboutWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Forms\" />
     <Folder Include="Widgets\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">

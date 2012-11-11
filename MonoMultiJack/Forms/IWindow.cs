@@ -1,21 +1,21 @@
-// 
-// Main.cs
-//  
+//
+// IWindow.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2012 Thomas Mayer
-// 
+//
+// Copyright (c) 2012 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,29 +24,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
-using MonoMultiJack.Controllers;
+using MonoMultiJack.Widgets;
 
-
-namespace MonoMultiJack
+namespace MonoMultiJack.Forms
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	public interface IWindow : IWidget
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		public static void Main(string[] args)
-		{
-			Application.Init();
-			MainController mainController = new MainController();
-			mainController.Start();
-			Application.Run();
-		}
+		event EventHandler Closing;
+
+		string IconPath {set;}
 	}
 }
+

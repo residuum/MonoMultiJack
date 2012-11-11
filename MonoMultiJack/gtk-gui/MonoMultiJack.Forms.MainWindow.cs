@@ -6,16 +6,15 @@ namespace MonoMultiJack.Forms
 	{
 		private global::Gtk.UIManager UIManager;
 		private global::Gtk.Action FileAction;
-		private global::Gtk.Action reStartJackdAction;
-		private global::Gtk.Action stopJackdAction;
+		private global::Gtk.Action refreshAction;
+		private global::Gtk.Action stopAction;
 		private global::Gtk.Action stopAllAction;
 		private global::Gtk.Action quitAction;
 		private global::Gtk.Action ConfigurationAction;
-		private global::Gtk.Action configureJackdAction;
-		private global::Gtk.Action addRemoveApplicationsAction;
+		private global::Gtk.Action preferencesAction1;
+		private global::Gtk.Action preferencesAction;
 		private global::Gtk.Action helpAction;
 		private global::Gtk.Action aboutAction;
-		private global::Gtk.Action HelpAction;
 		private global::Gtk.VBox mainVbox;
 		private global::Gtk.MenuBar menubar1;
 		private global::Gtk.HBox mainHbox;
@@ -32,14 +31,13 @@ namespace MonoMultiJack.Forms
 			this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
 			this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
 			w1.Add (this.FileAction, null);
-			this.reStartJackdAction = new global::Gtk.Action ("reStartJackdAction", global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd"), null, "gtk-refresh");
-			this.reStartJackdAction.Sensitive = false;
-			this.reStartJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd");
-			w1.Add (this.reStartJackdAction, null);
-			this.stopJackdAction = new global::Gtk.Action ("stopJackdAction", global::Mono.Unix.Catalog.GetString ("Stop Jackd"), null, "gtk-stop");
-			this.stopJackdAction.Sensitive = false;
-			this.stopJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Stop Jackd");
-			w1.Add (this.stopJackdAction, null);
+			this.refreshAction = new global::Gtk.Action ("refreshAction", global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd"), null, "gtk-refresh");
+			this.refreshAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("(Re)Start Jackd");
+			w1.Add (this.refreshAction, null);
+			this.stopAction = new global::Gtk.Action ("stopAction", global::Mono.Unix.Catalog.GetString ("Stop Jackd"), null, "gtk-stop");
+			this.stopAction.Sensitive = false;
+			this.stopAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Stop Jackd");
+			w1.Add (this.stopAction, null);
 			this.stopAllAction = new global::Gtk.Action ("stopAllAction", global::Mono.Unix.Catalog.GetString ("Stop All"), null, "gtk-stop");
 			this.stopAllAction.Sensitive = false;
 			this.stopAllAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Stop All");
@@ -50,21 +48,18 @@ namespace MonoMultiJack.Forms
 			this.ConfigurationAction = new global::Gtk.Action ("ConfigurationAction", global::Mono.Unix.Catalog.GetString ("Configuration"), null, null);
 			this.ConfigurationAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Configuration");
 			w1.Add (this.ConfigurationAction, null);
-			this.configureJackdAction = new global::Gtk.Action ("configureJackdAction", global::Mono.Unix.Catalog.GetString ("Configure Jackd"), null, "gtk-preferences");
-			this.configureJackdAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Configure Jackd");
-			w1.Add (this.configureJackdAction, null);
-			this.addRemoveApplicationsAction = new global::Gtk.Action ("addRemoveApplicationsAction", global::Mono.Unix.Catalog.GetString ("Add / Remove Applications"), null, "gtk-preferences");
-			this.addRemoveApplicationsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add / Remove Applications");
-			w1.Add (this.addRemoveApplicationsAction, null);
+			this.preferencesAction1 = new global::Gtk.Action ("preferencesAction1", global::Mono.Unix.Catalog.GetString ("Configure Jackd"), null, "gtk-preferences");
+			this.preferencesAction1.ShortLabel = global::Mono.Unix.Catalog.GetString ("Configure Jackd");
+			w1.Add (this.preferencesAction1, null);
+			this.preferencesAction = new global::Gtk.Action ("preferencesAction", global::Mono.Unix.Catalog.GetString ("Add / Remove Applications"), null, "gtk-preferences");
+			this.preferencesAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add / Remove Applications");
+			w1.Add (this.preferencesAction, null);
 			this.helpAction = new global::Gtk.Action ("helpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
 			this.helpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
 			w1.Add (this.helpAction, null);
 			this.aboutAction = new global::Gtk.Action ("aboutAction", global::Mono.Unix.Catalog.GetString ("About"), null, "gtk-about");
 			this.aboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("About");
 			w1.Add (this.aboutAction, null);
-			this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
-			this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
-			w1.Add (this.HelpAction, null);
 			this.UIManager.InsertActionGroup (w1, 0);
 			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "MonoMultiJack.Forms.MainWindow";
@@ -74,7 +69,7 @@ namespace MonoMultiJack.Forms
 			this.mainVbox = new global::Gtk.VBox ();
 			this.mainVbox.Name = "mainVbox";
 			// Container child mainVbox.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><menubar name='menubar1'><menu name='FileAction' action='FileAction'><menuitem name='reStartJackdAction' action='reStartJackdAction'/><menuitem name='stopJackdAction' action='stopJackdAction'/><menuitem name='stopAllAction' action='stopAllAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='ConfigurationAction' action='ConfigurationAction'><menuitem name='configureJackdAction' action='configureJackdAction'/><menuitem name='addRemoveApplicationsAction' action='addRemoveApplicationsAction'/></menu><menu name='helpAction' action='helpAction'><menuitem name='aboutAction' action='aboutAction'/><menuitem name='HelpAction' action='HelpAction'/></menu></menubar></ui>");
+			this.UIManager.AddUiFromString ("<ui><menubar name='menubar1'><menu name='FileAction' action='FileAction'><menuitem name='refreshAction' action='refreshAction'/><menuitem name='stopAction' action='stopAction'/><menuitem name='stopAllAction' action='stopAllAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='ConfigurationAction' action='ConfigurationAction'><menuitem name='preferencesAction1' action='preferencesAction1'/><menuitem name='preferencesAction' action='preferencesAction'/></menu><menu name='helpAction' action='helpAction'><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
 			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar1")));
 			this.menubar1.Name = "menubar1";
 			this.mainVbox.Add (this.menubar1);
@@ -123,16 +118,16 @@ namespace MonoMultiJack.Forms
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 606;
-			this.DefaultHeight = 215;
+			this.DefaultWidth = 801;
+			this.DefaultHeight = 349;
 			this.Show ();
-			this.reStartJackdAction.Activated += new global::System.EventHandler (this.RestartJackd);
-			this.stopJackdAction.Activated += new global::System.EventHandler (this.StopJackd);
-			this.stopAllAction.Activated += new global::System.EventHandler (this.StopAll);
+			this.refreshAction.Activated += new global::System.EventHandler (this.CallStartJackd);
+			this.stopAction.Activated += new global::System.EventHandler (this.CallStopJackd);
+			this.stopAllAction.Activated += new global::System.EventHandler (this.CallStopAll);
 			this.quitAction.Activated += new global::System.EventHandler (this.OnQuitActionActivated);
-			this.configureJackdAction.Activated += new global::System.EventHandler (this.ConfigureJackd);
-			this.addRemoveApplicationsAction.Activated += new global::System.EventHandler (this.ConfigureApplications);
-			this.aboutAction.Activated += new global::System.EventHandler (this.AboutDialog);
+			this.preferencesAction1.Activated += new global::System.EventHandler (this.CallShowConfigureJackd);
+			this.preferencesAction.Activated += new global::System.EventHandler (this.CallShowConfigureApps);
+			this.aboutAction.Activated += new global::System.EventHandler (this.CallShowAbout);
 		}
 	}
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E099D264-EDD9-4381-B2C1-0730ADE9952D}</ProjectGuid>
+    <Packages>
+      <Packages xmlns="">
+        <Package name="MSBuild (Visual Studio 2010) Quellen">
+          <Builder targetFile="MonoMultiJack.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="MonoMultiJack\MonoMultiJack.csproj" />
+              <SolutionItemReference path="MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj" />
+              <SolutionItemReference path="MonoMultiJack.BusinessLogic\MonoMultiJack.BusinessLogic.csproj" />
+              <SolutionItemReference path="MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj" />
+              <SolutionItemReference path="MonoMultiJack.ConnectionWrapper.Alsa\MonoMultiJack.ConnectionWrapper.Alsa.csproj" />
+            </ChildEntries>
+            <RootEntry path="MonoMultiJack.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+</Project>

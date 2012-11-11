@@ -36,7 +36,7 @@ namespace MonoMultiJack.Widgets
 	/// Widget for displaying and managing connections.
 	/// </summary>
 	[System.ComponentModel.ToolboxItem(true)]
-	public partial class ConnectionDisplay : Bin
+	public partial class ConnectionDisplay : Bin, IConnectionDisplay
 	{
 		/// <summary>
 		/// Connection manager for this instance.
