@@ -48,7 +48,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_client_open(string client_name, 
-		                                             IntPtr jack_options_t, 
+		                                             byte jack_options_t, 
 		                                             IntPtr jack_status_t);
 
 		[DllImport(JACK_LIB_NAME)]

@@ -129,7 +129,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		internal static bool ConnectToServer()
 		{
 			if (_jackClient == IntPtr.Zero) {
-				_jackClient = jack_client_new("MonoMultiJack");
+				_jackClient = jack_client_open("MonoMultiJack", 0, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate();
