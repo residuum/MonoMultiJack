@@ -53,11 +53,6 @@ namespace MonoMultiJack.Controllers
 			}
 		}
 
-		/// <summary>
-		/// Jackd status messages
-		/// </summary>
-		readonly string JackdStatusRunning = "Jackd is running.";
-		readonly string JackdStatusStopped = "Jackd is stopped.";
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
 		ProgramManagement _jackd;
@@ -105,7 +100,6 @@ namespace MonoMultiJack.Controllers
 			}
 
 			_mainWindow.Show();
-			_mainWindow.Status = JackdStatusStopped;
 			
 			_mainWindow.StartJackd += MainWindow_StartJackd;
 			_mainWindow.StopJackd += MainWindow_StopJackd;
@@ -205,14 +199,12 @@ Console.WriteLine (e.Message);
 #region Model events
 		void Jackd_HasStarted(object sender, EventArgs e)
 		{
-			_mainWindow.Status = JackdStatusRunning;
 			_mainWindow.JackdIsRunning = true;
 			_mainWindow.AppsAreRunning = true;
 		}
 
 		void Jackd_HasExited(object sender, EventArgs e)
 		{
-			_mainWindow.Status = JackdStatusStopped;
 			_mainWindow.JackdIsRunning = false;
 		}
 #endregion
@@ -267,6 +259,7 @@ Console.WriteLine (e.Message);
 
 		void MainWindow_ShowAbout(object sender, EventArgs e)
 		{
+			//TODO: Move to view.
 			IAboutWindow AboutWindow = new AboutWindow();
 			AboutWindow.ProgramName = "MonoMultiJack";
 			AboutWindow.Version = "0.1";

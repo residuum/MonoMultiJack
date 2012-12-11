@@ -50,14 +50,6 @@ namespace MonoMultiJack.Forms
 		WindowConfiguration WindowConfiguration {get;set;}
 
 		/// <summary>
-		/// Sets the status.
-		/// </summary>
-		/// <value>
-		/// The status.
-		/// </value>
-		string Status {set;}
-
-		/// <summary>
 		/// Sets a value indicating whether this <see cref="MonoMultiJack.Forms.IMainWindow"/> jackd is active.
 		/// </summary>
 		/// <value>

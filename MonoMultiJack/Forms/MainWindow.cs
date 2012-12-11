@@ -45,6 +45,8 @@ namespace MonoMultiJack.Forms
 	/// </summary>
 	public partial class MainWindow: Gtk.Window, IMainWindow
 	{		
+		readonly string JackdStatusRunning = "Jackd is running.";
+		readonly string JackdStatusStopped = "Jackd is stopped.";
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -116,15 +118,10 @@ namespace MonoMultiJack.Forms
 			}
 		}
 
-		string IMainWindow.Status {
-			set {
-				_statusbar.Push(0, value);
-			}
-		}
-
 		bool IMainWindow.JackdIsRunning {
 			set {
 				stopAction.Sensitive = value;
+				_statusbar.Push(0, value ? JackdStatusRunning : JackdStatusStopped);
 			}
 		}
 
@@ -261,27 +258,6 @@ namespace MonoMultiJack.Forms
 			if (ShowConfigureApps != null) {
 				ShowConfigureApps(this, new EventArgs());
 			}
-			
-//			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow(_jackdConfig);
-//			Sensitive = false;
-//			jackdConfigWindow.ShowAll();
-//			ResponseType response = (ResponseType)jackdConfigWindow.Run();
-//			if (response == ResponseType.Ok) {
-//				StopAll();			
-//				JackdConfiguration jackdConfig = jackdConfigWindow.JackdConfig;
-//				try {
-//					PersistantConfiguration.SaveJackdConfig(jackdConfig);
-//					_jackdConfig = jackdConfig;
-//					UpdateJackd(_jackdConfig);
-//				} catch (Exception ex) {
-//					#if DEBUG
-//					Console.WriteLine (ex.Message);
-//					#endif
-//					InfoMessage("Configuration file is not writable.");
-//				}
-//			}
-//			jackdConfigWindow.Destroy();
-//			Sensitive = true;
 		}
 	
 		/// <summary>
