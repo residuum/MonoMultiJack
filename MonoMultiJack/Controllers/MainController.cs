@@ -33,10 +33,11 @@ using MonoMultiJack.Widgets;
 using Gtk;
 using System.Reflection;
 using System.IO;
+using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Controllers
 {
-	public class MainController :IDisposable
+	public class MainController :IController
 	{				
 		readonly string IconFile = "monomultijack.png";
 		string _programIcon;
@@ -61,7 +62,7 @@ namespace MonoMultiJack.Controllers
 		List<AppConfiguration> _appConfigurations;
 		ProgramManagement _jackd;
 		IMainWindow _mainWindow;
-		List<AppStartWidgetController> _startWidgetControllers;
+		List<AppStartController> _startWidgetControllers;
 
 		public MainController()
 		{
@@ -96,20 +97,14 @@ namespace MonoMultiJack.Controllers
 		{	
 			WindowConfiguration windowConfiguration;
 			TryLoadJackdConfiguration(out _jackdConfiguration);
-			TryLoadAppConfigurations(out _appConfigurations);
+			if (TryLoadAppConfigurations(out _appConfigurations)){
+				UpdateApps(_appConfigurations);
+			}			
 			if (TryLoadWindowConfiguration(out windowConfiguration)) {
 				_mainWindow.WindowConfiguration = windowConfiguration;
 			}
 
 			_mainWindow.Show();
-
-			_startWidgetControllers = new List<AppStartWidgetController>();
-			foreach (AppConfiguration appConfig in _appConfigurations) {
-				AppStartWidgetController startWidgetController = new AppStartWidgetController(appConfig);
-				startWidgetController.ApplicationStatusHasChanged += AppStartController_StatusHasChanged;
-				_startWidgetControllers.Add(startWidgetController);
-			}
-			_mainWindow.AppStartWidgets = _startWidgetControllers.Select(c => c.Widget);
 			_mainWindow.Status = JackdStatusStopped;
 			
 			_mainWindow.StartJackd += MainWindow_StartJackd;
@@ -145,6 +140,17 @@ Console.WriteLine (e.Message);
 				jackdConfig = new JackdConfiguration();
 			}
 			return false;
+		}
+
+		void UpdateApps(IEnumerable<AppConfiguration> appConfigurations)
+		{
+			_startWidgetControllers = new List<AppStartController>();
+			foreach (AppConfiguration appConfig in appConfigurations) {
+				AppStartController startWidgetController = new AppStartController(appConfig);
+				startWidgetController.ApplicationStatusHasChanged += AppStartController_StatusHasChanged;
+				_startWidgetControllers.Add(startWidgetController);
+			}
+			_mainWindow.AppStartWidgets = _startWidgetControllers.Select(c => c.Widget);
 		}
 
 		bool TryLoadAppConfigurations(out List<AppConfiguration> appConfigs)
@@ -230,7 +236,7 @@ Console.WriteLine (e.Message);
 		void MainWindow_StopAll(object sender, EventArgs e)
 		{
 			StopAllApplications();
-			foreach (AppStartWidgetController startWidgetController in _startWidgetControllers) {
+			foreach (AppStartController startWidgetController in _startWidgetControllers) {
 				startWidgetController.StopApplication();
 			}
 		}
@@ -245,12 +251,18 @@ Console.WriteLine (e.Message);
 
 		void MainWindow_ShowConfigureJackd(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			JackdConfigController jackdConfigController = new JackdConfigController(_jackdConfiguration);
+			jackdConfigController.UpdateJackd += Controller_UpdateJackd;
+			jackdConfigController.AllWidgetsAreClosed += Controller_WidgetsAreClosed;
+			_mainWindow.Sensitive = false;
 		}
 
 		void MainWindow_ShowConfigureApps(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			AppConfigController appConfigController = new AppConfigController(_appConfigurations);
+			appConfigController.UpdateApps += Controller_UpdateApps;
+			appConfigController.AllWidgetsAreClosed += Controller_WidgetsAreClosed;
+			_mainWindow.Sensitive = false;
 		}
 
 		void MainWindow_ShowAbout(object sender, EventArgs e)
@@ -298,7 +310,9 @@ Console.WriteLine (e.Message);
 			WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
 			PersistantConfiguration.SaveWindowSize(newWindowConfig);
 			StopAllApplications();
-			Application.Quit();		
+			if (AllWidgetsAreClosed != null) {
+				AllWidgetsAreClosed(this, new EventArgs());
+			}
 		}
 #endregion
 
@@ -313,13 +327,36 @@ Console.WriteLine (e.Message);
 			_mainWindow.Sensitive = true;
 		}
 
+		void Controller_WidgetsAreClosed(object sender, EventArgs e)
+		{
+			IController controller = sender as IController;
+			if (controller != null) {
+				controller.Dispose();
+				_mainWindow.Sensitive = true;
+			}
+		}
+		
+		void Controller_UpdateJackd(object sender, UpdateJackdEventArgs e)
+		{
+			_jackdConfiguration = e.JackdConfiguration;
+			PersistantConfiguration.SaveJackdConfig(_jackdConfiguration);
+			InitJackd(_jackdConfiguration);
+		}
+				
+		void Controller_UpdateApps (object sender, UpdateAppsEventArgs e)
+		{
+			_appConfigurations = e.AppConfigurations;
+			PersistantConfiguration.SaveAppConfiguations(_appConfigurations);
+			UpdateApps(_appConfigurations);
+		}
+
 		void AppStartController_StatusHasChanged(object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
 				_mainWindow.AppsAreRunning = true;
 				return;
 			}
-			foreach (AppStartWidgetController startWidgetController in _startWidgetControllers) {
+			foreach (AppStartController startWidgetController in _startWidgetControllers) {
 				if (startWidgetController.IsRunning) {
 					_mainWindow.AppsAreRunning = true;
 					return;
@@ -335,6 +372,8 @@ Console.WriteLine (e.Message);
 			messageWindow.Closing += Window_Closing;
 			messageWindow.Show();
 		}
+
+		public event EventHandler AllWidgetsAreClosed;
 
 	}
 }

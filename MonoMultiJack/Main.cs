@@ -27,7 +27,6 @@ using System;
 using Gtk;
 using MonoMultiJack.Controllers;
 
-
 namespace MonoMultiJack
 {
 	/// <summary>
@@ -46,7 +45,17 @@ namespace MonoMultiJack
 			Application.Init();
 			MainController mainController = new MainController();
 			mainController.Start();
+			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
 			Application.Run();
+		}
+
+		static void HandleAllWidgetsAreClosed(object sender, EventArgs e)
+		{
+			IController controller = sender as IController;
+			if (controller != null) {
+				controller.Dispose();				
+				Application.Quit();	
+			}
 		}
 	}
 }

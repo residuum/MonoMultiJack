@@ -69,23 +69,23 @@ namespace MonoMultiJack.Widgets
 			_startButton.Name = commandName;
 		}
 
-		void IAppStartWidget.SetRunningStatus(bool isRunning)
-		{
-			if (isRunning) {
-				_startButton.Active = true;
-				_startButton.Clicked -= CallStopApplication;
-				_startButton.Clicked -= CallStartApplication;
-				_startButton.Clicked += CallStopApplication;	
-			} else {
-				_startButton.Active = false;
-				_startButton.Clicked -= CallStopApplication;
-				_startButton.Clicked -= CallStartApplication;
-				_startButton.Clicked += CallStartApplication;
+		bool IAppStartWidget.IsRunning {
+			set {
+				if (value) {
+					_startButton.Active = true;
+					_startButton.Clicked -= CallStopApplication;
+					_startButton.Clicked -= CallStartApplication;
+					_startButton.Clicked += CallStopApplication;	
+				} else {
+					_startButton.Active = false;
+					_startButton.Clicked -= CallStopApplication;
+					_startButton.Clicked -= CallStartApplication;
+					_startButton.Clicked += CallStartApplication;
+				}
 			}
 		}
 		
 		public event EventHandler StartApplication;
-
 		public event EventHandler StopApplication;
 		#endregion
 
@@ -110,7 +110,9 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		public void CallStopApplication()
 		{
-			if (StopApplication != null) StopApplication(this, new EventArgs());
+			if (StopApplication != null) {
+				StopApplication(this, new EventArgs());
+			}
 		}
 		
 		/// <summary>
@@ -118,7 +120,9 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		private void CallStartApplication()
 		{
-			if (StartApplication != null) StartApplication(this, new EventArgs());
+			if (StartApplication != null) {
+				StartApplication(this, new EventArgs());
+			}
 		}
 
 		/// <summary>

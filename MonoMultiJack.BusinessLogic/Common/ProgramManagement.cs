@@ -82,7 +82,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		public bool IsRunning {
 			get {
 				TestForStillRunning();
-				return !string.IsNullOrEmpty(_pid);
+				return !string.IsNullOrEmpty(_pid) && _pid != "0";
 			}
 		}
 		
@@ -100,11 +100,8 @@ namespace MonoMultiJack.BusinessLogic.Common
 				return;
 			}
 
-			string[] appConfigValues = appConfig.Command.Split(new char[] { ' ' }, 2);
-			_commandName = appConfigValues [0];
-			_commandArguments = appConfigValues.Length > 1 
-				? appConfigValues [1]
-				: string.Empty;
+			_commandName = appConfig.Command;
+			_commandArguments = appConfig.Arguments;
 			BuildStartScript(false);
 		}
 		

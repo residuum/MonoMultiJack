@@ -1,5 +1,5 @@
 //
-// IConnectionDisplay.cs
+// UpdateJackdEventArgs.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,11 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using MonoMultiJack.BusinessLogic.Configuration;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Controllers.EventArguments
 {
-	public interface IConnectionDisplay :IWidget
+	public class UpdateJackdEventArgs : EventArgs
 	{
+		public JackdConfiguration JackdConfiguration {get;set;}
 	}
 }
 

@@ -30,13 +30,13 @@ using MonoMultiJack.BusinessLogic.Configuration;
 
 namespace MonoMultiJack.Controllers
 {
-	public class AppStartWidgetController : IDisposable
+	public class AppStartController : IController
 	{		
 		AppConfiguration _appConfiguration;
 		ProgramManagement _application;
 		IAppStartWidget _appWidget;
 
-		public AppStartWidgetController(AppConfiguration appConfiguration)
+		public AppStartController(AppConfiguration appConfiguration)
 		{
 			_appConfiguration = appConfiguration;
 			_application = new ProgramManagement(_appConfiguration);
@@ -54,7 +54,7 @@ namespace MonoMultiJack.Controllers
 			}
 		}
 
-		~AppStartWidgetController()
+		~AppStartController()
 		{
 			Dispose(false);
 		}
@@ -86,7 +86,7 @@ namespace MonoMultiJack.Controllers
 		
 		void Application_HasExited(object sender, EventArgs e)
 		{
-			_appWidget.SetRunningStatus(false);
+			_appWidget.IsRunning = false;
 			if (ApplicationStatusHasChanged != null) {
 				ApplicationStatusHasChanged(this, new EventArgs());
 			}
@@ -94,7 +94,7 @@ namespace MonoMultiJack.Controllers
 		
 		void Application_HasStarted(object sender, EventArgs e)
 		{
-			_appWidget.SetRunningStatus(true);
+			_appWidget.IsRunning = true;
 			if (ApplicationStatusHasChanged != null) {
 				ApplicationStatusHasChanged(this, new EventArgs());
 			}
@@ -112,7 +112,10 @@ namespace MonoMultiJack.Controllers
 			}
 		}
 
-		public EventHandler ApplicationStatusHasChanged;
+		public event EventHandler ApplicationStatusHasChanged;
+
+		public event EventHandler AllWidgetsAreClosed;
+
 	}
 }
 

@@ -144,7 +144,8 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 				foreach (XmlNode appNode in appNodes) {
 					string name = appNode.SelectSingleNode("name").InnerText;
 					string command = appNode.SelectSingleNode("command").InnerText;
-					appConfigs.Add(new AppConfiguration(name, command));
+					string arguments = appNode.SelectSingleNode("arguments").InnerText;
+					appConfigs.Add(new AppConfiguration(name, command, arguments));
 				}
 				return appConfigs;
 			}
@@ -170,6 +171,7 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 					writer.WriteStartElement("application");
 					writer.WriteElementString("name", appConfig.Name);
 					writer.WriteElementString("command", appConfig.Command);
+					writer.WriteElementString("arguments", appConfig.Arguments);
 					writer.WriteEndElement();
 				}
 				writer.WriteEndElement();

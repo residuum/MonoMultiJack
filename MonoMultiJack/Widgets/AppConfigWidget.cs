@@ -32,54 +32,25 @@ namespace MonoMultiJack.Widgets
 	/// <summary>
 	/// Widget for configuring an application for use with jackd
 	/// </summary>
-	public class AppConfigWidget : Fixed
+	public class AppConfigWidget : Fixed, IAppConfigWidget
 	{
-		//// <value>
-		/// Entry field for application name
-		/// </value>
-		private Entry _appNameEntry;
+		Entry _appNameEntry;
 		
-		//// <value>
-		/// Entry field for application startup command
-		/// </value>
-		private Entry _appCommandEntry;
-		
-		//// <value>
-		/// button for destroying widget
-		/// </value>
-		private Button _removeApp;
-		
-		//// <value>
-		/// edited configuration
-		/// </value>
-		public AppConfiguration appConfig {
-			get {
-				return new AppConfiguration(
-		    _appNameEntry.Text.Trim(),
-		    _appCommandEntry.Text.Trim()
-				);
-			}
-		}
-		
-		/// <summary>
-		/// constructor
-		/// </summary>
-		public AppConfigWidget()
-		{
-			BuildWidget();
-		}
-		
+		Entry _appCommandEntry;
+
+		Entry _appArgumentsEntry;
+
+		Button _removeApp;
+						
 		/// <summary>
 		/// constructor
 		/// </summary>
 		/// <param name="appConfig">
 		/// The <see cref="AppConfiguration"/> to edit
 		/// </param>
-		public AppConfigWidget(AppConfiguration appConfig)
+		public AppConfigWidget()
 		{
 			BuildWidget();
-			_appNameEntry.Text = appConfig.Name;
-			_appCommandEntry.Text = appConfig.Command;
 		}
 		
 		/// <summary>
@@ -87,7 +58,7 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		private void BuildWidget()
 		{
-			Table table = new Table(3, 3, false);
+			Table table = new Table(3, 4, false);
 			table.RowSpacing = 3;
 			table.ColumnSpacing = 3;
 			table.BorderWidth = 1;
@@ -110,26 +81,81 @@ namespace MonoMultiJack.Widgets
 			table.Attach(_appCommandEntry, 1, 2, 2, 3);
 			label.MnemonicWidget = _appCommandEntry;
 			
+			label = new Label("Command Arguments");
+			label.Xalign = 0;
+			table.Attach(label, 0, 1, 3, 4);
+			_appArgumentsEntry = new Entry();
+			table.Attach(_appArgumentsEntry, 1, 2, 3, 4);
+			label.MnemonicWidget = _appArgumentsEntry;
+			
 			_removeApp = new Button(Stock.Delete);
-			_removeApp.Clicked += RemoveApp;
+			_removeApp.Clicked += HandleClicked;;
 			table.Attach(_removeApp, 2, 3, 1, 2);
-			
-			
+
 			Put(table, 0, 0);
+			table.Show();
 		}
-		
-		/// <summary>
-		/// destroys widget
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="System.EventArgs"/>
-		/// </param>
-		private void RemoveApp(object sender, System.EventArgs args)
+
+		void HandleClicked (object sender, EventArgs e)
 		{
-			Destroy();
+			if (RemoveApplication != null)
+			{
+				RemoveApplication(this, new EventArgs());
+			}
 		}
+		#region IDisposable implementation
+		void IDisposable.Dispose()
+		{
+			this.Dispose();
+		}
+		#endregion
+
+		#region IWidget implementation
+		void IWidget.Show()
+		{
+			this.ShowAll();
+		}
+
+		void IWidget.Destroy()
+		{
+			this.Destroy();
+		}
+
+		void IWidget.Hide()
+		{
+			this.Hide();
+		}
+		#endregion
+
+		#region IAppConfigWidget implementation
+		string IAppConfigWidget.Name {
+			get {
+				return _appNameEntry.Text.Trim();
+			}
+			set {
+				_appNameEntry.Text = value;
+			}
+		}
+
+		string IAppConfigWidget.Command {
+			get {
+				return _appCommandEntry.Text.Trim();
+			}
+			set {
+				_appCommandEntry.Text = value;
+			}
+		}
+
+		string IAppConfigWidget.Arguments {
+			get {
+				return _appArgumentsEntry.Text.Trim();
+			}
+			set {
+				_appArgumentsEntry.Text = value;
+			}
+		}
+
+		public event EventHandler RemoveApplication;
+		#endregion
 	}
 }

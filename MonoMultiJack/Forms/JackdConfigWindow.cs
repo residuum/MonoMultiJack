@@ -26,32 +26,104 @@
 using Gtk;
 using MonoMultiJack;
 using MonoMultiJack.BusinessLogic.Configuration;
+using System;
+using System.IO;
+using Gdk;
 
 namespace MonoMultiJack.Forms
 {
 	/// <summary>
 	/// Jackd Config Window
 	/// </summary>
-	public class JackdConfigWindow : Gtk.Dialog
+	public class JackdConfigWindow : Dialog, IJackdConfigWindow
 	{
-		private Gtk.Entry _jackdPathEntry;
-		private Gtk.Entry _jackdGeneralOptionsEntry;
-		private Gtk.Entry _jackdDriverEntry;
-		private Gtk.Entry _jackdDriverOptionsEntry;
-		
-		//// <value>
-		/// returns values of entry fields as jackdConfiguration
-		/// </value>
-		public JackdConfiguration JackdConfig { 
-			get {
-				return new JackdConfiguration(
-		    _jackdPathEntry.Text.Trim(),
-		    _jackdGeneralOptionsEntry.Text.Trim(),
-		    _jackdDriverEntry.Text.Trim(),
-		    _jackdDriverOptionsEntry.Text.Trim()
-				);
+		private Entry _jackdPathEntry;
+		private Entry _jackdGeneralOptionsEntry;
+		private Entry _jackdDriverEntry;
+		private Entry _jackdDriverOptionsEntry;
+
+		#region IDisposable implementation
+		void System.IDisposable.Dispose()
+		{
+			this.Dispose();
+		}
+		#endregion
+
+		#region IWidget implementation
+		void MonoMultiJack.Widgets.IWidget.Show()
+		{
+			this.Show();
+		}
+
+		void MonoMultiJack.Widgets.IWidget.Destroy()
+		{
+			this.Destroy();
+		}
+
+		void MonoMultiJack.Widgets.IWidget.Hide()
+		{
+			this.Hide();
+		}
+		#endregion
+
+		#region IWindow implementation
+		public event EventHandler Closing;
+
+		string IWindow.IconPath {
+			set {				
+				if (File.Exists(value)) {
+					this.Icon = new Pixbuf(value);
+				}
 			}
 		}
+
+		bool IWindow.Sensitive {
+			set {
+				this.Sensitive = value;
+			}
+		}
+		#endregion
+
+		#region IJackdConfigWindow implementation
+		string IJackdConfigWindow.Path {
+			get {
+				return _jackdPathEntry.Text.Trim();
+			}
+			set {
+				_jackdPathEntry.Text = value;
+			}
+		}
+
+		string IJackdConfigWindow.GeneralOptions {
+			get {
+				return _jackdGeneralOptionsEntry.Text.Trim();
+			}
+			set {
+				_jackdGeneralOptionsEntry.Text = value;
+			}
+		}
+
+		string IJackdConfigWindow.Driver {
+			get {
+				return _jackdDriverEntry.Text.Trim();
+			}
+			set {
+				_jackdDriverEntry.Text = value;
+			}
+		}
+
+		string IJackdConfigWindow.DriverOptions {
+			get {
+				return _jackdDriverOptionsEntry.Text.Trim();
+			}
+			set {
+				_jackdDriverOptionsEntry.Text = value;
+			}
+		}
+
+		public event EventHandler SaveJackd;
+		#endregion
+
 		
 		/// <summary>
 		/// constructor
@@ -59,11 +131,28 @@ namespace MonoMultiJack.Forms
 		/// <param name="jackdConfig">
 		/// A <see cref="JackdConfiguration"/>
 		/// </param>
-		public JackdConfigWindow(JackdConfiguration jackdConfig)
+		public JackdConfigWindow()
 		{
 			Title = "Configure Jackd";
 			Resizable = false;
-			BuildDialog(jackdConfig);
+			BuildDialog();
+			this.Close += HandleClose;
+			this.Response += HandleResponse;
+		}
+
+		void HandleResponse (object o, ResponseArgs args)
+		{
+			if (args.ResponseId == ResponseType.Ok && SaveJackd != null){
+				SaveJackd(this, new EventArgs());
+			}
+			HandleClose(o, args);
+		}
+
+		void HandleClose (object sender, EventArgs e)
+		{
+			if (Closing != null){
+				Closing(this, new EventArgs());
+			}
 		}
 		
 		/// <summary>
@@ -72,7 +161,7 @@ namespace MonoMultiJack.Forms
 		/// <param name="jackdConfig">
 		/// A <see cref="JackdConfiguration"/>
 		/// </param>
-		private void BuildDialog(JackdConfiguration jackdConfig)
+		private void BuildDialog()
 		{
 			Table table = new Table(5, 2, false);
 			table.RowSpacing = 2;
@@ -84,29 +173,26 @@ namespace MonoMultiJack.Forms
 			_jackdPathEntry = new Entry();
 			table.Attach(_jackdPathEntry, 1, 2, 0, 1);
 			label.MnemonicWidget = _jackdPathEntry;
-			_jackdPathEntry.Text = jackdConfig.Path;
 			
 			label = new Label("General Options");
 			table.Attach(label, 0, 1, 1, 2);
 			_jackdGeneralOptionsEntry = new Entry();
 			table.Attach(_jackdGeneralOptionsEntry, 1, 2, 1, 2);
 			label.MnemonicWidget = _jackdGeneralOptionsEntry;
-			_jackdGeneralOptionsEntry.Text = jackdConfig.GeneralOptions;
 			
 			label = new Label("Driver Infrastructure");
 			table.Attach(label, 0, 1, 2, 3);
 			_jackdDriverEntry = new Entry();
 			table.Attach(_jackdDriverEntry, 1, 2, 2, 3);
 			label.MnemonicWidget = _jackdDriverEntry;
-			_jackdDriverEntry.Text = jackdConfig.Driver;
 			
 			label = new Label("Driver Options");
 			table.Attach(label, 0, 1, 3, 4);
 			_jackdDriverOptionsEntry = new Entry();
 			table.Attach(_jackdDriverOptionsEntry, 1, 2, 3, 4);
 			label.MnemonicWidget = _jackdDriverOptionsEntry;
-			_jackdDriverOptionsEntry.Text = jackdConfig.DriverOptions;
 			
+			VBox.ShowAll();
 			AddButton(Stock.Ok, ResponseType.Ok);
 			AddButton(Stock.Cancel, ResponseType.Cancel);
 		}

@@ -32,123 +32,146 @@ using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Forms
 {
-	public partial class AppConfigWindow : Gtk.Dialog
+	public partial class AppConfigWindow : Dialog, IAppConfigWindow
 	{
-		//// <value>
-		/// table for layout
-		/// </value>
-		private Table _configTable;
-		
-		//// <value>
-		/// button for adding config widgets
-		/// </value>
-		private Button _addWidget;
-		
-		//// <value>
-		/// getter for new application configurations
-		/// </value>
-		public List<AppConfiguration> AppConfigs {
-			get {
-				List<AppConfiguration > newAppConfigs = new List<AppConfiguration>();
-				AppConfiguration newAppConfig;
+		Table _configTable;
 				
-				foreach (Widget child in _configTable.Children) {
-					AppConfigWidget appConfigWidget = child as AppConfigWidget;
-					if (appConfigWidget != null) {
-						newAppConfig = appConfigWidget.appConfig;
-						if (!string.IsNullOrEmpty(newAppConfig.Name) && !string.IsNullOrEmpty(newAppConfig.Command)) {
-							newAppConfigs.Add(newAppConfig);
-						}
-					}
-				}
-				return newAppConfigs;
-			}
-		}
-		
 		public AppConfigWindow()
 		{
-			this.Build();
-		}
-				
-		public AppConfigWindow(List<AppConfiguration> appConfigs) : this()
-		{
+			BuildDialog();
+			this.Close += HandleClose;
+			this.Response += HandleResponse;
+			
 			Title = "Configure Applications";
 			Resizable = true;
-			BuildDialog(appConfigs);
+		}
+
+		void HandleResponse (object o, ResponseArgs args)
+		{
+			if (args.ResponseId == ResponseType.Ok && SaveApplicationConfigs != null) {
+				SaveApplicationConfigs(this, new EventArgs());
+			}
+			HandleClose(o, args);
+		}
+
+		void HandleClose (object sender, EventArgs e)
+		{
+			if (Closing != null){
+				Closing(this, new EventArgs());
+			}
+		}
+
+		#region IDisposable implementation
+		void IDisposable.Dispose()
+		{
+			this.Dispose();
+		}
+		#endregion
+
+		#region IWidget implementation
+		void IWidget.Show()
+		{
+			this.Show();
+		}
+
+		void IWidget.Destroy()
+		{
+			this.Destroy();
+		}
+
+		void IWidget.Hide()
+		{
+			this.Hide();
+		}
+		#endregion
+
+		#region IWindow implementation
+		string IWindow.IconPath {
+			set {
+				throw new System.NotImplementedException();
+			}
+		}
+
+		bool IWindow.Sensitive {
+			set {
+				this.Sensitive = value;
+			}
 		}
 		
-		/// <summary>
-		/// builds layout of dialog
-		/// </summary>
-		/// <param name="appConfigs">
-		/// A <see cref="List"/> current application configuration
-		/// </param>
-		private void BuildDialog(List<AppConfiguration> appConfigs)
+		public event EventHandler Closing;
+		#endregion
+
+		#region IAppConfigWindow implementation
+		public event EventHandler SaveApplicationConfigs;
+		public event EventHandler AddApplication;
+
+		void IAppConfigWindow.AddAppConfigWidget (IAppConfigWidget widget){
+			uint count = _configTable.NRows;
+			_configTable.NRows += 1;
+			_configTable.Attach((Widget) widget, 0, 1, count, count +1);
+			widget.Show();
+		}
+
+		void IAppConfigWindow.RemoveAppConfigWidget(IAppConfigWidget widget) {
+			_configTable.Remove((Widget)widget);
+		}
+		#endregion		
+
+		void BuildDialog()
 		{
-			_configTable = new Table((uint)appConfigs.Count + 1, 1, false);
+			Modal = true;
+			this.VBox.BorderWidth = ((uint)(2));
+			this.ActionArea.Spacing = 10;
+			this.ActionArea.BorderWidth = (uint)(5);
+			this.ActionArea.LayoutStyle = ButtonBoxStyle.End;
+			Button addButton = new Button ();
+			addButton.CanFocus = true;
+			addButton.UseUnderline = true;
+			addButton.Image = new Gtk.Image("gtk-add",IconSize.Button);
+			addButton.Label = "Add Application";
+			addButton.Clicked += AddButtonClicked;
+			this.ActionArea.Add(addButton);
+			Button cancelButton = new Gtk.Button ();
+			cancelButton.CanDefault = true;
+			cancelButton.CanFocus = true;
+			cancelButton.Name = "buttonCancel";
+			cancelButton.UseStock = true;
+			cancelButton.UseUnderline = true;
+			cancelButton.Label = "gtk-cancel";
+			this.AddActionWidget (cancelButton, ResponseType.Cancel);
+			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
+			Button okButton = new Button ();
+			okButton.CanDefault = true;
+			okButton.CanFocus = true;
+			okButton.Name = "buttonOk";
+			okButton.UseStock = true;
+			okButton.UseUnderline = true;
+			okButton.Label = "gtk-ok";
+			this.AddActionWidget (okButton, ResponseType.Ok);
+			this.DefaultWidth = 466;
+			this.DefaultHeight = 300;
+			this.Show ();
+			_configTable = new Table(1, 1, false);
 			_configTable.ColumnSpacing = 10;
 			_configTable.RowSpacing = 10;
-			AppConfigWidget appConfigWidget;
-			uint count = 0;
-			foreach (AppConfiguration appConfig in appConfigs) {
-				appConfigWidget = new AppConfigWidget(appConfig);
-				_configTable.Attach(appConfigWidget, 0, 1, count, count + 1);
-				count++;
+			ScrolledWindow appScrolledWindow = new ScrolledWindow ();
+			appScrolledWindow.AddWithViewport(_configTable);
+			this.VBox.Add (appScrolledWindow);
+			this.VBox.ShowAll();
+		}
+				
+		void CallAddNewConfigWidget()
+		{
+			if (AddApplication != null)
+			{
+				AddApplication(this, new EventArgs());
 			}
-			CreateAddButton();
-			_configTable.Attach(_addWidget, 0, 1, count, count + 1);
-			_appScrolledWindow.AddWithViewport(_configTable);
 		}
-		
-		/// <summary>
-		/// (re-)creates add button
-		/// </summary>
-		private void CreateAddButton()
+
+		protected void AddButtonClicked(object sender, EventArgs e)
 		{
-			if (_addWidget != null) {
-				_addWidget.Destroy();
-			}
-			_addWidget = new Button("Add Application");
-			_addWidget.Clicked += AddNewConfigWidget;
+			CallAddNewConfigWidget();
 		}
-		
-		/// <summary>
-		/// creates and attaches new application configuration widget
-		/// </summary>
-		private void AddNewConfigWidget()
-		{
-			_configTable.NRows++;
-			AppConfigWidget appConfigWidget = new AppConfigWidget();
-			_configTable.Attach(
-		appConfigWidget,
-		0,
-		1,
-		_configTable.NRows - 2,
-		_configTable.NRows - 1
-			);
-			CreateAddButton();
-			_configTable.Attach(
-		_addWidget,
-		0,
-		1,
-		_configTable.NRows - 1,
-		_configTable.NRows
-			);
-			_configTable.ShowAll();
-		}
-		
-		/// <summary>
-		/// event handler for creating and attaching new application config widget
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="System.EventArgs"/>
-		/// </param>
-		private void AddNewConfigWidget(object sender, System.EventArgs args)
-		{
-			AddNewConfigWidget();
-		}
+
 	}
 }

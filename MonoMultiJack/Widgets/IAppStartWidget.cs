@@ -32,7 +32,7 @@ namespace MonoMultiJack.Widgets
 	{
 		void SetApp(string name, string commandName);
 
-		void SetRunningStatus(bool isRunning);
+		bool IsRunning{set;}
 
 		event EventHandler StartApplication;
 
