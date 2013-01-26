@@ -191,8 +191,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 
 		static JackPort MapPort(IntPtr portPointer)
 		{
+			if (portPointer == IntPtr.Zero) {
+				return null;
+			}
 			try {
-				string portName = MarshallingHelper.PtrToString(jack_port_name(portPointer));
+				string portName = jack_port_name(portPointer).PtrToString();
 				if (!string.IsNullOrEmpty(portName)) {
 					PortType portType = PortType.Undefined;
 					JackPortFlags portFlags = (JackPortFlags)jack_port_flags(portPointer);
@@ -203,7 +206,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 						portType = PortType.Output;
 					}
 					ConnectionType connectionType = ConnectionType.Undefined;
-					string connectionTypeName = MarshallingHelper.PtrToString(jack_port_type(portPointer));
+					string connectionTypeName = jack_port_type(portPointer).PtrToString();
 					if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE) {
 						connectionType = ConnectionType.JackAudio;
 					} else

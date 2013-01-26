@@ -132,7 +132,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			IntPtr clientInfo = IntPtr.Zero;
 			IntPtr portInfo = IntPtr.Zero;
 			try {
-				SndSeqAddr portAddress = portAddressPtr.PtrToSndSeqAddr();
+				SndSeqAddr portAddress = portAddressPtr.PtrToSndSeqAddr ();
 				clientInfo = Marshal.AllocHGlobal (GetClientInfoSize ());
 				portInfo = Marshal.AllocHGlobal (GetPortInfoSize ());
 				snd_seq_client_info_set_client (clientInfo, portAddress.Client);
@@ -148,9 +148,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				);
 
 				IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo);
-				string clientName = MarshallingHelper.PtrToString (clientNamePtr);
+				string clientName = clientNamePtr.PtrToString ();
 				IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo);
-				string portName = MarshallingHelper.PtrToString (portNamePtr);
+				string portName = portNamePtr.PtrToString ();
 
 				int portCaps = snd_seq_port_info_get_capability (portInfo);
 				int portType = snd_seq_port_info_get_type (portInfo);
@@ -228,7 +228,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 					if (connectedAddressPtr == IntPtr.Zero) {
 						continue;
 					}
-					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr();
+					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
 					AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
 						&& p.AlsaAddress.Port == connectedAddress.Port
 					);
@@ -260,8 +260,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			IntPtr inPortAddr = IntPtr.Zero;
 			try {
 				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr();
-				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr();
+				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr ();
+				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr ();
 
 				snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
 				snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);
@@ -295,8 +295,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			IntPtr inPortAddr = IntPtr.Zero;
 			try {
 				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr();
-				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr();
+				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr ();
+				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr ();
 
 				snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
 				snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);

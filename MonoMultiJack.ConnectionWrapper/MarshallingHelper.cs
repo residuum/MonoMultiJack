@@ -30,7 +30,7 @@ namespace MonoMultiJack.ConnectionWrapper
 {
 	public static class MarshallingHelper
 	{
-		public static string PtrToString(IntPtr p)
+		public static string PtrToString(this IntPtr p)
 		{
 			// TODO: deal with character set issues.  Will PtrToStringAnsi always
 			// "Do The Right Thing"?
@@ -40,18 +40,18 @@ namespace MonoMultiJack.ConnectionWrapper
 			return Marshal.PtrToStringAnsi(p);
 		}
  
-		public static string[] PtrToStringArray(IntPtr stringArray)
+		public static string[] PtrToStringArray(this IntPtr stringArray)
 		{
 			if (stringArray == IntPtr.Zero) {
 				return new string[]{};
 			}
  
  
-			int arrayCount = CountStrings(stringArray);
-			return PtrToStringArray(arrayCount, stringArray);
+			int arrayCount = stringArray.CountStrings();
+			return stringArray.PtrToStringArray(arrayCount);
 		}
  
-		private static int CountStrings(IntPtr stringArray)
+		static int CountStrings(this IntPtr stringArray)
 		{
 			int count = 0;
 			while (Marshal.ReadIntPtr (stringArray, count*IntPtr.Size) != IntPtr.Zero) {
@@ -60,7 +60,7 @@ namespace MonoMultiJack.ConnectionWrapper
 			return count;
 		}
  
-		public static string[] PtrToStringArray(int count, IntPtr stringArray)
+		public static string[] PtrToStringArray(this IntPtr stringArray, int count)
 		{
 			if (count < 0) {
 				throw new ArgumentOutOfRangeException("count", "< 0");

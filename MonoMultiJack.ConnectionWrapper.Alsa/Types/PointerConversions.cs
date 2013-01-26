@@ -38,6 +38,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 				    typeof(SndSeqAddr)
 				);
 			} catch (Exception e) {
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				return new SndSeqAddr ();
 			}
 		}
