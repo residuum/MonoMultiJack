@@ -34,12 +34,12 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	internal static partial class LibAsoundWrapper
 	{		
-		private static IntPtr _alsaClient = IntPtr.Zero;
-		private static int _clientInfoSize;
-		private static int _portInfoSize;
-		private static int _subscriberInfoSize;
+		static IntPtr _alsaClient = IntPtr.Zero;
+		static int _clientInfoSize;
+		static int _portInfoSize;
+		static int _subscriberInfoSize;
 
-		private static int GetClientInfoSize ()
+		static int GetClientInfoSize ()
 		{
 			if (_clientInfoSize == 0) {
 				_clientInfoSize = snd_seq_client_info_sizeof ();
@@ -47,7 +47,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			return _clientInfoSize;
 		}
 
-		private static int GetPortInfoSize ()
+		static int GetPortInfoSize ()
 		{
 			if (_portInfoSize == 0) {
 				_portInfoSize = snd_seq_port_info_sizeof ();
@@ -55,7 +55,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			return _portInfoSize;
 		}
 
-		private static int GetSubscriberInfoSize ()
+		static int GetSubscriberInfoSize ()
 		{
 			if (_subscriberInfoSize == 0) {
 				_subscriberInfoSize = snd_seq_port_subscribe_sizeof ();
@@ -91,72 +91,60 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		internal static IEnumerable<AlsaPort> GetPorts ()
 		{
 			if (_alsaClient != IntPtr.Zero || Activate ()) {
-				IntPtr clientInfo = IntPtr.Zero;
-				IntPtr portInfo = IntPtr.Zero;
 				var ports = new List<AlsaPort> ();
-				
 				try {
-					clientInfo = Marshal.AllocHGlobal (GetClientInfoSize ());
-					portInfo = Marshal.AllocHGlobal (GetPortInfoSize ());
-					snd_seq_client_info_set_client (clientInfo, -1);
-					while (snd_seq_query_next_client(_alsaClient, clientInfo) >= 0) {
-						int clientId = snd_seq_client_info_get_client (clientInfo);
-						snd_seq_port_info_set_client (portInfo, clientId);
-						snd_seq_port_info_set_port (portInfo, -1);
+					using (PointerWrapper clientInfo = new PointerWrapper(GetClientInfoSize ()))
+					using (PointerWrapper portInfo = new PointerWrapper(GetPortInfoSize ())) {
+						snd_seq_client_info_set_client (clientInfo.Pointer, -1);
+						while (snd_seq_query_next_client(_alsaClient, clientInfo.Pointer) >= 0) {
+							int clientId = snd_seq_client_info_get_client (clientInfo.Pointer);
+							snd_seq_port_info_set_client (portInfo.Pointer, clientId);
+							snd_seq_port_info_set_port (portInfo.Pointer, -1);
 					
-						while (snd_seq_query_next_port(_alsaClient, portInfo) >= 0) {
-							IEnumerable<AlsaPort> newPorts = CreatePorts (snd_seq_port_info_get_addr (portInfo));
-							if (newPorts != null) {
-								ports.AddRange (newPorts);
-							}
-						}				
-					}
+							while (snd_seq_query_next_port(_alsaClient, portInfo.Pointer) >= 0) {
+								IEnumerable<AlsaPort> newPorts = CreatePorts (snd_seq_port_info_get_addr (portInfo.Pointer));
+								if (newPorts != null) {
+									ports.AddRange (newPorts);
+								}
+							}				
+						}
+					} 
 				} catch (Exception ex) {
 					Console.WriteLine (ex.Message);
 					return new AlsaPort[0];
-				} finally {
-					if (clientInfo != IntPtr.Zero) {
-						Marshal.FreeHGlobal (clientInfo);
-					}
-					if (portInfo != IntPtr.Zero) {
-						Marshal.FreeHGlobal (portInfo);
-					}
-				}
+				} 
 				return ports;
 			}
 			return new AlsaPort[0];
 		}
 		
-		private static IEnumerable<AlsaPort> CreatePorts (IntPtr portAddressPtr)
+		static IEnumerable<AlsaPort> CreatePorts (IntPtr portAddressPtr)
 		{
-			IntPtr clientInfo = IntPtr.Zero;
-			IntPtr portInfo = IntPtr.Zero;
-			try {
+			using (PointerWrapper clientInfo = new PointerWrapper(GetClientInfoSize ()))
+			using (PointerWrapper portInfo = new PointerWrapper(GetPortInfoSize ())) {
 				SndSeqAddr portAddress = portAddressPtr.PtrToSndSeqAddr ();
-				clientInfo = Marshal.AllocHGlobal (GetClientInfoSize ());
-				portInfo = Marshal.AllocHGlobal (GetPortInfoSize ());
-				snd_seq_client_info_set_client (clientInfo, portAddress.Client);
-				snd_seq_get_any_client_info (_alsaClient, portAddress.Client, clientInfo);
+				snd_seq_client_info_set_client (clientInfo.Pointer, portAddress.Client);
+				snd_seq_get_any_client_info (_alsaClient, portAddress.Client, clientInfo.Pointer);
 
-				snd_seq_port_info_set_client (portInfo, portAddress.Client);
-				snd_seq_port_info_set_port (portInfo, portAddress.Port);				
+				snd_seq_port_info_set_client (portInfo.Pointer, portAddress.Client);
+				snd_seq_port_info_set_port (portInfo.Pointer, portAddress.Port);				
 				snd_seq_get_any_port_info (
 		    _alsaClient,
 		    portAddress.Client,
 		    portAddress.Port,
-		    portInfo
+		    portInfo.Pointer
 				);
 
-				IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo);
+				IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo.Pointer);
 				string clientName = clientNamePtr.PtrToString ();
-				IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo);
+				IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo.Pointer);
 				string portName = portNamePtr.PtrToString ();
 
-				int portCaps = snd_seq_port_info_get_capability (portInfo);
-				int portType = snd_seq_port_info_get_type (portInfo);
+				int portCaps = snd_seq_port_info_get_capability (portInfo.Pointer);
+				int portType = snd_seq_port_info_get_type (portInfo.Pointer);
 
 				if ((portCaps & SND_SEQ_PORT_CAP_NO_EXPORT) != 0 
-					|| ((snd_seq_client_info_get_type (clientInfo) != SND_SEQ_USER_CLIENT)
+					|| ((snd_seq_client_info_get_type (clientInfo.Pointer) != SND_SEQ_USER_CLIENT)
 					&& ((portType == SND_SEQ_PORT_SYSTEM_TIMER) || portType == SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
 					return new List<AlsaPort> ();
 				}
@@ -184,13 +172,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 				}
 				return ports;
-			} finally {
-				if (clientInfo != IntPtr.Zero) {
-					Marshal.FreeHGlobal (clientInfo);
-				}
-				if (portInfo != IntPtr.Zero) {
-					Marshal.FreeHGlobal (portInfo);
-				}
 			}
 		}
 
@@ -208,46 +189,34 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			return new AlsaMidiConnection[0];
 		}
 
-		private static IEnumerable<AlsaMidiConnection> GetConnectionsForPort (AlsaPort outPort, IEnumerable<AlsaPort> allInPorts)
+		static IEnumerable<AlsaMidiConnection> GetConnectionsForPort (AlsaPort outPort, IEnumerable<AlsaPort> allInPorts)
 		{
 			if (outPort == null || !allInPorts.Any ()) {
 				return new AlsaMidiConnection[0];
 			}
-			IntPtr subscriberInfo = IntPtr.Zero;
-			IntPtr addrPtr = IntPtr.Zero;
+			PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ());
+			PointerWrapper alsaAddress = new PointerWrapper (Marshal.SizeOf (typeof(SndSeqAddr)));
 			List<AlsaMidiConnection> connections = new List<AlsaMidiConnection> ();
-			try {
-				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				addrPtr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
-				Marshal.StructureToPtr (outPort.AlsaAddress, addrPtr, false);
-				snd_seq_query_subscribe_set_index (subscriberInfo, 0);
-				snd_seq_query_subscribe_set_root (subscriberInfo, addrPtr);
-				snd_seq_query_subscribe_set_type (subscriberInfo, SND_SEQ_QUERY_SUBS_READ);
-				while (snd_seq_query_port_subscribers(_alsaClient, subscriberInfo) >= 0) {
-					IntPtr connectedAddressPtr = snd_seq_query_subscribe_get_addr (subscriberInfo);
-					if (connectedAddressPtr == IntPtr.Zero) {
-						continue;
-					}
-					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
-					AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
-						&& p.AlsaAddress.Port == connectedAddress.Port
-					);
-					if (connectedPort != null) {
-						connections.Add (new AlsaMidiConnection (){OutPort = outPort, InPort = connectedPort});
-					}
-					snd_seq_query_subscribe_set_index (
-			subscriberInfo,
-			snd_seq_query_subscribe_get_index (subscriberInfo) + 1
-					);
+			Marshal.StructureToPtr (outPort.AlsaAddress, alsaAddress.Pointer, false);
+			snd_seq_query_subscribe_set_index (subscriberInfo.Pointer, 0);
+			snd_seq_query_subscribe_set_root (subscriberInfo.Pointer, alsaAddress.Pointer);
+			snd_seq_query_subscribe_set_type (subscriberInfo.Pointer, SND_SEQ_QUERY_SUBS_READ);
+			while (snd_seq_query_port_subscribers(_alsaClient, subscriberInfo.Pointer) >= 0) {
+				IntPtr connectedAddressPtr = snd_seq_query_subscribe_get_addr (subscriberInfo.Pointer);
+				if (connectedAddressPtr == IntPtr.Zero) {
+					continue;
 				}
-
-			} finally {
-				if (subscriberInfo != IntPtr.Zero) {
-					Marshal.FreeHGlobal (subscriberInfo);
+				SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
+				AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
+					&& p.AlsaAddress.Port == connectedAddress.Port
+				);
+				if (connectedPort != null) {
+					connections.Add (new AlsaMidiConnection (){OutPort = outPort, InPort = connectedPort});
 				}
-				if (addrPtr != IntPtr.Zero) {
-					Marshal.FreeHGlobal (addrPtr);
-				}
+				snd_seq_query_subscribe_set_index (
+			subscriberInfo.Pointer,
+			snd_seq_query_subscribe_get_index (subscriberInfo.Pointer) + 1
+				);
 			}
 
 			return connections;
@@ -255,71 +224,36 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		public static bool Connect (AlsaPort outPort, AlsaPort inPort)
 		{
-			IntPtr subscriberInfo = IntPtr.Zero;
-			IntPtr outPortAddr = IntPtr.Zero;
-			IntPtr inPortAddr = IntPtr.Zero;
-			try {
-				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr ();
-				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr ();
-
-				snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
-				snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);
-				snd_seq_port_subscribe_set_exclusive (subscriberInfo, 0);
-				snd_seq_port_subscribe_set_time_update (subscriberInfo, 0);
-				snd_seq_port_subscribe_set_time_real (subscriberInfo, 0);
-				return  snd_seq_subscribe_port (_alsaClient, subscriberInfo) == 0;
-
-			} catch (Exception e) {
-#if DEBUG
-		Console.WriteLine (e.Message);
-#endif	
-				return false;
-			} finally {	
-				if (subscriberInfo != IntPtr.Zero) {
-					Marshal.FreeHGlobal (subscriberInfo);
-				}
-				if (outPortAddr != IntPtr.Zero) {
-					Marshal.FreeHGlobal (outPortAddr);
-				}
-				if (inPortAddr != IntPtr.Zero) {
-					Marshal.FreeHGlobal (inPortAddr);
-				}
-			}
+			return ChangeConnection (outPort, inPort, false);
 		}
 
 		public static bool Disconnect (AlsaPort outPort, AlsaPort inPort)
 		{
-			IntPtr subscriberInfo = IntPtr.Zero;
-			IntPtr outPortAddr = IntPtr.Zero;
-			IntPtr inPortAddr = IntPtr.Zero;
+			return ChangeConnection (outPort, inPort, true);
+		}
+
+		static bool ChangeConnection (AlsaPort outPort, AlsaPort inPort, bool disconnect)
+		{
 			try {
-				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr ();
-				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr ();
-
-				snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
-				snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);
-				snd_seq_port_subscribe_set_exclusive (subscriberInfo, 0);
-				snd_seq_port_subscribe_set_time_update (subscriberInfo, 0);
-				snd_seq_port_subscribe_set_time_real (subscriberInfo, 0);
-				return  snd_seq_unsubscribe_port (_alsaClient, subscriberInfo) == 0;
-
+				using (PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ()))
+				using (PointerWrapper outPortAddr = new PointerWrapper (outPort.AlsaAddress.SndSeqAddrToPtr ()))
+				using (PointerWrapper inPortAddr = new PointerWrapper (inPort.AlsaAddress.SndSeqAddrToPtr ())) {
+					snd_seq_port_subscribe_set_sender (subscriberInfo.Pointer, outPortAddr.Pointer);
+					snd_seq_port_subscribe_set_dest (subscriberInfo.Pointer, inPortAddr.Pointer);
+					snd_seq_port_subscribe_set_exclusive (subscriberInfo.Pointer, 0);
+					snd_seq_port_subscribe_set_time_update (subscriberInfo.Pointer, 0);
+					snd_seq_port_subscribe_set_time_real (subscriberInfo.Pointer, 0);
+					if (disconnect) {
+						return  snd_seq_unsubscribe_port (_alsaClient, subscriberInfo.Pointer) == 0;
+					} else {
+						return snd_seq_subscribe_port (_alsaClient, subscriberInfo.Pointer) == 0;
+					}
+				}
 			} catch (Exception e) {
-#if DEBUG
-		Console.WriteLine (e.Message);
-#endif	
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				return false;
-			} finally {	
-				if (subscriberInfo != IntPtr.Zero) {
-					Marshal.FreeHGlobal (subscriberInfo);
-				}
-				if (outPortAddr != IntPtr.Zero) {
-					Marshal.FreeHGlobal (outPortAddr);
-				}
-				if (inPortAddr != IntPtr.Zero) {
-					Marshal.FreeHGlobal (inPortAddr);
-				}
 			}
 		}
 	}
