@@ -30,28 +30,25 @@ namespace MonoMultiJack.ConnectionWrapper
 {
 	public static class MarshallingHelper
 	{
-		public static string PtrToString(this IntPtr p)
+		public static string PtrToString (this IntPtr p)
 		{
-			// TODO: deal with character set issues.  Will PtrToStringAnsi always
-			// "Do The Right Thing"?
 			if (p == IntPtr.Zero) {
 				return null;
 			}
-			return Marshal.PtrToStringAnsi(p);
+			return Marshal.PtrToStringAnsi (p);
 		}
  
-		public static string[] PtrToStringArray(this IntPtr stringArray)
+		public static string[] PtrToStringArray (this IntPtr stringArray)
 		{
 			if (stringArray == IntPtr.Zero) {
 				return new string[]{};
-			}
+			} 
  
- 
-			int arrayCount = stringArray.CountStrings();
-			return stringArray.PtrToStringArray(arrayCount);
+			int arrayCount = stringArray.CountStrings ();
+			return stringArray.PtrToStringArray (arrayCount);
 		}
  
-		static int CountStrings(this IntPtr stringArray)
+		static int CountStrings (this IntPtr stringArray)
 		{
 			int count = 0;
 			while (Marshal.ReadIntPtr (stringArray, count*IntPtr.Size) != IntPtr.Zero) {
@@ -60,20 +57,20 @@ namespace MonoMultiJack.ConnectionWrapper
 			return count;
 		}
  
-		public static string[] PtrToStringArray(this IntPtr stringArray, int count)
+		public static string[] PtrToStringArray (this IntPtr stringArray, int count)
 		{
 			if (count < 0) {
-				throw new ArgumentOutOfRangeException("count", "< 0");
+				throw new ArgumentOutOfRangeException ("count", "< 0");
 			}
+
 			if (stringArray == IntPtr.Zero) {
 				return new string[count];
-			}
- 
+			} 
  
 			string[] members = new string[count];
 			for (int i = 0; i < count; ++i) {
-				IntPtr s = Marshal.ReadIntPtr(stringArray, i * IntPtr.Size);
-				members [i] = PtrToString(s);
+				IntPtr s = Marshal.ReadIntPtr (stringArray, i * IntPtr.Size);
+				members [i] = PtrToString (s);
 			} 
 			return members;
 		}

@@ -49,15 +49,15 @@ namespace MonoMultiJack.Forms
 		/// </value>
 		public List<AppConfiguration> AppConfigs {
 			get {
-				List<AppConfiguration > newAppConfigs = new List<AppConfiguration>();
+				List<AppConfiguration > newAppConfigs = new List<AppConfiguration> ();
 				AppConfiguration newAppConfig;
 				
 				foreach (Widget child in _configTable.Children) {
 					AppConfigWidget appConfigWidget = child as AppConfigWidget;
 					if (appConfigWidget != null) {
 						newAppConfig = appConfigWidget.appConfig;
-						if (!string.IsNullOrEmpty(newAppConfig.Name) && !string.IsNullOrEmpty(newAppConfig.Command)) {
-							newAppConfigs.Add(newAppConfig);
+						if (!string.IsNullOrEmpty (newAppConfig.Name) && !string.IsNullOrEmpty (newAppConfig.Command)) {
+							newAppConfigs.Add (newAppConfig);
 						}
 					}
 				}
@@ -65,16 +65,16 @@ namespace MonoMultiJack.Forms
 			}
 		}
 		
-		public AppConfigWindow()
+		public AppConfigWindow ()
 		{
-			this.Build();
+			this.Build ();
 		}
 				
-		public AppConfigWindow(List<AppConfiguration> appConfigs) : this()
+		public AppConfigWindow (List<AppConfiguration> appConfigs) : this()
 		{
 			Title = "Configure Applications";
 			Resizable = true;
-			BuildDialog(appConfigs);
+			BuildDialog (appConfigs);
 		}
 		
 		/// <summary>
@@ -83,58 +83,58 @@ namespace MonoMultiJack.Forms
 		/// <param name="appConfigs">
 		/// A <see cref="List"/> current application configuration
 		/// </param>
-		private void BuildDialog(List<AppConfiguration> appConfigs)
+		private void BuildDialog (List<AppConfiguration> appConfigs)
 		{
-			_configTable = new Table((uint)appConfigs.Count + 1, 1, false);
+			_configTable = new Table ((uint)appConfigs.Count + 1, 1, false);
 			_configTable.ColumnSpacing = 10;
 			_configTable.RowSpacing = 10;
 			AppConfigWidget appConfigWidget;
 			uint count = 0;
 			foreach (AppConfiguration appConfig in appConfigs) {
-				appConfigWidget = new AppConfigWidget(appConfig);
-				_configTable.Attach(appConfigWidget, 0, 1, count, count + 1);
+				appConfigWidget = new AppConfigWidget (appConfig);
+				_configTable.Attach (appConfigWidget, 0, 1, count, count + 1);
 				count++;
 			}
-			CreateAddButton();
-			_configTable.Attach(_addWidget, 0, 1, count, count + 1);
-			_appScrolledWindow.AddWithViewport(_configTable);
+			CreateAddButton ();
+			_configTable.Attach (_addWidget, 0, 1, count, count + 1);
+			_appScrolledWindow.AddWithViewport (_configTable);
 		}
 		
 		/// <summary>
 		/// (re-)creates add button
 		/// </summary>
-		private void CreateAddButton()
+		private void CreateAddButton ()
 		{
 			if (_addWidget != null) {
-				_addWidget.Destroy();
+				_addWidget.Destroy ();
 			}
-			_addWidget = new Button("Add Application");
+			_addWidget = new Button ("Add Application");
 			_addWidget.Clicked += AddNewConfigWidget;
 		}
 		
 		/// <summary>
 		/// creates and attaches new application configuration widget
 		/// </summary>
-		private void AddNewConfigWidget()
+		private void AddNewConfigWidget ()
 		{
 			_configTable.NRows++;
-			AppConfigWidget appConfigWidget = new AppConfigWidget();
-			_configTable.Attach(
-		appConfigWidget,
-		0,
-		1,
-		_configTable.NRows - 2,
-		_configTable.NRows - 1
+			AppConfigWidget appConfigWidget = new AppConfigWidget ();
+			_configTable.Attach (
+				appConfigWidget,
+				0,
+				1,
+				_configTable.NRows - 2,
+				_configTable.NRows - 1
 			);
-			CreateAddButton();
-			_configTable.Attach(
-		_addWidget,
-		0,
-		1,
-		_configTable.NRows - 1,
-		_configTable.NRows
+			CreateAddButton ();
+			_configTable.Attach (
+				_addWidget,
+				0,
+				1,
+				_configTable.NRows - 1,
+				_configTable.NRows
 			);
-			_configTable.ShowAll();
+			_configTable.ShowAll ();
 		}
 		
 		/// <summary>
@@ -146,9 +146,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="args">
 		/// A <see cref="System.EventArgs"/>
 		/// </param>
-		private void AddNewConfigWidget(object sender, System.EventArgs args)
+		private void AddNewConfigWidget (object sender, System.EventArgs args)
 		{
-			AddNewConfigWidget();
+			AddNewConfigWidget ();
 		}
 	}
 }

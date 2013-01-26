@@ -159,7 +159,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			jack_set_port_registration_callback(_jackClient, OnPortRegistration, IntPtr.Zero);
 			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = jack_activate(_jackClient);
-			//TODO: jack_get_ports();
+			//TODO: for Jackdmp: Call jack_get_ports() to populate initial clients or use some other methods;
 //			IntPtr portList = jack_get_ports(_jackClient, null, null, 0);
 //			string[] portNames = MarshallingHelper.PtrToStringArray(portList);
 //			foreach(string portName in portNames) {

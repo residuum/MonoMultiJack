@@ -40,11 +40,9 @@ namespace MonoMultiJack.ConnectionWrapper
 		bool IsActive { get; }
 
 		IEnumerable<Port> Ports { get; }
-
 		IEnumerable<IConnection> Connections { get; }
 
 		bool Connect(Port outPort, Port inPort);
-
 		bool Disconnect(Port outPort, Port inPort);		
 	}
 }

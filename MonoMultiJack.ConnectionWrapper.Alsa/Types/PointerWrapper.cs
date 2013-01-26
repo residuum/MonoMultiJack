@@ -54,8 +54,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 		}
 
 		protected virtual void Dispose (bool disposing)
-		{
-			
+		{			
 			if (Pointer != IntPtr.Zero) {
 				Marshal.FreeHGlobal (Pointer);
 			}

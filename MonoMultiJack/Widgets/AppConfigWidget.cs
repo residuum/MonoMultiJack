@@ -55,8 +55,8 @@ namespace MonoMultiJack.Widgets
 		public AppConfiguration appConfig {
 			get {
 				return new AppConfiguration(
-		    _appNameEntry.Text.Trim(),
-		    _appCommandEntry.Text.Trim()
+					_appNameEntry.Text.Trim(),
+					_appCommandEntry.Text.Trim()
 				);
 			}
 		}

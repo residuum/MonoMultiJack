@@ -66,10 +66,10 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		internal static bool Activate ()
 		{
 			int activation = snd_seq_open (
-		out _alsaClient,
-		"default",
-		SND_SEQ_OPEN_DUPLEX,
-		SND_SEQ_NONBLOCK
+				out _alsaClient,
+				"default",
+				SND_SEQ_OPEN_DUPLEX,
+				SND_SEQ_NONBLOCK
 			);
 #if DEBUG
 	    Console.WriteLine ("Alsa Activation: " + activation);
@@ -129,10 +129,10 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				snd_seq_port_info_set_client (portInfo.Pointer, portAddress.Client);
 				snd_seq_port_info_set_port (portInfo.Pointer, portAddress.Port);				
 				snd_seq_get_any_port_info (
-		    _alsaClient,
-		    portAddress.Client,
-		    portAddress.Port,
-		    portInfo.Pointer
+					_alsaClient,
+		            portAddress.Client,
+					portAddress.Port,
+					portInfo.Pointer
 				);
 
 				IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo.Pointer);
@@ -194,32 +194,32 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			if (outPort == null || !allInPorts.Any ()) {
 				return new AlsaMidiConnection[0];
 			}
-			PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ());
-			PointerWrapper alsaAddress = new PointerWrapper (Marshal.SizeOf (typeof(SndSeqAddr)));
-			List<AlsaMidiConnection> connections = new List<AlsaMidiConnection> ();
-			Marshal.StructureToPtr (outPort.AlsaAddress, alsaAddress.Pointer, false);
-			snd_seq_query_subscribe_set_index (subscriberInfo.Pointer, 0);
-			snd_seq_query_subscribe_set_root (subscriberInfo.Pointer, alsaAddress.Pointer);
-			snd_seq_query_subscribe_set_type (subscriberInfo.Pointer, SND_SEQ_QUERY_SUBS_READ);
-			while (snd_seq_query_port_subscribers(_alsaClient, subscriberInfo.Pointer) >= 0) {
-				IntPtr connectedAddressPtr = snd_seq_query_subscribe_get_addr (subscriberInfo.Pointer);
-				if (connectedAddressPtr == IntPtr.Zero) {
-					continue;
+			using (PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ()))
+			using (PointerWrapper alsaAddress = new PointerWrapper (outPort.AlsaAddress.SndSeqAddrToPtr())) {
+				List<AlsaMidiConnection> connections = new List<AlsaMidiConnection> ();
+				snd_seq_query_subscribe_set_index (subscriberInfo.Pointer, 0);
+				snd_seq_query_subscribe_set_root (subscriberInfo.Pointer, alsaAddress.Pointer);
+				snd_seq_query_subscribe_set_type (subscriberInfo.Pointer, SND_SEQ_QUERY_SUBS_READ);
+				while (snd_seq_query_port_subscribers(_alsaClient, subscriberInfo.Pointer) >= 0) {
+					IntPtr connectedAddressPtr = snd_seq_query_subscribe_get_addr (subscriberInfo.Pointer);
+					if (connectedAddressPtr == IntPtr.Zero) {
+						continue;
+					}
+					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
+					AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
+						&& p.AlsaAddress.Port == connectedAddress.Port
+					);
+					if (connectedPort != null) {
+						connections.Add (new AlsaMidiConnection (){OutPort = outPort, InPort = connectedPort});
+					}
+					snd_seq_query_subscribe_set_index (
+						subscriberInfo.Pointer,
+						snd_seq_query_subscribe_get_index (subscriberInfo.Pointer) + 1
+					);
 				}
-				SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
-				AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
-					&& p.AlsaAddress.Port == connectedAddress.Port
-				);
-				if (connectedPort != null) {
-					connections.Add (new AlsaMidiConnection (){OutPort = outPort, InPort = connectedPort});
-				}
-				snd_seq_query_subscribe_set_index (
-			subscriberInfo.Pointer,
-			snd_seq_query_subscribe_get_index (subscriberInfo.Pointer) + 1
-				);
-			}
 
-			return connections;
+				return connections;
+			}
 		}
 
 		public static bool Connect (AlsaPort outPort, AlsaPort inPort)

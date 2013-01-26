@@ -235,12 +235,12 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 				writer.WriteStartDocument();
 				writer.WriteStartElement("window");
 				writer.WriteElementString(
-		    "x-position",
-		    newWindowConfig.XPosition.ToString()
+					"x-position",
+					newWindowConfig.XPosition.ToString()
 				);
 				writer.WriteElementString(
-		    "y-position",
-		    newWindowConfig.YPosition.ToString());
+					"y-position",
+					newWindowConfig.YPosition.ToString());
 				writer.WriteElementString("x-size", newWindowConfig.XSize.ToString());
 				writer.WriteElementString("y-size", newWindowConfig.YSize.ToString());
 				writer.WriteEndElement();

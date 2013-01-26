@@ -66,8 +66,8 @@ namespace MonoMultiJack.Widgets
 			if (!string.IsNullOrEmpty(appConfig.Command)) {
 				string[] appConfigValues = appConfig.Command.Split(new char[] { ' ' }, 2);
 				_appInstance = new ProgramManagement(
-		    appConfigValues [0], 
-		    appConfigValues.Count() > 1 ? appConfigValues [1] : string.Empty
+					appConfigValues [0], 
+					appConfigValues.Count() > 1 ? appConfigValues [1] : string.Empty
 				);
 				_appInstance.HasStarted += OnAppInstanceHasStarted;
 				_appInstance.HasExited += OnAppInstanceHasExited;

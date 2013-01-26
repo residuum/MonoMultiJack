@@ -109,8 +109,8 @@ namespace MonoMultiJack.Forms
 				IConnectionManager connManager = ConnectionManagerFactory.GetConnectionManager(connType);
 				if (connManager != null) {					
 					_connectionNotebook.AppendPage(
-			new ConnectionDisplay(connManager),
-			new Label(connManager.ConnectionType.ToString())
+						new ConnectionDisplay(connManager),
+						new Label(connManager.ConnectionType.ToString())
 					);
 				}
 			}
@@ -128,13 +128,13 @@ namespace MonoMultiJack.Forms
 				
 			} catch (System.Xml.XmlException e) {
 				#if DEBUG
-		Console.WriteLine (e.Message);
+				Console.WriteLine (e.Message);
 				#endif
 				InfoMessage("Jackd configuration File is corrupt.");
 				_jackdConfig = new JackdConfiguration();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
-		Console.WriteLine (e.Message);
+				Console.WriteLine (e.Message);
 				#endif
 				InfoMessage("Jackd is not configured.");
 				_jackdConfig = new JackdConfiguration();
@@ -147,13 +147,13 @@ namespace MonoMultiJack.Forms
 				
 			} catch (System.Xml.XmlException e) {
 				#if DEBUG
-		Console.WriteLine (e.Message);
+				Console.WriteLine (e.Message);
 				#endif
 				InfoMessage("Application configuration File is corrupt.");
 				_appConfigs = new List<AppConfiguration>();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
-		Console.WriteLine (e.Message);
+				Console.WriteLine (e.Message);
 				#endif
 				InfoMessage("Applications are not configured.");
 				_appConfigs = new List<AppConfiguration>();
@@ -166,7 +166,7 @@ namespace MonoMultiJack.Forms
 				}
 			} catch (Exception e) {				
 				#if DEBUG
-		Console.WriteLine (e.Message);
+				Console.WriteLine (e.Message);
 				#endif
 			}
 
@@ -217,9 +217,9 @@ namespace MonoMultiJack.Forms
 				_jackd.StopProgram();
 			}
 			_jackd = new ProgramManagement(
-		jackdConfig.Path,
-		jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions,
-		true
+				jackdConfig.Path,
+				jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions,
+				true
 			);
 			_jackd.HasStarted += OnJackdHasStarted;
 			_jackd.HasExited += OnJackdHasExited;
@@ -271,10 +271,10 @@ namespace MonoMultiJack.Forms
 			GetPosition(out xPosition, out yPosition);
 			GetSize(out xSize, out ySize);
 			WindowConfiguration newWindowConfig = new WindowConfiguration(
-		xPosition,
-		yPosition,
-		xSize,
-		ySize
+				xPosition,
+				yPosition,
+				xSize,
+				ySize
 			);
 			PersistantConfiguration.SaveWindowSize(newWindowConfig);
 			StopAll();
@@ -333,11 +333,11 @@ namespace MonoMultiJack.Forms
 		void InfoMessage(string message)
 		{
 			MessageDialog popup = new MessageDialog(
-		this,
-		DialogFlags.DestroyWithParent,
-		MessageType.Info,
-		ButtonsType.Ok,
-		message
+				this,
+				DialogFlags.DestroyWithParent,
+				MessageType.Info,
+				ButtonsType.Ok,
+				message
 			);
 			popup.Run();
 			popup.Destroy();

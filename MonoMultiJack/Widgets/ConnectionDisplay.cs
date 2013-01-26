@@ -46,31 +46,31 @@ namespace MonoMultiJack.Widgets
 		/// <summary>
 		/// Treestore for outputs.
 		/// </summary>
-		private TreeStore _outputStore = new TreeStore(typeof(string));
+		private TreeStore _outputStore = new TreeStore (typeof(string));
 
 		/// <summary>
 		/// Treestore for inputs.
 		/// </summary>
-		private TreeStore _inputStore = new TreeStore(typeof(string));
+		private TreeStore _inputStore = new TreeStore (typeof(string));
 
 		/// <summary>
 		/// All active connections.
 		/// </summary>
-		private List<IConnection> _connections = new List<IConnection>();
+		private List<IConnection> _connections = new List<IConnection> ();
 		private DateTime _lastLineUpdate = DateTime.Now;
 
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public ConnectionDisplay()
+		public ConnectionDisplay ()
 		{
-			this.Build();
+			this.Build ();
 		}
 
-		public override void Dispose()
+		public override void Dispose ()
 		{
-			_connectionManager.Dispose();
-			base.Dispose();
+			_connectionManager.Dispose ();
+			base.Dispose ();
 		}
 
 		/// <summary>
@@ -79,27 +79,27 @@ namespace MonoMultiJack.Widgets
 		/// <param name="connectionManager">
 		/// A <see cref="IConnectionManager"/> whose ports and connection are displayed.
 		/// </param>
-		public ConnectionDisplay(IConnectionManager connectionManager) : this()
+		public ConnectionDisplay (IConnectionManager connectionManager) : this()
 		{
 			_connectionManager = connectionManager;
 			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
 			_connectionManager.BackendHasExited += Handle_connectionManagerBackendHasExited;
 			
-			var inClientColumn = new TreeViewColumn();
-			var inClientCell = new CellRendererText();
-			inClientColumn.PackStart(inClientCell, true);
-			inClientColumn.AddAttribute(inClientCell, "text", 0);
-			_inputTreeview.AppendColumn(inClientColumn);
+			var inClientColumn = new TreeViewColumn ();
+			var inClientCell = new CellRendererText ();
+			inClientColumn.PackStart (inClientCell, true);
+			inClientColumn.AddAttribute (inClientCell, "text", 0);
+			_inputTreeview.AppendColumn (inClientColumn);
 			_inputTreeview.Model = _inputStore;
 			
-			var outClientColumn = new TreeViewColumn();
-			var outClientCell = new CellRendererText();
-			outClientColumn.PackStart(outClientCell, true);
-			outClientColumn.AddAttribute(outClientCell, "text", 0);
-			_outputTreeview.AppendColumn(outClientColumn);
+			var outClientColumn = new TreeViewColumn ();
+			var outClientCell = new CellRendererText ();
+			outClientColumn.PackStart (outClientCell, true);
+			outClientColumn.AddAttribute (outClientCell, "text", 0);
+			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
-			UpdatePorts(_connectionManager.Ports, ChangeType.New);
-			UpdateConnections(_connectionManager.Connections, ChangeType.New);
+			UpdatePorts (_connectionManager.Ports, ChangeType.New);
+			UpdateConnections (_connectionManager.Connections, ChangeType.New);
 		}
 
 		/// <summary>
@@ -111,12 +111,12 @@ namespace MonoMultiJack.Widgets
 		/// <param name="e">
 		/// The <see cref="ConnectionEventArgs"/> of the event.
 		/// </param>
-		private void Handle_connectionManagerBackendHasExited(object sender, ConnectionEventArgs e)
+		private void Handle_connectionManagerBackendHasExited (object sender, ConnectionEventArgs e)
 		{
-			_outputStore.Clear();
-			_inputStore.Clear();
-			_connections.Clear();
-			UpdateConnectionLines();
+			_outputStore.Clear ();
+			_inputStore.Clear ();
+			_connections.Clear ();
+			UpdateConnectionLines ();
 		}
 
 		/// <summary>
@@ -128,17 +128,17 @@ namespace MonoMultiJack.Widgets
 		/// <param name="e">
 		/// The <see cref="ConnectionEventArgs"/> of the event.
 		/// </param>
-		private void Handle_connectionManagerConnectionHasChanged(object sender, ConnectionEventArgs e)
+		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
 		{
 			#if DEBUG
 			Console.WriteLine (e.Message);
 			Console.WriteLine (e.ConnectionType.ToString ());
 			#endif
-			if (e.Ports != null && e.Ports.Any()) {
-				UpdatePorts(e.Ports, e.ChangeType);
+			if (e.Ports != null && e.Ports.Any ()) {
+				UpdatePorts (e.Ports, e.ChangeType);
 			}
-			if (e.Connections != null && e.Connections.Any()) {
-				UpdateConnections(e.Connections, e.ChangeType);
+			if (e.Connections != null && e.Connections.Any ()) {
+				UpdateConnections (e.Connections, e.ChangeType);
 			}
 			
 		}
@@ -152,34 +152,34 @@ namespace MonoMultiJack.Widgets
 		/// <param name="clients">
 		/// A <see cref="IEnumerable<IGrouping<System.String, Port>>"/> determining the values to remove. 
 		/// </param>
-		private void RemoveTreeStoreValues(ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
+		private void RemoveTreeStoreValues (ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
 		{
 			foreach (var client in clients) {
 				TreeIter clientIter;
-				string clientName = client.First().ClientName;
-				if (store.GetIterFirst(out clientIter)) {
+				string clientName = client.First ().ClientName;
+				if (store.GetIterFirst (out clientIter)) {
 					while (store.GetValue (clientIter, 0).ToString () != clientName) {
-						if (!store.IterNext(ref clientIter)) {
+						if (!store.IterNext (ref clientIter)) {
 							break;
 						}
 					}
-					if (store.IterHasChild(clientIter)) {
+					if (store.IterHasChild (clientIter)) {
 						foreach (var portName in client.Select (port => port.Name)) {
 							TreeIter portIter;
-							if (store.IterChildren(out portIter, clientIter)) {
+							if (store.IterChildren (out portIter, clientIter)) {
 								while (store.GetValue (portIter, 0).ToString () != portName) {
-									if (!store.IterNext(ref portIter)) {
+									if (!store.IterNext (ref portIter)) {
 										break;
 									}
 								}
-								if (store.GetValue(portIter, 0).ToString() == portName) {
-									store.Remove(ref portIter);
+								if (store.GetValue (portIter, 0).ToString () == portName) {
+									store.Remove (ref portIter);
 								}
 							}
 						}
 					}
-					if (!store.IterHasChild(clientIter)) {
-						store.Remove(ref clientIter);
+					if (!store.IterHasChild (clientIter)) {
+						store.Remove (ref clientIter);
 					}
 				}
 			}
@@ -194,23 +194,23 @@ namespace MonoMultiJack.Widgets
 		/// <param name="clients">
 		/// A <see cref="IEnumerable<IGrouping<System.String, Port>>"/> determining the values to add to the treestore.
 		/// </param>
-		private void AddTreeStoreValues(ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
+		private void AddTreeStoreValues (ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
 		{
 			foreach (var client in clients) {
 				TreeIter clientIter;
-				string clientName = client.First().ClientName;
-				if (store.GetIterFirst(out clientIter)) {
+				string clientName = client.First ().ClientName;
+				if (store.GetIterFirst (out clientIter)) {
 					while (store.GetValue (clientIter, 0).ToString () != clientName) {
-						if (!store.IterNext(ref clientIter)) {
-							clientIter = store.AppendValues(clientName);
+						if (!store.IterNext (ref clientIter)) {
+							clientIter = store.AppendValues (clientName);
 							break;
 						}
 					}
 				} else {
-					clientIter = store.AppendValues(clientName);
+					clientIter = store.AppendValues (clientName);
 				}
 				foreach (var portName in client.Select (port => port.Name)) {
-					store.AppendValues(clientIter, portName);
+					store.AppendValues (clientIter, portName);
 				}
 			}
 		}
@@ -224,29 +224,29 @@ namespace MonoMultiJack.Widgets
 		/// <param name="changeType">
 		/// A <see cref="ChangeType"/>
 		/// </param>
-		private void UpdatePorts(IEnumerable<Port> updatedPorts, ChangeType changeType)
+		private void UpdatePorts (IEnumerable<Port> updatedPorts, ChangeType changeType)
 		{
-			if (updatedPorts != null && updatedPorts.Any()) {
+			if (updatedPorts != null && updatedPorts.Any ()) {
 				switch (changeType) {
-					case ChangeType.New:
-						var newOutputClients = updatedPorts.Where(p => p.PortType == PortType.Output)
-			.GroupBy(port => port.ClientName);
-						AddTreeStoreValues(ref _outputStore, newOutputClients);
-						var newInputClients = updatedPorts.Where(p => p.PortType == PortType.Input)
-			.GroupBy(port => port.ClientName);
-						AddTreeStoreValues(ref _inputStore, newInputClients);
-						break;
+				case ChangeType.New:
+					var newOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output)
+							.GroupBy (port => port.ClientName);
+					AddTreeStoreValues (ref _outputStore, newOutputClients);
+					var newInputClients = updatedPorts.Where (p => p.PortType == PortType.Input)
+							.GroupBy (port => port.ClientName);
+					AddTreeStoreValues (ref _inputStore, newInputClients);
+					break;
 					
-					case ChangeType.Deleted:
-						var oldOutputClients = updatedPorts.Where(p => p.PortType == PortType.Output)
-			.GroupBy(port => port.ClientName);
-						RemoveTreeStoreValues(ref _outputStore, oldOutputClients);
-						var oldInputClients = updatedPorts.Where(p => p.PortType == PortType.Input)
-			.GroupBy(port => port.ClientName);
-						RemoveTreeStoreValues(ref _inputStore, oldInputClients);
-						break;
+				case ChangeType.Deleted:
+					var oldOutputClients = updatedPorts.Where (p => p.PortType == PortType.Output)
+							.GroupBy (port => port.ClientName);
+					RemoveTreeStoreValues (ref _outputStore, oldOutputClients);
+					var oldInputClients = updatedPorts.Where (p => p.PortType == PortType.Input)
+							.GroupBy (port => port.ClientName);
+					RemoveTreeStoreValues (ref _inputStore, oldInputClients);
+					break;
 				}
-				UpdateConnectionLines();
+				UpdateConnectionLines ();
 			}
 		}
 
@@ -265,32 +265,32 @@ namespace MonoMultiJack.Widgets
 		/// <returns>
 		/// A <see cref="Port"/>
 		/// </returns>
-		private List<Port> GetSelectedPorts(TreeStore connectionStore, TreeIter selectedIter, PortType portType)
+		private List<Port> GetSelectedPorts (TreeStore connectionStore, TreeIter selectedIter, PortType portType)
 		{
-			TreePath iterPath = connectionStore.GetPath(selectedIter);
-			List<Port> selectedPorts = new List<Port>();
+			TreePath iterPath = connectionStore.GetPath (selectedIter);
+			List<Port> selectedPorts = new List<Port> ();
 			TreeIter otherIter;
 			if (iterPath.Depth == 2) {
-				if (iterPath.Up() && connectionStore.GetIter(out otherIter, iterPath)) {
-					selectedPorts.Add(new Port(
-			connectionStore.GetValue(selectedIter, 0).ToString(),
-			connectionStore.GetValue(otherIter, 0).ToString(),
-			portType,
-			_connectionManager.ConnectionType
+				if (iterPath.Up () && connectionStore.GetIter (out otherIter, iterPath)) {
+					selectedPorts.Add (new Port (
+						connectionStore.GetValue (selectedIter, 0).ToString (),
+						connectionStore.GetValue (otherIter, 0).ToString (),
+						portType,
+						_connectionManager.ConnectionType
 					)
 					);
 				}
 			} else if (iterPath.Depth == 1) {
-				iterPath.Down();
+				iterPath.Down ();
 				while (connectionStore.GetIter (out otherIter, iterPath)) {
-					selectedPorts.Add(new Port(
-			connectionStore.GetValue(otherIter, 0).ToString(),
-			connectionStore.GetValue(selectedIter, 0).ToString(),
-			portType,
-			_connectionManager.ConnectionType
+					selectedPorts.Add (new Port (
+						connectionStore.GetValue (otherIter, 0).ToString (),
+						connectionStore.GetValue (selectedIter, 0).ToString (),
+						portType,
+						_connectionManager.ConnectionType
 					)
 					);
-					iterPath.Next();
+					iterPath.Next ();
 				}
 			}
 			return selectedPorts;
@@ -311,7 +311,7 @@ namespace MonoMultiJack.Widgets
 		/// <returns>
 		/// A <see cref="System.Int32"/>
 		/// </returns>
-		private int GetYPositionForPort(TreeView tree, TreeStore store, Port selectedPort)
+		private int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
 		{
 			int cellHeight = 24;
 			//We start in the middle of the first Treeview item
@@ -319,21 +319,21 @@ namespace MonoMultiJack.Widgets
 			
 			ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
 			if (treeParent != null) {
-				position -= Convert.ToInt32(treeParent.Vadjustment.Value);
+				position -= Convert.ToInt32 (treeParent.Vadjustment.Value);
 			}
 			TreeIter clientIter;
 			TreeIter portIter;
-			if (store.GetIterFirst(out clientIter)) {
+			if (store.GetIterFirst (out clientIter)) {
 				do {
-					if (store.IterHasChild(clientIter) && tree.GetRowExpanded(store.GetPath(clientIter))) {
-						if (store.IterChildren(out portIter, clientIter)) {
+					if (store.IterHasChild (clientIter) && tree.GetRowExpanded (store.GetPath (clientIter))) {
+						if (store.IterChildren (out portIter, clientIter)) {
 							do {
 								position += cellHeight;
 							} while ((store.GetValue (portIter, 0).ToString () != selectedPort.Name || store.GetValue (clientIter, 0).ToString () != selectedPort.ClientName) && store.IterNext (ref portIter));
 						}
 					}
 					//Necessary because the first Treeview item only counts as 1/2 cell height.
-					if (store.GetValue(clientIter, 0).ToString() == selectedPort.ClientName) {
+					if (store.GetValue (clientIter, 0).ToString () == selectedPort.ClientName) {
 						break;
 					}
 					position += cellHeight;
@@ -342,30 +342,30 @@ namespace MonoMultiJack.Widgets
 			return position;
 		}
 
-		private void UpdateConnections(IEnumerable<IConnection> updatedConnections, ChangeType changeType)
+		private void UpdateConnections (IEnumerable<IConnection> updatedConnections, ChangeType changeType)
 		{
-			if (updatedConnections != null && updatedConnections.Any()) {
+			if (updatedConnections != null && updatedConnections.Any ()) {
 				switch (changeType) {
-					case ChangeType.New:		
-		    #if DEBUG
-		    foreach (IConnection conn in updatedConnections) {
-			Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " is connected to " + conn.InPort.ClientName + ":" + conn.InPort.Name);
-		    }
-		    #endif
-						_connections.AddRange(updatedConnections);
-						break;
-					case ChangeType.Deleted:
-		    #if DEBUG
-		    foreach (IConnection conn in updatedConnections)
-		    {
-			Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " has been disconnected from " + conn.InPort.ClientName + ":" + conn.InPort.Name);
-		    }
-		    #endif
-						var oldConnectionHashes = new HashSet<IConnection>(updatedConnections);
-						_connections.RemoveAll(c => oldConnectionHashes.Contains(c));
-						break;
+				case ChangeType.New:		
+					    #if DEBUG
+					    foreach (IConnection conn in updatedConnections) {
+						Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " is connected to " + conn.InPort.ClientName + ":" + conn.InPort.Name);
+					    }
+					    #endif
+					_connections.AddRange (updatedConnections);
+					break;
+				case ChangeType.Deleted:
+					    #if DEBUG
+					    foreach (IConnection conn in updatedConnections)
+					    {
+						Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " has been disconnected from " + conn.InPort.ClientName + ":" + conn.InPort.Name);
+					    }
+					    #endif
+					var oldConnectionHashes = new HashSet<IConnection> (updatedConnections);
+					_connections.RemoveAll (c => oldConnectionHashes.Contains (c));
+					break;
 				}
-				UpdateConnectionLines();
+				UpdateConnectionLines ();
 			}
 		}
 
@@ -378,46 +378,46 @@ namespace MonoMultiJack.Widgets
 		/// <param name="e">
 		/// A <see cref="System.EventArgs"/>
 		/// </param>
-		protected virtual void ConnectButton_Click(object sender, System.EventArgs e)
+		protected virtual void ConnectButton_Click (object sender, System.EventArgs e)
 		{
 			TreeIter selectedOutIter;
 			TreeIter selectedInIter;
-			if (_outputTreeview.Selection.GetSelected(out selectedOutIter) && _inputTreeview.Selection.GetSelected(out selectedInIter)) {
-				List<Port> outPorts = GetSelectedPorts(
-		    _outputStore,
-		    selectedOutIter,
-		    PortType.Output
+			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter)) {
+				List<Port> outPorts = GetSelectedPorts (
+					_outputStore,
+					selectedOutIter,
+					PortType.Output
 				);
-				List<Port> inPorts = GetSelectedPorts(
-		    _inputStore,
-		    selectedInIter,
-		    PortType.Input
+				List<Port> inPorts = GetSelectedPorts (
+					_inputStore,
+					selectedInIter,
+					PortType.Input
 				);
-				int minCount = Math.Min(inPorts.Count(), outPorts.Count());
+				int minCount = Math.Min (inPorts.Count (), outPorts.Count ());
 				for (var i = 0; i < minCount; i++) {
-					_connectionManager.Connect(outPorts [i], inPorts [i]);
+					_connectionManager.Connect (outPorts [i], inPorts [i]);
 				}
 			}
 		}
 
-		protected virtual void DisconnectButton_Click(object sender, System.EventArgs e)
+		protected virtual void DisconnectButton_Click (object sender, System.EventArgs e)
 		{
 			TreeIter selectedOutIter;
 			TreeIter selectedInIter;
-			if (_outputTreeview.Selection.GetSelected(out selectedOutIter) && _inputTreeview.Selection.GetSelected(out selectedInIter)) {
-				IEnumerable<Port> outPorts = GetSelectedPorts(
-		    _outputStore,
-		    selectedOutIter,
-		    PortType.Output
+			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter)) {
+				IEnumerable<Port> outPorts = GetSelectedPorts (
+					_outputStore,
+					selectedOutIter,
+					PortType.Output
 				);
-				IEnumerable<Port> inPorts = GetSelectedPorts(
-		    _inputStore,
-		    selectedInIter,
-		    PortType.Input
+				IEnumerable<Port> inPorts = GetSelectedPorts (
+					_inputStore,
+					selectedInIter,
+					PortType.Input
 				);
 				foreach (Port outPort in outPorts) {
 					foreach (Port inPort in inPorts) {
-						_connectionManager.Disconnect(outPort, inPort);
+						_connectionManager.Disconnect (outPort, inPort);
 					}
 				}
 			}
@@ -426,10 +426,10 @@ namespace MonoMultiJack.Widgets
 		/// <summary>
 		/// Updates the connection lines
 		/// </summary>
-		private void UpdateConnectionLines()
+		private void UpdateConnectionLines ()
 		{
 			var now = DateTime.Now;
-			if (now - _lastLineUpdate < TimeSpan.FromSeconds(0.01)) {
+			if (now - _lastLineUpdate < TimeSpan.FromSeconds (0.01)) {
 				return;
 			}
 			_lastLineUpdate = now;
@@ -437,34 +437,30 @@ namespace MonoMultiJack.Widgets
 				if (_connectionArea.GdkWindow == null) {
 					return;
 				}
-				_connectionArea.GdkWindow.Clear();
+				_connectionArea.GdkWindow.Clear ();
 				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
 					var connections = _connections;
 					foreach (IConnection conn in connections) {
-						int outY = GetYPositionForPort(
-			    _outputTreeview,
-			    _outputStore,
-			    conn.OutPort
-						);
-						int inY = GetYPositionForPort(_inputTreeview, _inputStore, conn.InPort);
+						int outY = GetYPositionForPort (_outputTreeview,_outputStore, conn.OutPort);
+						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
 						int areaWidth = _connectionArea.Allocation.Width;
 						
 						if (outY != -1 && inY != -1) {
-							g.Save();
-							g.MoveTo(0, outY);
+							g.Save ();
+							g.MoveTo (0, outY);
 							//g.LineTo (areaWidth, inY);
-							g.CurveTo(
-				new PointD(areaWidth / 4, outY),
-				new PointD(3 * areaWidth / 4, inY),
-				new PointD(areaWidth, inY)
+							g.CurveTo (
+								new PointD (areaWidth / 4, outY),
+								new PointD (3 * areaWidth / 4, inY),
+								new PointD (areaWidth, inY)
 							);
-							g.Restore();
+							g.Restore ();
 						}
 					}
-					g.Color = new Color(0, 0, 0);
+					g.Color = new Color (0, 0, 0);
 					g.LineWidth = 1;
-					g.Stroke();
-					g.Target.Dispose();
+					g.Stroke ();
+					g.Target.Dispose ();
 				}
 			} catch (Exception ex) {
 				#if DEBUG
@@ -473,19 +469,19 @@ namespace MonoMultiJack.Widgets
 			}	
 		}
 
-		protected virtual void OnTreeViewRowExpanded(object o, Gtk.RowExpandedArgs args)
+		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
 		{
-			UpdateConnectionLines();
+			UpdateConnectionLines ();
 		}
 
-		protected virtual void OnTreeViewRowCollapsed(object o, Gtk.RowCollapsedArgs args)
+		protected virtual void OnTreeViewRowCollapsed (object o, Gtk.RowCollapsedArgs args)
 		{
-			UpdateConnectionLines();
+			UpdateConnectionLines ();
 		}
 
-		protected virtual void Handle_ExposeEvent(object o, Gtk.ExposeEventArgs args)
+		protected virtual void Handle_ExposeEvent (object o, Gtk.ExposeEventArgs args)
 		{
-			UpdateConnectionLines();
+			UpdateConnectionLines ();
 		}
 	}
 }
