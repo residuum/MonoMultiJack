@@ -1,21 +1,21 @@
-// 
-// LibJackWrapper.Definitions.cs
-//  
+//
+// PointerConversions.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2012 Thomas Mayer
-// 
+//
+// Copyright (c) 2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,21 +24,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Runtime.InteropServices;
 
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
-	/// <summary>
-	/// Wrapper class for libjack. This file contains definitions for private classes, enums and constants.
-	/// </summary>
-	internal static partial class LibJackWrapper
-	{		
-		private const string JACK_LIB_NAME = "libjack.so.0";
-		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		private const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
-		private delegate void JackPortRegistrationCallback(uint port,int register,IntPtr args);
+	internal static class PointerConversions
+	{
+		public static SndSeqAddr PtrToSndSeqAddr (this IntPtr ptr)
+		{
+			try {
+				return (SndSeqAddr)Marshal.PtrToStructure (
+				    ptr,
+				    typeof(SndSeqAddr)
+				);
+			} catch (Exception e) {
+				return new SndSeqAddr ();
+			}
+		}
 
-		private delegate void JackPortConnectCallback(uint a,uint b,int connect,IntPtr args);
+		public static IntPtr SndSeqAddrToPtr (this SndSeqAddr addr)
+		{
+			IntPtr ptr = typeof(SndSeqAddr).Malloc ();
+			Marshal.StructureToPtr (addr, ptr, false);
+			return ptr;
+		}
 
-		private delegate void JackShutdownCallback(IntPtr args);
+		static IntPtr Malloc (this Type type)
+		{
+			return Marshal.AllocHGlobal (Marshal.SizeOf (type));
+		}
 	}
 }
+

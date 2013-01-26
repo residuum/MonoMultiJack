@@ -132,10 +132,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			IntPtr clientInfo = IntPtr.Zero;
 			IntPtr portInfo = IntPtr.Zero;
 			try {
-				var portAddress = (SndSeqAddr)Marshal.PtrToStructure (
-		    portAddressPtr,
-		    typeof(SndSeqAddr)
-				);
+				SndSeqAddr portAddress = portAddressPtr.PtrToSndSeqAddr();
 				clientInfo = Marshal.AllocHGlobal (GetClientInfoSize ());
 				portInfo = Marshal.AllocHGlobal (GetPortInfoSize ());
 				snd_seq_client_info_set_client (clientInfo, portAddress.Client);
@@ -151,9 +148,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				);
 
 				IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo);
-				string clientName = Marshal.PtrToStringAnsi (clientNamePtr);
+				string clientName = MarshallingHelper.PtrToString (clientNamePtr);
 				IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo);
-				string portName = Marshal.PtrToStringAnsi (portNamePtr);
+				string portName = MarshallingHelper.PtrToString (portNamePtr);
 
 				int portCaps = snd_seq_port_info_get_capability (portInfo);
 				int portType = snd_seq_port_info_get_type (portInfo);
@@ -231,10 +228,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 					if (connectedAddressPtr == IntPtr.Zero) {
 						continue;
 					}
-					SndSeqAddr connectedAddress = (SndSeqAddr)Marshal.PtrToStructure (
-			connectedAddressPtr,
-			typeof(SndSeqAddr)
-					);
+					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr();
 					AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
 						&& p.AlsaAddress.Port == connectedAddress.Port
 					);
@@ -266,10 +260,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			IntPtr inPortAddr = IntPtr.Zero;
 			try {
 				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				outPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
-				inPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
-				Marshal.StructureToPtr (outPort.AlsaAddress, outPortAddr, false);
-				Marshal.StructureToPtr (inPort.AlsaAddress, inPortAddr, false);
+				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr();
+				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr();
 
 				snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
 				snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);
@@ -303,10 +295,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			IntPtr inPortAddr = IntPtr.Zero;
 			try {
 				subscriberInfo = Marshal.AllocHGlobal (GetSubscriberInfoSize ());
-				outPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
-				inPortAddr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof(SndSeqAddr)));
-				Marshal.StructureToPtr (outPort.AlsaAddress, outPortAddr, false);
-				Marshal.StructureToPtr (inPort.AlsaAddress, inPortAddr, false);
+				outPortAddr = outPort.AlsaAddress.SndSeqAddrToPtr();
+				inPortAddr = inPort.AlsaAddress.SndSeqAddrToPtr();
 
 				snd_seq_port_subscribe_set_sender (subscriberInfo, outPortAddr);
 				snd_seq_port_subscribe_set_dest (subscriberInfo, inPortAddr);

@@ -42,6 +42,7 @@
     <Compile Include="MessageType.cs" />
     <Compile Include="Port.cs" />
     <Compile Include="PortType.cs" />
+    <Compile Include="MarshallingHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

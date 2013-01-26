@@ -36,11 +36,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	/// </summary>
 	internal static partial class LibJackWrapper
 	{		
-		private static IntPtr _jackClient = IntPtr.Zero;
-		private static List<JackPort> _portMapper = new List<JackPort>();
-		private static List<IConnection> _connections = new List<IConnection>();
+		static IntPtr _jackClient = IntPtr.Zero;
+		static List<JackPort> _portMapper = new List<JackPort>();
+		static List<IConnection> _connections = new List<IConnection>();
+		static string _clientName = "MonoMultiJack" 
+				+ (DateTime.Now.Ticks / 10000000).ToString().Substring(6);
 		
-		private static void OnPortRegistration(uint port, int register, IntPtr args)
+		static void OnPortRegistration(uint port, int register, IntPtr args)
 		{
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs();
 			ConnectionType connectionType = ConnectionType.Undefined;
@@ -54,7 +56,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				ports.Add(newPort);
 				eventArgs.Ports = ports;
 			} else {
-				var oldPort = _portMapper.FirstOrDefault(map => map.JackPortId == port);
+				IntPtr portPtr = jack_port_by_id(_jackClient, port);
+				var oldPort = _portMapper.FirstOrDefault(map => map.JackPortPointer == portPtr);
 				if (oldPort != null) {
 					var ports = new List<Port>();
 					ports.Add(oldPort);
@@ -69,12 +72,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			PortOrConnectionHasChanged(null, eventArgs);			
 		}
 		
-		private static void OnPortConnect(int a, int b, int connect, IntPtr args)
+		static void OnPortConnect(uint a, uint b, int connect, IntPtr args)
 		{
 			try {
 				var eventArgs = new ConnectionEventArgs();
-				var outPort = _portMapper.First(map => map.JackPortId == a);
-				var inPort = _portMapper.First(map => map.JackPortId == b);
+				var outPort = _portMapper.First(map => map.JackPortPointer == jack_port_by_id(_jackClient, a));
+				var inPort = _portMapper.First(map => map.JackPortPointer == jack_port_by_id(_jackClient, b));
 				if (connect != 0) {
 					var connections = new List<IConnection>();
 					IConnection newConn = null;
@@ -91,7 +94,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					_connections.Add(newConn);
 					connections.Add(newConn);
 					eventArgs.Connections = connections;					
-					eventArgs.ConnectionType = _portMapper.First(map => map.JackPortId == a).ConnectionType;
+					eventArgs.ConnectionType = _portMapper.First(map => map.JackPortPointer == jack_port_by_id(_jackClient, a)).ConnectionType;
 					eventArgs.ChangeType = ChangeType.New;
 					eventArgs.Message = "New Connection established";
 				} else {
@@ -100,7 +103,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					);
 					eventArgs.Connections = oldConn.ToList();
 					eventArgs.ChangeType = ChangeType.Deleted;					
-					eventArgs.ConnectionType = _portMapper.First(map => map.JackPortId == a).ConnectionType;
+					eventArgs.ConnectionType = _portMapper.First(map => map.JackPortPointer == jack_port_by_id(_jackClient, a)).ConnectionType;
 					_connections = _connections.Where(conn => conn.InPort.ClientName != inPort.ClientName || conn.InPort.Name != inPort.Name
 						|| conn.OutPort.ClientName != outPort.ClientName || conn.OutPort.Name != outPort.Name
 					)
@@ -116,7 +119,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 		
-		private static void OnJackShutdown(IntPtr args)
+		static void OnJackShutdown(IntPtr args)
 		{
 			_jackClient = IntPtr.Zero;
 			_portMapper.Clear();
@@ -129,7 +132,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		internal static bool ConnectToServer()
 		{
 			if (_jackClient == IntPtr.Zero) {
-				_jackClient = jack_client_open("MonoMultiJack", 0, IntPtr.Zero);
+				_jackClient = jack_client_open(_clientName, 1, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate();
@@ -150,16 +153,21 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// <summary>
 		/// Activates jack client
 		/// </summary>
-		private static bool Activate()
+		static bool Activate()
 		{
 			jack_set_port_connect_callback(_jackClient, OnPortConnect, IntPtr.Zero);
-			jack_set_port_registration_callback(
-		_jackClient,
-		OnPortRegistration,
-		IntPtr.Zero
-			);
+			jack_set_port_registration_callback(_jackClient, OnPortRegistration, IntPtr.Zero);
 			jack_on_shutdown(_jackClient, OnJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = jack_activate(_jackClient);
+			//TODO: jack_get_ports();
+//			IntPtr portList = jack_get_ports(_jackClient, null, null, 0);
+//			string[] portNames = MarshallingHelper.PtrToStringArray(portList);
+//			foreach(string portName in portNames) {
+//				_portMapper.Add(GetJackPortData(portName));
+//			}
+//			if (portList != IntPtr.Zero){
+//				Marshal.FreeHGlobal(portList);
+//			}
 			return jackActivateStatus == 0;
 		}
 		
@@ -168,41 +176,48 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				return _jackClient != IntPtr.Zero;
 			}
 		}
-				
-		private static JackPort GetJackPortData(uint portId)
+
+		static JackPort GetJackPortData(string portName)
+		{
+			IntPtr portPointer = jack_port_by_name(_jackClient, portName);
+			return MapPort(portPointer);
+		}
+
+		static JackPort GetJackPortData(uint portId)
+		{
+			IntPtr portPointer = jack_port_by_id(_jackClient, portId);			
+			return MapPort(portPointer);
+		}
+
+		static JackPort MapPort(IntPtr portPointer)
 		{
 			try {
-				IntPtr portPointer = jack_port_by_id(_jackClient, portId);
-				if (portPointer != IntPtr.Zero) {
-					string portName = Marshal.PtrToStringAnsi(jack_port_name(portPointer));
+				string portName = MarshallingHelper.PtrToString(jack_port_name(portPointer));
+				if (!string.IsNullOrEmpty(portName)) {
 					PortType portType = PortType.Undefined;
 					JackPortFlags portFlags = (JackPortFlags)jack_port_flags(portPointer);
 					if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput) {
 						portType = PortType.Input;
-					} else if ((portFlags & JackPortFlags.JackPortIsOutput) == JackPortFlags.JackPortIsOutput) {
+					} else
+						if ((portFlags & JackPortFlags.JackPortIsOutput) == JackPortFlags.JackPortIsOutput) {
 						portType = PortType.Output;
 					}
 					ConnectionType connectionType = ConnectionType.Undefined;
-					string connectionTypeName = Marshal.PtrToStringAnsi(jack_port_type(portPointer));
+					string connectionTypeName = MarshallingHelper.PtrToString(jack_port_type(portPointer));
 					if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE) {
 						connectionType = ConnectionType.JackAudio;
-					} else if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
+					} else
+						if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
 						connectionType = ConnectionType.JackMidi;
 					}
-					JackPort newPort = new JackPort(
-			portName,
-			portId,
-			portPointer,
-			portType,
-			connectionType
-					);
+					JackPort newPort = new JackPort(portName, portPointer, portType, connectionType);
 					return newPort;
 				}
 				return null;
 			} catch (Exception e) {
-#if DEBUG
-				Console.WriteLine (e.Message);
-#endif
+				#if DEBUG
+				Console.WriteLine(e.Message);
+				#endif
 				return null;
 			}
 		}
