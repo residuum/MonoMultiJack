@@ -208,7 +208,6 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Disconnect</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="DisconnectButton_Click" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>

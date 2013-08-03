@@ -85,10 +85,10 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 				string driver = firstNode.SelectSingleNode("driver").InnerText;
 				string driverOptions = firstNode.SelectSingleNode("driver-options").InnerText;
 				return new JackdConfiguration(
-		    path,
-		    generalOptions,
-		    driver,
-		    driverOptions
+					path,
+					generalOptions,
+					driver,
+					driverOptions
 				);
 			}
 			throw new XmlException("XML file is corrupt.");
@@ -237,12 +237,13 @@ namespace MonoMultiJack.BusinessLogic.Configuration
 				writer.WriteStartDocument();
 				writer.WriteStartElement("window");
 				writer.WriteElementString(
-		    "x-position",
-		    newWindowConfig.XPosition.ToString()
+					"x-position",
+					newWindowConfig.XPosition.ToString()
 				);
 				writer.WriteElementString(
-		    "y-position",
-		    newWindowConfig.YPosition.ToString());
+					"y-position",
+					newWindowConfig.YPosition.ToString()
+				);
 				writer.WriteElementString("x-size", newWindowConfig.XSize.ToString());
 				writer.WriteElementString("y-size", newWindowConfig.YSize.ToString());
 				writer.WriteEndElement();

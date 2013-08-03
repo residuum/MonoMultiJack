@@ -33,11 +33,9 @@ namespace MonoMultiJack.Forms
 	{
 
 		void AddAppConfigWidget (IAppConfigWidget widget);
-
 		void RemoveAppConfigWidget(IAppConfigWidget widget);
 
 		event EventHandler SaveApplicationConfigs;
-
 		event EventHandler AddApplication;
 	}
 }

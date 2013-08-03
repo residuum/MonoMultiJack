@@ -85,7 +85,7 @@ namespace MonoMultiJack.Forms
 		}
 
 		bool IWindow.Sensitive {
-			set{
+			set {
 				this.Sensitive = value;
 			}
 		}
@@ -147,15 +147,8 @@ namespace MonoMultiJack.Forms
 		void BuildWindowContent()
 		{
 			Title = "MonoMultiJack";
-			foreach (ConnectionType connType in Enum.GetValues(typeof(ConnectionType))) {
-				IConnectionManager connManager = ConnectionManagerFactory.GetConnectionManager(connType);
-				if (connManager != null) {					
-					_connectionNotebook.AppendPage(
-			new ConnectionDisplay(connManager),
-			new Label(connManager.ConnectionType.ToString())
-					);
-				}
-			}
+
+			((IMainWindow)this).JackdIsRunning = false;
 		}
 		
 		/// <summary>

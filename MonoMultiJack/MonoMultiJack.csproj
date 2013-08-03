@@ -82,22 +82,21 @@
     <Compile Include="Widgets\IAppConfigWidget.cs" />
     <Compile Include="Forms\IJackdConfigWindow.cs" />
     <Compile Include="Forms\IAppConfigWindow.cs" />
-    <Compile Include="Controllers\ConnectionDisplayController.cs" />
     <Compile Include="Controllers\AppStartController.cs" />
     <Compile Include="Controllers\JackdConfigController.cs" />
     <Compile Include="Controllers\AppConfigController.cs" />
-    <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Forms\AppConfigWindow.cs" />
     <Compile Include="Widgets\IConnectionWidget.cs" />
+    <Compile Include="Controllers\ConnectionController.cs" />
+    <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
+    <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Forms\" />
     <Folder Include="Widgets\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Controllers\EventArguments\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">

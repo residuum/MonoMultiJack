@@ -38,38 +38,15 @@ namespace MonoMultiJack.Widgets
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class ConnectionDisplay : Bin, IConnectionWidget
 	{
-		/// <summary>
-		/// Connection manager for this instance.
-		/// </summary>
-		private IConnectionManager _connectionManager;
-
-		/// <summary>
-		/// Treestore for outputs.
-		/// </summary>
-		private TreeStore _outputStore = new TreeStore(typeof(string));
-
-		/// <summary>
-		/// Treestore for inputs.
-		/// </summary>
-		private TreeStore _inputStore = new TreeStore(typeof(string));
-
-		/// <summary>
-		/// All active connections.
-		/// </summary>
-		private List<IConnection> _connections = new List<IConnection>();
-		private DateTime _lastLineUpdate = DateTime.Now;
-
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		public ConnectionDisplay()
-		{
-			this.Build();
-		}
+		TreeStore _outputStore = new TreeStore(typeof(string));
+		List<Port> _inPorts = new List<Port>();
+		TreeStore _inputStore = new TreeStore(typeof(string));
+		List<Port> _outPorts = new List<Port>();
+		List<IConnection> _connections = new List<IConnection>();
+		DateTime _lastLineUpdate = DateTime.Now;
 
 		public override void Dispose()
 		{
-			_connectionManager.Dispose();
 			base.Dispose();
 		}
 
@@ -79,12 +56,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="connectionManager">
 		/// A <see cref="IConnectionManager"/> whose ports and connection are displayed.
 		/// </param>
-		public ConnectionDisplay(IConnectionManager connectionManager) : this()
+		public ConnectionDisplay()
 		{
-			_connectionManager = connectionManager;
-			_connectionManager.ConnectionHasChanged += Handle_connectionManagerConnectionHasChanged;
-			_connectionManager.BackendHasExited += Handle_connectionManagerBackendHasExited;
-			
+			this.Build();
 			var inClientColumn = new TreeViewColumn();
 			var inClientCell = new CellRendererText();
 			inClientColumn.PackStart(inClientCell, true);
@@ -98,49 +72,24 @@ namespace MonoMultiJack.Widgets
 			outClientColumn.AddAttribute(outClientCell, "text", 0);
 			_outputTreeview.AppendColumn(outClientColumn);
 			_outputTreeview.Model = _outputStore;
-			UpdatePorts(_connectionManager.Ports, ChangeType.New);
-			UpdateConnections(_connectionManager.Connections, ChangeType.New);
 		}
 
-		/// <summary>
-		/// Handles the BackendHasExited event of the connection manager.
-		/// </summary>
-		/// <param name="sender">
-		/// The source of the event.
-		/// </param>
-		/// <param name="e">
-		/// The <see cref="ConnectionEventArgs"/> of the event.
-		/// </param>
-		private void Handle_connectionManagerBackendHasExited(object sender, ConnectionEventArgs e)
+		public void AddPort(Port port)
 		{
-			_outputStore.Clear();
-			_inputStore.Clear();
-			_connections.Clear();
-			UpdateConnectionLines();
+			if (port.PortType == PortType.Input) {
+				_inPorts.Add(port);
+			} else if (port.PortType == PortType.Output) {
+				_outPorts.Add(port);
+			}
 		}
 
-		/// <summary>
-		/// Handles the ConnectionHasChanged event of the connection manager.
-		/// </summary>
-		/// <param name="sender">
-		/// The source of the event.
-		/// </param>
-		/// <param name="e">
-		/// The <see cref="ConnectionEventArgs"/> of the event.
-		/// </param>
-		private void Handle_connectionManagerConnectionHasChanged(object sender, ConnectionEventArgs e)
+		public void RemovePort(Port port)
 		{
-			#if DEBUG
-			Console.WriteLine (e.Message);
-			Console.WriteLine (e.ConnectionType.ToString ());
-			#endif
-			if (e.Ports != null && e.Ports.Any()) {
-				UpdatePorts(e.Ports, e.ChangeType);
+			if (port.PortType == PortType.Input) {
+				_inPorts.Remove(port);
+			} else if (port.PortType == PortType.Output) {
+				_outPorts.Remove(port);
 			}
-			if (e.Connections != null && e.Connections.Any()) {
-				UpdateConnections(e.Connections, e.ChangeType);
-			}
-			
 		}
 
 		/// <summary>
@@ -272,25 +221,27 @@ namespace MonoMultiJack.Widgets
 			TreeIter otherIter;
 			if (iterPath.Depth == 2) {
 				if (iterPath.Up() && connectionStore.GetIter(out otherIter, iterPath)) {
-					selectedPorts.Add(new Port(
-			connectionStore.GetValue(selectedIter, 0).ToString(),
-			connectionStore.GetValue(otherIter, 0).ToString(),
-			portType,
-			_connectionManager.ConnectionType
-					)
-					);
+					//TODO: Get Port
+//					selectedPorts.Add(new Port(
+//			connectionStore.GetValue(selectedIter, 0).ToString(),
+//			connectionStore.GetValue(otherIter, 0).ToString(),
+//			portType,
+//			_connectionManager.ConnectionType
+//					)
+//					);
 				}
 			} else if (iterPath.Depth == 1) {
 				iterPath.Down();
 				while (connectionStore.GetIter (out otherIter, iterPath)) {
-					selectedPorts.Add(new Port(
-			connectionStore.GetValue(otherIter, 0).ToString(),
-			connectionStore.GetValue(selectedIter, 0).ToString(),
-			portType,
-			_connectionManager.ConnectionType
-					)
-					);
-					iterPath.Next();
+					//TODO: Get Ports
+//					selectedPorts.Add(new Port(
+//			connectionStore.GetValue(otherIter, 0).ToString(),
+//			connectionStore.GetValue(selectedIter, 0).ToString(),
+//			portType,
+//			_connectionManager.ConnectionType
+//					)
+//					);
+//					iterPath.Next();
 				}
 			}
 			return selectedPorts;
@@ -342,33 +293,6 @@ namespace MonoMultiJack.Widgets
 			return position;
 		}
 
-		private void UpdateConnections(IEnumerable<IConnection> updatedConnections, ChangeType changeType)
-		{
-			if (updatedConnections != null && updatedConnections.Any()) {
-				switch (changeType) {
-					case ChangeType.New:		
-		    #if DEBUG
-		    foreach (IConnection conn in updatedConnections) {
-			Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " is connected to " + conn.InPort.ClientName + ":" + conn.InPort.Name);
-		    }
-		    #endif
-						_connections.AddRange(updatedConnections);
-						break;
-					case ChangeType.Deleted:
-		    #if DEBUG
-		    foreach (IConnection conn in updatedConnections)
-		    {
-			Console.WriteLine (conn.OutPort.ClientName + ":" + conn.OutPort.Name + " has been disconnected from " + conn.InPort.ClientName + ":" + conn.InPort.Name);
-		    }
-		    #endif
-						var oldConnectionHashes = new HashSet<IConnection>(updatedConnections);
-						_connections.RemoveAll(c => oldConnectionHashes.Contains(c));
-						break;
-				}
-				UpdateConnectionLines();
-			}
-		}
-
 		/// <summary>
 		/// Handles the click event on the ConnectButton
 		/// </summary>
@@ -393,10 +317,11 @@ namespace MonoMultiJack.Widgets
 		    selectedInIter,
 		    PortType.Input
 				);
-				int minCount = Math.Min(inPorts.Count(), outPorts.Count());
-				for (var i = 0; i < minCount; i++) {
-					_connectionManager.Connect(outPorts [i], inPorts [i]);
-				}
+				//TODO: Call connection
+//				int minCount = Math.Min(inPorts.Count(), outPorts.Count());
+//				for (var i = 0; i < minCount; i++) {
+//					_connectionManager.Connect(outPorts [i], inPorts [i]);
+//				}
 			}
 		}
 
@@ -415,11 +340,12 @@ namespace MonoMultiJack.Widgets
 		    selectedInIter,
 		    PortType.Input
 				);
-				foreach (Port outPort in outPorts) {
-					foreach (Port inPort in inPorts) {
-						_connectionManager.Disconnect(outPort, inPort);
-					}
-				}
+				//TODO: Call disconnect
+//				foreach (Port outPort in outPorts) {
+//					foreach (Port inPort in inPorts) {
+//						_connectionManager.Disconnect(outPort, inPort);
+//					}
+//				}
 			}
 		}
 
@@ -487,5 +413,33 @@ namespace MonoMultiJack.Widgets
 		{
 			UpdateConnectionLines();
 		}
+		#region IConnectionWidget implementation
+		public event EventHandler ConnectPorts;
+		public event EventHandler DisconnectPorts;
+
+		public void Clear()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void AddConnection(IConnection connection)
+		{
+			#if DEBUG
+			Console.WriteLine (connection.OutPort.ClientName + ":" + connection.OutPort.Name + " is connected to " + connection.InPort.ClientName + ":" + connection.InPort.Name);
+			#endif
+			
+			_connections.Add(connection);
+			UpdateConnectionLines();
+		}
+
+		public void RemoveConnection(IConnection connection)
+		{
+			#if DEBUG
+			Console.WriteLine (connection.OutPort.ClientName + ":" + connection.OutPort.Name + " has been disconnected from " + connection.InPort.ClientName + ":" + connection.InPort.Name);
+			#endif
+			_connections.Remove(connection);
+		}
+		#endregion
+
 	}
 }

@@ -92,7 +92,7 @@ namespace MonoMultiJack.Controllers
 		{	
 			WindowConfiguration windowConfiguration;
 			TryLoadJackdConfiguration(out _jackdConfiguration);
-			if (TryLoadAppConfigurations(out _appConfigurations)){
+			if (TryLoadAppConfigurations(out _appConfigurations)) {
 				UpdateApps(_appConfigurations);
 			}			
 			if (TryLoadWindowConfiguration(out windowConfiguration)) {
@@ -121,15 +121,15 @@ namespace MonoMultiJack.Controllers
 				jackdConfig = PersistantConfiguration.LoadJackdConfiguration();
 				return true;
 			} catch (System.Xml.XmlException e) {
-#if DEBUG
-Console.WriteLine (e.Message);
-#endif
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				ShowInfoMessage("Jackd configuration File is corrupt.");
 				jackdConfig = new JackdConfiguration();
 			} catch (FileNotFoundException e) {
-#if DEBUG
-Console.WriteLine (e.Message);
-#endif
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				ShowInfoMessage("Jackd is not configured.");
 				jackdConfig = new JackdConfiguration();
 			}
@@ -153,15 +153,15 @@ Console.WriteLine (e.Message);
 				appConfigs = PersistantConfiguration.LoadAppConfigurations();
 				return true;
 			} catch (System.Xml.XmlException e) {
-#if DEBUG
-Console.WriteLine (e.Message);
-#endif
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				ShowInfoMessage("Application configuration File is corrupt.");
 				appConfigs = new List<AppConfiguration>();
 			} catch (FileNotFoundException e) {
-#if DEBUG
-Console.WriteLine (e.Message);
-#endif
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
 				ShowInfoMessage("Applications are not configured.");
 				appConfigs = new List<AppConfiguration>();
 			}
@@ -336,7 +336,7 @@ Console.WriteLine (e.Message);
 			InitJackd(_jackdConfiguration);
 		}
 				
-		void Controller_UpdateApps (object sender, UpdateAppsEventArgs e)
+		void Controller_UpdateApps(object sender, UpdateAppsEventArgs e)
 		{
 			_appConfigurations = e.AppConfigurations;
 			PersistantConfiguration.SaveAppConfiguations(_appConfigurations);
