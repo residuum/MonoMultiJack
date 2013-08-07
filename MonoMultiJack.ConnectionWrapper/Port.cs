@@ -37,13 +37,16 @@ namespace MonoMultiJack.ConnectionWrapper
 		public PortType PortType { get; protected set; }
 
 		public ConnectionType ConnectionType { get; protected set; }
+
+		public uint Id {get; protected set;}
 		
-		public Port(string name, string clientName, PortType portType, ConnectionType connectionType)
+		public Port(string name, string clientName, PortType portType, ConnectionType connectionType)//, uint id)
 		{
 			Name = name;
 			ClientName = clientName;
 			PortType = portType;
 			ConnectionType = connectionType;
+			//Id = id;
 		}
 		
 		public Port()

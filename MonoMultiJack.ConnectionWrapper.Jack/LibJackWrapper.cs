@@ -56,8 +56,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				ports.Add(newPort);
 				eventArgs.Ports = ports;
 			} else {
-				IntPtr portPtr = jack_port_by_id(_jackClient, port);
-				var oldPort = _portMapper.FirstOrDefault(map => map.JackPortPointer == portPtr);
+				var oldPort = _portMapper.FirstOrDefault(map => map.Id == port);
 				if (oldPort != null) {
 					var ports = new List<Port>();
 					ports.Add(oldPort);
@@ -177,19 +176,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 
-		static JackPort GetJackPortData(string portName)
-		{
-			IntPtr portPointer = jack_port_by_name(_jackClient, portName);
-			return MapPort(portPointer);
-		}
-
 		static JackPort GetJackPortData(uint portId)
 		{
 			IntPtr portPointer = jack_port_by_id(_jackClient, portId);			
-			return MapPort(portPointer);
+			return MapPort(portPointer, portId);
 		}
 
-		static JackPort MapPort(IntPtr portPointer)
+		static JackPort MapPort(IntPtr portPointer, uint portId)
 		{
 			if (portPointer == IntPtr.Zero) {
 				return null;
@@ -213,7 +206,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 						if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
 						connectionType = ConnectionType.JackMidi;
 					}
-					JackPort newPort = new JackPort(portName, portPointer, portType, connectionType);
+					JackPort newPort = new JackPort(portName, portPointer, portType, connectionType, portId);
 					return newPort;
 				}
 				return null;

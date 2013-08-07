@@ -38,7 +38,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 			private set;
 		}
 		
-		public JackPort(string jackPortName, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
+		public JackPort(string jackPortName, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType, uint portId)
 		{				
 			JackPortName = jackPortName;
 			JackPortPointer = jackPortPtr;
@@ -47,6 +47,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 			string[] splittedName = jackPortName.Split(new[] { ':' });
 			ClientName = splittedName [0];
 			Name = splittedName [1];				
+			Id = portId;
 		}
 	}
 }

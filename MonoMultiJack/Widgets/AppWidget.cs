@@ -54,20 +54,20 @@ namespace MonoMultiJack.Widgets
 		/// <param name="appConfig">
 		/// A <see cref="AppConfiguration"/>
 		/// </param>
-		public AppWidget(AppConfiguration appConfig)
+		public AppWidget (AppConfiguration appConfig)
 		{
-			_startButton = new ToggleButton();
+			_startButton = new ToggleButton ();
 			_startButton.Label = appConfig.Name;
 			Name = appConfig.Name;
 			_startButton.Name = appConfig.Command;
 			_startButton.WidthRequest = 100;
 			_startButton.Clicked += StartApplication;
-			Put(_startButton, 0, 0);
-			if (!string.IsNullOrEmpty(appConfig.Command)) {
-				string[] appConfigValues = appConfig.Command.Split(new char[] { ' ' }, 2);
-				_appInstance = new ProgramManagement(
+			Put (_startButton, 0, 0);
+			if (!string.IsNullOrEmpty (appConfig.Command)) {
+				string[] appConfigValues = appConfig.Command.Split (new char[] { ' ' }, 2);
+				_appInstance = new ProgramManagement (
 					appConfigValues [0], 
-					appConfigValues.Count() > 1 ? appConfigValues [1] : string.Empty
+					appConfigValues.Count () > 1 ? appConfigValues [1] : string.Empty
 				);
 				_appInstance.HasStarted += OnAppInstanceHasStarted;
 				_appInstance.HasExited += OnAppInstanceHasExited;
@@ -84,9 +84,12 @@ namespace MonoMultiJack.Widgets
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void OnAppInstanceHasExited(object sender, EventArgs e)
+		void OnAppInstanceHasExited (object sender, EventArgs e)
 		{
-			ResetWidget();			
+			Application.Invoke (delegate {
+				ResetWidget ();			
+			}
+			);
 		}
 
 		/// <summary>
@@ -98,7 +101,7 @@ namespace MonoMultiJack.Widgets
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void OnAppInstanceHasStarted(object sender, EventArgs e)
+		void OnAppInstanceHasStarted (object sender, EventArgs e)
 		{
 			_startButton.Active = true;
 			_startButton.Clicked -= StopApplication;
@@ -109,23 +112,23 @@ namespace MonoMultiJack.Widgets
 		/// <summary>
 		/// stops application, if running
 		/// </summary>
-		public void StopApplication()
+		public void StopApplication ()
 		{
-			_appInstance.StopProgram();
+			_appInstance.StopProgram ();
 		}
 		
 		/// <summary>
 		/// starts application, updates action for togglebutton
 		/// </summary>
-		private void StartApplication()
+		private void StartApplication ()
 		{
-			_appInstance.StartProgram();
+			_appInstance.StartProgram ();
 		}
 		
 		/// <summary>		
 		/// resets ToggleButton state and clears appProcess
 		/// </summary>
-		private void ResetWidget()
+		private void ResetWidget ()
 		{
 			_startButton.Active = false;
 			_startButton.Clicked -= StopApplication;
@@ -142,9 +145,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void StartApplication(object obj, EventArgs args)
+		private void StartApplication (object obj, EventArgs args)
 		{
-			StartApplication();
+			StartApplication ();
 		}
 		/// <summary>
 		/// stops application, updates action for ToggleButton
@@ -155,9 +158,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void StopApplication(object obj, EventArgs args)
+		private void StopApplication (object obj, EventArgs args)
 		{
-			StopApplication();
+			StopApplication ();
 		}
 		
 		/// <summary>
@@ -169,9 +172,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void ResetWidget(object obj, EventArgs args)
+		private void ResetWidget (object obj, EventArgs args)
 		{
-			ResetWidget();
+			ResetWidget ();
 		}
 	}
 }

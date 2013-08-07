@@ -145,7 +145,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				newEventArgs.ChangeType = ChangeType.New;
 				newEventArgs.Ports = newPorts;
 				newEventArgs.Connections = newConnections;
-				ConnectionHasChanged (this, newEventArgs);
 			}
 			if (obsoletePorts.Any ()) {
 				var oldEventArgs = new ConnectionEventArgs ();

@@ -113,10 +113,13 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		private void Handle_connectionManagerBackendHasExited (object sender, ConnectionEventArgs e)
 		{
-			_outputStore.Clear ();
-			_inputStore.Clear ();
-			_connections.Clear ();
-			UpdateConnectionLines ();
+			Application.Invoke (delegate {
+				_outputStore.Clear ();
+				_inputStore.Clear ();
+				_connections.Clear ();
+				UpdateConnectionLines ();
+			}
+			);
 		}
 
 		/// <summary>
@@ -130,17 +133,19 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		private void Handle_connectionManagerConnectionHasChanged (object sender, ConnectionEventArgs e)
 		{
-			#if DEBUG
-			Console.WriteLine (e.Message);
-			Console.WriteLine (e.ConnectionType.ToString ());
-			#endif
-			if (e.Ports != null && e.Ports.Any ()) {
-				UpdatePorts (e.Ports, e.ChangeType);
+			Application.Invoke (delegate {
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				Console.WriteLine (e.ConnectionType.ToString ());
+				#endif
+				if (e.Ports != null && e.Ports.Any ()) {
+					UpdatePorts (e.Ports, e.ChangeType);
+				}
+				if (e.Connections != null && e.Connections.Any ()) {
+					UpdateConnections (e.Connections, e.ChangeType);
+				}
 			}
-			if (e.Connections != null && e.Connections.Any ()) {
-				UpdateConnections (e.Connections, e.ChangeType);
-			}
-			
+			);
 		}
 
 		/// <summary>
@@ -441,7 +446,7 @@ namespace MonoMultiJack.Widgets
 				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
 					var connections = _connections;
 					foreach (IConnection conn in connections) {
-						int outY = GetYPositionForPort (_outputTreeview,_outputStore, conn.OutPort);
+						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
 						int areaWidth = _connectionArea.Allocation.Width;
 						

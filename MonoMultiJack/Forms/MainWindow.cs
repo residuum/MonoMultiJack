@@ -75,11 +75,11 @@ namespace MonoMultiJack.Forms
 		public Pixbuf ProgramIcon {
 			get {
 				if (_programIcon == null) {
-					Assembly executable = Assembly.GetEntryAssembly();
-					string baseDir = System.IO.Path.GetDirectoryName(executable.Location);
-					string iconPath = System.IO.Path.Combine(baseDir, IconFile);
-					if (File.Exists(iconPath)) {
-						_programIcon = new Pixbuf(iconPath);
+					Assembly executable = Assembly.GetEntryAssembly ();
+					string baseDir = System.IO.Path.GetDirectoryName (executable.Location);
+					string iconPath = System.IO.Path.Combine (baseDir, IconFile);
+					if (File.Exists (iconPath)) {
+						_programIcon = new Pixbuf (iconPath);
 					}
 				}
 				return _programIcon;
@@ -89,28 +89,28 @@ namespace MonoMultiJack.Forms
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public MainWindow() : base(Gtk.WindowType.Toplevel)
+		public MainWindow () : base(Gtk.WindowType.Toplevel)
 		{
-			this.Build();
-			BuildWindowContent();
+			this.Build ();
+			BuildWindowContent ();
 			DeleteEvent += OnDelete;
 		}
 		
 		/// <summary>
 		/// builds window content
 		/// </summary>
-		void BuildWindowContent()
+		void BuildWindowContent ()
 		{
 			Title = "MonoMultiJack";
 			Icon = ProgramIcon;
-			_statusbar.Push(0, JackdStatusStopped);
-			ReadConfiguration();
+			_statusbar.Push (0, JackdStatusStopped);
+			ReadConfiguration ();
 			foreach (ConnectionType connType in Enum.GetValues(typeof(ConnectionType))) {
-				IConnectionManager connManager = ConnectionManagerFactory.GetConnectionManager(connType);
+				IConnectionManager connManager = ConnectionManagerFactory.GetConnectionManager (connType);
 				if (connManager != null) {					
-					_connectionNotebook.AppendPage(
-						new ConnectionDisplay(connManager),
-						new Label(connManager.ConnectionType.ToString())
+					_connectionNotebook.AppendPage (
+						new ConnectionDisplay (connManager),
+						new Label (connManager.ConnectionType.ToString ())
 					);
 				}
 			}
@@ -119,50 +119,50 @@ namespace MonoMultiJack.Forms
 		/// <summary>
 		/// read configuration
 		/// </summary>
-		void ReadConfiguration()
+		void ReadConfiguration ()
 		{
 			try {
-				_jackdConfig = PersistantConfiguration.LoadJackdConfiguration();
+				_jackdConfig = PersistantConfiguration.LoadJackdConfiguration ();
 				
-				UpdateJackd(_jackdConfig);
-				
-			} catch (System.Xml.XmlException e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
-				InfoMessage("Jackd configuration File is corrupt.");
-				_jackdConfig = new JackdConfiguration();
-			} catch (FileNotFoundException e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
-				InfoMessage("Jackd is not configured.");
-				_jackdConfig = new JackdConfiguration();
-			}
-
-			try {
-				_appConfigs = PersistantConfiguration.LoadAppConfigurations();
-				
-				UpdateAppWidgets(_appConfigs);
+				UpdateJackd (_jackdConfig);
 				
 			} catch (System.Xml.XmlException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				InfoMessage("Application configuration File is corrupt.");
-				_appConfigs = new List<AppConfiguration>();
+				InfoMessage ("Jackd configuration File is corrupt.");
+				_jackdConfig = new JackdConfiguration ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				InfoMessage("Applications are not configured.");
-				_appConfigs = new List<AppConfiguration>();
+				InfoMessage ("Jackd is not configured.");
+				_jackdConfig = new JackdConfiguration ();
 			}
 
 			try {
-				WindowConfiguration windowSize = PersistantConfiguration.LoadWindowSize();
+				_appConfigs = PersistantConfiguration.LoadAppConfigurations ();
+				
+				UpdateAppWidgets (_appConfigs);
+				
+			} catch (System.Xml.XmlException e) {
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
+				InfoMessage ("Application configuration File is corrupt.");
+				_appConfigs = new List<AppConfiguration> ();
+			} catch (FileNotFoundException e) {
+				#if DEBUG
+				Console.WriteLine (e.Message);
+				#endif
+				InfoMessage ("Applications are not configured.");
+				_appConfigs = new List<AppConfiguration> ();
+			}
+
+			try {
+				WindowConfiguration windowSize = PersistantConfiguration.LoadWindowSize ();
 				if (windowSize.XSize != 0 && windowSize.YSize != 0) {
-					UpdateWindowSize(windowSize);
+					UpdateWindowSize (windowSize);
 				}
 			} catch (Exception e) {				
 				#if DEBUG
@@ -178,11 +178,11 @@ namespace MonoMultiJack.Forms
 		/// <param name="appConfig">
 		/// A <see cref="AppConfiguration"/>
 		/// </param>
-		void AddAppWidget(AppConfiguration appConfig)
+		void AddAppWidget (AppConfiguration appConfig)
 		{
-			AppWidget newApp = new AppWidget(appConfig);
-			_appButtonBox.Add(newApp);
-			newApp.Show();
+			AppWidget newApp = new AppWidget (appConfig);
+			_appButtonBox.Add (newApp);
+			newApp.Show ();
 		}
 		
 		/// <summary>
@@ -191,18 +191,18 @@ namespace MonoMultiJack.Forms
 		/// <param name="appConfigs">
 		/// A <see cref="List"/> of <see cref="appConfiguration"/>s
 		/// </param>
-		void UpdateAppWidgets(List<AppConfiguration> appConfigs)
+		void UpdateAppWidgets (List<AppConfiguration> appConfigs)
 		{
 			foreach (Widget widget in _appButtonBox.Children) {
 				AppWidget appWidget = widget as AppWidget;
 				if (appWidget != null) {
-					appWidget.Destroy();
+					appWidget.Destroy ();
 				}
 			}
 			foreach (AppConfiguration appConfig in appConfigs) {
-				AddAppWidget(appConfig);
+				AddAppWidget (appConfig);
 			}
-			_appButtonBox.ShowAll();
+			_appButtonBox.ShowAll ();
 		}
 		
 		/// <summary>
@@ -211,12 +211,12 @@ namespace MonoMultiJack.Forms
 		/// <param name="jackdConfig">
 		/// A <see cref="JackdConfiguration"/>
 		/// </param>
-		void UpdateJackd(JackdConfiguration jackdConfig)
+		void UpdateJackd (JackdConfiguration jackdConfig)
 		{	
 			if (_jackd != null && _jackd.IsRunning) {
-				_jackd.StopProgram();
+				_jackd.StopProgram ();
 			}
-			_jackd = new ProgramManagement(
+			_jackd = new ProgramManagement (
 				jackdConfig.Path,
 				jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions,
 				true
@@ -226,10 +226,10 @@ namespace MonoMultiJack.Forms
 			reStartJackdAction.Sensitive = true;
 		}
 
-		void UpdateWindowSize(WindowConfiguration windowConfig)
+		void UpdateWindowSize (WindowConfiguration windowConfig)
 		{
-			Resize(windowConfig.XSize, windowConfig.YSize);
-			Move(windowConfig.XPosition, windowConfig.YPosition);
+			Resize (windowConfig.XSize, windowConfig.YSize);
+			Move (windowConfig.XPosition, windowConfig.YPosition);
 		}
 
 		/// <summary>
@@ -241,9 +241,12 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void OnJackdHasExited(object sender, EventArgs e)
+		void OnJackdHasExited (object sender, EventArgs e)
 		{
-			CleanUpJackd();	
+			Application.Invoke (delegate {
+				CleanUpJackd ();	
+			}
+			);
 		}
 
 		/// <summary>
@@ -255,72 +258,75 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void OnJackdHasStarted(object sender, EventArgs e)
+		void OnJackdHasStarted (object sender, EventArgs e)
 		{
-			stopJackdAction.Sensitive = true;
-			stopAllAction.Sensitive = true;
-			_statusbar.Push(0, JackdStatusRunning);
+			Application.Invoke (delegate {
+				stopJackdAction.Sensitive = true;
+				stopAllAction.Sensitive = true;
+				_statusbar.Push (0, JackdStatusRunning);
+			}
+			);
 		}
 		
 		/// <summary>
 		/// Quits window
 		/// </summary>
-		void QuitIt()
+		void QuitIt ()
 		{
 			int xPosition, yPosition, xSize, ySize;
-			GetPosition(out xPosition, out yPosition);
-			GetSize(out xSize, out ySize);
-			WindowConfiguration newWindowConfig = new WindowConfiguration(
+			GetPosition (out xPosition, out yPosition);
+			GetSize (out xSize, out ySize);
+			WindowConfiguration newWindowConfig = new WindowConfiguration (
 				xPosition,
 				yPosition,
 				xSize,
 				ySize
 			);
-			PersistantConfiguration.SaveWindowSize(newWindowConfig);
-			StopAll();
-			Application.Quit();
+			PersistantConfiguration.SaveWindowSize (newWindowConfig);
+			StopAll ();
+			Application.Quit ();
 		}
 		
 		/// <summary>
 		/// Starts or restart jackd process
 		/// </summary>
-		void RestartJackd()
+		void RestartJackd ()
 		{
-			StopJackd();
-			_jackd.StartProgram();
+			StopJackd ();
+			_jackd.StartProgram ();
 		}
 		
 		/// <summary>
 		/// Cleans up after jackd process has stopped
 		/// </summary>
-		void CleanUpJackd()
+		void CleanUpJackd ()
 		{
 			stopJackdAction.Sensitive = false;
-			_statusbar.Push(0, JackdStatusStopped);
+			_statusbar.Push (0, JackdStatusStopped);
 		}
 
 		/// <summary>
 		/// stops jackd
 		/// </summary>
-		void StopJackd()
+		void StopJackd ()
 		{
 			if (_jackd != null && _jackd.IsRunning) {
-				_jackd.StopProgram();
+				_jackd.StopProgram ();
 			}
 		}
 		
 		/// <summary>
 		/// stops Jackd and all running applications
 		/// </summary>
-		void StopAll()
+		void StopAll ()
 		{
 			if (_appButtonBox.Children != null) {
 				foreach (Widget child in _appButtonBox.Children) {
 					AppWidget app = child as AppWidget;
-					app.StopApplication();
+					app.StopApplication ();
 				}
 			}
-			StopJackd();
+			StopJackd ();
 			stopAllAction.Sensitive = false;
 		}
 		
@@ -330,17 +336,17 @@ namespace MonoMultiJack.Forms
 		/// <param name="message">
 		/// A <see cref="System.String"/>, the message to show in the popup
 		/// </param>
-		void InfoMessage(string message)
+		void InfoMessage (string message)
 		{
-			MessageDialog popup = new MessageDialog(
+			MessageDialog popup = new MessageDialog (
 				this,
 				DialogFlags.DestroyWithParent,
 				MessageType.Info,
 				ButtonsType.Ok,
 				message
 			);
-			popup.Run();
-			popup.Destroy();
+			popup.Run ();
+			popup.Destroy ();
 		}
 		
 		/// <summary>
@@ -352,9 +358,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="a">
 		/// A <see cref="DeleteEventArgs"/>
 		/// </param>
-		protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 		{
-			QuitIt();
+			QuitIt ();
 		}
 		
 		/// <summary>
@@ -366,9 +372,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void RestartJackd(object sender, EventArgs e)
+		protected virtual void RestartJackd (object sender, EventArgs e)
 		{
-			RestartJackd();
+			RestartJackd ();
 		}
 	
 		/// <summary>
@@ -380,9 +386,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void StopJackd(object sender, EventArgs e)
+		protected virtual void StopJackd (object sender, EventArgs e)
 		{
-			StopJackd();
+			StopJackd ();
 		}
 	
 		/// <summary>
@@ -394,9 +400,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void StopAll(object sender, EventArgs e)
+		protected virtual void StopAll (object sender, EventArgs e)
 		{
-			StopAll();
+			StopAll ();
 		}
 		
 		/// <summary>
@@ -408,27 +414,27 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void ConfigureJackd(object sender, EventArgs e)
+		protected virtual void ConfigureJackd (object sender, EventArgs e)
 		{
-			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow(_jackdConfig);
+			JackdConfigWindow jackdConfigWindow = new JackdConfigWindow (_jackdConfig);
 			Sensitive = false;
-			jackdConfigWindow.ShowAll();
-			ResponseType response = (ResponseType)jackdConfigWindow.Run();
+			jackdConfigWindow.ShowAll ();
+			ResponseType response = (ResponseType)jackdConfigWindow.Run ();
 			if (response == ResponseType.Ok) {
-				StopAll();			
+				StopAll ();			
 				JackdConfiguration jackdConfig = jackdConfigWindow.JackdConfig;
 				try {
-					PersistantConfiguration.SaveJackdConfig(jackdConfig);
+					PersistantConfiguration.SaveJackdConfig (jackdConfig);
 					_jackdConfig = jackdConfig;
-					UpdateJackd(_jackdConfig);
+					UpdateJackd (_jackdConfig);
 				} catch (Exception ex) {
 					#if DEBUG
 					Console.WriteLine (ex.Message);
 					#endif
-					InfoMessage("Configuration file is not writable.");
+					InfoMessage ("Configuration file is not writable.");
 				}
 			}
-			jackdConfigWindow.Destroy();
+			jackdConfigWindow.Destroy ();
 			Sensitive = true;
 		}	
 		
@@ -441,28 +447,28 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void ConfigureApplications(object sender, EventArgs e)
+		protected virtual void ConfigureApplications (object sender, EventArgs e)
 		{
-			AppConfigWindow appConfigWindow = new AppConfigWindow(_appConfigs);
+			AppConfigWindow appConfigWindow = new AppConfigWindow (_appConfigs);
 			Sensitive = false;		
-			appConfigWindow.ShowAll();
-			ResponseType response = (ResponseType)appConfigWindow.Run();
+			appConfigWindow.ShowAll ();
+			ResponseType response = (ResponseType)appConfigWindow.Run ();
 			if (response == ResponseType.Ok) {
-				StopAll();
+				StopAll ();
 				List<AppConfiguration> newAppConfigs = appConfigWindow.AppConfigs;
-				newAppConfigs.Reverse();
+				newAppConfigs.Reverse ();
 				try {
-					PersistantConfiguration.SaveAppConfiguations(newAppConfigs);
+					PersistantConfiguration.SaveAppConfiguations (newAppConfigs);
 					_appConfigs = newAppConfigs;
-					UpdateAppWidgets(_appConfigs);
+					UpdateAppWidgets (_appConfigs);
 				} catch (Exception ex) {
 					#if DEBUG
 					Console.WriteLine (ex.Message);
 					#endif
-					InfoMessage("Configuration file is not writable.");
+					InfoMessage ("Configuration file is not writable.");
 				}
 			}
-			appConfigWindow.Destroy();
+			appConfigWindow.Destroy ();
 			Sensitive = true;
 		}
 	
@@ -475,9 +481,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void OnQuitActionActivated(object sender, EventArgs e)
+		protected virtual void OnQuitActionActivated (object sender, EventArgs e)
 		{
-			QuitIt();
+			QuitIt ();
 		}
 		
 		/// <summary>
@@ -489,9 +495,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void AboutDialog(object sender, EventArgs e)
+		protected virtual void AboutDialog (object sender, EventArgs e)
 		{
-			AboutDialog about = new AboutDialog();
+			AboutDialog about = new AboutDialog ();
 			about.ProgramName = "MonoMultiJack";
 			about.Version = "0.0.2";
 			about.Copyright = "(c) Thomas Mayer 2011";
@@ -519,8 +525,8 @@ namespace MonoMultiJack.Forms
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.";
 			about.Logo = ProgramIcon;
-			about.Run();
-			about.Destroy();
+			about.Run ();
+			about.Destroy ();
 		}
 		
 		/// <summary>
@@ -532,9 +538,9 @@ namespace MonoMultiJack.Forms
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		public void OnDelete(object o, EventArgs args)
+		public void OnDelete (object o, EventArgs args)
 		{
-			QuitIt();
+			QuitIt ();
 		}
 	}
 }
