@@ -1,21 +1,21 @@
-// 
-// Port.cs
-//  
+//
+// MarshallingHelper.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2012 Thomas Mayer
-// 
+//
+// Copyright (c) 2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,33 +24,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public class Port
+	public static class MarshallingHelper
 	{
-		public string Name { get; protected set; }
-
-		public string ClientName { get; protected set; }
-
-		public PortType PortType { get; protected set; }
-
-		public ConnectionType ConnectionType { get; protected set; }
-
-		public uint Id {get; protected set;}
-		
-		public Port(string name, string clientName, PortType portType, ConnectionType connectionType)//, uint id)
+		public static string PtrToString (this IntPtr p)
 		{
-			Name = name;
-			ClientName = clientName;
-			PortType = portType;
-			ConnectionType = connectionType;
-			//Id = id;
+			if (p == IntPtr.Zero) {
+				return null;
+			}
+			return Marshal.PtrToStringAnsi (p);
 		}
-		
-		public Port()
-		{			
+ 
+		public static string[] PtrToStringArray (this IntPtr stringArray)
+		{
+			if (stringArray == IntPtr.Zero) {
+				return new string[]{};
+			} 
+ 
+			int arrayCount = stringArray.CountStrings ();
+			return stringArray.PtrToStringArray (arrayCount);
+		}
+ 
+		static int CountStrings (this IntPtr stringArray)
+		{
+			int count = 0;
+			while (Marshal.ReadIntPtr (stringArray, count*IntPtr.Size) != IntPtr.Zero) {
+				++count;
+			}
+			return count;
+		}
+ 
+		public static string[] PtrToStringArray (this IntPtr stringArray, int count)
+		{
+			if (count < 0) {
+				throw new ArgumentOutOfRangeException ("count", "< 0");
+			}
+
+			if (stringArray == IntPtr.Zero) {
+				return new string[count];
+			} 
+ 
+			string[] members = new string[count];
+			for (int i = 0; i < count; ++i) {
+				IntPtr s = Marshal.ReadIntPtr (stringArray, i * IntPtr.Size);
+				members [i] = PtrToString (s);
+			} 
+			return members;
 		}
 	}
 }
+

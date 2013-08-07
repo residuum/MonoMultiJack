@@ -27,23 +27,21 @@ using System;
 using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
 
-
 namespace MonoMultiJack.Widgets
 {
 	public interface IConnectionWidget :IWidget
 	{
 		void Clear ();
 
-		void AddPort(Port port);
+		void AddPort (Port port);
 
-		void RemovePort(Port port);
+		void RemovePort (Port port);
 
-		void AddConnection(IConnection connection);
+		void AddConnection (IConnection connection);
 
-		void RemoveConnection(IConnection connection);
+		void RemoveConnection (IConnection connection);
 		
 		event EventHandler ConnectPorts;
-		
 		event EventHandler DisconnectPorts;
 
 	}

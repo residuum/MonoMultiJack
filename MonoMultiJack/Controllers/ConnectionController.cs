@@ -35,48 +35,48 @@ namespace MonoMultiJack.Controllers
 		IConnectionWidget _connectionWidget;
 		IConnectionManager _connectionManager;
 
-		public ConnectionController(IConnectionManager connectionManager)
+		public ConnectionController (IConnectionManager connectionManager)
 		{
 			_connectionManager = connectionManager;
-			_connectionWidget = new ConnectionDisplay();
+			_connectionWidget = new ConnectionDisplay ();
 
 			_connectionManager.BackendHasExited += ConnectionManager_BackendHasExited;
 			_connectionManager.ConnectionHasChanged += ConnectionManager_ConnectionHasChanged;
 		}
 
-		void ConnectionManager_BackendHasExited(object sender, ConnectionEventArgs args)
+		void ConnectionManager_BackendHasExited (object sender, ConnectionEventArgs args)
 		{
-			_connectionWidget.Clear();
+			_connectionWidget.Clear ();
 		}
 
-		void ConnectionManager_ConnectionHasChanged(object sender, ConnectionEventArgs args)
+		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)
 		{
 			if (args.ChangeType == ChangeType.New) {
 				foreach (IConnection connection in args.Connections) {
-					_connectionWidget.AddConnection(connection);
+					_connectionWidget.AddConnection (connection);
 				}
 			} else if (args.ChangeType == ChangeType.Deleted) {
 				foreach (IConnection connection in args.Connections) {
-					_connectionWidget.RemoveConnection(connection);
+					_connectionWidget.RemoveConnection (connection);
 				}
 			}
 		}
 				
-		~ConnectionController()
+		~ConnectionController ()
 		{
-			Dispose(false);
+			Dispose (false);
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			Dispose (true);
+			GC.SuppressFinalize (this);
 		}
 	
-		protected virtual void Dispose(bool isDisposing)
+		protected virtual void Dispose (bool isDisposing)
 		{
-			_connectionWidget.Destroy();
-			_connectionWidget.Dispose();
+			_connectionWidget.Destroy ();
+			_connectionWidget.Dispose ();
 		}
 
 		public event EventHandler AllWidgetsAreClosed;

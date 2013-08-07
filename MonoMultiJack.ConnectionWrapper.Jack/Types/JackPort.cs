@@ -27,12 +27,7 @@ using System;
 namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
 	internal class JackPort : Port
-	{
-		public uint JackPortId {
-			get;
-			private set;
-		}
-			
+	{			
 		public IntPtr JackPortPointer {
 			get;
 			private set;
@@ -43,16 +38,16 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 			private set;
 		}
 		
-		public JackPort(string jackPortName, uint jackPortId, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType)
+		public JackPort(string jackPortName, IntPtr jackPortPtr, PortType portType, ConnectionType connectionType, uint portId)
 		{				
 			JackPortName = jackPortName;
-			JackPortId = jackPortId;
 			JackPortPointer = jackPortPtr;
 			PortType = portType;
 			ConnectionType = connectionType;
 			string[] splittedName = jackPortName.Split(new[] { ':' });
 			ClientName = splittedName [0];
 			Name = splittedName [1];				
+			Id = portId;
 		}
 	}
 }

@@ -35,7 +35,7 @@ namespace MonoMultiJack.Widgets
 	public class AppConfigWidget : Fixed, IAppConfigWidget
 	{
 		Entry _appNameEntry;
-		
+
 		Entry _appCommandEntry;
 
 		Entry _appArgumentsEntry;

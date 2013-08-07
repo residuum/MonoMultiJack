@@ -70,6 +70,8 @@ namespace MonoMultiJack.Widgets
 		}
 
 		bool IAppStartWidget.IsRunning {
+			
+			Application.Invoke(delegate {
 			set {
 				if (value) {
 					_startButton.Active = true;
@@ -82,7 +84,8 @@ namespace MonoMultiJack.Widgets
 					_startButton.Clicked -= CallStartApplication;
 					_startButton.Clicked += CallStartApplication;
 				}
-			}
+				}
+			});
 		}
 		
 		public event EventHandler StartApplication;

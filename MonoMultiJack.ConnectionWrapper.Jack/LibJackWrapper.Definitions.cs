@@ -37,7 +37,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		private const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
 		private delegate void JackPortRegistrationCallback(uint port,int register,IntPtr args);
 
-		private delegate void JackPortConnectCallback(int a,int b,int connect,IntPtr args);
+		private delegate void JackPortConnectCallback(uint a,uint b,int connect,IntPtr args);
 
 		private delegate void JackShutdownCallback(IntPtr args);
 	}

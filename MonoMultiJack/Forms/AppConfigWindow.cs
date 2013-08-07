@@ -172,6 +172,5 @@ namespace MonoMultiJack.Forms
 		{
 			CallAddNewConfigWidget();
 		}
-
 	}
 }

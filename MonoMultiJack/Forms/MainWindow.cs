@@ -47,16 +47,16 @@ namespace MonoMultiJack.Forms
 	{		
 		readonly string JackdStatusRunning = "Jackd is running.";
 		readonly string JackdStatusStopped = "Jackd is stopped.";
+
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public MainWindow() : base(Gtk.WindowType.Toplevel)
+		public MainWindow () : base(Gtk.WindowType.Toplevel)
 		{
-			this.Build();
-			BuildWindowContent();
+			this.Build ();
+			BuildWindowContent ();
 			DeleteEvent += OnDelete;
 		}
-
 
 		#region IWidget implementation
 		void IWidget.Show()
@@ -162,20 +162,20 @@ namespace MonoMultiJack.Forms
 			foreach (Widget widget in _appButtonBox.Children) {
 				IAppStartWidget appWidget = widget as IAppStartWidget;
 				if (appWidget != null) {
-					appWidget.Destroy();
+					appWidget.Destroy ();
 				}
 			}
 			foreach (IAppStartWidget appWidget in appWidgets) {
 				_appButtonBox.Add((Widget)appWidget);
 				appWidget.Show();
 			}
-			_appButtonBox.ShowAll();
+			_appButtonBox.ShowAll ();
 		}
 		
 		void UpdateWindowSize(WindowConfiguration windowConfig)
 		{
-			Resize(windowConfig.XSize, windowConfig.YSize);
-			Move(windowConfig.XPosition, windowConfig.YPosition);
+			Resize (windowConfig.XSize, windowConfig.YSize);
+			Move (windowConfig.XPosition, windowConfig.YPosition);
 		}
 				
 		void CallQuitApplication()
@@ -201,15 +201,15 @@ namespace MonoMultiJack.Forms
 		
 		void ShowInfoMessage(string message)
 		{
-			MessageDialog popup = new MessageDialog(
-		this,
-		DialogFlags.DestroyWithParent,
-		MessageType.Info,
-		ButtonsType.Ok,
-		message
+			MessageDialog popup = new MessageDialog (
+				this,
+				DialogFlags.DestroyWithParent,
+				MessageType.Info,
+				ButtonsType.Ok,
+				message
 			);
-			popup.Run();
-			popup.Destroy();
+			popup.Run ();
+			popup.Destroy ();
 		}
 		
 		protected void OnDeleteEvent(object sender, DeleteEventArgs a)
@@ -251,6 +251,7 @@ namespace MonoMultiJack.Forms
 			if (ShowConfigureApps != null) {
 				ShowConfigureApps(this, new EventArgs());
 			}
+
 		}
 	
 		/// <summary>
@@ -262,7 +263,7 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void OnQuitActionActivated(object sender, EventArgs e)
+		protected virtual void OnQuitActionActivated (object sender, EventArgs e)
 		{
 			CallQuitApplication();
 		}
@@ -281,6 +282,7 @@ namespace MonoMultiJack.Forms
 			if (ShowAbout != null) {
 				ShowAbout(this, new EventArgs());
 			}
+
 		}
 		
 		/// <summary>
@@ -292,7 +294,7 @@ namespace MonoMultiJack.Forms
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		public void OnDelete(object o, EventArgs args)
+		public void OnDelete (object o, EventArgs args)
 		{
 			CallQuitApplication();
 		}

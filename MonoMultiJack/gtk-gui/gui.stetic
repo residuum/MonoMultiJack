@@ -172,7 +172,6 @@
     <property name="MemberName" />
     <property name="WidthRequest">500</property>
     <property name="HeightRequest">200</property>
-    <signal name="ExposeEvent" handler="Handle_ExposeEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
@@ -192,7 +191,6 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Connect</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="ConnectButton_Click" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -250,8 +248,6 @@
                     <property name="ShowScrollbars">True</property>
                     <property name="EnableSearch">False</property>
                     <property name="HeadersVisible">False</property>
-                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
-                    <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
                   </widget>
                 </child>
               </widget>
@@ -281,8 +277,6 @@
                     <property name="ShowScrollbars">True</property>
                     <property name="EnableSearch">False</property>
                     <property name="HeadersVisible">False</property>
-                    <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
-                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
                   </widget>
                 </child>
               </widget>

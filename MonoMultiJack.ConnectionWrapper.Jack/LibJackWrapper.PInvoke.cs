@@ -48,7 +48,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_client_open(string client_name, 
-		                                             IntPtr jack_options_t, 
+		                                             byte jack_options_t, 
 		                                             IntPtr jack_status_t);
 
 		[DllImport(JACK_LIB_NAME)]
@@ -65,7 +65,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_port_by_id(IntPtr jack_client_t, 
-		                                     uint jack_port_id_t);
+		                                     uint port_id);
+		
+		[DllImport(JACK_LIB_NAME)]
+		private static extern IntPtr jack_port_by_name(IntPtr jack_client_t, 
+		                                     string port_name);
 		
 		[DllImport(JACK_LIB_NAME)]
 		private static extern IntPtr jack_port_name(IntPtr jack_port_t);

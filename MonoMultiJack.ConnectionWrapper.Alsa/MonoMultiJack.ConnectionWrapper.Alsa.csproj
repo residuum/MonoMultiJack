@@ -47,6 +47,8 @@
     <Compile Include="Types\SndSeqAddr.cs" />
     <Compile Include="Types\AlsaPort.cs" />
     <Compile Include="Types\AlsaMidiConnection.cs" />
+    <Compile Include="Types\PointerConversions.cs" />
+    <Compile Include="Types\PointerWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
