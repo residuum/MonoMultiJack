@@ -40,17 +40,53 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public uint Id {get; protected set;}
 		
-		public Port(string name, string clientName, PortType portType, ConnectionType connectionType)//, uint id)
+		public Port(string name, string clientName, PortType portType, ConnectionType connectionType, uint id)
 		{
 			Name = name;
 			ClientName = clientName;
 			PortType = portType;
 			ConnectionType = connectionType;
-			//Id = id;
+			Id = id;
 		}
 		
 		public Port()
 		{			
+		}
+
+		public override bool Equals (object obj)
+		{
+			var otherPort = obj as Port;
+			if (otherPort == null) {
+				return false;
+			}
+			return Equals (otherPort);
+		}
+
+		public bool Equals (Port other)
+		{
+			return Id == other.Id && ConnectionType == other.ConnectionType && PortType == other.PortType;
+		}
+
+		public override int GetHashCode ()
+		{
+			return Id.GetHashCode() ^ ConnectionType.GetHashCode() ^ PortType.GetHashCode();
+		}
+
+		public static bool operator == (Port a, Port b)
+		{
+			if (object.ReferenceEquals (a, b)) {
+				return true;
+			}
+
+			if (((object)a == null) || ((object)b == null)) {
+				return false;
+			}
+			return (a.Equals (b));
+		}
+
+		public static bool operator != (Port a, Port b)
+		{
+			return !(a == b);
 		}
 	}
 }

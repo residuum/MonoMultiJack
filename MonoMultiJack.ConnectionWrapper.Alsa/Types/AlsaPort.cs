@@ -30,51 +30,14 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 	{
 		public SndSeqAddr AlsaAddress { get; private set; }
 		
-		public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, PortType portType)
+		public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, PortType portType, uint portId)
 		{				
 			AlsaAddress = alsaAdress;
 			PortType = portType;
 			ConnectionType = ConnectionType.AlsaMidi;
 			ClientName = clientName;
-			Name = portName;				
-		}
-
-		public override bool Equals (object obj)
-		{
-			var otherPort = obj as AlsaPort;
-			if (otherPort == null) {
-				return false;
-			}
-			return Equals (otherPort);
-		}
-
-		public bool Equals (AlsaPort other)
-		{
-			return AlsaAddress.Client.Equals (other.AlsaAddress.Client) 
-				&& AlsaAddress.Port.Equals (other.AlsaAddress.Port)
-				&& PortType.Equals (other.PortType);
-		}
-
-		public override int GetHashCode ()
-		{
-			return AlsaAddress.Port * AlsaAddress.Client * (int)PortType;
-		}
-
-		public static bool operator == (AlsaPort a, AlsaPort b)
-		{
-			if (object.ReferenceEquals (a, b)) {
-				return true;
-			}
-
-			if (((object)a == null) || ((object)b == null)) {
-				return false;
-			}
-			return (a.Equals (b));
-		}
-
-		public static bool operator != (AlsaPort a, AlsaPort b)
-		{
-			return !(a == b);
+			Name = portName;	
+			Id = portId;
 		}
 	}	
 }
