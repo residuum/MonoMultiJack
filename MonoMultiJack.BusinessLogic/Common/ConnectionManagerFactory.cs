@@ -27,6 +27,7 @@ using System;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.ConnectionWrapper.Alsa;
 using MonoMultiJack.ConnectionWrapper.Jack;
+using System.Collections.Generic;
 
 namespace MonoMultiJack.BusinessLogic.Common
 {
@@ -44,7 +45,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// <param name='connType'>
 		/// The connection type.
 		/// </param>
-		public static IConnectionManager GetConnectionManager(ConnectionType connType)
+		static IConnectionManager GetConnectionManager(ConnectionType connType)
 		{
 			switch (connType) {
 				case ConnectionType.JackAudio:
@@ -57,6 +58,20 @@ namespace MonoMultiJack.BusinessLogic.Common
 					return null;
 			}
 		}
+
+		/// <summary>
+		/// Gets all connection managers.
+		/// </summary>
+		/// <returns>
+		/// The all connection managers.
+		/// </returns>
+		public static IEnumerable<IConnectionManager> GetAllConnectionManagers ()
+		{
+			yield return GetConnectionManager(ConnectionType.JackAudio);
+			yield return GetConnectionManager(ConnectionType.JackMidi);
+			yield return GetConnectionManager(ConnectionType.AlsaMidi);
+		}
+
 	}
 }
 

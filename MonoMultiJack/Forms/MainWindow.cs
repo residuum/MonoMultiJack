@@ -100,6 +100,12 @@ namespace MonoMultiJack.Forms
 			}
 		}
 
+		IEnumerable<IConnectionWidget> IMainWindow.ConnectionWidgets {
+			set {
+				CreateTabs(value);
+			}
+		}
+
 		WindowConfiguration IMainWindow.WindowConfiguration {
 			get {
 				
@@ -170,6 +176,15 @@ namespace MonoMultiJack.Forms
 				appWidget.Show();
 			}
 			_appButtonBox.ShowAll ();
+		}
+
+		void CreateTabs(IEnumerable<IConnectionWidget> connectionWidgets)
+		{
+			foreach (IConnectionWidget widget in connectionWidgets) {
+				_connectionNotebook.Add((Widget) widget);
+				widget.Show();
+			}
+			_connectionNotebook.ShowAll();
 		}
 		
 		void UpdateWindowSize(WindowConfiguration windowConfig)

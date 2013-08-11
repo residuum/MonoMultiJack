@@ -34,6 +34,7 @@ using Gtk;
 using System.Reflection;
 using System.IO;
 using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.ConnectionWrapper;
 
 namespace MonoMultiJack.Controllers
 {
@@ -45,9 +46,9 @@ namespace MonoMultiJack.Controllers
 		private string ProgramIconPath {
 			get {
 				if (_programIcon == null) {
-					Assembly executable = Assembly.GetEntryAssembly();
-					string baseDir = System.IO.Path.GetDirectoryName(executable.Location);
-					_programIcon = System.IO.Path.Combine(baseDir, IconFile);
+					Assembly executable = Assembly.GetEntryAssembly ();
+					string baseDir = System.IO.Path.GetDirectoryName (executable.Location);
+					_programIcon = System.IO.Path.Combine (baseDir, IconFile);
 				}
 				return _programIcon;
 			}
@@ -58,48 +59,57 @@ namespace MonoMultiJack.Controllers
 		ProgramManagement _jackd;
 		IMainWindow _mainWindow;
 		List<AppStartController> _startWidgetControllers;
+		List<ConnectionController> _connectionControllers;
 
-		public MainController()
+		public MainController ()
 		{
-			_mainWindow = new Forms.MainWindow();
+			_mainWindow = new Forms.MainWindow ();
 			_mainWindow.IconPath = _programIcon;
-			_mainWindow.Hide();
+			_mainWindow.Hide ();
+			_connectionControllers = new List<ConnectionController> ();
+			foreach (IConnectionManager connectionManager in ConnectionManagerFactory.GetAllConnectionManagers()) { 
+				_connectionControllers.Add (new ConnectionController (connectionManager));
+			}
+			_mainWindow.ConnectionWidgets = _connectionControllers.Select(c => c.Widget);
 		}
 
-		~MainController()
+		~MainController ()
 		{
-			Dispose(false);
+			Dispose (false);
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			Dispose (true);
+			GC.SuppressFinalize (this);
 		}
 	
-		protected virtual void Dispose(bool isDisposing)
+		protected virtual void Dispose (bool isDisposing)
 		{
 			if (_jackd != null) {
-				_jackd.Dispose();
+				_jackd.Dispose ();
 			}
 			for (int i = _startWidgetControllers.Count - 1; i >= 0; i--) {
-				_startWidgetControllers [i].Dispose();
+				_startWidgetControllers [i].Dispose ();
 			}
-			_mainWindow.Dispose();
+			for (int i = _connectionControllers.Count - 1; i >= 0; i--) {
+				_connectionControllers [i].Dispose ();
+			}
+			_mainWindow.Dispose ();
 		}
 
-		public void Start()
+		public void Start ()
 		{	
 			WindowConfiguration windowConfiguration;
-			TryLoadJackdConfiguration(out _jackdConfiguration);
-			if (TryLoadAppConfigurations(out _appConfigurations)) {
-				UpdateApps(_appConfigurations);
+			TryLoadJackdConfiguration (out _jackdConfiguration);
+			if (TryLoadAppConfigurations (out _appConfigurations)) {
+				UpdateApps (_appConfigurations);
 			}			
-			if (TryLoadWindowConfiguration(out windowConfiguration)) {
+			if (TryLoadWindowConfiguration (out windowConfiguration)) {
 				_mainWindow.WindowConfiguration = windowConfiguration;
 			}
 
-			_mainWindow.Show();
+			_mainWindow.Show ();
 			
 			_mainWindow.StartJackd += MainWindow_StartJackd;
 			_mainWindow.StopJackd += MainWindow_StopJackd;
@@ -110,68 +120,68 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.ShowHelp += MainWindow_ShowHelp;
 			_mainWindow.QuitApplication += MainWindow_QuitApplication;
 
-			_mainWindow.Show();
+			_mainWindow.Show ();
 
-			InitJackd(_jackdConfiguration);
+			InitJackd (_jackdConfiguration);
 		}
 
-		bool TryLoadJackdConfiguration(out JackdConfiguration jackdConfig)
+		bool TryLoadJackdConfiguration (out JackdConfiguration jackdConfig)
 		{
 			try {
-				jackdConfig = PersistantConfiguration.LoadJackdConfiguration();
+				jackdConfig = PersistantConfiguration.LoadJackdConfiguration ();
 				return true;
 			} catch (System.Xml.XmlException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage("Jackd configuration File is corrupt.");
-				jackdConfig = new JackdConfiguration();
+				ShowInfoMessage ("Jackd configuration File is corrupt.");
+				jackdConfig = new JackdConfiguration ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage("Jackd is not configured.");
-				jackdConfig = new JackdConfiguration();
+				ShowInfoMessage ("Jackd is not configured.");
+				jackdConfig = new JackdConfiguration ();
 			}
 			return false;
 		}
 
-		void UpdateApps(IEnumerable<AppConfiguration> appConfigurations)
+		void UpdateApps (IEnumerable<AppConfiguration> appConfigurations)
 		{
-			_startWidgetControllers = new List<AppStartController>();
+			_startWidgetControllers = new List<AppStartController> ();
 			foreach (AppConfiguration appConfig in appConfigurations) {
-				AppStartController startWidgetController = new AppStartController(appConfig);
+				AppStartController startWidgetController = new AppStartController (appConfig);
 				startWidgetController.ApplicationStatusHasChanged += AppStartController_StatusHasChanged;
-				_startWidgetControllers.Add(startWidgetController);
+				_startWidgetControllers.Add (startWidgetController);
 			}
-			_mainWindow.AppStartWidgets = _startWidgetControllers.Select(c => c.Widget);
+			_mainWindow.AppStartWidgets = _startWidgetControllers.Select (c => c.Widget);
 		}
 
-		bool TryLoadAppConfigurations(out List<AppConfiguration> appConfigs)
+		bool TryLoadAppConfigurations (out List<AppConfiguration> appConfigs)
 		{
 			try {
-				appConfigs = PersistantConfiguration.LoadAppConfigurations();
+				appConfigs = PersistantConfiguration.LoadAppConfigurations ();
 				return true;
 			} catch (System.Xml.XmlException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage("Application configuration File is corrupt.");
-				appConfigs = new List<AppConfiguration>();
+				ShowInfoMessage ("Application configuration File is corrupt.");
+				appConfigs = new List<AppConfiguration> ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage("Applications are not configured.");
-				appConfigs = new List<AppConfiguration>();
+				ShowInfoMessage ("Applications are not configured.");
+				appConfigs = new List<AppConfiguration> ();
 			}
 			return false;
 		}
 
-		bool TryLoadWindowConfiguration(out WindowConfiguration windowConfig)
+		bool TryLoadWindowConfiguration (out WindowConfiguration windowConfig)
 		{
 			try {
-				windowConfig = PersistantConfiguration.LoadWindowSize();
+				windowConfig = PersistantConfiguration.LoadWindowSize ();
 				if (windowConfig.XSize != 0 && windowConfig.YSize != 0) {
 					return true;
 				}
@@ -183,84 +193,84 @@ Console.WriteLine (e.Message);
 			return false;
 		}
 
-		void InitJackd(JackdConfiguration jackdConfig)
+		void InitJackd (JackdConfiguration jackdConfig)
 		{
 			if (_jackd != null) {
-				_jackd.StopProgram();
+				_jackd.StopProgram ();
 				_jackd.HasStarted -= Jackd_HasStarted;
 				_jackd.HasExited -= Jackd_HasExited;
-				_jackd.Dispose();
+				_jackd.Dispose ();
 			}
-			_jackd = new ProgramManagement(jackdConfig);
+			_jackd = new ProgramManagement (jackdConfig);
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}
 
 #region Model events
-		void Jackd_HasStarted(object sender, EventArgs e)
+		void Jackd_HasStarted (object sender, EventArgs e)
 		{
 			_mainWindow.JackdIsRunning = true;
 			_mainWindow.AppsAreRunning = true;
 		}
 
-		void Jackd_HasExited(object sender, EventArgs e)
+		void Jackd_HasExited (object sender, EventArgs e)
 		{
 			_mainWindow.JackdIsRunning = false;
 		}
 #endregion
 
 #region IMainWindow events
-		void MainWindow_StartJackd(object sender, EventArgs e)
+		void MainWindow_StartJackd (object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
-				_jackd.StopProgram();
+				_jackd.StopProgram ();
 			}
-			_jackd.StartProgram();
+			_jackd.StartProgram ();
 		}
 
-		void MainWindow_StopJackd(object sender, EventArgs e)
+		void MainWindow_StopJackd (object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
-				_jackd.StopProgram();
+				_jackd.StopProgram ();
 			}
 		}
 
-		void MainWindow_StopAll(object sender, EventArgs e)
+		void MainWindow_StopAll (object sender, EventArgs e)
 		{
-			StopAllApplications();
+			StopAllApplications ();
 			foreach (AppStartController startWidgetController in _startWidgetControllers) {
-				startWidgetController.StopApplication();
+				startWidgetController.StopApplication ();
 			}
 		}
 
-		void StopAllApplications()
+		void StopAllApplications ()
 		{
 			if (_jackd.IsRunning) {
-				_jackd.StopProgram();
+				_jackd.StopProgram ();
 			}
 
 		}
 
-		void MainWindow_ShowConfigureJackd(object sender, EventArgs e)
+		void MainWindow_ShowConfigureJackd (object sender, EventArgs e)
 		{
-			JackdConfigController jackdConfigController = new JackdConfigController(_jackdConfiguration);
+			JackdConfigController jackdConfigController = new JackdConfigController (_jackdConfiguration);
 			jackdConfigController.UpdateJackd += Controller_UpdateJackd;
 			jackdConfigController.AllWidgetsAreClosed += Controller_WidgetsAreClosed;
 			_mainWindow.Sensitive = false;
 		}
 
-		void MainWindow_ShowConfigureApps(object sender, EventArgs e)
+		void MainWindow_ShowConfigureApps (object sender, EventArgs e)
 		{
-			AppConfigController appConfigController = new AppConfigController(_appConfigurations);
+			AppConfigController appConfigController = new AppConfigController (_appConfigurations);
 			appConfigController.UpdateApps += Controller_UpdateApps;
 			appConfigController.AllWidgetsAreClosed += Controller_WidgetsAreClosed;
 			_mainWindow.Sensitive = false;
 		}
 
-		void MainWindow_ShowAbout(object sender, EventArgs e)
+		void MainWindow_ShowAbout (object sender, EventArgs e)
 		{
 			//TODO: Move to view.
-			IAboutWindow AboutWindow = new AboutWindow();
+			IAboutWindow AboutWindow = new AboutWindow ();
 			AboutWindow.ProgramName = "MonoMultiJack";
 			AboutWindow.Version = "0.1";
 			AboutWindow.Copyright = "(c) Thomas Mayer 2012";
@@ -289,61 +299,61 @@ Console.WriteLine (e.Message);
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.";
 			AboutWindow.IconPath = ProgramIconPath;
-			AboutWindow.Show();
+			AboutWindow.Show ();
 			AboutWindow.Closing += Window_Closing;
 		}
 
-		void MainWindow_ShowHelp(object sender, EventArgs e)
+		void MainWindow_ShowHelp (object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
-		void MainWindow_QuitApplication(object sender, EventArgs e)
+		void MainWindow_QuitApplication (object sender, EventArgs e)
 		{
 			WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
-			PersistantConfiguration.SaveWindowSize(newWindowConfig);
-			StopAllApplications();
+			PersistantConfiguration.SaveWindowSize (newWindowConfig);
+			StopAllApplications ();
 			if (AllWidgetsAreClosed != null) {
-				AllWidgetsAreClosed(this, new EventArgs());
+				AllWidgetsAreClosed (this, new EventArgs ());
 			}
 		}
 #endregion
 
-		void Window_Closing(object sender, EventArgs e)
+		void Window_Closing (object sender, EventArgs e)
 		{
 			IWindow window = sender as IWindow;
 			if (window == null) {
 				return;
 			}
-			window.Destroy();
-			window.Dispose();
+			window.Destroy ();
+			window.Dispose ();
 			_mainWindow.Sensitive = true;
 		}
 
-		void Controller_WidgetsAreClosed(object sender, EventArgs e)
+		void Controller_WidgetsAreClosed (object sender, EventArgs e)
 		{
 			IController controller = sender as IController;
 			if (controller != null) {
-				controller.Dispose();
+				controller.Dispose ();
 				_mainWindow.Sensitive = true;
 			}
 		}
 		
-		void Controller_UpdateJackd(object sender, UpdateJackdEventArgs e)
+		void Controller_UpdateJackd (object sender, UpdateJackdEventArgs e)
 		{
 			_jackdConfiguration = e.JackdConfiguration;
-			PersistantConfiguration.SaveJackdConfig(_jackdConfiguration);
-			InitJackd(_jackdConfiguration);
+			PersistantConfiguration.SaveJackdConfig (_jackdConfiguration);
+			InitJackd (_jackdConfiguration);
 		}
 				
-		void Controller_UpdateApps(object sender, UpdateAppsEventArgs e)
+		void Controller_UpdateApps (object sender, UpdateAppsEventArgs e)
 		{
 			_appConfigurations = e.AppConfigurations;
-			PersistantConfiguration.SaveAppConfiguations(_appConfigurations);
-			UpdateApps(_appConfigurations);
+			PersistantConfiguration.SaveAppConfiguations (_appConfigurations);
+			UpdateApps (_appConfigurations);
 		}
 
-		void AppStartController_StatusHasChanged(object sender, EventArgs e)
+		void AppStartController_StatusHasChanged (object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
 				_mainWindow.AppsAreRunning = true;
@@ -358,12 +368,12 @@ Console.WriteLine (e.Message);
 			_mainWindow.AppsAreRunning = false;
 		}
 
-		void ShowInfoMessage(string message)
+		void ShowInfoMessage (string message)
 		{
-			IInfoWindow messageWindow = new InfoWindow();
+			IInfoWindow messageWindow = new InfoWindow ();
 			messageWindow.Message = message;
 			messageWindow.Closing += Window_Closing;
-			messageWindow.Show();
+			messageWindow.Show ();
 		}
 
 		public event EventHandler AllWidgetsAreClosed;

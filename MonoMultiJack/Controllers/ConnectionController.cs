@@ -35,6 +35,10 @@ namespace MonoMultiJack.Controllers
 		IConnectionWidget _connectionWidget;
 		IConnectionManager _connectionManager;
 
+		public IConnectionWidget Widget {
+			get {return _connectionWidget;}
+		}
+
 		public ConnectionController (IConnectionManager connectionManager)
 		{
 			_connectionManager = connectionManager;

@@ -42,6 +42,14 @@ namespace MonoMultiJack.Forms
 		IEnumerable<IAppStartWidget> AppStartWidgets {set;}
 
 		/// <summary>
+		/// Sets the connection widgets.
+		/// </summary>
+		/// <value>
+		/// The connection widgets.
+		/// </value>
+		IEnumerable<IConnectionWidget> ConnectionWidgets {set;}
+
+		/// <summary>
 		/// Sets the window configuration.
 		/// </summary>
 		/// <value>

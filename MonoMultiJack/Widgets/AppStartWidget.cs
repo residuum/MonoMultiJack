@@ -39,30 +39,30 @@ namespace MonoMultiJack.Widgets
 	/// </summary>
 	public class AppStartWidget : Fixed, IAppStartWidget
 	{
-		public override void Dispose()
+		public override void Dispose ()
 		{
-			base.Dispose();
+			base.Dispose ();
 		}
 
 		#region IWidget implementation
-		void IWidget.Show()
+		void IWidget.Show ()
 		{
-			this.Show();
+			this.Show ();
 		}
 
-		void IWidget.Destroy()
+		void IWidget.Destroy ()
 		{
-			this.Destroy();
+			this.Destroy ();
 		}
 
-		void IWidget.Hide()
+		void IWidget.Hide ()
 		{
-			this.Hide();
+			this.Hide ();
 		}
 		#endregion
 
 		#region IAppWidget implementation
-		void IAppStartWidget.SetApp(string name, string commandName)
+		void IAppStartWidget.SetApp (string name, string commandName)
 		{
 			_startButton.Label = name;
 			Name = name;
@@ -70,22 +70,23 @@ namespace MonoMultiJack.Widgets
 		}
 
 		bool IAppStartWidget.IsRunning {
-			
-			Application.Invoke(delegate {
+
 			set {
-				if (value) {
-					_startButton.Active = true;
-					_startButton.Clicked -= CallStopApplication;
-					_startButton.Clicked -= CallStartApplication;
-					_startButton.Clicked += CallStopApplication;	
-				} else {
-					_startButton.Active = false;
-					_startButton.Clicked -= CallStopApplication;
-					_startButton.Clicked -= CallStartApplication;
-					_startButton.Clicked += CallStartApplication;
+				Application.Invoke (delegate {
+					if (value) {
+						_startButton.Active = true;
+						_startButton.Clicked -= CallStopApplication;
+						_startButton.Clicked -= CallStartApplication;
+						_startButton.Clicked += CallStopApplication;	
+					} else {
+						_startButton.Active = false;
+						_startButton.Clicked -= CallStopApplication;
+						_startButton.Clicked -= CallStartApplication;
+						_startButton.Clicked += CallStartApplication;
+					}
 				}
-				}
-			});
+				);
+			}
 		}
 		
 		public event EventHandler StartApplication;
@@ -100,31 +101,31 @@ namespace MonoMultiJack.Widgets
 		/// <param name="appConfig">
 		/// A <see cref="AppConfiguration"/>
 		/// </param>
-		public AppStartWidget()
+		public AppStartWidget ()
 		{
-			_startButton = new ToggleButton();
+			_startButton = new ToggleButton ();
 			_startButton.WidthRequest = 100;
 			_startButton.Clicked += CallStartApplication;
-			Put(_startButton, 0, 0);		
+			Put (_startButton, 0, 0);		
 		}
 		
 		/// <summary>
 		/// stops application, if running
 		/// </summary>
-		public void CallStopApplication()
+		public void CallStopApplication ()
 		{
 			if (StopApplication != null) {
-				StopApplication(this, new EventArgs());
+				StopApplication (this, new EventArgs ());
 			}
 		}
 		
 		/// <summary>
 		/// starts application, updates action for togglebutton
 		/// </summary>
-		private void CallStartApplication()
+		private void CallStartApplication ()
 		{
 			if (StartApplication != null) {
-				StartApplication(this, new EventArgs());
+				StartApplication (this, new EventArgs ());
 			}
 		}
 
@@ -137,9 +138,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void CallStartApplication(object obj, EventArgs args)
+		private void CallStartApplication (object obj, EventArgs args)
 		{
-			CallStartApplication();
+			CallStartApplication ();
 		}
 		/// <summary>
 		/// stops application, updates action for ToggleButton
@@ -150,9 +151,9 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void CallStopApplication(object obj, EventArgs args)
+		private void CallStopApplication (object obj, EventArgs args)
 		{
-			CallStopApplication();
+			CallStopApplication ();
 		}
 	}
 }
