@@ -44,6 +44,7 @@ namespace MonoMultiJack.Widgets
 		event EventHandler ConnectPorts;
 		event EventHandler DisconnectPorts;
 
+		string ConnectionManagerName {get;}
 	}
 }
 

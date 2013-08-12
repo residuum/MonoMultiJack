@@ -32,8 +32,6 @@ using Gtk;
 using MonoMultiJack;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.ConnectionWrapper.Alsa;
-using MonoMultiJack.ConnectionWrapper.Jack;
 using MonoMultiJack.Widgets;
 using MessageType = Gtk.MessageType;
 
@@ -58,27 +56,27 @@ namespace MonoMultiJack.Forms
 		}
 
 		#region IWidget implementation
-		void IWidget.Show()
+		void IWidget.Show ()
 		{
-			this.Show();
+			this.Show ();
 		}
 
-		void IWidget.Destroy()
+		void IWidget.Destroy ()
 		{
-			this.Destroy();
+			this.Destroy ();
 		}
 
-		void IWidget.Hide()
+		void IWidget.Hide ()
 		{
-			this.Hide();
+			this.Hide ();
 		}
 		#endregion
 
 		#region IWindow implementation
 		string IWindow.IconPath {
 			set {
-				if (File.Exists(value)) {
-					this.Icon = new Pixbuf(value);
+				if (File.Exists (value)) {
+					this.Icon = new Pixbuf (value);
 				}
 			}
 		}
@@ -95,13 +93,13 @@ namespace MonoMultiJack.Forms
 		#region IMainWindow implementation		
 		IEnumerable<IAppStartWidget> IMainWindow.AppStartWidgets {
 			set {
-				UpdateAppWidgets(value);
+				UpdateAppWidgets (value);
 			}
 		}
 
 		IEnumerable<IConnectionWidget> IMainWindow.ConnectionWidgets {
 			set {
-				CreateTabs(value);
+				CreateTabs (value);
 			}
 		}
 
@@ -109,9 +107,9 @@ namespace MonoMultiJack.Forms
 			get {
 				
 				int xPosition, yPosition, xSize, ySize;
-				GetPosition(out xPosition, out yPosition);
-				GetSize(out xSize, out ySize);
-				return new WindowConfiguration(
+				GetPosition (out xPosition, out yPosition);
+				GetSize (out xSize, out ySize);
+				return new WindowConfiguration (
 		xPosition,
 		yPosition,
 		xSize,
@@ -119,14 +117,14 @@ namespace MonoMultiJack.Forms
 				);
 			}
 			set {
-				UpdateWindowSize(value);
+				UpdateWindowSize (value);
 			}
 		}
 
 		bool IMainWindow.JackdIsRunning {
 			set {
 				stopAction.Sensitive = value;
-				_statusbar.Push(0, value ? JackdStatusRunning : JackdStatusStopped);
+				_statusbar.Push (0, value ? JackdStatusRunning : JackdStatusStopped);
 			}
 		}
 
@@ -149,7 +147,7 @@ namespace MonoMultiJack.Forms
 		/// <summary>
 		/// builds window content
 		/// </summary>
-		void BuildWindowContent()
+		void BuildWindowContent ()
 		{
 			Title = "MonoMultiJack";
 
@@ -162,7 +160,7 @@ namespace MonoMultiJack.Forms
 		/// <param name="appConfigs">
 		/// A <see cref="List"/> of <see cref="appConfiguration"/>s
 		/// </param>
-		void UpdateAppWidgets(IEnumerable<IAppStartWidget> appWidgets)
+		void UpdateAppWidgets (IEnumerable<IAppStartWidget> appWidgets)
 		{
 			foreach (Widget widget in _appButtonBox.Children) {
 				IAppStartWidget appWidget = widget as IAppStartWidget;
@@ -171,49 +169,49 @@ namespace MonoMultiJack.Forms
 				}
 			}
 			foreach (IAppStartWidget appWidget in appWidgets) {
-				_appButtonBox.Add((Widget)appWidget);
-				appWidget.Show();
+				_appButtonBox.Add ((Widget)appWidget);
+				appWidget.Show ();
 			}
 			_appButtonBox.ShowAll ();
 		}
 
-		void CreateTabs(IEnumerable<IConnectionWidget> connectionWidgets)
+		void CreateTabs (IEnumerable<IConnectionWidget> connectionWidgets)
 		{
 			foreach (IConnectionWidget widget in connectionWidgets) {
-				_connectionNotebook.Add((Widget) widget);
-				widget.Show();
+				_connectionNotebook.AppendPage ((Widget)widget, new Label (widget.ConnectionManagerName));
+				widget.Show ();
 			}
-			_connectionNotebook.ShowAll();
+			_connectionNotebook.ShowAll ();
 		}
 		
-		void UpdateWindowSize(WindowConfiguration windowConfig)
+		void UpdateWindowSize (WindowConfiguration windowConfig)
 		{
 			Resize (windowConfig.XSize, windowConfig.YSize);
 			Move (windowConfig.XPosition, windowConfig.YPosition);
 		}
 				
-		void CallQuitApplication()
+		void CallQuitApplication ()
 		{
 			if (QuitApplication != null) {
-				QuitApplication(this, new EventArgs());
+				QuitApplication (this, new EventArgs ());
 			}
 		}
 
-		void CallStopJackd()
+		void CallStopJackd ()
 		{
 			if (StopJackd != null) {
-				StopJackd(this, new EventArgs());
+				StopJackd (this, new EventArgs ());
 			}
 		}
 		
-		void CallStopAll()
+		void CallStopAll ()
 		{
 			if (StopAll != null) {
-				StopAll(this, new EventArgs());
+				StopAll (this, new EventArgs ());
 			}
 		}
 		
-		void ShowInfoMessage(string message)
+		void ShowInfoMessage (string message)
 		{
 			MessageDialog popup = new MessageDialog (
 				this,
@@ -226,44 +224,44 @@ namespace MonoMultiJack.Forms
 			popup.Destroy ();
 		}
 		
-		protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 		{
-			CallQuitApplication();
+			CallQuitApplication ();
 		}
 		
-		protected virtual void CallStartJackd(object sender, EventArgs e)
+		protected virtual void CallStartJackd (object sender, EventArgs e)
 		{
-			CallStartJackd();
+			CallStartJackd ();
 		}
 
-		void CallStartJackd()
+		void CallStartJackd ()
 		{
 			if (StartJackd != null) {
-				StartJackd(this, new EventArgs());
+				StartJackd (this, new EventArgs ());
 			}
 		}
 	
-		protected virtual void CallStopJackd(object sender, EventArgs e)
+		protected virtual void CallStopJackd (object sender, EventArgs e)
 		{
-			CallStopJackd();
+			CallStopJackd ();
 		}
 	
-		protected virtual void CallStopAll(object sender, EventArgs e)
+		protected virtual void CallStopAll (object sender, EventArgs e)
 		{
-			CallStopAll();
+			CallStopAll ();
 		}
 		
-		protected virtual void CallShowConfigureJackd(object sender, EventArgs e)
+		protected virtual void CallShowConfigureJackd (object sender, EventArgs e)
 		{
 			if (ShowConfigureJackd != null) {
-				ShowConfigureJackd(this, new EventArgs());
+				ShowConfigureJackd (this, new EventArgs ());
 			}
 		}
 		
-		protected virtual void CallShowConfigureApps(object sender, EventArgs e)
+		protected virtual void CallShowConfigureApps (object sender, EventArgs e)
 		{
 			if (ShowConfigureApps != null) {
-				ShowConfigureApps(this, new EventArgs());
+				ShowConfigureApps (this, new EventArgs ());
 			}
 
 		}
@@ -279,7 +277,7 @@ namespace MonoMultiJack.Forms
 		/// </param>
 		protected virtual void OnQuitActionActivated (object sender, EventArgs e)
 		{
-			CallQuitApplication();
+			CallQuitApplication ();
 		}
 		
 		/// <summary>
@@ -291,10 +289,10 @@ namespace MonoMultiJack.Forms
 		/// <param name="e">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		protected virtual void CallShowAbout(object sender, EventArgs e)
+		protected virtual void CallShowAbout (object sender, EventArgs e)
 		{
 			if (ShowAbout != null) {
-				ShowAbout(this, new EventArgs());
+				ShowAbout (this, new EventArgs ());
 			}
 
 		}
@@ -310,7 +308,7 @@ namespace MonoMultiJack.Forms
 		/// </param>
 		public void OnDelete (object o, EventArgs args)
 		{
-			CallQuitApplication();
+			CallQuitApplication ();
 		}
 
 	}

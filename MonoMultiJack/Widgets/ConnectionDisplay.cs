@@ -50,13 +50,7 @@ namespace MonoMultiJack.Widgets
 			base.Dispose ();
 		}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="connectionManager">
-		/// A <see cref="IConnectionManager"/> whose ports and connection are displayed.
-		/// </param>
-		public ConnectionDisplay ()
+		public ConnectionDisplay (string connectionManagerName)
 		{
 			this.Build ();
 			var inClientColumn = new TreeViewColumn ();
@@ -72,6 +66,7 @@ namespace MonoMultiJack.Widgets
 			outClientColumn.AddAttribute (outClientCell, "text", 0);
 			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
+			ConnectionManagerName = connectionManagerName;
 		}
 
 		public void AddPort (Port port)
@@ -437,8 +432,7 @@ namespace MonoMultiJack.Widgets
 			
 				_connections.Add (connection);
 				UpdateConnectionLines ();
-			}
-			);
+			});
 		}
 
 		public void RemoveConnection (IConnection connection)
@@ -448,9 +442,10 @@ namespace MonoMultiJack.Widgets
 			Console.WriteLine (connection.OutPort.ClientName + ":" + connection.OutPort.Name + " has been disconnected from " + connection.InPort.ClientName + ":" + connection.InPort.Name);
 				#endif
 				_connections.Remove (connection);
-			}
-			);
+			});
 		}
+
+		public string ConnectionManagerName {get; private set;}
 		#endregion
 
 	}
