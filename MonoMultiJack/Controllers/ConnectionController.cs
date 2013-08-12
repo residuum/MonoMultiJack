@@ -42,7 +42,7 @@ namespace MonoMultiJack.Controllers
 		public ConnectionController (IConnectionManager connectionManager)
 		{
 			_connectionManager = connectionManager;
-			_connectionWidget = new ConnectionDisplay ();
+			_connectionWidget = new ConnectionDisplay (connectionManager.Name);
 
 			_connectionManager.BackendHasExited += ConnectionManager_BackendHasExited;
 			_connectionManager.ConnectionHasChanged += ConnectionManager_ConnectionHasChanged;

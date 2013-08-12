@@ -118,6 +118,12 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				return _connections.Cast<IConnection> ();
 			}
 		}
+
+		public string Name {
+			get{
+				return "Alsa MIDI";
+			}
+		}
 		#endregion
 
 		bool CheckForChanges ()

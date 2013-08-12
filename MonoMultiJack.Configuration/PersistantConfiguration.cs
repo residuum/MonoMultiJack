@@ -147,7 +147,7 @@ namespace MonoMultiJack.Configuration
 					string arguments;
 					try {
 						arguments = appNode.SelectSingleNode ("arguments").InnerText;
-					} catch (NullReferenceException e) {
+					} catch (NullReferenceException ex) {
 						arguments = null;
 					}
 					appConfigs.Add (new AppConfiguration (name, command, arguments));

@@ -31,31 +31,31 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	public abstract class JackConnectionManager : IConnectionManager
 	{
-		protected JackConnectionManager()
+		protected JackConnectionManager ()
 		{
 			LibJackWrapper.PortOrConnectionHasChanged += OnLibJackWrapperHasChanged;
 			LibJackWrapper.JackHasShutdown += OnJackShutdown;
 		}
 
-		~JackConnectionManager()
+		~JackConnectionManager ()
 		{
-			Dispose(false);
+			Dispose (false);
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			Dispose (true);
+			GC.SuppressFinalize (this);
 		}
 	
-		protected virtual void Dispose(bool isDisposing)
+		protected virtual void Dispose (bool isDisposing)
 		{
 			if (isDisposing) {
 				LibJackWrapper.PortOrConnectionHasChanged -= OnLibJackWrapperHasChanged;
 				LibJackWrapper.JackHasShutdown -= OnJackShutdown;
 			}
 
-			LibJackWrapper.Close();
+			LibJackWrapper.Close ();
 		}
 		
 		#region IConnectionManager implementation
@@ -73,66 +73,72 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		public IEnumerable<Port> Ports {
 			get {
 				if (IsActive) {
-					return LibJackWrapper.GetPorts(ConnectionType);
+					return LibJackWrapper.GetPorts (ConnectionType);
 				} else {
-					GLib.Timeout.Add(2000, new GLib.TimeoutHandler(ConnectToServer));
-					LibJackWrapper.ConnectToServer();
+					GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
+					LibJackWrapper.ConnectToServer ();
 					return null;
 				}
 			}
 		}
 
-		public bool Connect(Port outPort, Port inPort)
+		public bool Connect (Port outPort, Port inPort)
 		{
 			if (outPort.ConnectionType != ConnectionType && outPort.PortType != PortType.Output
 				&& inPort.ConnectionType != ConnectionType && outPort.PortType != PortType.Input) {
 				return false;
 			} else {
-				return LibJackWrapper.Connect(outPort, inPort);
+				return LibJackWrapper.Connect (outPort, inPort);
 			}
 		}
 
-		public bool Disconnect(Port outPort, Port inPort)
+		public bool Disconnect (Port outPort, Port inPort)
 		{
-			return LibJackWrapper.Disconnect(outPort, inPort);
+			return LibJackWrapper.Disconnect (outPort, inPort);
 		}
 
 		public IEnumerable<IConnection> Connections {
 			get {
-				return LibJackWrapper.GetConnections(ConnectionType);
+				return LibJackWrapper.GetConnections (ConnectionType);
+			}
+		}
+
+		public virtual string Name {
+			get {
+				return "Jack";
 			}
 		}
 		#endregion
 
-		private bool ConnectToServer()
+		private bool ConnectToServer ()
 		{
-			if (LibJackWrapper.ConnectToServer()) {
-				var eventArgs = new ConnectionEventArgs();
+			if (LibJackWrapper.ConnectToServer ()) {
+				var eventArgs = new ConnectionEventArgs ();
 				eventArgs.Ports = Ports;
 				eventArgs.Connections = Connections;
 				eventArgs.ChangeType = ChangeType.New;
 				eventArgs.Message = "Connection to Jackd established";
 				eventArgs.MessageType = MessageType.Info;
-				ConnectionHasChanged(this, eventArgs);
+				ConnectionHasChanged (this, eventArgs);
 				return false;
 			} 
 			return true;
 		}
 		
-		private void OnLibJackWrapperHasChanged(object sender, ConnectionEventArgs args)
+		private void OnLibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
 		{
 #if DEBUG
 			Console.WriteLine (args.Message);
 #endif
 			if (args.ConnectionType == ConnectionType) {
-				ConnectionHasChanged(this, args);	
+				ConnectionHasChanged (this, args);	
 			}
 		}
 		
-		private void OnJackShutdown(object sender, ConnectionEventArgs args)
+		private void OnJackShutdown (object sender, ConnectionEventArgs args)
 		{
-			BackendHasExited(this, args);
-			GLib.Timeout.Add(2000, new GLib.TimeoutHandler(ConnectToServer));
+			BackendHasExited (this, args);
+			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
 		}
 	}
 }

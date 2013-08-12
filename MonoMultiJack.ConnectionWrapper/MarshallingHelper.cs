@@ -37,32 +37,28 @@ namespace MonoMultiJack.ConnectionWrapper
 			}
 			return Marshal.PtrToStringAnsi (p);
 		}
- 
+
 		public static string[] PtrToStringArray (this IntPtr stringArray)
 		{
 			if (stringArray == IntPtr.Zero) {
 				return new string[]{};
 			} 
  
-			int arrayCount = stringArray.CountStrings ();
+			ushort arrayCount = stringArray.CountStrings ();
 			return stringArray.PtrToStringArray (arrayCount);
 		}
  
-		static int CountStrings (this IntPtr stringArray)
+		static ushort CountStrings (this IntPtr stringArray)
 		{
-			int count = 0;
+			ushort count = 0;
 			while (Marshal.ReadIntPtr (stringArray, count*IntPtr.Size) != IntPtr.Zero) {
 				++count;
 			}
 			return count;
 		}
  
-		public static string[] PtrToStringArray (this IntPtr stringArray, int count)
+		static string[] PtrToStringArray (this IntPtr stringArray, ushort count)
 		{
-			if (count < 0) {
-				throw new ArgumentOutOfRangeException ("count", "< 0");
-			}
-
 			if (stringArray == IntPtr.Zero) {
 				return new string[count];
 			} 

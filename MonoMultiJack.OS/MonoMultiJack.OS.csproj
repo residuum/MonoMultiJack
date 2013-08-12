@@ -7,8 +7,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D975B294-7420-433F-B5A8-A7B230584877}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>MonoMultiJack.Backend</RootNamespace>
-    <AssemblyName>MonoMultiJack.Backend</AssemblyName>
+    <RootNamespace>MonoMultiJack.OS</RootNamespace>
+    <AssemblyName>MonoMultiJack.OS</AssemblyName>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

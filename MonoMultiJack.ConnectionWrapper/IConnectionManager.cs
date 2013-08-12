@@ -43,6 +43,8 @@ namespace MonoMultiJack.ConnectionWrapper
 		IEnumerable<IConnection> Connections { get; }
 
 		bool Connect(Port outPort, Port inPort);
-		bool Disconnect(Port outPort, Port inPort);		
+		bool Disconnect(Port outPort, Port inPort);
+		string Name { get; }
+		
 	}
 }

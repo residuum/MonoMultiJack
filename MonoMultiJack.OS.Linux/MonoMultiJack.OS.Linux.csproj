@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0FF07842-6E86-40F0-998B-D376D50B83A3}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>MonoMultiJack.BusinessLogic</RootNamespace>
-    <AssemblyName>MonoMultiJack.BusinessLogic</AssemblyName>
+    <RootNamespace>MonoMultiJack.OS.Linux</RootNamespace>
+    <AssemblyName>MonoMultiJack.OS.Linux</AssemblyName>
     <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
