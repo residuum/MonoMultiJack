@@ -26,10 +26,10 @@
 using System;
 using System.Linq;
 using MonoMultiJack.Forms;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.Configuration;
 using System.Collections.Generic;
-using MonoMultiJack.BusinessLogic.Common;
 using MonoMultiJack.Widgets;
+using MonoMultiJack.OS;
 using Gtk;
 using System.Reflection;
 using System.IO;
@@ -56,7 +56,7 @@ namespace MonoMultiJack.Controllers
 
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
-		ProgramManagement _jackd;
+		IProgram _jackd;
 		IMainWindow _mainWindow;
 		List<AppStartController> _startWidgetControllers;
 		List<ConnectionController> _connectionControllers;
@@ -67,7 +67,8 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.IconPath = _programIcon;
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
-			foreach (IConnectionManager connectionManager in ConnectionManagerFactory.GetAllConnectionManagers()) { 
+			IConnectionManagerFactory factory = new MonoMultiJack.OS.Linux.ConnectionManagerFactory();
+			foreach (IConnectionManager connectionManager in factory.GetConnectionManagers()) { 
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select(c => c.Widget);
@@ -196,12 +197,12 @@ Console.WriteLine (e.Message);
 		void InitJackd (JackdConfiguration jackdConfig)
 		{
 			if (_jackd != null) {
-				_jackd.StopProgram ();
+				_jackd.Stop ();
 				_jackd.HasStarted -= Jackd_HasStarted;
 				_jackd.HasExited -= Jackd_HasExited;
 				_jackd.Dispose ();
 			}
-			_jackd = new ProgramManagement (jackdConfig);
+			_jackd = new MonoMultiJack.OS.Linux.Program (jackdConfig);
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}
@@ -223,15 +224,15 @@ Console.WriteLine (e.Message);
 		void MainWindow_StartJackd (object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
-				_jackd.StopProgram ();
+				_jackd.Stop ();
 			}
-			_jackd.StartProgram ();
+			_jackd.Start ();
 		}
 
 		void MainWindow_StopJackd (object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
-				_jackd.StopProgram ();
+				_jackd.Stop ();
 			}
 		}
 
@@ -246,7 +247,7 @@ Console.WriteLine (e.Message);
 		void StopAllApplications ()
 		{
 			if (_jackd.IsRunning) {
-				_jackd.StopProgram ();
+				_jackd.Stop ();
 			}
 
 		}
@@ -272,13 +273,13 @@ Console.WriteLine (e.Message);
 			//TODO: Move to view.
 			IAboutWindow AboutWindow = new AboutWindow ();
 			AboutWindow.ProgramName = "MonoMultiJack";
-			AboutWindow.Version = "0.1";
-			AboutWindow.Copyright = "(c) Thomas Mayer 2012";
+			AboutWindow.Version = "0.2";
+			AboutWindow.Copyright = "(c) Thomas Mayer 2013";
 			AboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
 	programs.";
 			AboutWindow.Website = "http://ix.residuum.org/";
 			AboutWindow.Authors = new String[] {"Thomas Mayer"};
-			AboutWindow.License = @"Copyright (c) 2009-2012 Thomas Mayer
+			AboutWindow.License = @"Copyright (c) 2009-2013 Thomas Mayer
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the ""Software""), to deal

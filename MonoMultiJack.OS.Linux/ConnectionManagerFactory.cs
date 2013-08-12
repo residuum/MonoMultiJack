@@ -28,48 +28,26 @@ using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.ConnectionWrapper.Alsa;
 using MonoMultiJack.ConnectionWrapper.Jack;
 using System.Collections.Generic;
+using MonoMultiJack.OS;
 
-namespace MonoMultiJack.BusinessLogic.Common
+namespace MonoMultiJack.OS.Linux
 {
 	/// <summary>
 	/// Connection manager factory.
 	/// </summary>
-	public static class ConnectionManagerFactory
+	public class ConnectionManagerFactory : IConnectionManagerFactory
 	{
-		/// <summary>
-		/// Gets the connection manager.
-		/// </summary>
-		/// <returns>
-		/// The connection manager.
-		/// </returns>
-		/// <param name='connType'>
-		/// The connection type.
-		/// </param>
-		static IConnectionManager GetConnectionManager(ConnectionType connType)
-		{
-			switch (connType) {
-				case ConnectionType.JackAudio:
-					return new JackAudioManager();
-				case ConnectionType.JackMidi:
-					return new JackMidiManager();
-				case ConnectionType.AlsaMidi:
-					return new AlsaMidiManager();
-				default:
-					return null;
-			}
-		}
-
 		/// <summary>
 		/// Gets all connection managers.
 		/// </summary>
 		/// <returns>
 		/// The all connection managers.
 		/// </returns>
-		public static IEnumerable<IConnectionManager> GetAllConnectionManagers ()
+		public IEnumerable<IConnectionManager> GetConnectionManagers ()
 		{
-			yield return GetConnectionManager(ConnectionType.JackAudio);
-			yield return GetConnectionManager(ConnectionType.JackMidi);
-			yield return GetConnectionManager(ConnectionType.AlsaMidi);
+			yield return new JackAudioManager();
+			yield return new JackMidiManager();
+			yield return new AlsaMidiManager();
 		}
 
 	}

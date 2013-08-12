@@ -1,5 +1,5 @@
 // 
-// JackdConfiguration.cs
+// WindowConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,55 +24,64 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-
-namespace MonoMultiJack.BusinessLogic.Configuration
+namespace MonoMultiJack.Configuration
 {
-	/// <summary>
-	/// jackd configuration
-	/// </summary>
-	public struct JackdConfiguration
+	public struct WindowConfiguration
 	{
 		/// <summary>
-		/// path to jackd executable
+		/// Gets the X position.
 		/// </summary>
-		public string Path { get; private set; }
-		
+		/// <value>
+		/// The X position.
+		/// </value>
+		public int XPosition { get; private set; }
+
 		/// <summary>
-		/// General oprions for jackd
+		/// Gets the Y position.
 		/// </summary>
-		public string GeneralOptions { get; private set; }
-		
+		/// <value>
+		/// The Y position.
+		/// </value>
+		public int YPosition { get; private set; }
+
 		/// <summary>
-		/// Driver infrastructure for jackd
+		/// Gets the size of the X.
 		/// </summary>
-		public string Driver { get; private set; }
-		
+		/// <value>
+		/// The size of the X.
+		/// </value>
+		public int XSize { get; private set; }
+
 		/// <summary>
-		/// Options for jackd driver
+		/// Gets the size of the Y.
 		/// </summary>
-		public string DriverOptions { get; private set; }
-		
+		/// <value>
+		/// The size of the Y.
+		/// </value>
+		public int YSize { get; private set; }
+
 		/// <summary>
-		/// Constructor
+		/// Initializes a new instance of the <see cref="MonoMultiJack.BusinessLogic.WindowConfiguration"/> struct.
 		/// </summary>
-		/// <param name="newPath">
-		/// A <see cref="System.String"/> indicating the path to jackd executable
+		/// <param name='xPosition'>
+		/// X position.
 		/// </param>
-		/// <param name="newGeneralOptions">
-		/// A <see cref="System.String"/> indicating the new general options
+		/// <param name='yPosition'>
+		/// Y position.
 		/// </param>
-		/// <param name="newDriver">
-		/// A <see cref="System.String"/> indicating the driver infrastructure
+		/// <param name='xSize'>
+		/// X size.
 		/// </param>
-		/// <param name="newDriverOptions">
-		/// A <see cref="System.String"/> indicating the new driver options
+		/// <param name='ySize'>
+		/// Y size.
 		/// </param>
-		public JackdConfiguration(string newPath, string newGeneralOptions, string newDriver, string newDriverOptions): this()
-		{			
-			Path = newPath;
-			GeneralOptions = newGeneralOptions;
-			Driver = newDriver;
-			DriverOptions = newDriverOptions;
+		public WindowConfiguration(int xPosition, int yPosition, int xSize, int ySize) : this()
+		{
+			XPosition = xPosition;
+			YPosition = yPosition;
+			XSize = xSize;
+			YSize = ySize;
 		}
 	}
 }
+

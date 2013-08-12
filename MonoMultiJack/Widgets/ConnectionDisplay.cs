@@ -149,7 +149,7 @@ namespace MonoMultiJack.Widgets
 		/// <param name="clients">
 		/// A <see cref="IEnumerable<IGrouping<System.String, Port>>"/> determining the values to add to the treestore.
 		/// </param>
-		private void AddTreeStoreValues (ref TreeStore store, IEnumerable<IGrouping<System.String, Port>> clients)
+		private void AddTreeStoreValues (ref TreeStore store, IEnumerable<IGrouping<string, Port>> clients)
 		{
 			foreach (var client in clients) {
 				TreeIter clientIter;
@@ -312,7 +312,7 @@ namespace MonoMultiJack.Widgets
 		/// <param name="e">
 		/// A <see cref="System.EventArgs"/>
 		/// </param>
-		protected virtual void ConnectButton_Click (object sender, System.EventArgs e)
+		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
 			TreeIter selectedOutIter;
 			TreeIter selectedInIter;

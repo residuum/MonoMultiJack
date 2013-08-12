@@ -1,10 +1,10 @@
 //
-// IAppWidget.cs
+// IProgram.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +25,37 @@
 // THE SOFTWARE.
 using System;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.OS
 {
-	public interface IWidget : IDisposable
+	public interface IProgram : IDisposable
 	{
-		void Show();
+		/// <summary>
+		/// Signals the exit of program.
+		/// </summary>
+		event ProgramEventHandler HasExited;
+		
+		/// <summary>
+		/// Signals the start of program
+		/// </summary>
+		event ProgramEventHandler HasStarted;
 
-		void Destroy();
+		/// <summary>
+		/// Gets a value indicating whether this instance is running.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if this instance is running; otherwise, <c>false</c>.
+		/// </value>
+		bool IsRunning{get;}
 
-		void Hide();
+		/// <summary>
+		/// Stop this instance.
+		/// </summary>
+		void Stop();
+
+		/// <summary>
+		/// Start this instance.
+		/// </summary>
+		void Start();
 	}
-
 }
 

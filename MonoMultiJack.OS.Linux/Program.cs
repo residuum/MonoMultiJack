@@ -27,19 +27,16 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.Configuration;
+using MonoMultiJack.OS;
 
-namespace MonoMultiJack.BusinessLogic.Common
+namespace MonoMultiJack.OS.Linux
 {
-	/// <summary>
-	/// Delegate to signal stopped program.
-	/// </summary>
-	public delegate void ProgramEventHandler(object sender,EventArgs e);
-	
+
 	/// <summary>
 	/// Class for management of external programs.
 	/// </summary>
-	public class ProgramManagement
+	public class Program : IProgram
 	{
 		/// <summary>
 		/// Name of the command to start
@@ -86,7 +83,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 			}
 		}
 		
-		public ProgramManagement(JackdConfiguration jackdConfig)
+		public Program(JackdConfiguration jackdConfig)
 		{
 			_commandName = jackdConfig.Path;
 			_commandArguments = jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions;
@@ -94,7 +91,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 			TestForRunningSingleton();
 		}
 
-		public ProgramManagement(AppConfiguration appConfig)
+		public Program(AppConfiguration appConfig)
 		{
 			if (string.IsNullOrEmpty(appConfig.Command)) {
 				return;
@@ -108,7 +105,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// <summary>
 		/// Destructs instance and cleans up temporary files.
 		/// </summary>
-		~ProgramManagement ()
+		~Program ()
 		{
 			Dispose(false);
 		}
@@ -121,7 +118,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 	
 		protected virtual void Dispose(bool isDisposing)
 		{
-			StopProgram();
+			Stop();
 			if (!string.IsNullOrEmpty(_startScriptFile) && File.Exists(_startScriptFile)) {
 				File.Delete(_startScriptFile);
 			}
@@ -189,7 +186,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// <summary>
 		/// Starts the program.
 		/// </summary>
-		public void StartProgram()
+		public void Start()
 		{
 			ExecuteShellScript(_startScriptFile, true);
 			GLib.Timeout.Add(1000, new GLib.TimeoutHandler(IsStillRunning));
@@ -233,7 +230,7 @@ namespace MonoMultiJack.BusinessLogic.Common
 		/// <summary>
 		/// Stops the program.
 		/// </summary>
-		public void StopProgram()
+		public void Stop()
 		{
 			if (IsRunning) {
 				using (Process killProgram = new Process ()) {

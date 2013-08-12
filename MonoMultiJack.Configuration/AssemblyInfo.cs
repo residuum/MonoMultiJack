@@ -1,21 +1,21 @@
-// 
-// AppConfiguration.cs
-//  
+//
+// AssemblyInfo.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2012 Thomas Mayer
-// 
+//
+// Copyright (c) 2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,47 +23,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace MonoMultiJack.BusinessLogic.Configuration
-{
-	/// <summary>
-	/// Configuration of an application
-	/// </summary>
-	public struct AppConfiguration
-	{
-		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name { get; private set; }
-		
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command { get; private set; }
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
 
-		/// <summary>
-		/// Gets the arguments.
-		/// </summary>
-		/// <value>
-		/// The arguments.
-		/// </value>
-		public string Arguments {get; private set;}
+[assembly: AssemblyTitle("MonoMultiJack.Configuration")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("Thomas Mayer")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-		/// <summary>
-		/// constructor
-		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
-		public AppConfiguration(string newName, string newCommand, string newArguments) : this()
-		{
-			Name = newName;
-			Command = newCommand;
-			Arguments = newArguments;
-		}
-	}
-}
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+
+[assembly: AssemblyVersion("1.0.*")]
+
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
+

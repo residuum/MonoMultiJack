@@ -1,10 +1,10 @@
 //
-// IAppWidget.cs
+// ProgramEventHandler.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +25,10 @@
 // THE SOFTWARE.
 using System;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.OS
 {
-	public interface IWidget : IDisposable
-	{
-		void Show();
-
-		void Destroy();
-
-		void Hide();
-	}
-
+	/// <summary>
+	/// Program event handler.
+	/// </summary>
+	public delegate void ProgramEventHandler(object sender,EventArgs e);
 }
-

@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using Gtk;
 using System;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.Widgets
 {

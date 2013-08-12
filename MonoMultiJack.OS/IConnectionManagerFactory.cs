@@ -1,10 +1,10 @@
 //
-// IAppWidget.cs
+// IPortManagement.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,17 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
+using MonoMultiJack.ConnectionWrapper;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.OS
 {
-	public interface IWidget : IDisposable
+	public interface IConnectionManagerFactory
 	{
-		void Show();
-
-		void Destroy();
-
-		void Hide();
+		IEnumerable<IConnectionManager> GetConnectionManagers ();
 	}
-
 }
 

@@ -25,21 +25,21 @@
 // THE SOFTWARE.
 using System;
 using MonoMultiJack.Widgets;
-using MonoMultiJack.BusinessLogic.Common;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.OS;
+using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.Controllers
 {
 	public class AppStartController : IController
 	{		
 		AppConfiguration _appConfiguration;
-		ProgramManagement _application;
+		IProgram _application;
 		IAppStartWidget _appWidget;
 
 		public AppStartController(AppConfiguration appConfiguration)
 		{
 			_appConfiguration = appConfiguration;
-			_application = new ProgramManagement(_appConfiguration);
+			_application = new MonoMultiJack.OS.Linux.Program(_appConfiguration);
 			_appWidget = new AppStartWidget();
 			_appWidget.SetApp(appConfiguration.Name, appConfiguration.Command);
 			_appWidget.StartApplication += AppWidget_StartApplication;
@@ -68,7 +68,7 @@ namespace MonoMultiJack.Controllers
 		protected virtual void Dispose(bool isDisposing)
 		{
 			if (_application != null) {
-				_application.StopProgram();
+				_application.Stop();
 				_application.Dispose();
 			}
 			_appWidget.Dispose();
@@ -76,12 +76,12 @@ namespace MonoMultiJack.Controllers
 		
 		void AppWidget_StartApplication(object sender, EventArgs e)
 		{
-			_application.StartProgram();
+			_application.Start();
 		}
 		
 		void AppWidget_StopApplication(object sender, EventArgs e)
 		{
-			_application.StopProgram();
+			_application.Start();
 		}
 		
 		void Application_HasExited(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace MonoMultiJack.Controllers
 
 		public void StopApplication()
 		{
-			_application.StopProgram();
+			_application.Stop();
 		}
 
 		public bool IsRunning {

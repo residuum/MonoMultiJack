@@ -1,5 +1,5 @@
 // 
-// WindowConfiguration.cs
+// AppConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,64 +24,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.BusinessLogic.Configuration
+
+namespace MonoMultiJack.Configuration
 {
-	public struct WindowConfiguration
+	/// <summary>
+	/// Configuration of an application
+	/// </summary>
+	public struct AppConfiguration
 	{
 		/// <summary>
-		/// Gets the X position.
+		/// name of the application
 		/// </summary>
-		/// <value>
-		/// The X position.
-		/// </value>
-		public int XPosition { get; private set; }
+		public string Name { get; private set; }
+		
+		/// <summary>
+		/// command to launch the application
+		/// </summary>
+		public string Command { get; private set; }
 
 		/// <summary>
-		/// Gets the Y position.
+		/// Gets the arguments.
 		/// </summary>
 		/// <value>
-		/// The Y position.
+		/// The arguments.
 		/// </value>
-		public int YPosition { get; private set; }
+		public string Arguments {get; private set;}
 
 		/// <summary>
-		/// Gets the size of the X.
+		/// constructor
 		/// </summary>
-		/// <value>
-		/// The size of the X.
-		/// </value>
-		public int XSize { get; private set; }
-
-		/// <summary>
-		/// Gets the size of the Y.
-		/// </summary>
-		/// <value>
-		/// The size of the Y.
-		/// </value>
-		public int YSize { get; private set; }
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MonoMultiJack.BusinessLogic.WindowConfiguration"/> struct.
-		/// </summary>
-		/// <param name='xPosition'>
-		/// X position.
+		/// <param name="newName">
+		/// A <see cref="System.String"/> indicating name of application
 		/// </param>
-		/// <param name='yPosition'>
-		/// Y position.
+		/// <param name="newCommand">
+		/// A <see cref="System.String"/> indicating command to lauch the application
 		/// </param>
-		/// <param name='xSize'>
-		/// X size.
-		/// </param>
-		/// <param name='ySize'>
-		/// Y size.
-		/// </param>
-		public WindowConfiguration(int xPosition, int yPosition, int xSize, int ySize) : this()
+		public AppConfiguration(string newName, string newCommand, string newArguments) : this()
 		{
-			XPosition = xPosition;
-			YPosition = yPosition;
-			XSize = xSize;
-			YSize = ySize;
+			Name = newName;
+			Command = newCommand;
+			Arguments = newArguments;
 		}
 	}
 }
-

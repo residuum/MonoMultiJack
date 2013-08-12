@@ -24,9 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoMultiJack.BusinessLogic.Common;
 using System.Collections.Generic;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Forms

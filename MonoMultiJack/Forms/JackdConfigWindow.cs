@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using Gtk;
 using MonoMultiJack;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.Configuration;
 using System;
 using System.IO;
 using Gdk;
@@ -41,13 +41,6 @@ namespace MonoMultiJack.Forms
 		private Entry _jackdGeneralOptionsEntry;
 		private Entry _jackdDriverEntry;
 		private Entry _jackdDriverOptionsEntry;
-
-		#region IDisposable implementation
-		void System.IDisposable.Dispose()
-		{
-			this.Dispose();
-		}
-		#endregion
 
 		#region IWidget implementation
 		void MonoMultiJack.Widgets.IWidget.Show()

@@ -30,7 +30,7 @@ using System.Text;
 using System.Xml;
 using System.Linq;
 
-namespace MonoMultiJack.BusinessLogic.Configuration
+namespace MonoMultiJack.Configuration
 {
 	/// <summary>
 	/// Class for managing configuration.

@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 using MonoMultiJack;
-using MonoMultiJack.BusinessLogic.Configuration;
+using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Forms
