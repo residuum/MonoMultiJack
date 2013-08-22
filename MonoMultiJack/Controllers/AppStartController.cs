@@ -81,7 +81,7 @@ namespace MonoMultiJack.Controllers
 		
 		void AppWidget_StopApplication(object sender, EventArgs e)
 		{
-			_application.Start();
+			_application.Stop();
 		}
 		
 		void Application_HasExited(object sender, EventArgs e)

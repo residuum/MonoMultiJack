@@ -29,6 +29,7 @@ using System.Linq;
 using Gtk;
 using MonoMultiJack.ConnectionWrapper;
 using Cairo;
+using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Widgets
 {
@@ -146,40 +147,9 @@ namespace MonoMultiJack.Widgets
 		/// <returns>
 		/// A <see cref="Port"/>
 		/// </returns>
-		private List<Port> GetSelectedPorts (TreeStore connectionStore, TreeIter selectedIter, FlowDirection portType)
+		IConnectable GetSelectedConnectable (TreeStore connectionStore, TreeIter selectedIter)
 		{
-			TreePath iterPath = connectionStore.GetPath (selectedIter);
-			List<Port> selectedPorts = new List<Port> ();
-			TreeIter otherIter;
-			if (iterPath.Depth == 2) {
-
-				if (iterPath.Up () && connectionStore.GetIter (out otherIter, iterPath)) {
-					//TODO: Get Port
-//					selectedPorts.Add(new Port(
-//			connectionStore.GetValue(selectedIter, 0).ToString(),
-//			connectionStore.GetValue(otherIter, 0).ToString(),
-//			portType,
-//			_connectionManager.ConnectionType
-//					)
-//					);
-
-				}
-			} else if (iterPath.Depth == 1) {
-				iterPath.Down ();
-				while (connectionStore.GetIter (out otherIter, iterPath)) {
-					//TODO: Get Ports
-//					selectedPorts.Add(new Port(
-//			connectionStore.GetValue(otherIter, 0).ToString(),
-//			connectionStore.GetValue(selectedIter, 0).ToString(),
-//			portType,
-//			_connectionManager.ConnectionType
-//					)
-//					);
-//					iterPath.Next();
-
-				}
-			}
-			return selectedPorts;
+			return connectionStore.GetValue(selectedIter, 0) as IConnectable; 
 		}
 
 		/// <summary>
@@ -197,7 +167,7 @@ namespace MonoMultiJack.Widgets
 		/// <returns>
 		/// A <see cref="System.Int32"/>
 		/// </returns>
-		private int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
+		int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
 		{
 			int cellHeight = 24;
 			//We start in the middle of the first Treeview item
@@ -243,21 +213,17 @@ namespace MonoMultiJack.Widgets
 			TreeIter selectedOutIter;
 			TreeIter selectedInIter;
 			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter)) {
-				List<Port> outPorts = GetSelectedPorts (
+				IConnectable outlet = GetSelectedConnectable (
 					_outputStore,
-					selectedOutIter,
-					FlowDirection.Out
+					selectedOutIter
 				);
-				List<Port> inPorts = GetSelectedPorts (
+				IConnectable inlet = GetSelectedConnectable (
 					_inputStore,
-					selectedInIter,
-					FlowDirection.In
+					selectedInIter
 				);
-				//TODO: Call connection
-//				int minCount = Math.Min(inPorts.Count(), outPorts.Count());
-//				for (var i = 0; i < minCount; i++) {
-//					_connectionManager.Connect(outPorts [i], inPorts [i]);
-//				}
+				if (Connect != null) {
+					Connect(this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
+				}
 			}
 		}
 
@@ -266,29 +232,24 @@ namespace MonoMultiJack.Widgets
 			TreeIter selectedOutIter;
 			TreeIter selectedInIter;
 			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter)) {
-				IEnumerable<Port> outPorts = GetSelectedPorts (
+				IConnectable outlet = GetSelectedConnectable (
 					_outputStore,
-					selectedOutIter,
-					FlowDirection.Out
+					selectedOutIter
 				);
-				IEnumerable<Port> inPorts = GetSelectedPorts (
+				IConnectable inlet = GetSelectedConnectable (
 					_inputStore,
-					selectedInIter,
-					FlowDirection.In
+					selectedInIter
 				);
-				//TODO: Call disconnect
-//				foreach (Port outPort in outPorts) {
-//					foreach (Port inPort in inPorts) {
-//						_connectionManager.Disconnect(outPort, inPort);
-//					}
-//				}
+				if (Disconnect != null) {
+					Disconnect(this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
+				}
 			}
 		}
 
 		/// <summary>
 		/// Updates the connection lines
 		/// </summary>
-		private void UpdateConnectionLines ()
+		void UpdateConnectionLines ()
 		{
 			var now = DateTime.Now;
 			if (now - _lastLineUpdate < TimeSpan.FromSeconds (0.01)) {
@@ -346,12 +307,13 @@ namespace MonoMultiJack.Widgets
 			UpdateConnectionLines ();
 		}
 		#region IConnectionWidget implementation
-		public event EventHandler ConnectPorts;
-		public event EventHandler DisconnectPorts;
+		public event ConnectEventHandler Connect;
+		public event ConnectEventHandler Disconnect;
 
 		public void Clear ()
 		{
-			//throw new System.NotImplementedException ();
+			_inputStore.Clear();
+			_outputStore.Clear();
 		}
 
 		public void AddConnection (IConnection connection)

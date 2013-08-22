@@ -91,6 +91,7 @@
     <Compile Include="Controllers\ConnectionController.cs" />
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
+    <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

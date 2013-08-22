@@ -237,7 +237,9 @@ namespace MonoMultiJack.OS.Linux
 					killProgram.StartInfo.FileName = "kill";
 					killProgram.StartInfo.Arguments = _pid;
 					if (killProgram.Start()) {
-						HasExited(this, new EventArgs());
+						if (HasExited != null){
+							HasExited(this, new EventArgs());
+						}
 						_pid = null;
 					}
 					killProgram.WaitForExit();
@@ -288,7 +290,7 @@ namespace MonoMultiJack.OS.Linux
 		private bool IsStillRunning()
 		{
 			bool isRunning = IsRunning;
-			if (!isRunning) {
+			if (!isRunning && HasExited != null) {
 				HasExited(this, new EventArgs());
 			}
 			return isRunning;

@@ -138,7 +138,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.ChangeType = ChangeType.New;
 				eventArgs.Message = "Connection to Jackd established";
 				eventArgs.MessageType = MessageType.Info;
-				ConnectionHasChanged (this, eventArgs);
+				if (ConnectionHasChanged != null){
+					ConnectionHasChanged (this, eventArgs);
+				}
 				return false;
 			} 
 			return true;
@@ -149,7 +151,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 #if DEBUG
 			Console.WriteLine (args.Message);
 #endif
-			if (args.ConnectionType == ConnectionType) {
+			if (args.ConnectionType == ConnectionType && ConnectionHasChanged != null) {
 				ConnectionHasChanged (this, args);	
 			}
 		}

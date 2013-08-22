@@ -1,10 +1,10 @@
 //
-// IConnectionDisplay.cs
+// ConnectEventArgs.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Controllers.EventArguments;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Controllers.EventArguments
 {
-	public delegate void ConnectEventHandler(object sender,ConnectEventArgs e);
-
-	public interface IConnectionWidget :IWidget
+	public class ConnectEventArgs : EventArgs
 	{
-		void Clear ();
-
-		void AddConnectable (IConnectable connectable);
-
-		void RemoveConnectable (IConnectable connectable);
-
-		void AddConnection (IConnection connection);
-
-		void RemoveConnection (IConnection connection);
-		
-		event ConnectEventHandler Connect;
-		event ConnectEventHandler Disconnect;
-
-		string ConnectionManagerName {get;}
+		public IConnectable Inlet {get;set;}
+		public IConnectable Outlet {get;set;}
 	}
 }
 

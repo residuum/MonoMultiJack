@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Widgets;
+using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Controllers
 {
@@ -57,6 +58,17 @@ namespace MonoMultiJack.Controllers
 					_connectionWidget.AddConnectable (client);
 				}
 			}
+			
+			_connectionWidget.Connect += Widget_Connect;
+			_connectionWidget.Disconnect += Widget_Disconnect;
+		}
+
+		void Widget_Connect(object sender, ConnectEventArgs args){
+
+		}
+
+		void Widget_Disconnect(object sender, ConnectEventArgs args){
+
 		}
 
 		void ConnectionManager_BackendHasExited (object sender, ConnectionEventArgs args)

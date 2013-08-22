@@ -171,7 +171,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				oldEventArgs.ChangeType = ChangeType.Deleted;
 				oldEventArgs.Connectables = obsoletePorts;
 				oldEventArgs.Connections = obsoleteConnections;
-				ConnectionHasChanged (this, oldEventArgs);
+				if (ConnectionHasChanged != null){
+					ConnectionHasChanged (this, oldEventArgs);
+				}
 			}
 			return true;
 		}

@@ -52,9 +52,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.Message = "New port registered.";
 				connectionType = newPort.ConnectionType;
 				eventArgs.ChangeType = ChangeType.New;
-				var ports = new List<Port> ();
-				ports.Add (newPort);
-				eventArgs.Connectables = ports;
+				var clients = new List<IConnectable> ();
+				Client newClient = new Client(newPort.ClientName, newPort.FlowDirection, newPort.ConnectionType);
+				newClient.AddPort(newPort);
+				clients.Add (newClient);
+				eventArgs.Connectables = clients;
 			} else {
 				var oldPort = _portMapper.FirstOrDefault (map => map.Id == port);
 				if (oldPort != null) {

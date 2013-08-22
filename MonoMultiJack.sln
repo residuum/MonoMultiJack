@@ -162,9 +162,8 @@ Global
 		$22.IncludeStaticEntities = False
 		$8.NamingRule = $23
 		$23.Name = Fields (Private)
-		$23.AllowedPrefixes = $24
+		$23.RequiredPrefixes = $24
 		$24.String = _
-		$24.String = m_
 		$23.AffectedEntity = Field, ReadonlyField
 		$23.VisibilityMask = Private
 		$23.NamingStyle = CamelCase
@@ -179,9 +178,8 @@ Global
 		$25.IncludeStaticEntities = True
 		$8.NamingRule = $26
 		$26.Name = ReadOnly Fields (Private)
-		$26.AllowedPrefixes = $27
+		$26.RequiredPrefixes = $27
 		$27.String = _
-		$27.String = m_
 		$26.AffectedEntity = ReadonlyField
 		$26.VisibilityMask = Private
 		$26.NamingStyle = CamelCase
