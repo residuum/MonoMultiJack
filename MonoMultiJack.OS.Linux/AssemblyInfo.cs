@@ -29,12 +29,12 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("MonoMultiJack.BusinessLogic")]
+[assembly: AssemblyTitle("MonoMultiJack.OS.Linux")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MonoMultiJack")]
-[assembly: AssemblyCopyright("2009 - 2012 Thomas Mayer")]
+[assembly: AssemblyCopyright("2009 - 2013 Thomas Mayer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
