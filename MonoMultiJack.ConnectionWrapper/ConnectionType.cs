@@ -31,9 +31,9 @@ namespace MonoMultiJack.ConnectionWrapper
 	/// </summary>
 	public enum ConnectionType
 	{
-		Undefined = 0,
-		JackAudio = 1,
-		JackMidi = 2,
-		AlsaMidi = 3
+		Undefined,
+		JackAudio,
+		JackMidi,
+		AlsaMidi
 	}
 }

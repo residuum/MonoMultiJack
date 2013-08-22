@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -41,8 +42,11 @@
     <Compile Include="IConnectionManager.cs" />
     <Compile Include="MessageType.cs" />
     <Compile Include="Port.cs" />
-    <Compile Include="PortType.cs" />
     <Compile Include="MarshallingHelper.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="IConnectable.cs" />
+    <Compile Include="FlowDirection.cs" />
+    <Compile Include="EnumerableHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

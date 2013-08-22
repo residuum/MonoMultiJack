@@ -33,9 +33,9 @@ namespace MonoMultiJack.Widgets
 	{
 		void Clear ();
 
-		void AddPort (Port port);
+		void AddConnectable (IConnectable connectable);
 
-		void RemovePort (Port port);
+		void RemoveConnectable (IConnectable connectable);
 
 		void AddConnection (IConnection connection);
 

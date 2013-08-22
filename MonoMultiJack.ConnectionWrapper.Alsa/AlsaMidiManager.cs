@@ -63,31 +63,45 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasExited;
 
-		public bool Connect (Port outPort, Port inPort)
+		public bool Connect (IConnectable outlet, IConnectable inlet)
+		{	
+			bool connected = true;
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
+				if (ConnectPorts (portPair.Key, portPair.Value)) {
+					connected = false;
+				}
+			}
+			return connected;
+		}
+
+		private bool ConnectPorts(Port outPort, Port inPort)
 		{
-			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
-				&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
-			);
-			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
-				&& p.ClientName == inPort.ClientName && p.Name == inPort.Name
-			);
-			if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
-				|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
+			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
+			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
+			if (alsaOutPort == null || alsaInPort == null 
+			    || outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
 				return false;
 			}
 			return LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
 		}
 
-		public bool Disconnect (Port outPort, Port inPort)
+		public bool Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p.PortType == outPort.PortType && p.ConnectionType == outPort.ConnectionType
-				&& p.ClientName == outPort.ClientName && p.Name == outPort.Name
-			);
-			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p.PortType == inPort.PortType && p.ConnectionType == inPort.ConnectionType
-				&& p.ClientName == inPort.ClientName && p.Name == inPort.Name
-			);
-			if (alsaOutPort == null || alsaInPort == null || outPort.PortType != PortType.Output || outPort.ConnectionType != ConnectionType
-				|| inPort.PortType != PortType.Input || inPort.ConnectionType != ConnectionType) {
+			bool disconnected = true;
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
+				if (DisconnectPort (portPair.Key, portPair.Value)) {
+					disconnected = false;
+				}
+			}
+			return disconnected;
+		}
+
+		private bool DisconnectPort(Port outPort, Port inPort){
+			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
+			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
+			if (alsaOutPort == null || alsaInPort == null 
+			    || outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
+				|| inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
 				return false;
 			}
 			return LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
@@ -105,7 +119,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 		}
 
-		public IEnumerable<Port> Ports {
+		public IEnumerable<IConnectable> Clients {
 			get {
 				_portMapper = LibAsoundWrapper.GetPorts ().ToList ();
 				return _portMapper.Cast<Port> ();
@@ -149,13 +163,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			if (newPorts.Any () || newConnections.Any ()) {
 				var newEventArgs = new ConnectionEventArgs ();
 				newEventArgs.ChangeType = ChangeType.New;
-				newEventArgs.Ports = newPorts;
+				newEventArgs.Connectables = newPorts;
 				newEventArgs.Connections = newConnections;
 			}
 			if (obsoletePorts.Any ()) {
 				var oldEventArgs = new ConnectionEventArgs ();
 				oldEventArgs.ChangeType = ChangeType.Deleted;
-				oldEventArgs.Ports = obsoletePorts;
+				oldEventArgs.Connectables = obsoletePorts;
 				oldEventArgs.Connections = obsoleteConnections;
 				ConnectionHasChanged (this, oldEventArgs);
 			}

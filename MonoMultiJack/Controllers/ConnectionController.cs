@@ -1,3 +1,4 @@
+
 //
 // ConnectionDisplayController.cs
 //
@@ -24,6 +25,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Widgets;
 
@@ -36,7 +39,9 @@ namespace MonoMultiJack.Controllers
 		IConnectionManager _connectionManager;
 
 		public IConnectionWidget Widget {
-			get {return _connectionWidget;}
+			get {
+				return _connectionWidget;
+			}
 		}
 
 		public ConnectionController (IConnectionManager connectionManager)
@@ -46,6 +51,12 @@ namespace MonoMultiJack.Controllers
 
 			_connectionManager.BackendHasExited += ConnectionManager_BackendHasExited;
 			_connectionManager.ConnectionHasChanged += ConnectionManager_ConnectionHasChanged;
+			IEnumerable<IConnectable> clients = _connectionManager.Clients;
+			if (clients != null) {
+				foreach (IConnectable client in _connectionManager.Clients) {
+					_connectionWidget.AddConnectable (client);
+				}
+			}
 		}
 
 		void ConnectionManager_BackendHasExited (object sender, ConnectionEventArgs args)
@@ -56,12 +67,26 @@ namespace MonoMultiJack.Controllers
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)
 		{
 			if (args.ChangeType == ChangeType.New) {
-				foreach (IConnection connection in args.Connections) {
-					_connectionWidget.AddConnection (connection);
+				if (args.Connections != null) {
+					foreach (IConnection connection in args.Connections) {
+						_connectionWidget.AddConnection (connection);
+					}
+				}
+				if (args.Connectables != null) {
+					foreach (IConnectable connectable in args.Connectables) {
+						_connectionWidget.AddConnectable (connectable);
+					}
 				}
 			} else if (args.ChangeType == ChangeType.Deleted) {
-				foreach (IConnection connection in args.Connections) {
-					_connectionWidget.RemoveConnection (connection);
+				if (args.Connections != null) {				
+					foreach (IConnection connection in args.Connections) {
+						_connectionWidget.RemoveConnection (connection);
+					}
+				}
+				if (args.Connectables != null) {				
+					foreach (IConnectable connectable in args.Connectables) {
+						_connectionWidget.RemoveConnectable (connectable);
+					}
 				}
 			}
 		}

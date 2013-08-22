@@ -42,9 +42,12 @@ namespace MonoMultiJack.ConnectionWrapper
 		}
 		
 		/// <summary>
-		/// The changed Ports
+		/// Gets or sets the connectables.
 		/// </summary>
-		public IEnumerable<Port> Ports {
+		/// <value>
+		/// The connectables.
+		/// </value>
+		public IEnumerable<IConnectable> Connectables {
 			get;
 			set;
 		}

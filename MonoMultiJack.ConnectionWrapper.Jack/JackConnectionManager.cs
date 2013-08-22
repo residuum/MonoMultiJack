@@ -26,6 +26,8 @@
 using System;
 using System.Collections.Generic;
 using GLib;
+using System.Linq;
+using MonoMultiJack.ConnectionWrapper.Jack.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
@@ -70,10 +72,20 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			get { return LibJackWrapper.IsActive; }
 		}
 		
-		public IEnumerable<Port> Ports {
+		public IEnumerable<IConnectable> Clients {
 			get {
 				if (IsActive) {
-					return LibJackWrapper.GetPorts (ConnectionType);
+					var portGroups = LibJackWrapper.GetPorts(ConnectionType).GroupBy(p => p.ClientName);
+					List<Client> clients = new List<Client>();
+					foreach(var portGroup in portGroups){
+						IEnumerable<Port> ports = portGroup.ToList();
+						Client newClient = new Client(portGroup.Key, ports.First().FlowDirection, ports.First ().ConnectionType);
+						foreach(Port port in ports){
+							newClient.AddPort(port);
+						}
+						clients.Add(newClient);
+					}
+					return clients;
 				} else {
 					GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
 					LibJackWrapper.ConnectToServer ();
@@ -82,19 +94,26 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 
-		public bool Connect (Port outPort, Port inPort)
+		public bool Connect (IConnectable outlet, IConnectable inlet)
 		{
-			if (outPort.ConnectionType != ConnectionType && outPort.PortType != PortType.Output
-				&& inPort.ConnectionType != ConnectionType && outPort.PortType != PortType.Input) {
-				return false;
-			} else {
-				return LibJackWrapper.Connect (outPort, inPort);
+			bool connected = true;
+			foreach(KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)){
+				if (!LibJackWrapper.Connect(portPair.Key, portPair.Value)) {
+					connected = false;
+				}
 			}
+			return connected;
 		}
 
-		public bool Disconnect (Port outPort, Port inPort)
+		public bool Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			return LibJackWrapper.Disconnect (outPort, inPort);
+			bool disconnected = true;
+			foreach(KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)){
+				if (!LibJackWrapper.Disconnect(portPair.Key, portPair.Value)) {
+					disconnected = false;
+				}
+			}
+			return disconnected;
 		}
 
 		public IEnumerable<IConnection> Connections {
@@ -114,7 +133,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			if (LibJackWrapper.ConnectToServer ()) {
 				var eventArgs = new ConnectionEventArgs ();
-				eventArgs.Ports = Ports;
+				eventArgs.Connectables = Clients;
 				eventArgs.Connections = Connections;
 				eventArgs.ChangeType = ChangeType.New;
 				eventArgs.Message = "Connection to Jackd established";
@@ -137,7 +156,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		private void OnJackShutdown (object sender, ConnectionEventArgs args)
 		{
-			BackendHasExited (this, args);
+			if (BackendHasExited != null) {
+				BackendHasExited (this, args);
+			}
 			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
 		}
 	}

@@ -39,11 +39,11 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		bool IsActive { get; }
 
-		IEnumerable<Port> Ports { get; }
+		IEnumerable<IConnectable> Clients { get; }
 		IEnumerable<IConnection> Connections { get; }
 
-		bool Connect(Port outPort, Port inPort);
-		bool Disconnect(Port outPort, Port inPort);
+		bool Connect(IConnectable outlet, IConnectable inlet);
+		bool Disconnect(IConnectable outlet, IConnectable inlet);
 		string Name { get; }
 		
 	}

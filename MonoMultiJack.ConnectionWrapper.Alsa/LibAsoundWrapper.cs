@@ -159,7 +159,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 						portAddress,
 						portName,
 						clientName,
-						PortType.Output, 
+						FlowDirection.Out, 
 						_portNumberMax)
 					);
 					_portNumberMax++;
@@ -169,7 +169,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 						portAddress,
 						portName,
 						clientName,
-						PortType.Input,
+						FlowDirection.In,
 						_portNumberMax)
 					);
 					_portNumberMax++;
@@ -182,8 +182,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		{
 			if ((_alsaClient != IntPtr.Zero || Activate ()) && ports.Any ()) {
 				var connections = new List<AlsaMidiConnection> ();
-				var inPorts = ports.Where (p => p.PortType == PortType.Input);
-				var outPorts = ports.Where (p => p.PortType == PortType.Output);
+				var inPorts = ports.Where (p => p.FlowDirection == FlowDirection.In);
+				var outPorts = ports.Where (p => p.FlowDirection == FlowDirection.Out);
 				foreach (AlsaPort port in outPorts) {
 					connections.AddRange (GetConnectionsForPort (port, inPorts));
 				}

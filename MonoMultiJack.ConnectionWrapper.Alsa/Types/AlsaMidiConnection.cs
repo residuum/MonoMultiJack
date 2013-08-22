@@ -40,7 +40,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 				return null;
 			}
 			set {
-				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Output) {
+				if (value.ConnectionType == ConnectionType && value.FlowDirection == FlowDirection.Out) {
 					_outPort = value;					
 				}
 			}
@@ -54,7 +54,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 				return null;
 			}
 			set {
-				if (value.ConnectionType == ConnectionType.AlsaMidi && value.PortType == PortType.Input) {
+				if (value.ConnectionType == ConnectionType && value.FlowDirection == FlowDirection.In) {
 					_inPort = value;
 				}
 			}

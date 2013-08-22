@@ -1,5 +1,5 @@
 // 
-// AlsaPort.cs
+// PortType.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,21 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
+namespace MonoMultiJack.ConnectionWrapper
 {
-	internal class AlsaPort : Port
+	public enum FlowDirection
 	{
-		public SndSeqAddr AlsaAddress { get; private set; }
-		public string ClientName {get; private set;}
-		
-		public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, FlowDirection flowDirection, uint portId)
-		{				
-			AlsaAddress = alsaAdress;
-			FlowDirection = flowDirection;
-			ConnectionType = ConnectionType.AlsaMidi;
-			Name = portName;
-			ClientName = clientName;
-			Id = portId;
-		}
-	}	
+		Undefined,
+		In,
+		Out
+	}
 }
