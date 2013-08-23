@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MonoMultiJack")]
-[assembly: AssemblyCopyright("2009 - 2012 Thomas Mayer")]
+[assembly: AssemblyCopyright("2009 - 2013 Thomas Mayer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MonoMultiJack")]
-[assembly: AssemblyCopyright("2009 - 2012 Thomas Mayer")]
+[assembly: AssemblyCopyright("2009 - 2013 Thomas Mayer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
 using Gtk;
-using MonoMultiJack;
-using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Forms
 {
-	public partial class AppConfigWindow : Dialog, IAppConfigWindow
+	public class AppConfigWindow : Dialog, IAppConfigWindow
 	{
 		Table _configTable;
 				
 		public AppConfigWindow()
 		{
 			BuildDialog();
-			this.Close += HandleClose;
-			this.Response += HandleResponse;
+			Close += HandleClose;
+			Response += HandleResponse;
 			
 			Title = "Configure Applications";
 			Resizable = true;

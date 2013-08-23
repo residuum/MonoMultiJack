@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,6 @@ using Gdk;
 using Gtk;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
-using MessageType = Gtk.MessageType;
 
 namespace MonoMultiJack.Forms
 {
@@ -47,7 +46,7 @@ namespace MonoMultiJack.Forms
 		/// </summary>
 		public MainWindow () : base(Gtk.WindowType.Toplevel)
 		{
-			this.Build ();
+			Build ();
 			BuildWindowContent ();
 			DeleteEvent += OnDelete;
 		}
@@ -150,13 +149,11 @@ namespace MonoMultiJack.Forms
 
 			((IMainWindow)this).JackdIsRunning = false;
 		}
-		
-		/// <summary>
-		/// Updates appWidgets 
-		/// </summary>
-		/// <param name="appConfigs">
-		/// A <see cref="List"/> of <see cref="appConfiguration"/>s
-		/// </param>
+
+        /// <summary>
+        /// Updates appWidgets
+        /// </summary>
+        /// <param name="appWidgets">The app widgets.</param>
 		void UpdateAppWidgets (IEnumerable<IAppStartWidget> appWidgets)
 		{
 			foreach (Widget widget in _appButtonBox.Children) {
@@ -206,19 +203,6 @@ namespace MonoMultiJack.Forms
 			if (StopAll != null) {
 				StopAll (this, new EventArgs ());
 			}
-		}
-		
-		void ShowInfoMessage (string message)
-		{
-			MessageDialog popup = new MessageDialog (
-				this,
-				DialogFlags.DestroyWithParent,
-				MessageType.Info,
-				ButtonsType.Ok,
-				message
-			);
-			popup.Run ();
-			popup.Destroy ();
 		}
 		
 		protected void OnDeleteEvent (object sender, DeleteEventArgs a)

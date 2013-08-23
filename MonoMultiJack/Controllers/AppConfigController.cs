@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,9 +34,9 @@ namespace MonoMultiJack.Controllers
 {
 	public class AppConfigController : IController
 	{
-		List<AppConfiguration> _configurations;
-		IAppConfigWindow _configWindow;
-		List<IAppConfigWidget> _widgets = new List<IAppConfigWidget>();
+		readonly List<AppConfiguration> _configurations;
+        readonly IAppConfigWindow _configWindow;
+        readonly List<IAppConfigWidget> _widgets = new List<IAppConfigWidget>();
 
 		public AppConfigController(List<AppConfiguration> appConfigurations)
 		{

@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Gtk;
 using MonoMultiJack.ConnectionWrapper;
 using Cairo;
@@ -52,7 +51,7 @@ namespace MonoMultiJack.Widgets
 		void RenderClientName (TreeViewColumn treeColumn, CellRenderer cell, TreeModel treeModel, TreeIter iter)
 		{
 			IConnectable connectable = (IConnectable) treeModel.GetValue (iter, 0);
-			(cell as CellRendererText).Text = connectable.Name;
+			((CellRendererText)cell).Text = connectable.Name;
 		}
 
 		public ConnectionDisplay (string connectionManagerName)
@@ -77,31 +76,43 @@ namespace MonoMultiJack.Widgets
 		void AddTreeStoreValues (IConnectable connectable, TreeStore store)
 		{
 			Client client = connectable as Client;
-			if (client != null) {
-				TreeIter clientIter;
-				if (store.GetIterFirst (out clientIter)) {
-					while (client != (Client)store.GetValue (clientIter, 0)) {
-						if (!store.IterNext (ref clientIter)) {
-							clientIter = store.AppendValues (client);
-							break;
-						}
-					}
-				}
-				else {
-					clientIter = _inputStore.AppendValues (client);
-				}
-				foreach(Port port in client.Ports){
+			if (client != null)
+			{
+			    TreeIter clientIter = GetClientIter(store, client);
+			    foreach(Port port in client.Ports){
 					store.AppendValues(clientIter, port);
 				}
-			} else {				
+			}
+			else {				
 				Port port = connectable as Port;
 				if (port != null){
-					//Don't know how to do that
+					throw new NotSupportedException("Only clients can be appended to tree store.");
 				}
 			}
 		}
 
-		public void AddConnectable (IConnectable connectable)
+	    private TreeIter GetClientIter(TreeStore store, Client client)
+	    {
+	        TreeIter clientIter;
+	        if (store.GetIterFirst(out clientIter))
+	        {
+	            while (client != (Client) store.GetValue(clientIter, 0))
+	            {
+	                if (!store.IterNext(ref clientIter))
+	                {
+	                    clientIter = store.AppendValues(client);
+	                    break;
+	                }
+	            }
+	        }
+	        else
+	        {
+	            clientIter = _inputStore.AppendValues(client);
+	        }
+	        return clientIter;
+	    }
+
+	    public void AddConnectable (IConnectable connectable)
 		{
 			Application.Invoke (delegate {
 				if (connectable.FlowDirection == FlowDirection.In) {					
@@ -172,29 +183,36 @@ namespace MonoMultiJack.Widgets
 			int cellHeight = 24;
 			//We start in the middle of the first Treeview item
 			int position = cellHeight / 2;
-			
-//			ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
-//			if (treeParent != null) {
-//				position -= Convert.ToInt32 (treeParent.Vadjustment.Value);
-//			}
-//			TreeIter clientIter;
-//			TreeIter portIter;
-//			if (store.GetIterFirst (out clientIter)) {
-//				do {
-//					if (store.IterHasChild (clientIter) && tree.GetRowExpanded (store.GetPath (clientIter))) {
-//						if (store.IterChildren (out portIter, clientIter)) {
-//							do {
-//								position += cellHeight;
-//							} while ((store.GetValue (portIter, 0).ToString () != selectedPort.Name || store.GetValue (clientIter, 0).ToString () != selectedPort.ClientName) && store.IterNext (ref portIter));
-//						}
-//					}
-//					//Necessary because the first Treeview item only counts as 1/2 cell height.
-//					if (store.GetValue (clientIter, 0).ToString () == selectedPort.ClientName) {
-//						break;
-//					}
-//					position += cellHeight;
-//				} while (store.IterNext (ref clientIter));
-//			}
+
+            ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
+            if (treeParent != null)
+            {
+                position -= Convert.ToInt32(treeParent.Vadjustment.Value);
+            }
+            TreeIter clientIter;
+            TreeIter portIter;
+            if (store.GetIterFirst(out clientIter))
+            {
+                do
+                {
+                    if (store.IterHasChild(clientIter) && tree.GetRowExpanded(store.GetPath(clientIter)))
+                    {
+                        if (store.IterChildren(out portIter, clientIter))
+                        {
+                            do
+                            {
+                                position += cellHeight;
+                            } while (((Port)store.GetValue(portIter, 0) != selectedPort || (Client)store.GetValue(clientIter, 0) != selectedPort.Client) && store.IterNext(ref portIter));
+                        }
+                    }
+                    //Necessary because the first Treeview item only counts as 1/2 cell height.
+                    if (((Port)store.GetValue(clientIter, 0)).Client == selectedPort.Client)
+                    {
+                        break;
+                    }
+                    position += cellHeight;
+                } while (store.IterNext(ref clientIter));
+            }
 			return position;
 		}
 

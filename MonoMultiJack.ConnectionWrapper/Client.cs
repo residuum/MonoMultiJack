@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2013 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -31,13 +30,13 @@ namespace MonoMultiJack.ConnectionWrapper
 {
 	public class Client : IConnectable
 	{
-		public string Name { get; protected set; }
+		public string Name { get; private set; }
 
-		public FlowDirection FlowDirection { get; protected set; }
+		public FlowDirection FlowDirection { get; private set; }
 
-		public ConnectionType ConnectionType { get; protected set; }
+		public ConnectionType ConnectionType { get; private set; }
 
-		List<Port> _ports = new List<Port> ();
+		readonly List<Port> _ports = new List<Port> ();
 
 		public IEnumerable<Port> Ports {
 			get {
@@ -57,6 +56,7 @@ namespace MonoMultiJack.ConnectionWrapper
 			Debug.Assert (FlowDirection == port.FlowDirection, "Flow directions do not match");
 			Debug.Assert (ConnectionType == port.ConnectionType, "Flow directions do not match");
 			_ports.Add (port);
+		    port.Client = this;
 		}
 
 		public bool RemovePort (Port port)

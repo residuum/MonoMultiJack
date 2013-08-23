@@ -1,10 +1,10 @@
 //
-// InfoMessage.cs
+// InfoWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,10 +35,10 @@ namespace MonoMultiJack.Forms
 
 		public InfoWindow()
 		{
-			this.MessageType = MessageType.Info;
-			this.Close += HandleClose;
-			this.Response += HandleClose;
-			this.AddButton("Close", ResponseType.Close);
+			MessageType = MessageType.Info;
+			Close += HandleClose;
+			Response += HandleClose;
+			AddButton("Close", ResponseType.Close);
 		}
 
 		void HandleClose (object sender, EventArgs e)

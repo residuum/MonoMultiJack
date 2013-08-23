@@ -1,10 +1,10 @@
 //
-// MainPresenter.cs
+// MainController.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ namespace MonoMultiJack.Controllers
 {
 	public class MainController :IController
 	{				
-		readonly string IconFile = "monomultijack.png";
+		readonly string _iconFile = "monomultijack.png";
 		string _programIcon;
 
 		private string ProgramIconPath {
@@ -46,7 +46,7 @@ namespace MonoMultiJack.Controllers
 				if (_programIcon == null) {
 					Assembly executable = Assembly.GetEntryAssembly ();
 					string baseDir = Path.GetDirectoryName (executable.Location);
-					_programIcon = Path.Combine (baseDir, IconFile);
+					_programIcon = Path.Combine (baseDir, _iconFile);
 				}
 				return _programIcon;
 			}

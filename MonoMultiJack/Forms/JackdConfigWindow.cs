@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using Gtk;
-using MonoMultiJack;
 using MonoMultiJack.Configuration;
 using System;
 using System.IO;
@@ -121,16 +120,13 @@ namespace MonoMultiJack.Forms
 		/// <summary>
 		/// constructor
 		/// </summary>
-		/// <param name="jackdConfig">
-		/// A <see cref="JackdConfiguration"/>
-		/// </param>
 		public JackdConfigWindow()
 		{
 			Title = "Configure Jackd";
 			Resizable = false;
 			BuildDialog();
-			this.Close += HandleClose;
-			this.Response += HandleResponse;
+			Close += HandleClose;
+			Response += HandleResponse;
 		}
 
 		void HandleResponse (object o, ResponseArgs args)

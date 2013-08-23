@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System.Collections.Generic;
+
 namespace MonoMultiJack.ConnectionWrapper
 {
 	public abstract class Port : IConnectable
@@ -34,6 +36,8 @@ namespace MonoMultiJack.ConnectionWrapper
 		public FlowDirection FlowDirection { get; protected set; }
 
 		public ConnectionType ConnectionType { get; protected set; }
+
+        public Client Client { get; internal set; }
 
 		public IEnumerable<Port> Ports {
 			get {
