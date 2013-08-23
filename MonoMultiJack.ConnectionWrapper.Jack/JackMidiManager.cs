@@ -28,11 +28,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	public class JackMidiManager : JackConnectionManager, IConnectionManager
 	{
-		public JackMidiManager() : base()
-		{
-		}
-		
-		public override ConnectionType ConnectionType {
+	    public override ConnectionType ConnectionType {
 			get { return ConnectionType.JackMidi;}
 		}
 

@@ -23,12 +23,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.ConnectionWrapper.Alsa;
 using MonoMultiJack.ConnectionWrapper.Jack;
 using System.Collections.Generic;
-using MonoMultiJack.OS;
 
 namespace MonoMultiJack.OS.Linux
 {

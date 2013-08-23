@@ -40,7 +40,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		{
 			LibAsoundWrapper.Activate ();
 			
-			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (CheckForChanges));
+			Timeout.Add (2000, new TimeoutHandler (CheckForChanges));
 		}
 		
 		~AlsaMidiManager ()

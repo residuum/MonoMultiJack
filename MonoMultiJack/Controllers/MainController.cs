@@ -28,9 +28,7 @@ using System.Linq;
 using MonoMultiJack.Forms;
 using MonoMultiJack.Configuration;
 using System.Collections.Generic;
-using MonoMultiJack.Widgets;
 using MonoMultiJack.OS;
-using Gtk;
 using System.Reflection;
 using System.IO;
 using MonoMultiJack.Controllers.EventArguments;
@@ -47,8 +45,8 @@ namespace MonoMultiJack.Controllers
 			get {
 				if (_programIcon == null) {
 					Assembly executable = Assembly.GetEntryAssembly ();
-					string baseDir = System.IO.Path.GetDirectoryName (executable.Location);
-					_programIcon = System.IO.Path.Combine (baseDir, IconFile);
+					string baseDir = Path.GetDirectoryName (executable.Location);
+					_programIcon = Path.Combine (baseDir, IconFile);
 				}
 				return _programIcon;
 			}
@@ -57,9 +55,9 @@ namespace MonoMultiJack.Controllers
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
 		IProgram _jackd;
-		IMainWindow _mainWindow;
-		List<AppStartController> _startWidgetControllers;
-		List<ConnectionController> _connectionControllers;
+	    readonly IMainWindow _mainWindow;
+		List<AppStartController> _startWidgetControllers = new List<AppStartController>();
+	    readonly List<ConnectionController> _connectionControllers;
 
 		public MainController ()
 		{
@@ -67,7 +65,8 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.IconPath = _programIcon;
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
-			IConnectionManagerFactory factory = new MonoMultiJack.OS.Linux.ConnectionManagerFactory();
+		    IConnectionManagerFactory factory =
+		        DependencyResolver.GetImplementation<IConnectionManagerFactory>("IConnectionManagerFactoryImplementation");
 			foreach (IConnectionManager connectionManager in factory.GetConnectionManagers()) { 
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
@@ -187,10 +186,11 @@ namespace MonoMultiJack.Controllers
 					return true;
 				}
 			} catch (Exception e) {
-#if DEBUG
-Console.WriteLine (e.Message);
-#endif
+                #if DEBUG
+                Console.WriteLine (e.Message);
+                #endif
 			}
+            windowConfig = new WindowConfiguration(0, 0, 0, 0);
 			return false;
 		}
 
@@ -202,7 +202,7 @@ Console.WriteLine (e.Message);
 				_jackd.HasExited -= Jackd_HasExited;
 				_jackd.Dispose ();
 			}
-			_jackd = new MonoMultiJack.OS.Linux.Program (jackdConfig);
+			_jackd = DependencyResolver.GetImplementation<IProgram>("IProgramImplementation", new object[]{jackdConfig});
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}

@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	/// </summary>
 	internal static partial class LibJackWrapper
 	{		
-		private const string JACK_LIB_NAME = "libjack.so.0";
+		private const string JACK_LIB_NAME = "libjack";
 		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
 		private const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
 		private delegate void JackPortRegistrationCallback (uint port, int register, IntPtr args);

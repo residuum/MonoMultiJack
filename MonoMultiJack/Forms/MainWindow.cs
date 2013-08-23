@@ -26,12 +26,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using Gdk;
 using Gtk;
-using MonoMultiJack;
 using MonoMultiJack.Configuration;
-using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Widgets;
 using MessageType = Gtk.MessageType;
 

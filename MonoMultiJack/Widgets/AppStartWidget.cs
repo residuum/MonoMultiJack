@@ -92,7 +92,7 @@ namespace MonoMultiJack.Widgets
 		public event EventHandler StopApplication;
 		#endregion
 
-		private ToggleButton _startButton;
+		readonly ToggleButton _startButton;
 		
 		/// <summary>
 		/// constructor

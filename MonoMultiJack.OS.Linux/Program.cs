@@ -28,11 +28,9 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 using MonoMultiJack.Configuration;
-using MonoMultiJack.OS;
 
 namespace MonoMultiJack.OS.Linux
 {
-
 	/// <summary>
 	/// Class for management of external programs.
 	/// </summary>
@@ -41,12 +39,12 @@ namespace MonoMultiJack.OS.Linux
 		/// <summary>
 		/// Name of the command to start
 		/// </summary>
-		private string _commandName;
+		private readonly string _commandName;
 		
 		/// <summary>
 		/// Arguments for program
 		/// </summary>
-		private string _commandArguments;
+		private readonly string _commandArguments;
 		
 		/// <summary>
 		/// Path to shell script for starting
@@ -252,23 +250,23 @@ namespace MonoMultiJack.OS.Linux
 		/// </summary>
 		private void TestForRunningSingleton()
 		{
-			using (Process pgrepProgram = new Process()) {
-				pgrepProgram.StartInfo.FileName = "pgrep";
-				string[] commandPaths = _commandName.Split(Path.DirectorySeparatorChar);
-				pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1];
-				pgrepProgram.StartInfo.RedirectStandardOutput = true;
-				pgrepProgram.EnableRaisingEvents = true;
-				pgrepProgram.StartInfo.UseShellExecute = false;
-				if (pgrepProgram.Start()) {
-					_pid = pgrepProgram.StandardOutput.ReadToEnd().TrimEnd();
-					if (_pid == "0" || string.IsNullOrEmpty(_pid)) {
-						_pid = null;
-					} else {
-						BuildStillRunningScript();
-					}
-					pgrepProgram.WaitForExit();
-				}
-			}
+            //using (Process pgrepProgram = new Process()) {
+            //    pgrepProgram.StartInfo.FileName = "pgrep";
+            //    string[] commandPaths = _commandName.Split(Path.DirectorySeparatorChar);
+            //    pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1];
+            //    pgrepProgram.StartInfo.RedirectStandardOutput = true;
+            //    pgrepProgram.EnableRaisingEvents = true;
+            //    pgrepProgram.StartInfo.UseShellExecute = false;
+            //    if (pgrepProgram.Start()) {
+            //        _pid = pgrepProgram.StandardOutput.ReadToEnd().TrimEnd();
+            //        if (_pid == "0" || string.IsNullOrEmpty(_pid)) {
+            //            _pid = null;
+            //        } else {
+            //            BuildStillRunningScript();
+            //        }
+            //        pgrepProgram.WaitForExit();
+            //    }
+            //}
 		}
 		
 		/// <summary>

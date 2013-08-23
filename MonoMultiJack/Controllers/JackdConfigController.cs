@@ -33,7 +33,7 @@ namespace MonoMultiJack.Controllers
 	public class JackdConfigController : IController
 	{
 		JackdConfiguration _jackdConfig;
-		IJackdConfigWindow _jackdConfigWindow;
+	    readonly IJackdConfigWindow _jackdConfigWindow;
 
 		public JackdConfigController(JackdConfiguration jackdConfig)
 		{

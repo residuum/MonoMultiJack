@@ -31,15 +31,15 @@ using MonoMultiJack.Configuration;
 namespace MonoMultiJack.Controllers
 {
 	public class AppStartController : IController
-	{		
-		AppConfiguration _appConfiguration;
-		IProgram _application;
-		IAppStartWidget _appWidget;
+	{
+	    readonly AppConfiguration _appConfiguration;
+	    readonly IProgram _application;
+	    readonly IAppStartWidget _appWidget;
 
 		public AppStartController(AppConfiguration appConfiguration)
 		{
 			_appConfiguration = appConfiguration;
-			_application = new MonoMultiJack.OS.Linux.Program(_appConfiguration);
+		    _application = DependencyResolver.GetImplementation<IProgram>("IProgramImplementation", new object[]{_appConfiguration});
 			_appWidget = new AppStartWidget();
 			_appWidget.SetApp(appConfiguration.Name, appConfiguration.Command);
 			_appWidget.StartApplication += AppWidget_StartApplication;

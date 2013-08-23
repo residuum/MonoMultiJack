@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2012 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using MonoMultiJack.ConnectionWrapper.Jack.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
@@ -37,9 +36,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	internal static partial class LibJackWrapper
 	{		
 		static IntPtr _jackClient = IntPtr.Zero;
-		static List<JackPort> _portMapper = new List<JackPort> ();
+		static readonly List<JackPort> _portMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
-		static string _clientName = "MonoMultiJack" 
+		static readonly string _clientName = "MonoMultiJack" 
 				+ (DateTime.Now.Ticks / 10000000).ToString ().Substring (6);
 		
 		static void OnPortRegistration (uint port, int register, IntPtr args)

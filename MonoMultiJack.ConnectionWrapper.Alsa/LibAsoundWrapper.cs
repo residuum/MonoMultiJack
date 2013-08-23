@@ -26,8 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mono.Unix;
-using System.Runtime.InteropServices;
 using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Alsa
