@@ -60,6 +60,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MonoMultiJack.ConnectionWrapper.Jack.config" />
+    <None Include="app.config" />
   </ItemGroup>
 </Project>

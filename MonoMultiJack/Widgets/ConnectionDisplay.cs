@@ -86,7 +86,8 @@ namespace MonoMultiJack.Widgets
 			else {				
 				Port port = connectable as Port;
 				if (port != null){
-					throw new NotSupportedException("Only clients can be appended to tree store.");
+					Console.WriteLine(port.Name);
+					//throw new NotSupportedException("Only clients can be appended to tree store.");
 				}
 			}
 		}
