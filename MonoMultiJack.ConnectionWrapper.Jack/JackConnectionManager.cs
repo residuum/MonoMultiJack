@@ -144,7 +144,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			return true;
 		}
 		
-		private void OnLibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
+		void OnLibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
 		{
 #if DEBUG
 			Console.WriteLine (args.Message);
@@ -154,7 +154,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 		
-		private void OnJackShutdown (object sender, ConnectionEventArgs args)
+		void OnJackShutdown (object sender, ConnectionEventArgs args)
 		{
 			if (BackendHasExited != null) {
 				BackendHasExited (this, args);
