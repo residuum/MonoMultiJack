@@ -50,7 +50,7 @@ namespace MonoMultiJack.Widgets
 
 		void RenderClientName (TreeViewColumn treeColumn, CellRenderer cell, TreeModel treeModel, TreeIter iter)
 		{
-			IConnectable connectable = (IConnectable) treeModel.GetValue (iter, 0);
+			IConnectable connectable = (IConnectable)treeModel.GetValue (iter, 0);
 			((CellRendererText)cell).Text = connectable.Name;
 		}
 
@@ -60,14 +60,14 @@ namespace MonoMultiJack.Widgets
 			var inClientColumn = new TreeViewColumn ();
 			var inClientCell = new CellRendererText ();
 			inClientColumn.PackStart (inClientCell, true);
-			inClientColumn.SetCellDataFunc(inClientCell, new TreeCellDataFunc(RenderClientName));
+			inClientColumn.SetCellDataFunc (inClientCell, new TreeCellDataFunc (RenderClientName));
 			_inputTreeview.AppendColumn (inClientColumn);
 			_inputTreeview.Model = _inputStore;
 			
 			var outClientColumn = new TreeViewColumn ();
 			var outClientCell = new CellRendererText ();
 			outClientColumn.PackStart (outClientCell, true);
-			inClientColumn.SetCellDataFunc(inClientCell, new TreeCellDataFunc(RenderClientName));
+			outClientColumn.SetCellDataFunc (outClientCell, new TreeCellDataFunc (RenderClientName));
 			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
 			ConnectionManagerName = connectionManagerName;
@@ -76,42 +76,42 @@ namespace MonoMultiJack.Widgets
 		void AddTreeStoreValues (IConnectable connectable, TreeStore store)
 		{
 			Client client = connectable as Client;
-			if (client != null)
-			{
-			    TreeIter clientIter = GetClientIter(store, client);
-			    foreach(Port port in client.Ports){
-					store.AppendValues(clientIter, port);
+			if (client != null) {
+				TreeIter clientIter;
+				if (TryGetClientIter (store, client, true, out clientIter)) {
+					foreach (Port port in client.Ports) {
+						store.AppendValues (clientIter, port);
+					}
 				}
-			}
-			else {				
+			} else {				
 				Port port = connectable as Port;
-				if (port != null){
-					Console.WriteLine(port.Name);
+				if (port != null) {
+					Console.WriteLine (port.Name);
 					//throw new NotSupportedException("Only clients can be appended to tree store.");
 				}
 			}
 		}
 
-	    TreeIter GetClientIter(TreeStore store, Client client)
-	    {
-	        TreeIter clientIter;
-	        if (store.GetIterFirst(out clientIter))
-	        {
-	            while (client != (Client) store.GetValue(clientIter, 0))
-	            {
-	                if (!store.IterNext(ref clientIter))
-	                {
-	                    clientIter = store.AppendValues(client);
-	                    break;
-	                }
-	            }
-	        }
-	        else
-	        {
-	            clientIter = store.AppendValues(client);
-	        }
-	        return clientIter;
-	    }
+		bool TryGetClientIter (TreeStore store, Client client, bool createIfNotExists, out TreeIter clientIter)
+		{
+			clientIter = TreeIter.Zero;
+			if (store.GetIterFirst (out clientIter)) {
+				while (client != (Client) store.GetValue(clientIter, 0)) {
+					if (!store.IterNext (ref clientIter)) {
+						if (createIfNotExists) {
+							clientIter = store.AppendValues (client);
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			} else if (createIfNotExists) {
+				clientIter = store.AppendValues (client);
+				return true;
+			}
+			return false;
+		}
 
 		bool TryGetPortIter (TreeStore store, TreeIter clientIter, Port port, out TreeIter portIter)
 		{
@@ -128,7 +128,7 @@ namespace MonoMultiJack.Widgets
 			return false;
 		}
 
-	    public void AddConnectable (IConnectable connectable)
+		public void AddConnectable (IConnectable connectable)
 		{
 			Application.Invoke (delegate {
 				if (connectable.FlowDirection == FlowDirection.In) {					
@@ -143,21 +143,23 @@ namespace MonoMultiJack.Widgets
 		void RemoveTreeStoreValues (IConnectable connectable, TreeStore store)
 		{
 			Client client = connectable as Client;
-			if (client != null)
-			{
-			    TreeIter clientIter = GetClientIter(store, client);
-				store.Remove(ref clientIter);
-			}
-			else {				
+			if (client != null) {
+				TreeIter clientIter;
+				if (TryGetClientIter (store, client, false, out clientIter)) {
+					store.Remove (ref clientIter);
+				}
+			} else {				
 				Port port = connectable as Port;
-				if (port != null){
-					TreeIter clientIter = GetClientIter(store, port.Client);
-					TreeIter portIter;
-					if (TryGetPortIter(store, clientIter, port, out portIter)){
-						store.Remove(ref portIter);
-					}
-					if (!store.IterHasChild(clientIter)){
-						store.Remove(ref clientIter);
+				if (port != null) {
+					TreeIter clientIter;
+					if (TryGetClientIter (store, port.Client, false, out clientIter)) {
+						TreeIter portIter;
+						if (TryGetPortIter (store, clientIter, port, out portIter)) {
+							store.Remove (ref portIter);
+						}
+						if (!store.IterHasChild (clientIter)) {
+							store.Remove (ref clientIter);
+						}
 					}
 				}
 			}
@@ -167,9 +169,9 @@ namespace MonoMultiJack.Widgets
 		{
 			Application.Invoke (delegate {
 				if (connectable.FlowDirection == FlowDirection.In) {
-					RemoveTreeStoreValues(connectable, _inputStore);
+					RemoveTreeStoreValues (connectable, _inputStore);
 				} else if (connectable.FlowDirection == FlowDirection.Out) {
-					RemoveTreeStoreValues(connectable, _outputStore);
+					RemoveTreeStoreValues (connectable, _outputStore);
 				}
 			}
 			);
@@ -194,7 +196,7 @@ namespace MonoMultiJack.Widgets
 		/// </returns>
 		IConnectable GetSelectedConnectable (TreeStore connectionStore, TreeIter selectedIter)
 		{
-			return connectionStore.GetValue(selectedIter, 0) as IConnectable; 
+			return connectionStore.GetValue (selectedIter, 0) as IConnectable; 
 		}
 
 		/// <summary>
@@ -218,35 +220,28 @@ namespace MonoMultiJack.Widgets
 			//We start in the middle of the first Treeview item
 			int position = cellHeight / 2;
 
-            ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
-            if (treeParent != null)
-            {
-                position -= Convert.ToInt32(treeParent.Vadjustment.Value);
-            }
-            TreeIter clientIter;
-            TreeIter portIter;
-            if (store.GetIterFirst(out clientIter))
-            {
-                do
-                {
-                    if (store.IterHasChild(clientIter) && tree.GetRowExpanded(store.GetPath(clientIter)))
-                    {
-                        if (store.IterChildren(out portIter, clientIter))
-                        {
-                            do
-                            {
-                                position += cellHeight;
-                            } while (((Port)store.GetValue(portIter, 0) != selectedPort || (Client)store.GetValue(clientIter, 0) != selectedPort.Client) && store.IterNext(ref portIter));
-                        }
-                    }
-                    //Necessary because the first Treeview item only counts as 1/2 cell height.
-                    if (((Port)store.GetValue(clientIter, 0)).Client == selectedPort.Client)
-                    {
-                        break;
-                    }
-                    position += cellHeight;
-                } while (store.IterNext(ref clientIter));
-            }
+			ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
+			if (treeParent != null) {
+				position -= Convert.ToInt32 (treeParent.Vadjustment.Value);
+			}
+			TreeIter clientIter;
+			TreeIter portIter;
+			if (store.GetIterFirst (out clientIter)) {
+				do {
+					if (store.IterHasChild (clientIter) && tree.GetRowExpanded (store.GetPath (clientIter))) {
+						if (store.IterChildren (out portIter, clientIter)) {
+							do {
+								position += cellHeight;
+							} while (((Port)store.GetValue(portIter, 0) != selectedPort || (Client)store.GetValue(clientIter, 0) != selectedPort.Client) && store.IterNext(ref portIter));
+						}
+					}
+					//Necessary because the first Treeview item only counts as 1/2 cell height.
+					if (((Port)store.GetValue (clientIter, 0)).Client == selectedPort.Client) {
+						break;
+					}
+					position += cellHeight;
+				} while (store.IterNext(ref clientIter));
+			}
 			return position;
 		}
 
@@ -274,7 +269,7 @@ namespace MonoMultiJack.Widgets
 					selectedInIter
 				);
 				if (Connect != null) {
-					Connect(this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
+					Connect (this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
 				}
 			}
 		}
@@ -293,7 +288,7 @@ namespace MonoMultiJack.Widgets
 					selectedInIter
 				);
 				if (Disconnect != null) {
-					Disconnect(this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
+					Disconnect (this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
 				}
 			}
 		}
@@ -364,8 +359,8 @@ namespace MonoMultiJack.Widgets
 
 		public void Clear ()
 		{
-			_inputStore.Clear();
-			_outputStore.Clear();
+			_inputStore.Clear ();
+			_outputStore.Clear ();
 		}
 
 		public void AddConnection (IConnection connection)
@@ -377,7 +372,8 @@ namespace MonoMultiJack.Widgets
 			
 				_connections.Add (connection);
 				UpdateConnectionLines ();
-			});
+			}
+			);
 		}
 
 		public void RemoveConnection (IConnection connection)
@@ -387,10 +383,11 @@ namespace MonoMultiJack.Widgets
 			Console.WriteLine (connection.OutPort.Id + ":" + connection.OutPort.Name + " has been disconnected from " + connection.InPort.Id + ":" + connection.InPort.Name);
 				#endif
 				_connections.Remove (connection);
-			});
+			}
+			);
 		}
 
-		public string ConnectionManagerName {get; private set;}
+		public string ConnectionManagerName { get; private set; }
 		#endregion
 
 	}

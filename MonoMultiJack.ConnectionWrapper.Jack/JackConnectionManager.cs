@@ -73,11 +73,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		public IEnumerable<IConnectable> Clients {
 			get {
 				if (IsActive) {
-					var portGroups = LibJackWrapper.GetPorts(ConnectionType).GroupBy(p => p.ClientName);
+					var portGroups = LibJackWrapper.GetPorts(ConnectionType)
+						.GroupBy(p => new {p.ClientName, p.ConnectionType, p.FlowDirection});
 					List<Client> clients = new List<Client>();
 					foreach(var portGroup in portGroups){
 						IEnumerable<Port> ports = portGroup.ToList();
-						Client newClient = new Client(portGroup.Key, ports.First().FlowDirection, ports.First ().ConnectionType);
+						Client newClient = new Client(portGroup.Key.ClientName,
+						                              portGroup.Key.FlowDirection, 
+						                              portGroup.Key.ConnectionType);
 						foreach(Port port in ports){
 							newClient.AddPort(port);
 						}
@@ -127,7 +130,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		}
 		#endregion
 
-		private bool ConnectToServer ()
+		bool ConnectToServer ()
 		{
 			if (LibJackWrapper.ConnectToServer ()) {
 				var eventArgs = new ConnectionEventArgs ();
