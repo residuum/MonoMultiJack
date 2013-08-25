@@ -128,5 +128,9 @@
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>MonoMultiJack.OS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj">
+      <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
+      <Name>MonoMultiJack.OS.Linux</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -66,11 +66,11 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public override bool Equals (object obj)
 		{
-			var otherPort = obj as Port;
+			var otherPort = obj as Client;
 			return Equals (otherPort);
 		}
 
-		public bool Equals (Port other)
+		public bool Equals (Client other)
 		{
 			if (other == null)
 				return false;

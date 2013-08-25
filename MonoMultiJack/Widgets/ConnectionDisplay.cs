@@ -110,7 +110,7 @@ namespace MonoMultiJack.Widgets
 				clientIter = store.AppendValues (client);
 				return true;
 			}
-			return false;
+			return true;
 		}
 
 		bool TryGetPortIter (TreeStore store, TreeIter clientIter, Port port, out TreeIter portIter)
