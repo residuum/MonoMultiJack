@@ -92,7 +92,7 @@ namespace MonoMultiJack.Forms
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.mainHbox [this._appButtonBox]));
 			w3.Position = 0;
 			w3.Expand = false;
-			w3.Padding = ((uint)(2));
+			w3.Padding = ((uint)(3));
 			// Container child mainHbox.Gtk.Box+BoxChild
 			this._connectionNotebook = new global::Gtk.Notebook ();
 			this._connectionNotebook.WidthRequest = 500;
@@ -105,6 +105,7 @@ namespace MonoMultiJack.Forms
 			this.mainVbox.Add (this.mainHbox);
 			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.mainVbox [this.mainHbox]));
 			w5.Position = 1;
+			w5.Padding = ((uint)(2));
 			// Container child mainVbox.Gtk.Box+BoxChild
 			this._statusbar = new global::Gtk.Statusbar ();
 			this._statusbar.Name = "_statusbar";
@@ -119,7 +120,7 @@ namespace MonoMultiJack.Forms
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 801;
-			this.DefaultHeight = 349;
+			this.DefaultHeight = 505;
 			this.Show ();
 			this.refreshAction.Activated += new global::System.EventHandler (this.CallStartJackd);
 			this.stopAction.Activated += new global::System.EventHandler (this.CallStopJackd);

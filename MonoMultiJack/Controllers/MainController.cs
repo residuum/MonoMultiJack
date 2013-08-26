@@ -210,13 +210,12 @@ namespace MonoMultiJack.Controllers
 #region Model events
 		void Jackd_HasStarted (object sender, EventArgs e)
 		{
-			_mainWindow.JackdIsRunning = true;
-			_mainWindow.AppsAreRunning = true;
+			UpdateRunningStatus();
 		}
 
 		void Jackd_HasExited (object sender, EventArgs e)
 		{
-			_mainWindow.JackdIsRunning = false;
+			UpdateRunningStatus();
 		}
 #endregion
 
@@ -231,20 +230,18 @@ namespace MonoMultiJack.Controllers
 
 		void MainWindow_StopJackd (object sender, EventArgs e)
 		{
-			if (_jackd.IsRunning) {
-				_jackd.Stop ();
-			}
+			StopJackd ();
 		}
 
 		void MainWindow_StopAll (object sender, EventArgs e)
 		{
-			StopAllApplications ();
+			StopJackd ();
 			foreach (AppStartController startWidgetController in _startWidgetControllers) {
 				startWidgetController.StopApplication ();
 			}
 		}
 
-		void StopAllApplications ()
+		void StopJackd ()
 		{
 			if (_jackd.IsRunning) {
 				_jackd.Stop ();
@@ -313,7 +310,7 @@ namespace MonoMultiJack.Controllers
 		{
 			WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
 			PersistantConfiguration.SaveWindowSize (newWindowConfig);
-			StopAllApplications ();
+			StopJackd ();
 			if (AllWidgetsAreClosed != null) {
 				AllWidgetsAreClosed (this, new EventArgs ());
 			}
@@ -354,8 +351,9 @@ namespace MonoMultiJack.Controllers
 			UpdateApps (_appConfigurations);
 		}
 
-		void AppStartController_StatusHasChanged (object sender, EventArgs e)
+		void UpdateRunningStatus ()
 		{
+			_mainWindow.JackdIsRunning = _jackd.IsRunning;
 			if (_jackd.IsRunning) {
 				_mainWindow.AppsAreRunning = true;
 				return;
@@ -367,6 +365,11 @@ namespace MonoMultiJack.Controllers
 				}
 			}
 			_mainWindow.AppsAreRunning = false;
+		}
+
+		void AppStartController_StatusHasChanged (object sender, EventArgs e)
+		{
+			UpdateRunningStatus ();
 		}
 
 		void ShowInfoMessage (string message)
