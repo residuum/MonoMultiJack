@@ -33,9 +33,9 @@ namespace MonoMultiJack.Forms
 	{
 		Table _configTable;
 				
-		public AppConfigWindow()
+		public AppConfigWindow ()
 		{
-			BuildDialog();
+			BuildDialog ();
 			Close += HandleClose;
 			Response += HandleResponse;
 			
@@ -46,46 +46,46 @@ namespace MonoMultiJack.Forms
 		void HandleResponse (object o, ResponseArgs args)
 		{
 			if (args.ResponseId == ResponseType.Ok && SaveApplicationConfigs != null) {
-				SaveApplicationConfigs(this, new EventArgs());
+				SaveApplicationConfigs (this, new EventArgs ());
 			}
-			HandleClose(o, args);
+			HandleClose (o, args);
 		}
 
 		void HandleClose (object sender, EventArgs e)
 		{
-			if (Closing != null){
-				Closing(this, new EventArgs());
+			if (Closing != null) {
+				Closing (this, new EventArgs ());
 			}
 		}
 
 		#region IDisposable implementation
-		void IDisposable.Dispose()
+		void IDisposable.Dispose ()
 		{
-			this.Dispose();
+			this.Dispose ();
 		}
 		#endregion
 
 		#region IWidget implementation
-		void IWidget.Show()
+		void IWidget.Show ()
 		{
-			this.Show();
+			this.Show ();
 		}
 
-		void IWidget.Destroy()
+		void IWidget.Destroy ()
 		{
-			this.Destroy();
+			this.Destroy ();
 		}
 
-		void IWidget.Hide()
+		void IWidget.Hide ()
 		{
-			this.Hide();
+			this.Hide ();
 		}
 		#endregion
 
 		#region IWindow implementation
 		string IWindow.IconPath {
 			set {
-				throw new System.NotImplementedException();
+				throw new System.NotImplementedException ();
 			}
 		}
 
@@ -102,19 +102,21 @@ namespace MonoMultiJack.Forms
 		public event EventHandler SaveApplicationConfigs;
 		public event EventHandler AddApplication;
 
-		void IAppConfigWindow.AddAppConfigWidget (IAppConfigWidget widget){
+		void IAppConfigWindow.AddAppConfigWidget (IAppConfigWidget widget)
+		{
 			uint count = _configTable.NRows;
 			_configTable.NRows += 1;
-			_configTable.Attach((Widget) widget, 0, 1, count, count +1);
-			widget.Show();
+			_configTable.Attach ((Widget)widget, 0, 1, count, count + 1);
+			widget.Show ();
 		}
 
-		void IAppConfigWindow.RemoveAppConfigWidget(IAppConfigWidget widget) {
-			_configTable.Remove((Widget)widget);
+		void IAppConfigWindow.RemoveAppConfigWidget (IAppConfigWidget widget)
+		{
+			_configTable.Remove ((Widget)widget);
 		}
 		#endregion		
 
-		void BuildDialog()
+		void BuildDialog ()
 		{
 			Modal = true;
 			this.VBox.BorderWidth = ((uint)(2));
@@ -124,10 +126,10 @@ namespace MonoMultiJack.Forms
 			Button addButton = new Button ();
 			addButton.CanFocus = true;
 			addButton.UseUnderline = true;
-			addButton.Image = new Gtk.Image("gtk-add",IconSize.Button);
+			addButton.Image = new Gtk.Image ("gtk-add", IconSize.Button);
 			addButton.Label = "Add Application";
 			addButton.Clicked += AddButtonClicked;
-			this.ActionArea.Add(addButton);
+			this.ActionArea.Add (addButton);
 			Button cancelButton = new Gtk.Button ();
 			cancelButton.CanDefault = true;
 			cancelButton.CanFocus = true;
@@ -148,26 +150,25 @@ namespace MonoMultiJack.Forms
 			this.DefaultWidth = 466;
 			this.DefaultHeight = 300;
 			this.Show ();
-			_configTable = new Table(1, 1, false);
+			_configTable = new Table (1, 1, false);
 			_configTable.ColumnSpacing = 10;
 			_configTable.RowSpacing = 10;
 			ScrolledWindow appScrolledWindow = new ScrolledWindow ();
-			appScrolledWindow.AddWithViewport(_configTable);
+			appScrolledWindow.AddWithViewport (_configTable);
 			this.VBox.Add (appScrolledWindow);
-			this.VBox.ShowAll();
+			this.VBox.ShowAll ();
 		}
 				
-		void CallAddNewConfigWidget()
+		void CallAddNewConfigWidget ()
 		{
-			if (AddApplication != null)
-			{
-				AddApplication(this, new EventArgs());
+			if (AddApplication != null) {
+				AddApplication (this, new EventArgs ());
 			}
 		}
 
-		protected void AddButtonClicked(object sender, EventArgs e)
+		protected void AddButtonClicked (object sender, EventArgs e)
 		{
-			CallAddNewConfigWidget();
+			CallAddNewConfigWidget ();
 		}
 	}
 }

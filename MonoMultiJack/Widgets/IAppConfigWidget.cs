@@ -29,11 +29,11 @@ namespace MonoMultiJack.Widgets
 {
 	public interface IAppConfigWidget : IWidget
 	{
-		string Name {get;set;}
+		string Name { get; set; }
 
-		string Command {get;set;}
+		string Command { get; set; }
 
-		string Arguments {get;set;}
+		string Arguments { get; set; }
 
 		event EventHandler RemoveApplication;
 	}

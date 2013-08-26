@@ -40,21 +40,21 @@ namespace MonoMultiJack
 		/// <param name='args'>
 		/// The command-line arguments.
 		/// </param>
-		public static void Main(string[] args)
+		public static void Main (string[] args)
 		{
-			Application.Init();
-			MainController mainController = new MainController();
-			mainController.Start();
+			Application.Init ();
+			MainController mainController = new MainController ();
+			mainController.Start ();
 			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run();
+			Application.Run ();
 		}
 
-		static void HandleAllWidgetsAreClosed(object sender, EventArgs e)
+		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
 		{
 			IController controller = sender as IController;
 			if (controller != null) {
-				controller.Dispose();				
-				Application.Quit();	
+				controller.Dispose ();				
+				Application.Quit ();	
 			}
 		}
 	}

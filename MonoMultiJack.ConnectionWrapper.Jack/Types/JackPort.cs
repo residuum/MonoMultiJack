@@ -28,28 +28,19 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
 	internal class JackPort : Port
 	{			
-		public IntPtr JackPortPointer {
-			get;
-			private set;
-		}
+		public IntPtr JackPortPointer { get; private set; }
 			
-		public string JackPortName {
-			get;
-			private set;
-		}
+		public string JackPortName { get; private set; }
 
-		public string ClientName {
-			get;
-			private set;
-		}
+		public string ClientName { get; private set; }
 		
-		public JackPort(string jackPortName, IntPtr jackPortPtr, FlowDirection portType, ConnectionType connectionType, uint portId)
+		public JackPort (string jackPortName, IntPtr jackPortPtr, FlowDirection portType, ConnectionType connectionType, uint portId)
 		{				
 			JackPortName = jackPortName;
 			JackPortPointer = jackPortPtr;
 			FlowDirection = portType;
 			ConnectionType = connectionType;
-			string[] splittedName = jackPortName.Split(new[] { ':' });
+			string[] splittedName = jackPortName.Split (new[] { ':' });
 			ClientName = splittedName [0];
 			Name = splittedName [1];				
 			Id = portId;

@@ -28,7 +28,7 @@ using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Widgets
 {
-	public delegate void ConnectEventHandler(object sender,ConnectEventArgs e);
+	public delegate void ConnectEventHandler (object sender,ConnectEventArgs e);
 
 	public interface IConnectionWidget :IWidget
 	{
@@ -45,7 +45,7 @@ namespace MonoMultiJack.Widgets
 		event ConnectEventHandler Connect;
 		event ConnectEventHandler Disconnect;
 
-		string ConnectionManagerName {get;}
+		string ConnectionManagerName { get; }
 	}
 }
 

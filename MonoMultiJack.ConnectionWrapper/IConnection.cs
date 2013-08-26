@@ -33,18 +33,12 @@ namespace MonoMultiJack.ConnectionWrapper
 		/// <summary>
 		/// Port of type outlet
 		/// </summary>
-		Port OutPort {
-			get;
-			set;
-		}
+		Port OutPort { get; set; }
 		
 		/// <summary>
 		/// Port of type inlet
 		/// </summary>
-		Port InPort {
-			get;
-			set;
-		}
+		Port InPort { get; set; }
 		
 		/// <summary>
 		/// The connection type. 

@@ -30,5 +30,5 @@ namespace MonoMultiJack.OS
 	/// <summary>
 	/// Program event handler.
 	/// </summary>
-	public delegate void ProgramEventHandler(object sender,EventArgs e);
+	public delegate void ProgramEventHandler (object sender,EventArgs e);
 }

@@ -32,16 +32,16 @@ namespace MonoMultiJack.Controllers
 {
 	public class AppStartController : IController
 	{
-	    readonly AppConfiguration _appConfiguration;
-	    readonly IProgram _application;
-	    readonly IAppStartWidget _appWidget;
+		readonly AppConfiguration _appConfiguration;
+		readonly IProgram _application;
+		readonly IAppStartWidget _appWidget;
 
-		public AppStartController(AppConfiguration appConfiguration)
+		public AppStartController (AppConfiguration appConfiguration)
 		{
 			_appConfiguration = appConfiguration;
-		    _application = DependencyResolver.GetImplementation<IProgram>("IProgramImplementation", new object[]{_appConfiguration});
-			_appWidget = new AppStartWidget();
-			_appWidget.SetApp(appConfiguration.Name, appConfiguration.Command);
+			_application = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[]{_appConfiguration});
+			_appWidget = new AppStartWidget ();
+			_appWidget.SetApp (appConfiguration.Name, appConfiguration.Command);
 			_appWidget.StartApplication += AppWidget_StartApplication;
 			_appWidget.StopApplication += AppWidget_StopApplication;
 			_application.HasExited += Application_HasExited;
@@ -54,56 +54,56 @@ namespace MonoMultiJack.Controllers
 			}
 		}
 
-		~AppStartController()
+		~AppStartController ()
 		{
-			Dispose(false);
+			Dispose (false);
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			Dispose (true);
+			GC.SuppressFinalize (this);
 		}
 	
-		protected virtual void Dispose(bool isDisposing)
+		protected virtual void Dispose (bool isDisposing)
 		{
 			if (_application != null) {
-				_application.Stop();
-				_application.Dispose();
+				_application.Stop ();
+				_application.Dispose ();
 			}
-			_appWidget.Dispose();
+			_appWidget.Dispose ();
 		}
 		
-		void AppWidget_StartApplication(object sender, EventArgs e)
+		void AppWidget_StartApplication (object sender, EventArgs e)
 		{
-			_application.Start();
+			_application.Start ();
 		}
 		
-		void AppWidget_StopApplication(object sender, EventArgs e)
+		void AppWidget_StopApplication (object sender, EventArgs e)
 		{
-			_application.Stop();
+			_application.Stop ();
 		}
 		
-		void Application_HasExited(object sender, EventArgs e)
+		void Application_HasExited (object sender, EventArgs e)
 		{
 			_appWidget.IsRunning = false;
 			if (ApplicationStatusHasChanged != null) {
-				ApplicationStatusHasChanged(this, new EventArgs());
+				ApplicationStatusHasChanged (this, new EventArgs ());
 			}
 		}
 		
-		void Application_HasStarted(object sender, EventArgs e)
+		void Application_HasStarted (object sender, EventArgs e)
 		{
 			_appWidget.IsRunning = true;
 			if (ApplicationStatusHasChanged != null) {
-				ApplicationStatusHasChanged(this, new EventArgs());
+				ApplicationStatusHasChanged (this, new EventArgs ());
 			}
 
 		}
 
-		public void StopApplication()
+		public void StopApplication ()
 		{
-			_application.Stop();
+			_application.Stop ();
 		}
 
 		public bool IsRunning {
@@ -113,7 +113,6 @@ namespace MonoMultiJack.Controllers
 		}
 
 		public event EventHandler ApplicationStatusHasChanged;
-
 		public event EventHandler AllWidgetsAreClosed;
 
 	}

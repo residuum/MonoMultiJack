@@ -70,12 +70,12 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 		}
 
-		void ConnectPorts(Port outPort, Port inPort)
+		void ConnectPorts (Port outPort, Port inPort)
 		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
 			if (alsaOutPort == null || alsaInPort == null 
-			    || outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
+				|| outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
 				return;
 			}
 			LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
@@ -83,18 +83,19 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		public void Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			foreach(Port outPort in outlet.Ports){
-				foreach(Port inPort in inlet.Ports){
-					DisconnectPort(outPort, inPort);
+			foreach (Port outPort in outlet.Ports) {
+				foreach (Port inPort in inlet.Ports) {
+					DisconnectPort (outPort, inPort);
 				}
 			}
 		}
 
-		void DisconnectPort(Port outPort, Port inPort){
+		void DisconnectPort (Port outPort, Port inPort)
+		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
 			if (alsaOutPort == null || alsaInPort == null 
-			    || outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
+				|| outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
 				|| inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
 				return;
 			}
@@ -143,7 +144,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		}
 
 		public string Name {
-			get{
+			get {
 				return "Alsa MIDI";
 			}
 		}
@@ -172,7 +173,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			if (newPorts.Any () || newConnections.Any ()) {
 				var newEventArgs = new ConnectionEventArgs ();
 				newEventArgs.ChangeType = ChangeType.New;
-				newEventArgs.Connectables = ClientsFromPorts(newPorts);
+				newEventArgs.Connectables = ClientsFromPorts (newPorts);
 				newEventArgs.Connections = newConnections;
 			}
 			if (obsoletePorts.Any ()) {
@@ -180,7 +181,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				oldEventArgs.ChangeType = ChangeType.Deleted;
 				oldEventArgs.Connectables = obsoletePorts;
 				oldEventArgs.Connections = obsoleteConnections;
-				if (ConnectionHasChanged != null){
+				if (ConnectionHasChanged != null) {
 					ConnectionHasChanged (this, oldEventArgs);
 				}
 			}

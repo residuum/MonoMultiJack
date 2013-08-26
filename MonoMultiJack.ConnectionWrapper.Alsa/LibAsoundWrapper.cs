@@ -115,7 +115,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 			return new AlsaPort[0];
 		}
-		
+
 		static IEnumerable<AlsaPort> CreatePorts (IntPtr portAddressPtr)
 		{
 			using (PointerWrapper clientInfo = new PointerWrapper(GetClientInfoSize ()))
@@ -124,31 +124,20 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				snd_seq_client_info_set_client (clientInfo.Pointer, portAddress.Client);
 				snd_seq_get_any_client_info (_alsaClient, portAddress.Client, clientInfo.Pointer);
 
-				snd_seq_port_info_set_client (portInfo.Pointer, portAddress.Client);
-				snd_seq_port_info_set_port (portInfo.Pointer, portAddress.Port);				
-				snd_seq_get_any_port_info (
-					_alsaClient,
-		            portAddress.Client,
-					portAddress.Port,
-					portInfo.Pointer
-				);
+				string clientName;
+				string portName;
+				int portCaps;
+				int portType;
+				GetPortData (portInfo, clientInfo, portAddress, out clientName, out portName, out portCaps, out portType);
 
-				IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo.Pointer);
-				string clientName = clientNamePtr.PtrToString ();
-				IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo.Pointer);
-				string portName = portNamePtr.PtrToString ();
-
-				int portCaps = snd_seq_port_info_get_capability (portInfo.Pointer);
-				int portType = snd_seq_port_info_get_type (portInfo.Pointer);
-
-				if ((portCaps & SND_SEQ_PORT_CAP_NO_EXPORT) != 0 
+				if ((portCaps & SND_SEQ_PORT_CAP_NO_EXPORT) == SND_SEQ_PORT_CAP_NO_EXPORT 
 					|| ((snd_seq_client_info_get_type (clientInfo.Pointer) != SND_SEQ_USER_CLIENT)
 					&& ((portType == SND_SEQ_PORT_SYSTEM_TIMER) || portType == SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
 					return new List<AlsaPort> ();
 				}
 
-				bool isInput = (portCaps & SND_SEQ_PORT_CAP_WRITE) != 0;
-				bool isOutput = (portCaps & SND_SEQ_PORT_CAP_READ) != 0;
+				bool isInput = (portCaps & SND_SEQ_PORT_CAP_WRITE) == SND_SEQ_PORT_CAP_WRITE;
+				bool isOutput = (portCaps & SND_SEQ_PORT_CAP_READ) == SND_SEQ_PORT_CAP_READ;
 
 				var ports = new List<AlsaPort> ();
 				if (isOutput) {
@@ -171,6 +160,19 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				}
 				return ports;
 			}
+		}
+
+		static void GetPortData (PointerWrapper portInfo, PointerWrapper clientInfo, SndSeqAddr portAddress, out string clientName, out string portName, out int portCaps, out int portType)
+		{
+			snd_seq_port_info_set_client (portInfo.Pointer, portAddress.Client);
+			snd_seq_port_info_set_port (portInfo.Pointer, portAddress.Port);
+			snd_seq_get_any_port_info (_alsaClient, portAddress.Client, portAddress.Port, portInfo.Pointer);
+			IntPtr clientNamePtr = snd_seq_client_info_get_name (clientInfo.Pointer);
+			clientName = clientNamePtr.PtrToString ();
+			IntPtr portNamePtr = snd_seq_port_info_get_name (portInfo.Pointer);
+			portName = portNamePtr.PtrToString ();
+			portCaps = snd_seq_port_info_get_capability (portInfo.Pointer);
+			portType = snd_seq_port_info_get_type (portInfo.Pointer);
 		}
 
 		internal static IEnumerable<AlsaMidiConnection> GetConnections (IEnumerable<AlsaPort> ports)

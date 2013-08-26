@@ -27,18 +27,18 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	internal static partial class LibAsoundWrapper
 	{
-		private const string ASOUND_LIB_NAME = "libasound.so.2";
-		private const int SND_SEQ_NONBLOCK = 1;
-		private const int SND_SEQ_OPEN_DUPLEX = 3;
-		private const int SND_SEQ_PORT_CAP_NO_EXPORT = (1 << 7);
-		private const int SND_SEQ_PORT_CAP_READ = (1 << 0);
-		private const int SND_SEQ_PORT_CAP_WRITE = (1 << 1);
-		private const int SND_SEQ_PORT_CAP_DUPLEX = (1 << 4);
-		private const int SND_SEQ_USER_CLIENT = 1;
-		private const int SND_SEQ_PORT_SYSTEM_TIMER = 0;
-		private const int SND_SEQ_PORT_SYSTEM_ANNOUNCE = 1;
-		private const int SND_SEQ_PORT_TYPE_APPLICATION = (1 << 20);
-		private const int SND_SEQ_QUERY_SUBS_READ = 0;
-		private const int SND_SEQ_QUERY_SUBS_WRITE = 1;
+		const string ASOUND_LIB_NAME = "libasound.so.2";
+		const int SND_SEQ_NONBLOCK = 1;
+		const int SND_SEQ_OPEN_DUPLEX = 3;
+		const int SND_SEQ_PORT_CAP_NO_EXPORT = (1 << 7);
+		const int SND_SEQ_PORT_CAP_READ = (1 << 0);
+		const int SND_SEQ_PORT_CAP_WRITE = (1 << 1);
+		const int SND_SEQ_PORT_CAP_DUPLEX = (1 << 4);
+		const int SND_SEQ_USER_CLIENT = 1;
+		const int SND_SEQ_PORT_SYSTEM_TIMER = 0;
+		const int SND_SEQ_PORT_SYSTEM_ANNOUNCE = 1;
+		const int SND_SEQ_PORT_TYPE_APPLICATION = (1 << 20);
+		const int SND_SEQ_QUERY_SUBS_READ = 0;
+		const int SND_SEQ_QUERY_SUBS_WRITE = 1;
 	}
 }

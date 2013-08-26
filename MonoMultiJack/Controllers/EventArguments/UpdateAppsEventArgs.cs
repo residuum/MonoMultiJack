@@ -31,7 +31,7 @@ namespace MonoMultiJack.Controllers.EventArguments
 {
 	public class UpdateAppsEventArgs : EventArgs
 	{
-		public List<AppConfiguration> AppConfigurations {get;set;}
+		public List<AppConfiguration> AppConfigurations { get; set; }
 	}
 }
 

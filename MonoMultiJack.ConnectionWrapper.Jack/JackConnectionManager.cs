@@ -74,15 +74,15 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		public IEnumerable<Client> Clients {
 			get {
 				if (IsActive) {
-					IEnumerable<IGrouping<Client, JackPort>> portGroups = LibJackWrapper.GetPorts(ConnectionType)
-						.GroupBy(p => new Client(p.ClientName, p.FlowDirection, p.ConnectionType));
-					List<Client> clients = new List<Client>();
-					foreach(IGrouping<Client, JackPort> portGroup in portGroups){
+					IEnumerable<IGrouping<Client, JackPort>> portGroups = LibJackWrapper.GetPorts (ConnectionType)
+						.GroupBy (p => new Client (p.ClientName, p.FlowDirection, p.ConnectionType));
+					List<Client> clients = new List<Client> ();
+					foreach (IGrouping<Client, JackPort> portGroup in portGroups) {
 						Client newClient = portGroup.Key;
-						foreach(Port port in portGroup){
-							newClient.AddPort(port);
+						foreach (Port port in portGroup) {
+							newClient.AddPort (port);
 						}
-						clients.Add(newClient);
+						clients.Add (newClient);
 					}
 					return clients;
 				} else {
@@ -95,16 +95,16 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 
 		public void Connect (IConnectable outlet, IConnectable inlet)
 		{
-			foreach(KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)){
-				LibJackWrapper.Connect(portPair.Key, portPair.Value);
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
+				LibJackWrapper.Connect (portPair.Key, portPair.Value);
 			}
 		}
 
 		public void Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			foreach(Port outPort in outlet.Ports) {
-				foreach(Port inPort in inlet.Ports) {
-					LibJackWrapper.Disconnect(outPort, inPort);
+			foreach (Port outPort in outlet.Ports) {
+				foreach (Port inPort in inlet.Ports) {
+					LibJackWrapper.Disconnect (outPort, inPort);
 				}
 			}
 		}
@@ -131,7 +131,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.ChangeType = ChangeType.New;
 				eventArgs.Message = "Connection to Jackd established";
 				eventArgs.MessageType = MessageType.Info;
-				if (ConnectionHasChanged != null){
+				if (ConnectionHasChanged != null) {
 					ConnectionHasChanged (this, eventArgs);
 				}
 				return false;

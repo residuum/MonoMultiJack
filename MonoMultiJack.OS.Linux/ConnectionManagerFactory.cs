@@ -43,9 +43,9 @@ namespace MonoMultiJack.OS.Linux
 		/// </returns>
 		public IEnumerable<IConnectionManager> GetConnectionManagers ()
 		{
-			yield return new JackAudioManager();
-			yield return new JackMidiManager();
-			yield return new AlsaMidiManager();
+			yield return new JackAudioManager ();
+			yield return new JackMidiManager ();
+			yield return new AlsaMidiManager ();
 		}
 
 	}

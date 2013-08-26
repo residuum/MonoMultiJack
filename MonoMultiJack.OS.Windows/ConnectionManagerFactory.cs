@@ -29,12 +29,12 @@ using MonoMultiJack.ConnectionWrapper.Jack;
 
 namespace MonoMultiJack.OS.Windows
 {
-    public class ConnectionManagerFactory : IConnectionManagerFactory
-    {
-        public IEnumerable<IConnectionManager> GetConnectionManagers()
-        {
-            yield return new JackAudioManager();
-            yield return new JackMidiManager();
-        }
-    }
+	public class ConnectionManagerFactory : IConnectionManagerFactory
+	{
+		public IEnumerable<IConnectionManager> GetConnectionManagers ()
+		{
+			yield return new JackAudioManager ();
+			yield return new JackMidiManager ();
+		}
+	}
 }

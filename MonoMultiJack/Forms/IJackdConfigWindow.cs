@@ -29,10 +29,13 @@ namespace MonoMultiJack.Forms
 {
 	public interface IJackdConfigWindow : IWindow
 	{		
-		string Path {get;set;}
-		string GeneralOptions {get;set;}
-		string Driver {get;set;}
-		string DriverOptions {get;set;}
+		string Path { get; set; }
+
+		string GeneralOptions { get; set; }
+
+		string Driver { get; set; }
+
+		string DriverOptions { get; set; }
 
 		event EventHandler SaveJackd;
 	}

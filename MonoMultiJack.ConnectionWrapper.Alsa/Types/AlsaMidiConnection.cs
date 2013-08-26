@@ -27,8 +27,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 {
 	public class AlsaMidiConnection : IConnection
 	{
-		private Port _outPort;
-		private Port _inPort;
+		Port _outPort;
+		Port _inPort;
 		
 	#region IConnection implementation
 		public Port OutPort {

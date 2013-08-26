@@ -150,10 +150,10 @@ namespace MonoMultiJack.Forms
 			((IMainWindow)this).JackdIsRunning = false;
 		}
 
-        /// <summary>
-        /// Updates appWidgets
-        /// </summary>
-        /// <param name="appWidgets">The app widgets.</param>
+		/// <summary>
+		/// Updates appWidgets
+		/// </summary>
+		/// <param name="appWidgets">The app widgets.</param>
 		void UpdateAppWidgets (IEnumerable<IAppStartWidget> appWidgets)
 		{
 			foreach (Widget widget in _appButtonBox.Children) {

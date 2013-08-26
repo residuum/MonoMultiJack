@@ -46,12 +46,13 @@ namespace MonoMultiJack.ConnectionWrapper
 		/// <param name='inlet'>
 		/// Inlet.
 		/// </param>
-		public static IEnumerable<KeyValuePair<Port, Port>> PairPorts(IConnectable outlet, IConnectable inlet){
+		public static IEnumerable<KeyValuePair<Port, Port>> PairPorts (IConnectable outlet, IConnectable inlet)
+		{
 			List<Port> outPorts = outlet.Ports.ToList ();
 			List<Port> inPorts = inlet.Ports.ToList ();
 			int portCount = Math.Min (outPorts.Count, inPorts.Count);
-			for (int i = 0; i <portCount; i++){
-				yield return new KeyValuePair<Port, Port>(outPorts[i], inPorts[i]);
+			for (int i = 0; i <portCount; i++) {
+				yield return new KeyValuePair<Port, Port> (outPorts [i], inPorts [i]);
 			}
 		}
 	}

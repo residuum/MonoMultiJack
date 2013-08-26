@@ -52,8 +52,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				connectionType = newPort.ConnectionType;
 				eventArgs.ChangeType = ChangeType.New;
 				var clients = new List<IConnectable> ();
-				Client newClient = new Client(newPort.ClientName, newPort.FlowDirection, newPort.ConnectionType);
-				newClient.AddPort(newPort);
+				Client newClient = new Client (newPort.ClientName, newPort.FlowDirection, newPort.ConnectionType);
+				newClient.AddPort (newPort);
 				clients.Add (newClient);
 				eventArgs.Connectables = clients;
 			} else {

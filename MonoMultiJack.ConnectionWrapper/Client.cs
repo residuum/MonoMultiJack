@@ -56,7 +56,7 @@ namespace MonoMultiJack.ConnectionWrapper
 			Debug.Assert (FlowDirection == port.FlowDirection, "Flow directions do not match");
 			Debug.Assert (ConnectionType == port.ConnectionType, "Flow directions do not match");
 			_ports.Add (port);
-		    port.Client = this;
+			port.Client = this;
 		}
 
 		public bool RemovePort (Port port)

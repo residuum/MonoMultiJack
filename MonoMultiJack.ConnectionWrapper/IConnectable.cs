@@ -51,7 +51,7 @@ namespace MonoMultiJack.ConnectionWrapper
 		/// <value>
 		/// The type of the connection.
 		/// </value>
-		ConnectionType ConnectionType {get;}
+		ConnectionType ConnectionType { get; }
 
 		/// <summary>
 		/// Gets the flow direction.
@@ -59,7 +59,7 @@ namespace MonoMultiJack.ConnectionWrapper
 		/// <value>
 		/// The flow direction.
 		/// </value>
-		FlowDirection FlowDirection {get;}
+		FlowDirection FlowDirection { get; }
 	}
 }
 

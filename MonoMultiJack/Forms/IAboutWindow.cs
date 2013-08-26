@@ -28,13 +28,19 @@ namespace MonoMultiJack.Forms
 {
 	public interface IAboutWindow : IWindow
 	{		
-		string ProgramName {set;}
-		string Copyright {set;}
-		string Comments {set;}
-		string Version {set;}
-		string Website {set;}
-		string[] Authors {set;}
-		string License {set;}
+		string ProgramName { set; }
+
+		string Copyright { set; }
+
+		string Comments { set; }
+
+		string Version { set; }
+
+		string Website { set; }
+
+		string[] Authors { set; }
+
+		string License { set; }
 	}
 }
 

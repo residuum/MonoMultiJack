@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public delegate void ConnectionEventHandler(object sender,ConnectionEventArgs e);
+	public delegate void ConnectionEventHandler (object sender,ConnectionEventArgs e);
 		
 	public interface IConnectionManager : IDisposable
 	{		
@@ -40,10 +40,13 @@ namespace MonoMultiJack.ConnectionWrapper
 		bool IsActive { get; }
 
 		IEnumerable<Client> Clients { get; }
+
 		IEnumerable<IConnection> Connections { get; }
 
-		void Connect(IConnectable outlet, IConnectable inlet);
-		void Disconnect(IConnectable outlet, IConnectable inlet);
+		void Connect (IConnectable outlet, IConnectable inlet);
+
+		void Disconnect (IConnectable outlet, IConnectable inlet);
+
 		string Name { get; }
 		
 	}

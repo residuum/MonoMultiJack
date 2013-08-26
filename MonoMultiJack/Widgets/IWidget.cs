@@ -29,11 +29,11 @@ namespace MonoMultiJack.Widgets
 {
 	public interface IWidget : IDisposable
 	{
-		void Show();
+		void Show ();
 
-		void Destroy();
+		void Destroy ();
 
-		void Hide();
+		void Hide ();
 	}
 
 }

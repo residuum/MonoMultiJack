@@ -33,57 +33,57 @@ namespace MonoMultiJack.Controllers
 	public class JackdConfigController : IController
 	{
 		JackdConfiguration _jackdConfig;
-	    readonly IJackdConfigWindow _jackdConfigWindow;
+		readonly IJackdConfigWindow _jackdConfigWindow;
 
-		public JackdConfigController(JackdConfiguration jackdConfig)
+		public JackdConfigController (JackdConfiguration jackdConfig)
 		{
 			_jackdConfig = jackdConfig;
-			_jackdConfigWindow = new JackdConfigWindow();
+			_jackdConfigWindow = new JackdConfigWindow ();
 			_jackdConfigWindow.Closing += HandleClosing;
 			_jackdConfigWindow.SaveJackd += HandleSaveJackd;
-			_jackdConfigWindow.Show();
+			_jackdConfigWindow.Show ();
 			_jackdConfigWindow.Path = jackdConfig.Path;
 			_jackdConfigWindow.DriverOptions = jackdConfig.GeneralOptions;
 			_jackdConfigWindow.Driver = jackdConfig.Driver;
 			_jackdConfigWindow.DriverOptions = jackdConfig.DriverOptions;
 		}
 				
-		~JackdConfigController()
+		~JackdConfigController ()
 		{
-			Dispose(false);
+			Dispose (false);
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			Dispose (true);
+			GC.SuppressFinalize (this);
 		}
 	
-		protected virtual void Dispose(bool isDisposing)
+		protected virtual void Dispose (bool isDisposing)
 		{
-			_jackdConfigWindow.Destroy();
-			_jackdConfigWindow.Dispose();
+			_jackdConfigWindow.Destroy ();
+			_jackdConfigWindow.Dispose ();
 		}
 
-		void HandleSaveJackd(object sender, EventArgs e)
+		void HandleSaveJackd (object sender, EventArgs e)
 		{
 			IJackdConfigWindow configWindow = sender as IJackdConfigWindow;
 			if (configWindow != null && UpdateJackd != null) {
-				_jackdConfig = new JackdConfiguration(
+				_jackdConfig = new JackdConfiguration (
 					configWindow.Path,
 					configWindow.GeneralOptions,
 					configWindow.Driver,
 					configWindow.DriverOptions);
 				if (UpdateJackd != null) {
-					UpdateJackd(this, new UpdateJackdEventArgs{JackdConfiguration = _jackdConfig});
+					UpdateJackd (this, new UpdateJackdEventArgs{JackdConfiguration = _jackdConfig});
 				}
 			}
 		}
 
-		void HandleClosing(object sender, EventArgs e)
+		void HandleClosing (object sender, EventArgs e)
 		{
 			if (AllWidgetsAreClosed != null) {
-				AllWidgetsAreClosed(this, e);
+				AllWidgetsAreClosed (this, e);
 			}
 		}
 

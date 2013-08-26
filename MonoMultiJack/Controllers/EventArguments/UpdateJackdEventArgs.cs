@@ -30,7 +30,7 @@ namespace MonoMultiJack.Controllers.EventArguments
 {
 	public class UpdateJackdEventArgs : EventArgs
 	{
-		public JackdConfiguration JackdConfiguration {get;set;}
+		public JackdConfiguration JackdConfiguration { get; set; }
 	}
 }
 

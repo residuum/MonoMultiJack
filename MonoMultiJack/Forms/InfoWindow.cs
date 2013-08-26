@@ -33,42 +33,42 @@ namespace MonoMultiJack.Forms
 	public class InfoWindow : MessageDialog, IInfoWindow
 	{
 
-		public InfoWindow()
+		public InfoWindow ()
 		{
 			MessageType = MessageType.Info;
 			Close += HandleClose;
 			Response += HandleClose;
-			AddButton("Close", ResponseType.Close);
+			AddButton ("Close", ResponseType.Close);
 		}
 
 		void HandleClose (object sender, EventArgs e)
 		{
-			if (Closing != null){
-				Closing(this, new EventArgs());
+			if (Closing != null) {
+				Closing (this, new EventArgs ());
 			}
 		}
 
 		#region IDisposable implementation
-		void IDisposable.Dispose()
+		void IDisposable.Dispose ()
 		{
-			this.Dispose();
+			this.Dispose ();
 		}
 		#endregion
 
 		#region IWidget implementation
-		void MonoMultiJack.Widgets.IWidget.Show()
+		void MonoMultiJack.Widgets.IWidget.Show ()
 		{
-			this.Show();
+			this.Show ();
 		}
 
-		void MonoMultiJack.Widgets.IWidget.Destroy()
+		void MonoMultiJack.Widgets.IWidget.Destroy ()
 		{
-			this.Destroy();
+			this.Destroy ();
 		}
 
-		void MonoMultiJack.Widgets.IWidget.Hide()
+		void MonoMultiJack.Widgets.IWidget.Hide ()
 		{
-			this.Hide();
+			this.Hide ();
 		}
 		#endregion
 
@@ -77,14 +77,14 @@ namespace MonoMultiJack.Forms
 
 		string IWindow.IconPath {
 			set {				
-				if (File.Exists(value)) {
-					this.Icon = new Pixbuf(value);
+				if (File.Exists (value)) {
+					this.Icon = new Pixbuf (value);
 				}
 			}
 		}
 
 		bool IWindow.Sensitive {
-			set{
+			set {
 				this.Sensitive = value;
 			}
 		}

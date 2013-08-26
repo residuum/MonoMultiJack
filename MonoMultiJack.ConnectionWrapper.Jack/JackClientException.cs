@@ -32,11 +32,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	[Serializable]
 	public class JackClientException : Exception
 	{
-		public JackClientException(string message) : base(message)
+		public JackClientException (string message) : base(message)
 		{
 		}
 
-		public JackClientException(string message, Exception innerException) : base(message, innerException)
+		public JackClientException (string message, Exception innerException) : base(message, innerException)
 		{
 		}
 	}

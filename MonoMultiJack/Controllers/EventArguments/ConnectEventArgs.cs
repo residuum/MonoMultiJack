@@ -30,8 +30,9 @@ namespace MonoMultiJack.Controllers.EventArguments
 {
 	public class ConnectEventArgs : EventArgs
 	{
-		public IConnectable Inlet {get;set;}
-		public IConnectable Outlet {get;set;}
+		public IConnectable Inlet { get; set; }
+
+		public IConnectable Outlet { get; set; }
 	}
 }
 

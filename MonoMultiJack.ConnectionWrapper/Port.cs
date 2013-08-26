@@ -37,7 +37,7 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public ConnectionType ConnectionType { get; protected set; }
 
-        public Client Client { get; internal set; }
+		public Client Client { get; internal set; }
 
 		public IEnumerable<Port> Ports {
 			get {

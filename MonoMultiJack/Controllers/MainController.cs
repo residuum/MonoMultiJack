@@ -41,7 +41,7 @@ namespace MonoMultiJack.Controllers
 		readonly string _iconFile = "monomultijack.png";
 		string _programIcon;
 
-		private string ProgramIconPath {
+		string ProgramIconPath {
 			get {
 				if (_programIcon == null) {
 					Assembly executable = Assembly.GetEntryAssembly ();
@@ -55,9 +55,9 @@ namespace MonoMultiJack.Controllers
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
 		IProgram _jackd;
-	    readonly IMainWindow _mainWindow;
-		List<AppStartController> _startWidgetControllers = new List<AppStartController>();
-	    readonly List<ConnectionController> _connectionControllers;
+		readonly IMainWindow _mainWindow;
+		List<AppStartController> _startWidgetControllers = new List<AppStartController> ();
+		readonly List<ConnectionController> _connectionControllers;
 
 		public MainController ()
 		{
@@ -65,12 +65,12 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.IconPath = _programIcon;
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
-		    IConnectionManagerFactory factory =
-		        DependencyResolver.GetImplementation<IConnectionManagerFactory>("IConnectionManagerFactoryImplementation");
+			IConnectionManagerFactory factory =
+		        DependencyResolver.GetImplementation<IConnectionManagerFactory> ("IConnectionManagerFactoryImplementation");
 			foreach (IConnectionManager connectionManager in factory.GetConnectionManagers()) { 
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
-			_mainWindow.ConnectionWidgets = _connectionControllers.Select(c => c.Widget);
+			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
 		}
 
 		~MainController ()
@@ -186,11 +186,11 @@ namespace MonoMultiJack.Controllers
 					return true;
 				}
 			} catch (Exception e) {
-                #if DEBUG
+				#if DEBUG
                 Console.WriteLine (e.Message);
-                #endif
+				#endif
 			}
-            windowConfig = new WindowConfiguration(0, 0, 0, 0);
+			windowConfig = new WindowConfiguration (0, 0, 0, 0);
 			return false;
 		}
 
@@ -202,7 +202,7 @@ namespace MonoMultiJack.Controllers
 				_jackd.HasExited -= Jackd_HasExited;
 				_jackd.Dispose ();
 			}
-			_jackd = DependencyResolver.GetImplementation<IProgram>("IProgramImplementation", new object[]{jackdConfig});
+			_jackd = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[]{jackdConfig});
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}
@@ -210,12 +210,12 @@ namespace MonoMultiJack.Controllers
 #region Model events
 		void Jackd_HasStarted (object sender, EventArgs e)
 		{
-			UpdateRunningStatus();
+			UpdateRunningStatus ();
 		}
 
 		void Jackd_HasExited (object sender, EventArgs e)
 		{
-			UpdateRunningStatus();
+			UpdateRunningStatus ();
 		}
 #endregion
 

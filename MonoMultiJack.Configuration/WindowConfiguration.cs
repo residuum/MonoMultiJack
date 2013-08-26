@@ -74,7 +74,7 @@ namespace MonoMultiJack.Configuration
 		/// <param name='ySize'>
 		/// Y size.
 		/// </param>
-		public WindowConfiguration(int xPosition, int yPosition, int xSize, int ySize) : this()
+		public WindowConfiguration (int xPosition, int yPosition, int xSize, int ySize) : this()
 		{
 			XPosition = xPosition;
 			YPosition = yPosition;

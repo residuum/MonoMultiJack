@@ -32,13 +32,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	/// </summary>
 	internal static partial class LibJackWrapper
 	{		
-		private const string JACK_LIB_NAME = "libjack";
-		private const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		private const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
-		private delegate void JackPortRegistrationCallback (uint port, int register, IntPtr args);
-
-		private delegate void JackPortConnectCallback (uint a, uint b, int connect, IntPtr args);
-
-		private delegate void JackShutdownCallback (IntPtr args);
+		const string JACK_LIB_NAME = "libjack";
+		const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
+		const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
+		delegate void JackPortRegistrationCallback (uint port,int register,IntPtr args);
+		delegate void JackPortConnectCallback (uint a,uint b,int connect,IntPtr args);
+		delegate void JackShutdownCallback (IntPtr args);
 	}
 }

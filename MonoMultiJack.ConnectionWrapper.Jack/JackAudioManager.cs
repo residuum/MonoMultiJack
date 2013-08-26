@@ -28,12 +28,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 {
 	public class JackAudioManager : JackConnectionManager
 	{
-	    public override ConnectionType ConnectionType {
+		public override ConnectionType ConnectionType {
 			get { return ConnectionType.JackAudio;}
 		}
 
 		public override string Name {
-			get{
+			get {
 				return "Jack Audio";
 			}
 		}

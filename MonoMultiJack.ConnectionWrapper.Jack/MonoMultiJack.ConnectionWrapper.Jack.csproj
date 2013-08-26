@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MonoMultiJack.ConnectionWrapper.Jack</RootNamespace>
     <AssemblyName>MonoMultiJack.ConnectionWrapper.Jack</AssemblyName>
-    <ReleaseVersion>0.2</ReleaseVersion>
+    <ReleaseVersion>0.3.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

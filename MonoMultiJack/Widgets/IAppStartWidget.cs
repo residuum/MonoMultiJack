@@ -29,12 +29,11 @@ namespace MonoMultiJack.Widgets
 {
 	public interface IAppStartWidget : IWidget
 	{
-		void SetApp(string name, string commandName);
+		void SetApp (string name, string commandName);
 
-		bool IsRunning{set;}
+		bool IsRunning{ set; }
 
 		event EventHandler StartApplication;
-
 		event EventHandler StopApplication;
 	}
 }

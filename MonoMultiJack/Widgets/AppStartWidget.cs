@@ -117,7 +117,7 @@ namespace MonoMultiJack.Widgets
 		/// <summary>
 		/// starts application, updates action for togglebutton
 		/// </summary>
-		private void CallStartApplication ()
+		void CallStartApplication ()
 		{
 			if (StartApplication != null) {
 				StartApplication (this, new EventArgs ());
@@ -133,7 +133,7 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void CallStartApplication (object obj, EventArgs args)
+		void CallStartApplication (object obj, EventArgs args)
 		{
 			CallStartApplication ();
 		}
@@ -146,7 +146,7 @@ namespace MonoMultiJack.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		private void CallStopApplication (object obj, EventArgs args)
+		void CallStopApplication (object obj, EventArgs args)
 		{
 			CallStopApplication ();
 		}

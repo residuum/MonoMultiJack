@@ -45,17 +45,17 @@ namespace MonoMultiJack.OS
 		/// <value>
 		/// <c>true</c> if this instance is running; otherwise, <c>false</c>.
 		/// </value>
-		bool IsRunning{get;}
+		bool IsRunning{ get; }
 
 		/// <summary>
 		/// Stop this instance.
 		/// </summary>
-		void Stop();
+		void Stop ();
 
 		/// <summary>
 		/// Start this instance.
 		/// </summary>
-		void Start();
+		void Start ();
 	}
 }
 

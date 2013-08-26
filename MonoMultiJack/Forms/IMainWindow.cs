@@ -38,7 +38,7 @@ namespace MonoMultiJack.Forms
 		/// <value>
 		/// The app start widgets.
 		/// </value>
-		IEnumerable<IAppStartWidget> AppStartWidgets {set;}
+		IEnumerable<IAppStartWidget> AppStartWidgets { set; }
 
 		/// <summary>
 		/// Sets the connection widgets.
@@ -46,7 +46,7 @@ namespace MonoMultiJack.Forms
 		/// <value>
 		/// The connection widgets.
 		/// </value>
-		IEnumerable<IConnectionWidget> ConnectionWidgets {set;}
+		IEnumerable<IConnectionWidget> ConnectionWidgets { set; }
 
 		/// <summary>
 		/// Sets the window configuration.
@@ -54,7 +54,7 @@ namespace MonoMultiJack.Forms
 		/// <value>
 		/// The window configuration.
 		/// </value>
-		WindowConfiguration WindowConfiguration {get;set;}
+		WindowConfiguration WindowConfiguration { get; set; }
 
 		/// <summary>
 		/// Sets a value indicating whether this <see cref="MonoMultiJack.Forms.IMainWindow"/> jackd is active.
@@ -62,7 +62,7 @@ namespace MonoMultiJack.Forms
 		/// <value>
 		/// <c>true</c> if jackd is active; otherwise, <c>false</c>.
 		/// </value>
-		bool JackdIsRunning {set;}
+		bool JackdIsRunning { set; }
 
 		/// <summary>
 		/// Sets a value indicating whether this <see cref="MonoMultiJack.Forms.IMainWindow"/> apps are running.
@@ -70,7 +70,7 @@ namespace MonoMultiJack.Forms
 		/// <value>
 		/// <c>true</c> if apps are running; otherwise, <c>false</c>.
 		/// </value>
-		bool AppsAreRunning {set;}
+		bool AppsAreRunning { set; }
 
 		/// <summary>
 		/// Controller should start Jackd.

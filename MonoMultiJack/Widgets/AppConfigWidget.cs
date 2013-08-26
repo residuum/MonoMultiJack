@@ -35,11 +35,8 @@ namespace MonoMultiJack.Widgets
 	public class AppConfigWidget : Fixed, IAppConfigWidget
 	{
 		Entry _appNameEntry;
-
 		Entry _appCommandEntry;
-
 		Entry _appArgumentsEntry;
-
 		Button _removeApp;
 						
 		/// <summary>
@@ -48,89 +45,89 @@ namespace MonoMultiJack.Widgets
 		/// <param name="appConfig">
 		/// The <see cref="AppConfiguration"/> to edit
 		/// </param>
-		public AppConfigWidget()
+		public AppConfigWidget ()
 		{
-			BuildWidget();
+			BuildWidget ();
 		}
 		
 		/// <summary>
 		/// builds subwidgets and layout
 		/// </summary>
-		private void BuildWidget()
+		void BuildWidget ()
 		{
-			Table table = new Table(3, 4, false);
+			Table table = new Table (3, 4, false);
 			table.RowSpacing = 3;
 			table.ColumnSpacing = 3;
 			table.BorderWidth = 1;
 			
-			Label label = new Label("Application");
+			Label label = new Label ("Application");
 			label.Xalign = 0;
-			table.Attach(label, 0, 2, 0, 1);
+			table.Attach (label, 0, 2, 0, 1);
 
-			label = new Label("Name");
+			label = new Label ("Name");
 			label.Xalign = 0;
-			table.Attach(label, 0, 1, 1, 2);
-			_appNameEntry = new Entry();
-			table.Attach(_appNameEntry, 1, 2, 1, 2);
+			table.Attach (label, 0, 1, 1, 2);
+			_appNameEntry = new Entry ();
+			table.Attach (_appNameEntry, 1, 2, 1, 2);
 			label.MnemonicWidget = _appNameEntry;
 			
-			label = new Label("Command");
+			label = new Label ("Command");
 			label.Xalign = 0;
-			table.Attach(label, 0, 1, 2, 3);
-			_appCommandEntry = new Entry();
-			table.Attach(_appCommandEntry, 1, 2, 2, 3);
+			table.Attach (label, 0, 1, 2, 3);
+			_appCommandEntry = new Entry ();
+			table.Attach (_appCommandEntry, 1, 2, 2, 3);
 			label.MnemonicWidget = _appCommandEntry;
 			
-			label = new Label("Command Arguments");
+			label = new Label ("Command Arguments");
 			label.Xalign = 0;
-			table.Attach(label, 0, 1, 3, 4);
-			_appArgumentsEntry = new Entry();
-			table.Attach(_appArgumentsEntry, 1, 2, 3, 4);
+			table.Attach (label, 0, 1, 3, 4);
+			_appArgumentsEntry = new Entry ();
+			table.Attach (_appArgumentsEntry, 1, 2, 3, 4);
 			label.MnemonicWidget = _appArgumentsEntry;
 			
-			_removeApp = new Button(Stock.Delete);
-			_removeApp.Clicked += HandleClicked;;
-			table.Attach(_removeApp, 2, 3, 1, 2);
+			_removeApp = new Button (Stock.Delete);
+			_removeApp.Clicked += HandleClicked;
+			;
+			table.Attach (_removeApp, 2, 3, 1, 2);
 
-			Put(table, 0, 0);
-			table.Show();
+			Put (table, 0, 0);
+			table.Show ();
 		}
 
 		void HandleClicked (object sender, EventArgs e)
 		{
-			if (RemoveApplication != null)
-			{
-				RemoveApplication(this, new EventArgs());
+			if (RemoveApplication != null) {
+				RemoveApplication (this, new EventArgs ());
 			}
 		}
 		#region IDisposable implementation
-		void IDisposable.Dispose()
+		void IDisposable.Dispose ()
 		{
-			this.Dispose();
+			this.Dispose ();
 		}
 		#endregion
 
 		#region IWidget implementation
-		void IWidget.Show()
+		void IWidget.Show ()
 		{
-			this.ShowAll();
+			this.ShowAll ();
 		}
 
-		void IWidget.Destroy()
+		void IWidget.Destroy ()
 		{
-			this.Destroy();
+			this.Destroy ();
 		}
 
-		void IWidget.Hide()
+		void IWidget.Hide ()
 		{
-			this.Hide();
+			this.Hide ();
 		}
 		#endregion
 
 		#region IAppConfigWidget implementation
 		string IAppConfigWidget.Name {
 			get {
-				return _appNameEntry.Text.Trim();
+				return _appNameEntry.Text.Trim ();
 			}
 			set {
 				_appNameEntry.Text = value;
@@ -139,7 +136,7 @@ namespace MonoMultiJack.Widgets
 
 		string IAppConfigWidget.Command {
 			get {
-				return _appCommandEntry.Text.Trim();
+				return _appCommandEntry.Text.Trim ();
 			}
 			set {
 				_appCommandEntry.Text = value;
@@ -148,7 +145,7 @@ namespace MonoMultiJack.Widgets
 
 		string IAppConfigWidget.Arguments {
 			get {
-				return _appArgumentsEntry.Text.Trim();
+				return _appArgumentsEntry.Text.Trim ();
 			}
 			set {
 				_appArgumentsEntry.Text = value;

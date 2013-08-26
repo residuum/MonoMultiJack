@@ -31,140 +31,132 @@ using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.OS.Windows
 {
-    public class Program : IProgram
-    {
-        readonly string _commandName;
-        readonly string _commandArguments;
-        Process _process;
+	public class Program : IProgram
+	{
+		readonly string _commandName;
+		readonly string _commandArguments;
+		Process _process;
 
-        /// <summary>
-        /// Signals the exit of program.
-        /// </summary>
-        public event ProgramEventHandler HasExited;
+		/// <summary>
+		/// Signals the exit of program.
+		/// </summary>
+		public event ProgramEventHandler HasExited;
 
-        /// <summary>
-        /// Signals the start of program
-        /// </summary>
-        public event ProgramEventHandler HasStarted;
+		/// <summary>
+		/// Signals the start of program
+		/// </summary>
+		public event ProgramEventHandler HasStarted;
 
-        /// <summary>
-        /// Returns true if program is running.
-        /// </summary>
-        public bool IsRunning
-        {
-            get
-            {
-                if (_process == null) return false;
-                try
-                {
-                    return !_process.HasExited;
-                }
-                catch (InvalidOperationException)
-                {
-                    return false;
-                }
-            }
-        }
+		/// <summary>
+		/// Returns true if program is running.
+		/// </summary>
+		public bool IsRunning {
+			get {
+				if (_process == null)
+					return false;
+				try {
+					return !_process.HasExited;
+				} catch (InvalidOperationException) {
+					return false;
+				}
+			}
+		}
 
-        public Program(JackdConfiguration jackdConfig)
-        {
-            _commandName = jackdConfig.Path;
-            _commandArguments = jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions;
-            TestForRunningSingleton();
-        }
+		public Program (JackdConfiguration jackdConfig)
+		{
+			_commandName = jackdConfig.Path;
+			_commandArguments = jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions;
+			TestForRunningSingleton ();
+		}
 
-        public Program(AppConfiguration appConfig)
-        {
-            if (string.IsNullOrEmpty(appConfig.Command))
-            {
-                return;
-            }
-            _commandName = appConfig.Command;
-            _commandArguments = appConfig.Arguments;
-        }
+		public Program (AppConfiguration appConfig)
+		{
+			if (string.IsNullOrEmpty (appConfig.Command)) {
+				return;
+			}
+			_commandName = appConfig.Command;
+			_commandArguments = appConfig.Arguments;
+		}
 
-        /// <summary>
-        /// Destructs instance and cleans up temporary files.
-        /// </summary>
-        ~Program()
-        {
-            Dispose(false);
-        }
+		/// <summary>
+		/// Destructs instance and cleans up temporary files.
+		/// </summary>
+		~Program ()
+		{
+			Dispose (false);
+		}
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
 
-        protected virtual void Dispose(bool isDisposing)
-        {
-            Stop();
-            if (_process != null)
-            {
-                _process.Dispose();
-            }
-        }
+		protected virtual void Dispose (bool isDisposing)
+		{
+			Stop ();
+			if (_process != null) {
+				_process.Dispose ();
+			}
+		}
 
-        /// <summary>
-        /// Starts the program.
-        /// </summary>
-        public void Start()
-        {
-            StartProgram();
-        }
+		/// <summary>
+		/// Starts the program.
+		/// </summary>
+		public void Start ()
+		{
+			StartProgram ();
+		}
 
-        /// <summary>
-        /// Stops the program.
-        /// </summary>
-        public void Stop()
-        {
-            if (!IsRunning) return;
-            if (!_process.CloseMainWindow()) return;
-            _process.Dispose();
+		/// <summary>
+		/// Stops the program.
+		/// </summary>
+		public void Stop ()
+		{
+			if (!IsRunning)
+				return;
+			if (!_process.CloseMainWindow ())
+				return;
+			_process.Dispose ();
 
-            if (HasExited != null)
-            {
-                HasExited(this, new EventArgs());
-            }
-        }
+			if (HasExited != null) {
+				HasExited (this, new EventArgs ());
+			}
+		}
 
-        void StartProgram()
-        {
-            if (IsRunning) return;
+		void StartProgram ()
+		{
+			if (IsRunning)
+				return;
 
-            _process = new Process {StartInfo = {FileName = _commandName, Arguments = _commandArguments}};
-            _process.Exited += Process_Exited;
-            if (_process.Start() && HasStarted != null)
-            {
-                HasStarted(this, new EventArgs());
-            }
-        }
+			_process = new Process {StartInfo = {FileName = _commandName, Arguments = _commandArguments}};
+			_process.Exited += Process_Exited;
+			if (_process.Start () && HasStarted != null) {
+				HasStarted (this, new EventArgs ());
+			}
+		}
 
-        void Process_Exited(object sender, EventArgs args)
-        {
-            if (_process != null)
-            {
-                _process.Dispose();
-            }
-            if (HasExited != null)
-            {
-                HasExited(this, new EventArgs());
-            }
-        }
+		void Process_Exited (object sender, EventArgs args)
+		{
+			if (_process != null) {
+				_process.Dispose ();
+			}
+			if (HasExited != null) {
+				HasExited (this, new EventArgs ());
+			}
+		}
 
-        /// <summary>
-        /// Tests, if singleton process is already running.
-        /// </summary>
-        void TestForRunningSingleton()
-        {
-            string[] processName = _commandName.Split(Path.DirectorySeparatorChar);
-            Process[] processes = Process.GetProcessesByName(processName.Last());
-            if (processes.Any())
-            {
-                _process = processes.First();
-            }
-        }
+		/// <summary>
+		/// Tests, if singleton process is already running.
+		/// </summary>
+		void TestForRunningSingleton ()
+		{
+			string[] processName = _commandName.Split (Path.DirectorySeparatorChar);
+			Process[] processes = Process.GetProcessesByName (processName.Last ());
+			if (processes.Any ()) {
+				_process = processes.First ();
+			}
+		}
         
-    }
+	}
 }

@@ -32,9 +32,9 @@ namespace MonoMultiJack.Forms
 	{
 		event EventHandler Closing;
 
-		string IconPath {set;}
+		string IconPath { set; }
 
-		bool Sensitive {set;}
+		bool Sensitive { set; }
 	}
 }
 
