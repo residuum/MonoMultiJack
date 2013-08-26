@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MonoMultiJack.ConnectionWrapper.Jack.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
@@ -70,18 +71,15 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			get { return LibJackWrapper.IsActive; }
 		}
 		
-		public IEnumerable<IConnectable> Clients {
+		public IEnumerable<Client> Clients {
 			get {
 				if (IsActive) {
-					var portGroups = LibJackWrapper.GetPorts(ConnectionType)
-						.GroupBy(p => new {p.ClientName, p.ConnectionType, p.FlowDirection});
+					IEnumerable<IGrouping<Client, JackPort>> portGroups = LibJackWrapper.GetPorts(ConnectionType)
+						.GroupBy(p => new Client(p.ClientName, p.FlowDirection, p.ConnectionType));
 					List<Client> clients = new List<Client>();
-					foreach(var portGroup in portGroups){
-						IEnumerable<Port> ports = portGroup.ToList();
-						Client newClient = new Client(portGroup.Key.ClientName,
-						                              portGroup.Key.FlowDirection, 
-						                              portGroup.Key.ConnectionType);
-						foreach(Port port in ports){
+					foreach(IGrouping<Client, JackPort> portGroup in portGroups){
+						Client newClient = portGroup.Key;
+						foreach(Port port in portGroup){
 							newClient.AddPort(port);
 						}
 						clients.Add(newClient);

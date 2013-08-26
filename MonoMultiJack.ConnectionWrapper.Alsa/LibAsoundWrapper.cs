@@ -31,8 +31,7 @@ using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	internal static partial class LibAsoundWrapper
-	{		
-		static uint _portNumberMax = 0;
+	{
 		static IntPtr _alsaClient = IntPtr.Zero;
 		static int _clientInfoSize;
 		static int _portInfoSize;
@@ -158,9 +157,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 						portName,
 						clientName,
 						FlowDirection.Out, 
-						_portNumberMax)
+						0)
 					);
-					_portNumberMax++;
 				}
 				if (isInput) {
 					ports.Add (new AlsaPort (
@@ -168,9 +166,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 						portName,
 						clientName,
 						FlowDirection.In,
-						_portNumberMax)
+						0)
 					);
-					_portNumberMax++;
 				}
 				return ports;
 			}

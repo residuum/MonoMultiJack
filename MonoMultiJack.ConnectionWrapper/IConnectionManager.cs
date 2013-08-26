@@ -39,7 +39,7 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		bool IsActive { get; }
 
-		IEnumerable<IConnectable> Clients { get; }
+		IEnumerable<Client> Clients { get; }
 		IEnumerable<IConnection> Connections { get; }
 
 		void Connect(IConnectable outlet, IConnectable inlet);

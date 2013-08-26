@@ -33,7 +33,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	public class AlsaMidiManager : IConnectionManager
 	{
-		//List<AlsaClient> _clientMapper = new List<AlsaClient> ();
 		List<AlsaPort> _portMapper = new List<AlsaPort> ();
 		List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
 	
@@ -114,10 +113,25 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 		}
 
-		public IEnumerable<IConnectable> Clients {
+		IEnumerable<Client> ClientsFromPorts (IEnumerable<AlsaPort> ports)
+		{
+			IEnumerable<IGrouping<Client, AlsaPort>> clientGroups = 
+				ports.GroupBy (p => new Client (p.ClientName, p.FlowDirection, p.ConnectionType));
+			List<Client> clients = new List<Client> ();
+			foreach (IGrouping<Client, AlsaPort> clientGroup in clientGroups) {
+				Client newClient = clientGroup.Key;
+				foreach (AlsaPort port in clientGroup) {
+					newClient.AddPort (port);
+				}
+				clients.Add (newClient);
+			}
+			return clients;
+		}
+
+		public IEnumerable<Client> Clients {
 			get {
 				_portMapper = LibAsoundWrapper.GetPorts ().ToList ();
-				return _portMapper.Cast<Port> ();
+				return ClientsFromPorts (_portMapper);
 			}
 		}
 
@@ -137,7 +151,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		bool CheckForChanges ()
 		{
-			List<Port> newPorts;
+			List<AlsaPort> newPorts;
 			List<Port> obsoletePorts;
 			UpdatePortInformation (
 		LibAsoundWrapper.GetPorts (),
@@ -158,7 +172,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			if (newPorts.Any () || newConnections.Any ()) {
 				var newEventArgs = new ConnectionEventArgs ();
 				newEventArgs.ChangeType = ChangeType.New;
-				newEventArgs.Connectables = newPorts;
+				newEventArgs.Connectables = ClientsFromPorts(newPorts);
 				newEventArgs.Connections = newConnections;
 			}
 			if (obsoletePorts.Any ()) {
@@ -173,9 +187,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			return true;
 		}
 
-		void UpdatePortInformation (IEnumerable<AlsaPort> allPorts, ref List<AlsaPort> mappedPorts, out List<Port> newPorts, out List<Port> obsoletePorts)
+		void UpdatePortInformation (IEnumerable<AlsaPort> allPorts, ref List<AlsaPort> mappedPorts, out List<AlsaPort> newPorts, out List<Port> obsoletePorts)
 		{
-			newPorts = new List<Port> ();
+			newPorts = new List<AlsaPort> ();
 			obsoletePorts = new List<Port> ();
 
 			foreach (AlsaPort port in allPorts) {

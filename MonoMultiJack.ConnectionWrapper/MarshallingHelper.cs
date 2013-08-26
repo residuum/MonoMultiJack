@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
@@ -72,4 +73,3 @@ namespace MonoMultiJack.ConnectionWrapper
 		}
 	}
 }
-

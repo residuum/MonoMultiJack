@@ -51,7 +51,7 @@ namespace MonoMultiJack.Controllers
 			_connectionManager.ConnectionHasChanged += ConnectionManager_ConnectionHasChanged;
 			IEnumerable<IConnectable> clients = _connectionManager.Clients;
 			if (clients != null) {
-				foreach (IConnectable client in _connectionManager.Clients) {
+				foreach (IConnectable client in clients) {
 					_connectionWidget.AddConnectable (client);
 				}
 			}
