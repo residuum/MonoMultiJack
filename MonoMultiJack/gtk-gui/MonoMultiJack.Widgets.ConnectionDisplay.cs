@@ -115,6 +115,13 @@ namespace MonoMultiJack.Widgets
 				this.Child.ShowAll ();
 			}
 			this.Show ();
+			this.ExposeEvent += new global::Gtk.ExposeEventHandler (this.Handle_ExposeEvent);
+			this._connectButton.Clicked += new global::System.EventHandler (this.ConnectButton_Click);
+			this._disconnectButton.Clicked += new global::System.EventHandler (this.DisconnectButton_Click);
+			this._outputTreeview.RowExpanded += new global::Gtk.RowExpandedHandler (this.OnTreeViewRowExpanded);
+			this._outputTreeview.RowCollapsed += new global::Gtk.RowCollapsedHandler (this.OnTreeViewRowCollapsed);
+			this._inputTreeview.RowExpanded += new global::Gtk.RowExpandedHandler (this.OnTreeViewRowExpanded);
+			this._inputTreeview.RowCollapsed += new global::Gtk.RowCollapsedHandler (this.OnTreeViewRowCollapsed);
 		}
 	}
 }

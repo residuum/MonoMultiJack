@@ -80,7 +80,10 @@ namespace MonoMultiJack.Widgets
 				TreeIter clientIter;
 				if (TryGetClientIter (store, client, true, out clientIter)) {
 					foreach (Port port in client.Ports) {
-						store.AppendValues (clientIter, port);
+						TreeIter portIter;
+						if (!TryGetPortIter (store, clientIter, port, out portIter)) {							
+							store.AppendValues (clientIter, port);
+						}
 					}
 				}
 			} else {				
@@ -177,43 +180,11 @@ namespace MonoMultiJack.Widgets
 			);
 		}
 
-
-
-		/// <summary>
-		/// Gets the selected from from a treestore by the selected treeiter.
-		/// </summary>
-		/// <param name="connectionStore">
-		/// A <see cref="TreeStore"/>
-		/// </param>
-		/// <param name="selectedIter">
-		/// A <see cref="TreeIter"/>
-		/// </param>
-		/// <param name="portType">
-		/// A <see cref="PortType"/>
-		/// </param>
-		/// <returns>
-		/// A <see cref="Port"/>
-		/// </returns>
 		IConnectable GetSelectedConnectable (TreeStore connectionStore, TreeIter selectedIter)
 		{
 			return connectionStore.GetValue (selectedIter, 0) as IConnectable; 
 		}
 
-		/// <summary>
-		/// Gets the vertical position for the selected post in the treeview.
-		/// </summary>
-		/// <param name="tree">
-		/// A <see cref="TreeView"/>
-		/// </param>
-		/// <param name="store">
-		/// A <see cref="TreeStore"/>
-		/// </param>
-		/// <param name="selectedPort">
-		/// A <see cref="Port"/>
-		/// </param>
-		/// <returns>
-		/// A <see cref="System.Int32"/>
-		/// </returns>
 		int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
 		{
 			int cellHeight = 24;
@@ -236,7 +207,7 @@ namespace MonoMultiJack.Widgets
 						}
 					}
 					//Necessary because the first Treeview item only counts as 1/2 cell height.
-					if (((Port)store.GetValue (clientIter, 0)).Client == selectedPort.Client) {
+					if (((Client)store.GetValue (clientIter, 0)) == selectedPort.Client) {
 						break;
 					}
 					position += cellHeight;
@@ -314,7 +285,6 @@ namespace MonoMultiJack.Widgets
 						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
 						int areaWidth = _connectionArea.Allocation.Width;
-						
 						if (outY != -1 && inY != -1) {
 							g.Save ();
 							g.MoveTo (0, outY);
@@ -365,12 +335,13 @@ namespace MonoMultiJack.Widgets
 
 		public void AddConnection (IConnection connection)
 		{
-			Application.Invoke (delegate {
-				#if DEBUG
+			#if DEBUG
 			Console.WriteLine (connection.OutPort.Id + ":" + connection.OutPort.Name + " is connected to " + connection.InPort.Id + ":" + connection.InPort.Name);
-				#endif
+			#endif
 			
-				_connections.Add (connection);
+			_connections.Add (connection);
+			
+			Application.Invoke (delegate {
 				UpdateConnectionLines ();
 			}
 			);
@@ -378,11 +349,13 @@ namespace MonoMultiJack.Widgets
 
 		public void RemoveConnection (IConnection connection)
 		{
-			Application.Invoke (delegate {
-				#if DEBUG
+			#if DEBUG
 			Console.WriteLine (connection.OutPort.Id + ":" + connection.OutPort.Name + " has been disconnected from " + connection.InPort.Id + ":" + connection.InPort.Name);
-				#endif
-				_connections.Remove (connection);
+			#endif
+			_connections.Remove (connection);
+			
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
 			}
 			);
 		}

@@ -42,8 +42,8 @@ namespace MonoMultiJack.ConnectionWrapper
 		IEnumerable<IConnectable> Clients { get; }
 		IEnumerable<IConnection> Connections { get; }
 
-		bool Connect(IConnectable outlet, IConnectable inlet);
-		bool Disconnect(IConnectable outlet, IConnectable inlet);
+		void Connect(IConnectable outlet, IConnectable inlet);
+		void Disconnect(IConnectable outlet, IConnectable inlet);
 		string Name { get; }
 		
 	}

@@ -226,7 +226,10 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				.Select (map => map.JackPortName).First ();
 			string inPortName = _portMapper.Where (map => map == inputPort)
 				.Select (map => map.JackPortName).First ();
-			return jack_disconnect (_jackClient, outPortName, inPortName) == 0;			
+			if (_connections.Any (c => c.InPort == inputPort && c.OutPort == outputPort)) {
+				return jack_disconnect (_jackClient, outPortName, inPortName) == 0;			
+			}
+			return true;
 		}
 		
 		internal static bool Connect (Port outputPort, Port inputPort)

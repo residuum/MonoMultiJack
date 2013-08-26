@@ -33,8 +33,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	public class AlsaMidiManager : IConnectionManager
 	{
-		private List<AlsaPort> _portMapper = new List<AlsaPort> ();
-		private List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
+		//List<AlsaClient> _clientMapper = new List<AlsaClient> ();
+		List<AlsaPort> _portMapper = new List<AlsaPort> ();
+		List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
 	
 		public AlsaMidiManager ()
 		{
@@ -63,48 +64,42 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasExited;
 
-		public bool Connect (IConnectable outlet, IConnectable inlet)
-		{	
-			bool connected = true;
+		public void Connect (IConnectable outlet, IConnectable inlet)
+		{
 			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
-				if (ConnectPorts (portPair.Key, portPair.Value)) {
-					connected = false;
-				}
+				ConnectPorts (portPair.Key, portPair.Value);
 			}
-			return connected;
 		}
 
-		private bool ConnectPorts(Port outPort, Port inPort)
+		void ConnectPorts(Port outPort, Port inPort)
 		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
 			if (alsaOutPort == null || alsaInPort == null 
 			    || outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
-				return false;
+				return;
 			}
-			return LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
+			LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
 		}
 
-		public bool Disconnect (IConnectable outlet, IConnectable inlet)
+		public void Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			bool disconnected = true;
-			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
-				if (DisconnectPort (portPair.Key, portPair.Value)) {
-					disconnected = false;
+			foreach(Port outPort in outlet.Ports){
+				foreach(Port inPort in inlet.Ports){
+					DisconnectPort(outPort, inPort);
 				}
 			}
-			return disconnected;
 		}
 
-		private bool DisconnectPort(Port outPort, Port inPort){
+		void DisconnectPort(Port outPort, Port inPort){
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
 			if (alsaOutPort == null || alsaInPort == null 
 			    || outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
 				|| inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
-				return false;
+				return;
 			}
-			return LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
+			LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
 		}
 
 		public ConnectionType ConnectionType {

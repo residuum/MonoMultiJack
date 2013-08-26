@@ -33,8 +33,8 @@ namespace MonoMultiJack.Controllers
 {
 	public class ConnectionController : IController
 	{
-	    readonly IConnectionWidget _connectionWidget;
-	    readonly IConnectionManager _connectionManager;
+		readonly IConnectionWidget _connectionWidget;
+		readonly IConnectionManager _connectionManager;
 
 		public IConnectionWidget Widget {
 			get {
@@ -60,12 +60,14 @@ namespace MonoMultiJack.Controllers
 			_connectionWidget.Disconnect += Widget_Disconnect;
 		}
 
-		void Widget_Connect(object sender, ConnectEventArgs args){
-
+		void Widget_Connect (object sender, ConnectEventArgs args)
+		{
+			_connectionManager.Connect (args.Outlet, args.Inlet);
 		}
 
-		void Widget_Disconnect(object sender, ConnectEventArgs args){
-
+		void Widget_Disconnect (object sender, ConnectEventArgs args)
+		{
+			_connectionManager.Disconnect (args.Outlet, args.Inlet);
 		}
 
 		void ConnectionManager_BackendHasExited (object sender, ConnectionEventArgs args)

@@ -95,26 +95,20 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 
-		public bool Connect (IConnectable outlet, IConnectable inlet)
+		public void Connect (IConnectable outlet, IConnectable inlet)
 		{
-			bool connected = true;
 			foreach(KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)){
-				if (!LibJackWrapper.Connect(portPair.Key, portPair.Value)) {
-					connected = false;
-				}
+				LibJackWrapper.Connect(portPair.Key, portPair.Value);
 			}
-			return connected;
 		}
 
-		public bool Disconnect (IConnectable outlet, IConnectable inlet)
+		public void Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			bool disconnected = true;
-			foreach(KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)){
-				if (!LibJackWrapper.Disconnect(portPair.Key, portPair.Value)) {
-					disconnected = false;
+			foreach(Port outPort in outlet.Ports) {
+				foreach(Port inPort in inlet.Ports) {
+					LibJackWrapper.Disconnect(outPort, inPort);
 				}
 			}
-			return disconnected;
 		}
 
 		public IEnumerable<IConnection> Connections {
