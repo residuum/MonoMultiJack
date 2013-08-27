@@ -105,7 +105,7 @@ namespace MonoMultiJack.Configuration
 				Directory.CreateDirectory (_applicationFolder);
 			}
 			if (!File.Exists (JackdConfigFile)) {
-				using (var fs = File.Create(JackdConfigFile)) {
+				using (FileStream fs = File.Create(JackdConfigFile)) {
 					fs.Close ();
 				}
 			}
@@ -161,7 +161,7 @@ namespace MonoMultiJack.Configuration
 				Directory.CreateDirectory (_applicationFolder);
 			}
 			if (!File.Exists (ApplicationsConfigFile)) {
-				using (var fs = File.Create(ApplicationsConfigFile)) {
+				using (FileStream fs = File.Create(ApplicationsConfigFile)) {
 					fs.Close ();
 				}
 			}
@@ -230,7 +230,7 @@ namespace MonoMultiJack.Configuration
 				Directory.CreateDirectory (_applicationFolder);
 			}
 			if (!File.Exists (WindowSizeFile)) {
-				using (var fs = File.Create(WindowSizeFile)) {
+				using (FileStream fs = File.Create(WindowSizeFile)) {
 					fs.Close ();
 				}
 			}

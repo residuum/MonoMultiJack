@@ -31,60 +31,20 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 
 		public string ClientName { get; private set; }
 		
-		public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, FlowDirection flowDirection, uint portId)
+		public AlsaPort (SndSeqAddr alsaAdress, string portName, string clientName, FlowDirection flowDirection)
 		{				
 			AlsaAddress = alsaAdress;
 			FlowDirection = flowDirection;
 			ConnectionType = ConnectionType.AlsaMidi;
 			Name = portName;
 			ClientName = clientName;
-			Id = portId;
+			Id = (uint)(alsaAdress.Port << 8) + alsaAdress.Client;
 		}
 				
 		public override bool Equals (object obj)
 		{
 			AlsaPort otherPort = obj as AlsaPort;
 			return Equals (otherPort);
-		}
-
-		public bool Equals (AlsaPort other)
-		{
-			if (other == null)
-				return false;
-			if (GetType () != other.GetType ())
-				return false;
-			
-			return Id == other.Id 
-				&& FlowDirection == other.FlowDirection 
-				&& ConnectionType == other.ConnectionType
-				&& AlsaAddress.Client == other.AlsaAddress.Client
-				&& AlsaAddress.Port == other.AlsaAddress.Port;
-		}
-
-		public override int GetHashCode ()
-		{
-			return Id.GetHashCode ()
-				^ ((int)FlowDirection).GetHashCode () 
-				^ ((int)ConnectionType).GetHashCode ()
-				^ AlsaAddress.Client.GetHashCode ()
-				^ AlsaAddress.Port.GetHashCode ();
-		}
-
-		public static bool operator == (AlsaPort a, AlsaPort b)
-		{
-			if (object.ReferenceEquals (a, b)) {
-				return true;
-			}
-
-			if (((object)a == null) || ((object)b == null)) {
-				return false;
-			}
-			return (a.Equals (b));
-		}
-
-		public static bool operator != (AlsaPort a, AlsaPort b)
-		{
-			return !(a == b);
 		}
 	}	
 }

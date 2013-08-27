@@ -171,13 +171,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			);
 
 			if (newPorts.Any () || newConnections.Any ()) {
-				var newEventArgs = new ConnectionEventArgs ();
+				ConnectionEventArgs newEventArgs = new ConnectionEventArgs ();
 				newEventArgs.ChangeType = ChangeType.New;
 				newEventArgs.Connectables = ClientsFromPorts (newPorts);
 				newEventArgs.Connections = newConnections;
 			}
 			if (obsoletePorts.Any ()) {
-				var oldEventArgs = new ConnectionEventArgs ();
+				ConnectionEventArgs oldEventArgs = new ConnectionEventArgs ();
 				oldEventArgs.ChangeType = ChangeType.Deleted;
 				oldEventArgs.Connectables = obsoletePorts;
 				oldEventArgs.Connections = obsoleteConnections;

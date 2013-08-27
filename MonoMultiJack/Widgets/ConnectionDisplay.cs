@@ -57,15 +57,15 @@ namespace MonoMultiJack.Widgets
 		public ConnectionDisplay (string connectionManagerName)
 		{
 			this.Build ();
-			var inClientColumn = new TreeViewColumn ();
-			var inClientCell = new CellRendererText ();
+			TreeViewColumn inClientColumn = new TreeViewColumn ();
+			CellRendererText inClientCell = new CellRendererText ();
 			inClientColumn.PackStart (inClientCell, true);
 			inClientColumn.SetCellDataFunc (inClientCell, new TreeCellDataFunc (RenderClientName));
 			_inputTreeview.AppendColumn (inClientColumn);
 			_inputTreeview.Model = _inputStore;
 			
-			var outClientColumn = new TreeViewColumn ();
-			var outClientCell = new CellRendererText ();
+			TreeViewColumn outClientColumn = new TreeViewColumn ();
+			CellRendererText outClientCell = new CellRendererText ();
 			outClientColumn.PackStart (outClientCell, true);
 			outClientColumn.SetCellDataFunc (outClientCell, new TreeCellDataFunc (RenderClientName));
 			_outputTreeview.AppendColumn (outClientColumn);
@@ -118,6 +118,7 @@ namespace MonoMultiJack.Widgets
 
 		bool TryGetPortIter (TreeStore store, TreeIter clientIter, Port port, out TreeIter portIter)
 		{
+			portIter = TreeIter.Zero;
 			if (store.IterHasChild (clientIter)) {
 				if (store.IterChildren (out portIter, clientIter)) {
 					while ((Port)store.GetValue(portIter, 0) != port) { 
@@ -269,7 +270,7 @@ namespace MonoMultiJack.Widgets
 		/// </summary>
 		void UpdateConnectionLines ()
 		{
-			var now = DateTime.Now;
+			DateTime now = DateTime.Now;
 			if (now - _lastLineUpdate < TimeSpan.FromSeconds (0.01)) {
 				return;
 			}
@@ -280,7 +281,7 @@ namespace MonoMultiJack.Widgets
 				}
 				_connectionArea.GdkWindow.Clear ();
 				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
-					var connections = _connections;
+					List<IConnection> connections = _connections;
 					foreach (IConnection conn in connections) {
 						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
@@ -331,6 +332,11 @@ namespace MonoMultiJack.Widgets
 		{
 			_inputStore.Clear ();
 			_outputStore.Clear ();
+			_connections.Clear ();
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
+			}
+			);
 		}
 
 		public void AddConnection (IConnection connection)

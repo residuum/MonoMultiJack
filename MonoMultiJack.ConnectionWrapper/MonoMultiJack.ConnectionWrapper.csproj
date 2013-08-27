@@ -47,6 +47,7 @@
     <Compile Include="IConnectable.cs" />
     <Compile Include="FlowDirection.cs" />
     <Compile Include="EnumerableHelper.cs" />
+    <Compile Include="Connection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

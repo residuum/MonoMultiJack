@@ -47,7 +47,7 @@ namespace MonoMultiJack.Configuration
 		/// <value>
 		/// The arguments.
 		/// </value>
-		public string Arguments {get; private set;}
+		public string Arguments { get; private set; }
 
 		/// <summary>
 		/// constructor
@@ -58,7 +58,7 @@ namespace MonoMultiJack.Configuration
 		/// <param name="newCommand">
 		/// A <see cref="System.String"/> indicating command to lauch the application
 		/// </param>
-		public AppConfiguration(string newName, string newCommand, string newArguments) : this()
+		public AppConfiguration (string newName, string newCommand, string newArguments) : this()
 		{
 			Name = newName;
 			Command = newCommand;

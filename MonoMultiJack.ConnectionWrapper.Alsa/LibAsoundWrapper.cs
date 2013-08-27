@@ -89,7 +89,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		internal static IEnumerable<AlsaPort> GetPorts ()
 		{
 			if (_alsaClient != IntPtr.Zero || Activate ()) {
-				var ports = new List<AlsaPort> ();
+				List<AlsaPort> ports = new List<AlsaPort> ();
 				try {
 					using (PointerWrapper clientInfo = new PointerWrapper(GetClientInfoSize ()))
 					using (PointerWrapper portInfo = new PointerWrapper(GetPortInfoSize ())) {
@@ -139,14 +139,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				bool isInput = (portCaps & SND_SEQ_PORT_CAP_WRITE) == SND_SEQ_PORT_CAP_WRITE;
 				bool isOutput = (portCaps & SND_SEQ_PORT_CAP_READ) == SND_SEQ_PORT_CAP_READ;
 
-				var ports = new List<AlsaPort> ();
+				List<AlsaPort> ports = new List<AlsaPort> ();
 				if (isOutput) {
 					ports.Add (new AlsaPort (
 						portAddress,
 						portName,
 						clientName,
-						FlowDirection.Out, 
-						0)
+						FlowDirection.Out)
 					);
 				}
 				if (isInput) {
@@ -154,8 +153,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 						portAddress,
 						portName,
 						clientName,
-						FlowDirection.In,
-						0)
+						FlowDirection.In)
 					);
 				}
 				return ports;
@@ -178,9 +176,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		internal static IEnumerable<AlsaMidiConnection> GetConnections (IEnumerable<AlsaPort> ports)
 		{
 			if ((_alsaClient != IntPtr.Zero || Activate ()) && ports.Any ()) {
-				var connections = new List<AlsaMidiConnection> ();
-				var inPorts = ports.Where (p => p.FlowDirection == FlowDirection.In);
-				var outPorts = ports.Where (p => p.FlowDirection == FlowDirection.Out);
+				List<AlsaMidiConnection> connections = new List<AlsaMidiConnection> ();
+				IEnumerable<AlsaPort> inPorts = ports.Where (p => p.FlowDirection == FlowDirection.In);
+				IEnumerable<AlsaPort> outPorts = ports.Where (p => p.FlowDirection == FlowDirection.Out);
 				foreach (AlsaPort port in outPorts) {
 					connections.AddRange (GetConnectionsForPort (port, inPorts));
 				}

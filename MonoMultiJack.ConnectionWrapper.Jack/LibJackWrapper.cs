@@ -51,15 +51,15 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.Message = "New port registered.";
 				connectionType = newPort.ConnectionType;
 				eventArgs.ChangeType = ChangeType.New;
-				var clients = new List<IConnectable> ();
+				List<IConnectable> clients = new List<IConnectable> ();
 				Client newClient = new Client (newPort.ClientName, newPort.FlowDirection, newPort.ConnectionType);
 				newClient.AddPort (newPort);
 				clients.Add (newClient);
 				eventArgs.Connectables = clients;
 			} else {
-				var oldPort = _portMapper.FirstOrDefault (map => map.Id == port);
+				JackPort oldPort = _portMapper.FirstOrDefault (map => map.Id == port);
 				if (oldPort != null) {
-					var ports = new List<Port> ();
+					List<Port> ports = new List<Port> ();
 					ports.Add (oldPort);
 					eventArgs.Connectables = ports;
 					eventArgs.ChangeType = ChangeType.Deleted;						
@@ -71,50 +71,50 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			eventArgs.ConnectionType = connectionType;
 			PortOrConnectionHasChanged (null, eventArgs);			
 		}
-		
+
+		static IConnection MapConnection (JackPort outPort, JackPort inPort)
+		{
+			IConnection newConn = null;
+			switch (outPort.ConnectionType) {
+			case ConnectionType.JackAudio:
+				newConn = new JackAudioConnection ();
+				break;
+			case ConnectionType.JackMidi:
+				newConn = new JackMidiConnection ();
+				break;
+			}
+			newConn.OutPort = outPort;
+			newConn.InPort = inPort;
+			return newConn;
+		}		
+
 		static void OnPortConnect (uint a, uint b, int connect, IntPtr args)
 		{
-			try {
-				var eventArgs = new ConnectionEventArgs ();
-				var outPort = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, a));
-				var inPort = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, b));
-				if (connect != 0) {
-					var connections = new List<IConnection> ();
-					IConnection newConn = null;
-					switch (outPort.ConnectionType) {
-					case ConnectionType.JackAudio:
-						newConn = new JackAudioConnection ();
-						break;
-					case ConnectionType.JackMidi:
-						newConn = new JackMidiConnection ();
-						break;
-					}
-					newConn.OutPort = outPort;
-					newConn.InPort = inPort;
-					_connections.Add (newConn);
-					connections.Add (newConn);
-					eventArgs.Connections = connections;					
-					eventArgs.ConnectionType = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, a)).ConnectionType;
-					eventArgs.ChangeType = ChangeType.New;
-					eventArgs.Message = "New Connection established";
-				} else {
-					var oldConn = _connections.Where (conn => conn.InPort == inPort
-						&& conn.OutPort == outPort
-					);
-					eventArgs.Connections = oldConn.ToList ();
-					eventArgs.ChangeType = ChangeType.Deleted;					
-					eventArgs.ConnectionType = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, a)).ConnectionType;
-					_connections = _connections.Where (conn => conn.InPort != inPort || conn.OutPort != outPort)
+			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
+			JackPort outPort = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, a));
+			JackPort inPort = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, b));
+			if (connect != 0) {
+				List<IConnection> connections = new List<IConnection> ();
+				IConnection newConn = MapConnection (outPort, inPort);
+				_connections.Add (newConn);
+				connections.Add (newConn);
+				eventArgs.Connections = connections;					
+				eventArgs.ConnectionType = newConn.ConnectionType;
+				eventArgs.ChangeType = ChangeType.New;
+				eventArgs.Message = "New Connection established";
+			} else {
+				IEnumerable<IConnection> oldConn = _connections.Where (conn => conn.InPort == inPort
+					&& conn.OutPort == outPort
+				);
+				eventArgs.Connections = oldConn.ToList ();
+				eventArgs.ChangeType = ChangeType.Deleted;					
+				eventArgs.ConnectionType = inPort.ConnectionType;
+				_connections = _connections.Where (conn => conn.InPort != inPort || conn.OutPort != outPort)
 			.ToList ();
-					eventArgs.Message = "Connection deleted";
-				}
-				eventArgs.MessageType = MessageType.Info;
-				PortOrConnectionHasChanged (null, eventArgs);
-			} catch (Exception e) {
-#if DEBUG
-				Console.WriteLine (e.Message);
-#endif
+				eventArgs.Message = "Connection deleted";
 			}
+			eventArgs.MessageType = MessageType.Info;
+			PortOrConnectionHasChanged (null, eventArgs);
 		}
 		
 		static void OnJackShutdown (IntPtr args)
@@ -181,40 +181,43 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			return MapPort (portPointer, portId);
 		}
 
+		static FlowDirection GetFlowDirection (IntPtr portPointer)
+		{
+			FlowDirection portType = FlowDirection.Undefined;
+			JackPortFlags portFlags = (JackPortFlags)jack_port_flags (portPointer);
+			if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput) {
+				portType = FlowDirection.In;
+			} else if ((portFlags & JackPortFlags.JackPortIsOutput) == JackPortFlags.JackPortIsOutput) {
+				portType = FlowDirection.Out;
+			}
+			return portType;
+		}
+
+		static ConnectionType GetConnectionType (IntPtr portPointer)
+		{
+			ConnectionType connectionType = ConnectionType.Undefined;
+			string connectionTypeName = jack_port_type (portPointer).PtrToString ();
+			if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE) {
+				connectionType = ConnectionType.JackAudio;
+			} else if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
+				connectionType = ConnectionType.JackMidi;
+			}
+			return connectionType;
+		}
+
 		static JackPort MapPort (IntPtr portPointer, uint portId)
 		{
 			if (portPointer == IntPtr.Zero) {
 				return null;
 			}
-			try {
-				string portName = jack_port_name (portPointer).PtrToString ();
-				if (!string.IsNullOrEmpty (portName)) {
-					FlowDirection portType = FlowDirection.Undefined;
-					JackPortFlags portFlags = (JackPortFlags)jack_port_flags (portPointer);
-					if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput) {
-						portType = FlowDirection.In;
-					} else
-						if ((portFlags & JackPortFlags.JackPortIsOutput) == JackPortFlags.JackPortIsOutput) {
-						portType = FlowDirection.Out;
-					}
-					ConnectionType connectionType = ConnectionType.Undefined;
-					string connectionTypeName = jack_port_type (portPointer).PtrToString ();
-					if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE) {
-						connectionType = ConnectionType.JackAudio;
-					} else
-						if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
-						connectionType = ConnectionType.JackMidi;
-					}
-					JackPort newPort = new JackPort (portName, portPointer, portType, connectionType, portId);
-					return newPort;
-				}
-				return null;
-			} catch (Exception e) {
-				#if DEBUG
-				Console.WriteLine(e.Message);
-				#endif
-				return null;
+			string portName = jack_port_name (portPointer).PtrToString ();
+			if (!string.IsNullOrEmpty (portName)) {
+				FlowDirection portType = GetFlowDirection (portPointer);
+				ConnectionType connectionType = GetConnectionType (portPointer);
+				JackPort newPort = new JackPort (portName, portPointer, portType, connectionType, portId);
+				return newPort;
 			}
+			return null;
 		}
 		
 		internal static bool Disconnect (Port outputPort, Port inputPort)
@@ -246,27 +249,25 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		internal static IEnumerable<JackPort> GetPorts (ConnectionType connectionType)
 		{		
-			var mappedPorts = _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
-			if (mappedPorts.Any ()) {
-				return mappedPorts;
+			if (!_portMapper.Any ()) {
+				_portMapper.AddRange (GetInitialPorts ());
 			}
-			var ports = new List<JackPort> ();
-			for (uint i = 0; true; i++) {
-				JackPort newPort = GetJackPortData (i);
-				if (newPort == null) {
-					break;
-				}
-				_portMapper.Add (newPort);
-				if (newPort.ConnectionType == connectionType) {
-					ports.Add (newPort);
-				}
-			}
-			return ports;
+			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
 		}
-		
+
+		static List<JackPort> GetInitialPorts ()
+		{
+			List<JackPort> allPorts = new List<JackPort> ();
+			JackPort newPort;
+			for (uint i = 0; (newPort = GetJackPortData(i)) != null; i++) {
+				allPorts.Add (newPort);
+			}
+			return allPorts;
+		}
+
 		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
 		{
-			return _connections;
+			return _connections.Where (c => c.ConnectionType == connectionType);
 		}
 	}
 }

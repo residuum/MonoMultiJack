@@ -25,13 +25,13 @@
 // THE SOFTWARE.
 namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
-	public class JackMidiConnection : IConnection
+	public class JackMidiConnection : Connection
 	{
 		Port _outPort;
 		Port _inPort;
 		
 	#region IConnection implementation
-		public Port OutPort {
+		public override Port OutPort {
 			get {
 				if (_inPort != null) {
 					return _outPort;
@@ -45,7 +45,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 			}
 		}
 
-		public Port InPort {
+		public override Port InPort {
 			get {
 				if (_outPort != null) {
 					return _inPort;
@@ -59,7 +59,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 			}
 		}
 		
-		public ConnectionType ConnectionType {
+		public override ConnectionType ConnectionType {
 			get { return ConnectionType.JackMidi; }
 		}
 	#endregion
