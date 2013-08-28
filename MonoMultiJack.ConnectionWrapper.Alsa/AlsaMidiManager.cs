@@ -167,72 +167,41 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		bool CheckForChanges ()
 		{
 			List<AlsaPort> newPorts;
-			List<Port> obsoletePorts;
-			UpdatePortInformation (
-				LibAsoundWrapper.GetPorts (),
-				ref _portMapper,
-				out newPorts,
+			List<AlsaPort> obsoletePorts;
+			_portMapper = UpdateList<AlsaPort> (
+				LibAsoundWrapper.GetPorts (), 
+				_portMapper, 
+				out newPorts, 
 				out obsoletePorts
-			);
-			List<IConnection> newConnections;
-			List<IConnection> obsoleteConnections;
-			
-			UpdateConnectionInformation (
-				LibAsoundWrapper.GetConnections (_portMapper).ToList(),
-				ref _connections,
-				out newConnections,
+			).ToList ();
+
+			List<AlsaMidiConnection> newConnections;
+			List<AlsaMidiConnection> obsoleteConnections;
+			_connections = UpdateList<AlsaMidiConnection> (
+				LibAsoundWrapper.GetConnections (_portMapper).ToList (), 
+				_connections, 
+				out newConnections, 
 				out obsoleteConnections
-			);
+			).ToList ();
+			
 			SendMessage (obsoletePorts, obsoleteConnections, ChangeType.Deleted);
 			IEnumerable<Client> newClients = ClientsFromPorts (newPorts);
 			SendMessage (newClients, newConnections, ChangeType.New);
 			return true;
 		}
 
-		void UpdatePortInformation (IEnumerable<AlsaPort> allPorts, ref List<AlsaPort> mappedPorts, out List<AlsaPort> newPorts, out List<Port> obsoletePorts)
+		IEnumerable<T> UpdateList<T> (IEnumerable<T> all, List<T> mapped, out List<T> added, out List<T> obsolete) where T : class
 		{
-			newPorts = new List<AlsaPort> ();
-			obsoletePorts = new List<Port> ();
-
-			foreach (AlsaPort port in allPorts) {
-				if (!mappedPorts.Contains (port)) {
-					newPorts.Add (port);
-					mappedPorts.Add (port);
-				}
+			added = new List<T> ();
+			obsolete = new List<T> ();
+			foreach (T current in all.Where(e => !mapped.Contains(e))) {
+				added.Add (current);
+				mapped.Add (current);
 			}
-	    
-			foreach (AlsaPort oldPort in mappedPorts) {
-				if (!allPorts.Contains (oldPort)) {
-					obsoletePorts.Add (oldPort);
-				}
+			foreach (T old in mapped.Where(e => !all.Contains(e))) {
+				obsolete.Add (old);
 			}
-			// Remove obsolete ports
-			foreach (AlsaPort obsoletePort in obsoletePorts) {
-				mappedPorts.Remove (obsoletePort);
-			}
-		}
-
-		void UpdateConnectionInformation (IEnumerable<AlsaMidiConnection> allConnections, ref List<AlsaMidiConnection> mappedConnections, out List<IConnection> newConnections, out List<IConnection> obsoleteConnections)
-		{
-			newConnections = new List<IConnection> ();
-			obsoleteConnections = new List<IConnection> ();
-
-			foreach (AlsaMidiConnection conn in allConnections) {
-				if (!mappedConnections.Contains (conn)) {
-					newConnections.Add (conn);
-					mappedConnections.Add (conn);
-				}
-			}
-	    
-			foreach (AlsaMidiConnection oldConn in mappedConnections) {
-				if (!allConnections.Contains (oldConn)) {
-					obsoleteConnections.Add (oldConn);
-				}
-			}
-			// Remove obsolete connections
-			foreach (AlsaMidiConnection obsoleteConn in obsoleteConnections) {
-				mappedConnections.Remove (obsoleteConn);
-			}
+			return all;
 		}
 	}
 }

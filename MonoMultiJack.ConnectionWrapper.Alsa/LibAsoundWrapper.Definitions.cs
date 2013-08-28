@@ -27,7 +27,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 {
 	internal static partial class LibAsoundWrapper
 	{
-		const string ASOUND_LIB_NAME = "libasound.so.2";
+		const string ASOUND_LIB_NAME = "libasound";
 		const int SND_SEQ_NONBLOCK = 1;
 		const int SND_SEQ_OPEN_DUPLEX = 3;
 		const int SND_SEQ_PORT_CAP_NO_EXPORT = (1 << 7);

@@ -124,4 +124,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
 </Project>
