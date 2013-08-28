@@ -6,16 +6,15 @@ EXTRA_DIST =
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = dmcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG;"
-ASSEMBLY = bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll
+ASSEMBLY = bin/Debug/MonoMultiJack.OS.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES =  \
 	../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
 BUILD_DIR = bin/Debug
 
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG_SOURCE=app.config
+MONOMULTIJACK_OS_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.OS.dll.mdb
+MONOMULTIJACK_OS_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.OS.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll.mdb
@@ -24,16 +23,15 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
-ASSEMBLY = bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+ASSEMBLY = bin/Release/MonoMultiJack.OS.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
 PROJECT_REFERENCES =  \
 	../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
 BUILD_DIR = bin/Release
 
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB=
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG_SOURCE=app.config
+MONOMULTIJACK_OS_DLL_MDB=
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=
 
@@ -43,13 +41,12 @@ AL=al
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB) \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG) \
+	$(MONOMULTIJACK_OS_DLL_MDB) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB)  
 
 LINUX_PKGCONFIG = \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_PC)  
+	$(MONOMULTIJACK_OS_PC)  
 
 
 RESGEN=resgen2
@@ -58,30 +55,19 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	AlsaMidiManager.cs \
-	LibAsoundWrapper.cs \
-	LibAsoundWrapper.Definitions.cs \
-	LibAsoundWrapper.Pinvoke.cs \
-	Types/SndSeqAddr.cs \
-	Types/AlsaPort.cs \
-	Types/AlsaMidiConnection.cs \
-	Types/PointerConversions.cs \
-	Types/PointerWrapper.cs 
+	IProgram.cs \
+	ProgramEventHandler.cs \
+	IConnectionManagerFactory.cs 
 
 DATA_FILES = 
 
 RESOURCES = 
 
 EXTRAS = \
-	Types \
-	app.config \
-	monomultijack.connectionwrapper.alsa.pc.in 
+	monomultijack.os.pc.in 
 
 REFERENCES =  \
-	System \
-	Mono.Posix \
-	$(GLIB_SHARP_20_LIBS) \
-	System.Core
+	System
 
 DLL_REFERENCES = 
 
@@ -89,14 +75,12 @@ CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 include $(top_srcdir)/Makefile.include
 
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll.config
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll
-MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_PC = $(BUILD_DIR)/monomultijack.connectionwrapper.alsa.pc
+MONOMULTIJACK_OS_PC = $(BUILD_DIR)/monomultijack.os.pc
 
-$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB))
-$(eval $(call emit-deploy-wrapper,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_PC,monomultijack.connectionwrapper.alsa.pc))
+$(eval $(call emit-deploy-wrapper,MONOMULTIJACK_OS_PC,monomultijack.os.pc))
 
 
 $(eval $(call emit_resgen_targets))

@@ -6,48 +6,66 @@ EXTRA_DIST =
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = dmcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG"
-ASSEMBLY = bin/Debug/MonoMultiJack.BusinessLogic.dll
+ASSEMBLY = bin/Debug/MonoMultiJack.OS.Linux.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES =  \
 	../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll \
 	../MonoMultiJack.ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll \
-	../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll
+	../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll \
+	../MonoMultiJack.Configuration/bin/Debug/MonoMultiJack.Configuration.dll \
+	../MonoMultiJack.OS/bin/Debug/MonoMultiJack.OS.dll
 BUILD_DIR = bin/Debug
 
-MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.BusinessLogic.dll.mdb
-MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.BusinessLogic.dll.mdb
+MONOMULTIJACK_OS_LINUX_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.OS.Linux.dll.mdb
+MONOMULTIJACK_OS_LINUX_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.OS.Linux.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/app.config
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/bin/Debug/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/app.config
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
+MONOMULTIJACK_CONFIGURATION_DLL_SOURCE=../MonoMultiJack.Configuration/bin/Debug/MonoMultiJack.Configuration.dll
+MONOMULTIJACK_CONFIGURATION_DLL_MDB_SOURCE=../MonoMultiJack.Configuration/bin/Debug/MonoMultiJack.Configuration.dll.mdb
+MONOMULTIJACK_CONFIGURATION_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.Configuration.dll.mdb
+MONOMULTIJACK_OS_DLL_SOURCE=../MonoMultiJack.OS/bin/Debug/MonoMultiJack.OS.dll
+MONOMULTIJACK_OS_DLL_MDB_SOURCE=../MonoMultiJack.OS/bin/Debug/MonoMultiJack.OS.dll.mdb
+MONOMULTIJACK_OS_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.OS.dll.mdb
 
 endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = dmcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
-ASSEMBLY = bin/Release/MonoMultiJack.BusinessLogic.dll
+ASSEMBLY = bin/Release/MonoMultiJack.OS.Linux.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
 PROJECT_REFERENCES =  \
 	../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll \
 	../MonoMultiJack.ConnectionWrapper.Alsa/bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll \
-	../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll
+	../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll \
+	../MonoMultiJack.Configuration/bin/Release/MonoMultiJack.Configuration.dll \
+	../MonoMultiJack.OS/bin/Release/MonoMultiJack.OS.dll
 BUILD_DIR = bin/Release
 
-MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB=
+MONOMULTIJACK_OS_LINUX_DLL_MDB=
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/bin/Release/MonoMultiJack.ConnectionWrapper.Alsa.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG_SOURCE=../MonoMultiJack.ConnectionWrapper.Alsa/app.config
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB=
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/bin/Release/MonoMultiJack.ConnectionWrapper.Jack.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG_SOURCE=../MonoMultiJack.ConnectionWrapper.Jack/app.config
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=
+MONOMULTIJACK_CONFIGURATION_DLL_SOURCE=../MonoMultiJack.Configuration/bin/Release/MonoMultiJack.Configuration.dll
+MONOMULTIJACK_CONFIGURATION_DLL_MDB=
+MONOMULTIJACK_OS_DLL_SOURCE=../MonoMultiJack.OS/bin/Release/MonoMultiJack.OS.dll
+MONOMULTIJACK_OS_DLL_MDB=
 
 endif
 
@@ -55,16 +73,22 @@ AL=al
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(MONOMULTIJACK_BUSINESSLOGIC_DLL_MDB) \
+	$(MONOMULTIJACK_OS_LINUX_DLL_MDB) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL) \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB)  
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB) \
+	$(MONOMULTIJACK_CONFIGURATION_DLL) \
+	$(MONOMULTIJACK_CONFIGURATION_DLL_MDB) \
+	$(MONOMULTIJACK_OS_DLL) \
+	$(MONOMULTIJACK_OS_DLL_MDB)  
 
 LINUX_PKGCONFIG = \
-	$(MONOMULTIJACK_BUSINESSLOGIC_PC)  
+	$(MONOMULTIJACK_OS_LINUX_PC)  
 
 
 RESGEN=resgen2
@@ -73,23 +97,18 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	Common/ProgramManagement.cs \
-	Configuration/AppConfiguration.cs \
-	Configuration/JackdConfiguration.cs \
-	Configuration/PersistantConfiguration.cs \
-	Common/ConnectionManagerFactory.cs \
-	Configuration/WindowConfiguration.cs 
+	Program.cs \
+	ConnectionManagerFactory.cs 
 
 DATA_FILES = 
 
 RESOURCES = 
 
 EXTRAS = \
-	monomultijack.businesslogic.pc.in 
+	monomultijack.os.linux.pc.in 
 
 REFERENCES =  \
 	System \
-	System.Xml \
 	$(GLIB_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
@@ -100,16 +119,26 @@ include $(top_srcdir)/Makefile.include
 
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll
+MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Alsa.dll.config
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll
-MONOMULTIJACK_BUSINESSLOGIC_PC = $(BUILD_DIR)/monomultijack.businesslogic.pc
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.config
+MONOMULTIJACK_CONFIGURATION_DLL = $(BUILD_DIR)/MonoMultiJack.Configuration.dll
+MONOMULTIJACK_OS_DLL = $(BUILD_DIR)/MonoMultiJack.OS.dll
+MONOMULTIJACK_OS_LINUX_PC = $(BUILD_DIR)/monomultijack.os.linux.pc
 
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_CONFIG))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_ALSA_DLL_MDB))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB))
-$(eval $(call emit-deploy-wrapper,MONOMULTIJACK_BUSINESSLOGIC_PC,monomultijack.businesslogic.pc))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONFIGURATION_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONFIGURATION_DLL_MDB))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_OS_DLL))
+$(eval $(call emit-deploy-target,MONOMULTIJACK_OS_DLL_MDB))
+$(eval $(call emit-deploy-wrapper,MONOMULTIJACK_OS_LINUX_PC,monomultijack.os.linux.pc))
 
 
 $(eval $(call emit_resgen_targets))

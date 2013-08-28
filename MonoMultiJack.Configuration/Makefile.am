@@ -5,28 +5,28 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG"
-ASSEMBLY = bin/Debug/MonoMultiJack.ConnectionWrapper.dll
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG;"
+ASSEMBLY = bin/Debug/MonoMultiJack.Configuration.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
 BUILD_DIR = bin/Debug
 
-MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
-MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll.mdb
+MONOMULTIJACK_CONFIGURATION_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.Configuration.dll.mdb
+MONOMULTIJACK_CONFIGURATION_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.Configuration.dll.mdb
 
 endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
-ASSEMBLY = bin/Release/MonoMultiJack.ConnectionWrapper.dll
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+ASSEMBLY = bin/Release/MonoMultiJack.Configuration.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
 BUILD_DIR = bin/Release
 
-MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=
+MONOMULTIJACK_CONFIGURATION_DLL_MDB=
 
 endif
 
@@ -34,10 +34,10 @@ AL=al
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB)  
+	$(MONOMULTIJACK_CONFIGURATION_DLL_MDB)  
 
 LINUX_PKGCONFIG = \
-	$(MONOMULTIJACK_CONNECTIONWRAPPER_PC)  
+	$(MONOMULTIJACK_CONFIGURATION_PC)  
 
 
 RESGEN=resgen2
@@ -46,30 +46,21 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	ChangeType.cs \
-	ConnectionEventArgs.cs \
-	ConnectionType.cs \
-	IConnection.cs \
-	IConnectionManager.cs \
-	MessageType.cs \
-	Port.cs \
-	MarshallingHelper.cs \
-	Client.cs \
-	IConnectable.cs \
-	FlowDirection.cs \
-	EnumerableHelper.cs \
-	Connection.cs 
+	AppConfiguration.cs \
+	JackdConfiguration.cs \
+	PersistantConfiguration.cs \
+	WindowConfiguration.cs 
 
 DATA_FILES = 
 
 RESOURCES = 
 
 EXTRAS = \
-	monomultijack.connectionwrapper.pc.in 
+	monomultijack.configuration.pc.in 
 
 REFERENCES =  \
 	System \
-	System.Core
+	System.Xml
 
 DLL_REFERENCES = 
 
@@ -77,9 +68,9 @@ CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 include $(top_srcdir)/Makefile.include
 
-MONOMULTIJACK_CONNECTIONWRAPPER_PC = $(BUILD_DIR)/monomultijack.connectionwrapper.pc
+MONOMULTIJACK_CONFIGURATION_PC = $(BUILD_DIR)/monomultijack.configuration.pc
 
-$(eval $(call emit-deploy-wrapper,MONOMULTIJACK_CONNECTIONWRAPPER_PC,monomultijack.connectionwrapper.pc))
+$(eval $(call emit-deploy-wrapper,MONOMULTIJACK_CONFIGURATION_PC,monomultijack.configuration.pc))
 
 
 $(eval $(call emit_resgen_targets))

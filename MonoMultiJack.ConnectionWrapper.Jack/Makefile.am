@@ -15,6 +15,7 @@ BUILD_DIR = bin/Debug
 
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB_SOURCE=bin/Debug/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.mdb
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG_SOURCE=app.config
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Debug/MonoMultiJack.ConnectionWrapper.dll.mdb
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=$(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll.mdb
@@ -32,6 +33,7 @@ PROJECT_REFERENCES =  \
 BUILD_DIR = bin/Release
 
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB=
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG_SOURCE=app.config
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_SOURCE=../MonoMultiJack.ConnectionWrapper/bin/Release/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB=
 
@@ -42,6 +44,7 @@ SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_MDB) \
+	$(MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL) \
 	$(MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB)  
 
@@ -72,7 +75,7 @@ DATA_FILES =
 RESOURCES = 
 
 EXTRAS = \
-	Types \
+	app.config \
 	monomultijack.connectionwrapper.jack.pc.in 
 
 REFERENCES =  \
@@ -87,9 +90,11 @@ CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 include $(top_srcdir)/Makefile.include
 
+MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.Jack.dll.config
 MONOMULTIJACK_CONNECTIONWRAPPER_DLL = $(BUILD_DIR)/MonoMultiJack.ConnectionWrapper.dll
 MONOMULTIJACK_CONNECTIONWRAPPER_JACK_PC = $(BUILD_DIR)/monomultijack.connectionwrapper.jack.pc
 
+$(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_DLL_CONFIG))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL))
 $(eval $(call emit-deploy-target,MONOMULTIJACK_CONNECTIONWRAPPER_DLL_MDB))
 $(eval $(call emit-deploy-wrapper,MONOMULTIJACK_CONNECTIONWRAPPER_JACK_PC,monomultijack.connectionwrapper.jack.pc))

@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([MonoMultiJack], [0.2])
+AC_INIT([MonoMultiJack], [0.3.0])
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
@@ -48,6 +48,7 @@ fi
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
+PKG_CHECK_MODULES([GTK_DOTNET_20], [gtk-dotnet-2.0])
 PKG_CHECK_MODULES([GLADE_SHARP_20], [glade-sharp-2.0])
 
 dnl package checks, per config
@@ -60,8 +61,14 @@ MonoMultiJack.ConnectionWrapper.Jack/monomultijack.connectionwrapper.jack.pc
 MonoMultiJack.ConnectionWrapper.Jack/Makefile
 MonoMultiJack.ConnectionWrapper.Alsa/monomultijack.connectionwrapper.alsa.pc
 MonoMultiJack.ConnectionWrapper.Alsa/Makefile
-MonoMultiJack.BusinessLogic/monomultijack.businesslogic.pc
-MonoMultiJack.BusinessLogic/Makefile
+MonoMultiJack.Configuration/monomultijack.configuration.pc
+MonoMultiJack.Configuration/Makefile
+MonoMultiJack.OS/monomultijack.os.pc
+MonoMultiJack.OS/Makefile
+MonoMultiJack.OS.Linux/monomultijack.os.linux.pc
+MonoMultiJack.OS.Linux/Makefile
+MonoMultiJack.OS.Windows/monomultijack.os.windows.pc
+MonoMultiJack.OS.Windows/Makefile
 MonoMultiJack/monomultijack
 MonoMultiJack/Makefile
 Makefile
