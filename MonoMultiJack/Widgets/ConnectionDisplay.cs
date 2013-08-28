@@ -37,10 +37,10 @@ namespace MonoMultiJack.Widgets
 	/// </summary>
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class ConnectionDisplay : Bin, IConnectionWidget
-	{
-		TreeStore _outputStore = new TreeStore (typeof(IConnectable));
-		TreeStore _inputStore = new TreeStore (typeof(IConnectable));
-		List<IConnection> _connections = new List<IConnection> ();
+	{		
+		readonly TreeStore _outputStore = new TreeStore (typeof(IConnectable));
+		readonly TreeStore _inputStore = new TreeStore (typeof(IConnectable));
+		readonly List<IConnection> _connections = new List<IConnection> ();
 		DateTime _lastLineUpdate = DateTime.Now;
 
 		public override void Dispose ()
@@ -89,31 +89,28 @@ namespace MonoMultiJack.Widgets
 			} else {				
 				Port port = connectable as Port;
 				if (port != null) {
-					Console.WriteLine (port.Name);
-					//throw new NotSupportedException("Only clients can be appended to tree store.");
+					throw new NotSupportedException ("Only clients can be appended to tree store.");
 				}
 			}
 		}
 
 		bool TryGetClientIter (TreeStore store, Client client, bool createIfNotExists, out TreeIter clientIter)
 		{
-			clientIter = TreeIter.Zero;
 			if (store.GetIterFirst (out clientIter)) {
 				while (client != (Client) store.GetValue(clientIter, 0)) {
 					if (!store.IterNext (ref clientIter)) {
 						if (createIfNotExists) {
 							clientIter = store.AppendValues (client);
 							return true;
-						} else {
-							return false;
 						}
+						return false;
 					}
 				}
 			} else if (createIfNotExists) {
 				clientIter = store.AppendValues (client);
 				return true;
 			}
-			return true;
+			return false;
 		}
 
 		bool TryGetPortIter (TreeStore store, TreeIter clientIter, Port port, out TreeIter portIter)

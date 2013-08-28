@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonoMultiJack.ConnectionWrapper.Jack.Types;
+using System.Diagnostics;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
@@ -83,10 +84,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				newConn = new JackMidiConnection ();
 				break;
 			}
+			Debug.Assert (newConn != null, "new connection is null");
 			newConn.OutPort = outPort;
 			newConn.InPort = inPort;
 			return newConn;
-		}		
+		}
 
 		static void OnPortConnect (uint a, uint b, int connect, IntPtr args)
 		{
@@ -197,10 +199,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			ConnectionType connectionType = ConnectionType.Undefined;
 			string connectionTypeName = jack_port_type (portPointer).PtrToString ();
-			if (connectionTypeName == JACK_DEFAULT_AUDIO_TYPE) {
+			switch (connectionTypeName) {
+			case JACK_DEFAULT_AUDIO_TYPE:
 				connectionType = ConnectionType.JackAudio;
-			} else if (connectionTypeName == JACK_DEFAULT_MIDI_TYPE) {
+				break;
+			case JACK_DEFAULT_MIDI_TYPE:
 				connectionType = ConnectionType.JackMidi;
+				break;
 			}
 			return connectionType;
 		}
@@ -255,14 +260,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
 		}
 
-		static List<JackPort> GetInitialPorts ()
+		static IEnumerable<JackPort> GetInitialPorts ()
 		{
-			List<JackPort> allPorts = new List<JackPort> ();
 			JackPort newPort;
 			for (uint i = 0; (newPort = GetJackPortData(i)) != null; i++) {
-				allPorts.Add (newPort);
+				yield return newPort;
 			}
-			return allPorts;
 		}
 
 		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)

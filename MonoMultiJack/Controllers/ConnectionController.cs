@@ -78,14 +78,14 @@ namespace MonoMultiJack.Controllers
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)
 		{
 			if (args.ChangeType == ChangeType.New) {
-				if (args.Connections != null) {
-					foreach (IConnection connection in args.Connections) {
-						_connectionWidget.AddConnection (connection);
-					}
-				}
 				if (args.Connectables != null) {
 					foreach (IConnectable connectable in args.Connectables) {
 						_connectionWidget.AddConnectable (connectable);
+					}
+				}
+				if (args.Connections != null) {
+					foreach (IConnection connection in args.Connections) {
+						_connectionWidget.AddConnection (connection);
 					}
 				}
 			} else if (args.ChangeType == ChangeType.Deleted) {

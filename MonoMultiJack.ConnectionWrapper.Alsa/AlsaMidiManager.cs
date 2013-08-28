@@ -150,6 +150,20 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		}
 		#endregion
 
+		void SendMessage (IEnumerable<IConnectable> connectables, IEnumerable<IConnection> connections, ChangeType changeType)
+		{
+			if (!connectables.Any () && !connections.Any ()) {
+				return;
+			}
+			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs ();
+			oldEventArgs.ChangeType = changeType;
+			oldEventArgs.Connectables = connectables.ToList();
+			oldEventArgs.Connections = connections.ToList();
+			if (ConnectionHasChanged != null) {
+				ConnectionHasChanged (this, oldEventArgs);
+			}
+		}
+
 		bool CheckForChanges ()
 		{
 			List<AlsaPort> newPorts;
@@ -169,22 +183,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		out newConnections,
 		out obsoleteConnections
 			);
-
-			if (newPorts.Any () || newConnections.Any ()) {
-				ConnectionEventArgs newEventArgs = new ConnectionEventArgs ();
-				newEventArgs.ChangeType = ChangeType.New;
-				newEventArgs.Connectables = ClientsFromPorts (newPorts);
-				newEventArgs.Connections = newConnections;
-			}
-			if (obsoletePorts.Any ()) {
-				ConnectionEventArgs oldEventArgs = new ConnectionEventArgs ();
-				oldEventArgs.ChangeType = ChangeType.Deleted;
-				oldEventArgs.Connectables = obsoletePorts;
-				oldEventArgs.Connections = obsoleteConnections;
-				if (ConnectionHasChanged != null) {
-					ConnectionHasChanged (this, oldEventArgs);
-				}
-			}
+			IEnumerable<Client> newClients = ClientsFromPorts(newPorts);
+			SendMessage (newClients, newConnections, ChangeType.New);
+			SendMessage (obsoletePorts, obsoleteConnections, ChangeType.Deleted);
 			return true;
 		}
 
@@ -194,17 +195,14 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			obsoletePorts = new List<Port> ();
 
 			foreach (AlsaPort port in allPorts) {
-				AlsaPort foundPort = mappedPorts.FirstOrDefault (p => p == port);
-
-				if (foundPort == null) {
+				if (!mappedPorts.Contains (port)) {
 					newPorts.Add (port);
 					mappedPorts.Add (port);
 				}
 			}
 	    
 			foreach (AlsaPort oldPort in mappedPorts) {
-				AlsaPort mappedPort = allPorts.FirstOrDefault (p => p == oldPort);
-				if (mappedPort == null) {
+				if (!allPorts.Contains (oldPort)) {
 					obsoletePorts.Add (oldPort);
 				}
 			}
@@ -220,23 +218,21 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			obsoleteConnections = new List<IConnection> ();
 
 			foreach (AlsaMidiConnection conn in allConnections) {
-				AlsaMidiConnection foundConn = mappedConnections.FirstOrDefault (p => p == conn);
 
-				if (foundConn == null) {
+				if (!mappedConnections.Contains (conn)) {
 					newConnections.Add (conn);
 					mappedConnections.Add (conn);
 				}
 			}
 	    
 			foreach (AlsaMidiConnection oldConn in mappedConnections) {
-				AlsaMidiConnection mappedPort = allConnections.FirstOrDefault (p => p == oldConn);
-				if (mappedPort == null) {
+				if (allConnections.Contains (oldConn)) {
 					obsoleteConnections.Add (oldConn);
 				}
 			}
 			// Remove obsolete connections
-			foreach (AlsaMidiConnection obsoletePort in obsoleteConnections) {
-				mappedConnections.Remove (obsoletePort);
+			foreach (AlsaMidiConnection obsoleteConn in obsoleteConnections) {
+				mappedConnections.Remove (obsoleteConn);
 			}
 		}
 	}

@@ -40,11 +40,5 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 			ClientName = clientName;
 			Id = (uint)(alsaAdress.Port << 8) + alsaAdress.Client;
 		}
-				
-		public override bool Equals (object obj)
-		{
-			AlsaPort otherPort = obj as AlsaPort;
-			return Equals (otherPort);
-		}
 	}	
 }

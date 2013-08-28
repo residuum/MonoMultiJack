@@ -96,7 +96,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		public void Connect (IConnectable outlet, IConnectable inlet)
 		{
 			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
-				LibJackWrapper.InvokeConnect (portPair.Key, portPair.Value);
+				LibJackWrapper.Connect (portPair.Key, portPair.Value);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			foreach (Port outPort in outlet.Ports) {
 				foreach (Port inPort in inlet.Ports) {
-					LibJackWrapper.InvokeDisconnect (outPort, inPort);
+					LibJackWrapper.Disconnect (outPort, inPort);
 				}
 			}
 		}
