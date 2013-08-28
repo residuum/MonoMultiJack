@@ -69,13 +69,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				SND_SEQ_OPEN_DUPLEX,
 				SND_SEQ_NONBLOCK
 			);
-#if DEBUG
-	    Console.WriteLine ("Alsa Activation: " + activation);
-#endif
 			if (activation == 0) {
 				snd_seq_set_client_name (_alsaClient, "MonoMultiJack");
 				return true;
 			}
+			Console.WriteLine ("Alsa Activation error: " + snd_strerror (activation).PtrToString ());
 			return false;
 		}
 		
@@ -241,11 +239,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 					snd_seq_port_subscribe_set_exclusive (subscriberInfo.Pointer, 0);
 					snd_seq_port_subscribe_set_time_update (subscriberInfo.Pointer, 0);
 					snd_seq_port_subscribe_set_time_real (subscriberInfo.Pointer, 0);
-					if (disconnect) {
-						return  snd_seq_unsubscribe_port (_alsaClient, subscriberInfo.Pointer) == 0;
-					} else {
-						return snd_seq_subscribe_port (_alsaClient, subscriberInfo.Pointer) == 0;
+					int subs = disconnect 
+						? snd_seq_unsubscribe_port (_alsaClient, subscriberInfo.Pointer)
+						: snd_seq_subscribe_port (_alsaClient, subscriberInfo.Pointer);
+					if (subs != 0) {
+						Console.WriteLine ("Alsa connection error: " + subs + " code: " + snd_strerror (subs).PtrToString ());
 					}
+					return subs == 0;
 				}
 			} catch (Exception e) {
 				#if DEBUG

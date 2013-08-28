@@ -337,11 +337,7 @@ namespace MonoMultiJack.Widgets
 		}
 
 		public void AddConnection (IConnection connection)
-		{
-			#if DEBUG
-			Console.WriteLine (connection.OutPort.Id + ":" + connection.OutPort.Name + " is connected to " + connection.InPort.Id + ":" + connection.InPort.Name);
-			#endif
-			
+		{			
 			_connections.Add (connection);
 			
 			Application.Invoke (delegate {
@@ -352,9 +348,6 @@ namespace MonoMultiJack.Widgets
 
 		public void RemoveConnection (IConnection connection)
 		{
-			#if DEBUG
-			Console.WriteLine (connection.OutPort.Id + ":" + connection.OutPort.Name + " has been disconnected from " + connection.InPort.Id + ":" + connection.InPort.Name);
-			#endif
 			_connections.Remove (connection);
 			
 			Application.Invoke (delegate {

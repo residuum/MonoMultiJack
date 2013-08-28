@@ -157,8 +157,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs ();
 			oldEventArgs.ChangeType = changeType;
-			oldEventArgs.Connectables = connectables.ToList();
-			oldEventArgs.Connections = connections.ToList();
+			oldEventArgs.Connectables = connectables.ToList ();
+			oldEventArgs.Connections = connections.ToList ();
 			if (ConnectionHasChanged != null) {
 				ConnectionHasChanged (this, oldEventArgs);
 			}
@@ -169,23 +169,23 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			List<AlsaPort> newPorts;
 			List<Port> obsoletePorts;
 			UpdatePortInformation (
-		LibAsoundWrapper.GetPorts (),
-		ref _portMapper,
-		out newPorts,
-		out obsoletePorts
+				LibAsoundWrapper.GetPorts (),
+				ref _portMapper,
+				out newPorts,
+				out obsoletePorts
 			);
 			List<IConnection> newConnections;
 			List<IConnection> obsoleteConnections;
 			
 			UpdateConnectionInformation (
-		LibAsoundWrapper.GetConnections (_portMapper),
-		ref _connections,
-		out newConnections,
-		out obsoleteConnections
+				LibAsoundWrapper.GetConnections (_portMapper).ToList(),
+				ref _connections,
+				out newConnections,
+				out obsoleteConnections
 			);
-			IEnumerable<Client> newClients = ClientsFromPorts(newPorts);
-			SendMessage (newClients, newConnections, ChangeType.New);
 			SendMessage (obsoletePorts, obsoleteConnections, ChangeType.Deleted);
+			IEnumerable<Client> newClients = ClientsFromPorts (newPorts);
+			SendMessage (newClients, newConnections, ChangeType.New);
 			return true;
 		}
 
@@ -218,7 +218,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			obsoleteConnections = new List<IConnection> ();
 
 			foreach (AlsaMidiConnection conn in allConnections) {
-
 				if (!mappedConnections.Contains (conn)) {
 					newConnections.Add (conn);
 					mappedConnections.Add (conn);
