@@ -225,7 +225,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 	    
 			foreach (AlsaMidiConnection oldConn in mappedConnections) {
-				if (allConnections.Contains (oldConn)) {
+				if (!allConnections.Contains (oldConn)) {
 					obsoleteConnections.Add (oldConn);
 				}
 			}
