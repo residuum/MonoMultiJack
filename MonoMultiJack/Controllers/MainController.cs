@@ -270,8 +270,8 @@ namespace MonoMultiJack.Controllers
 			//TODO: Move to view.
 			IAboutWindow AboutWindow = new AboutWindow ();
 			AboutWindow.ProgramName = "MonoMultiJack";
-			AboutWindow.Version = "0.2";
-			AboutWindow.Copyright = "(c) Thomas Mayer 2013";
+			AboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
+			AboutWindow.Copyright = "(c) Thomas Mayer 2009-2013";
 			AboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
 	programs.";
 			AboutWindow.Website = "http://ix.residuum.org/";

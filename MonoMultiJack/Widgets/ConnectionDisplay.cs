@@ -110,7 +110,7 @@ namespace MonoMultiJack.Widgets
 				clientIter = store.AppendValues (client);
 				return true;
 			}
-			return false;
+			return !clientIter.Equals (TreeIter.Zero);
 		}
 
 		bool TryGetPortIter (TreeStore store, TreeIter clientIter, Port port, out TreeIter portIter)
@@ -131,14 +131,11 @@ namespace MonoMultiJack.Widgets
 
 		public void AddConnectable (IConnectable connectable)
 		{
-			Application.Invoke (delegate {
-				if (connectable.FlowDirection == FlowDirection.In) {					
-					AddTreeStoreValues (connectable, _inputStore);
-				} else if (connectable.FlowDirection == FlowDirection.Out) {			
-					AddTreeStoreValues (connectable, _outputStore);
-				}
+			if (connectable.FlowDirection == FlowDirection.In) {					
+				AddTreeStoreValues (connectable, _inputStore);
+			} else if (connectable.FlowDirection == FlowDirection.Out) {			
+				AddTreeStoreValues (connectable, _outputStore);
 			}
-			);
 		}
 
 		void RemoveTreeStoreValues (IConnectable connectable, TreeStore store)
@@ -168,14 +165,11 @@ namespace MonoMultiJack.Widgets
 
 		public void RemoveConnectable (IConnectable connectable)
 		{
-			Application.Invoke (delegate {
-				if (connectable.FlowDirection == FlowDirection.In) {
-					RemoveTreeStoreValues (connectable, _inputStore);
-				} else if (connectable.FlowDirection == FlowDirection.Out) {
-					RemoveTreeStoreValues (connectable, _outputStore);
-				}
+			if (connectable.FlowDirection == FlowDirection.In) {
+				RemoveTreeStoreValues (connectable, _inputStore);
+			} else if (connectable.FlowDirection == FlowDirection.Out) {
+				RemoveTreeStoreValues (connectable, _outputStore);
 			}
-			);
 		}
 
 		IConnectable GetSelectedConnectable (TreeStore connectionStore, TreeIter selectedIter)
@@ -303,7 +297,7 @@ namespace MonoMultiJack.Widgets
 			} catch (Exception ex) {
 				#if DEBUG
 		Console.WriteLine (ex.Message);
-				#endif				
+				#endif			
 			}	
 		}
 
