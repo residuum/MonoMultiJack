@@ -33,6 +33,7 @@ using System.Reflection;
 using System.IO;
 using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.ConnectionWrapper;
+using Mono.Unix;
 
 namespace MonoMultiJack.Controllers
 {
@@ -166,13 +167,13 @@ namespace MonoMultiJack.Controllers
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Application configuration File is corrupt.");
+				ShowInfoMessage (Catalog.GetString("Application configuration File is corrupt."));
 				appConfigs = new List<AppConfiguration> ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Applications are not configured.");
+				ShowInfoMessage (Catalog.GetString("Applications are not configured."));
 				appConfigs = new List<AppConfiguration> ();
 			}
 			return false;
@@ -269,14 +270,14 @@ namespace MonoMultiJack.Controllers
 		{
 			//TODO: Move to view.
 			IAboutWindow AboutWindow = new AboutWindow ();
-			AboutWindow.ProgramName = "MonoMultiJack";
+			AboutWindow.ProgramName = Catalog.GetString("MonoMultiJack");
 			AboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
 			AboutWindow.Copyright = "(c) Thomas Mayer 2009-2013";
-			AboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
-	programs.";
+			AboutWindow.Comments = Catalog.GetString(@"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
+	programs.");
 			AboutWindow.Website = "http://ix.residuum.org/";
 			AboutWindow.Authors = new String[] {"Thomas Mayer"};
-			AboutWindow.License = @"Copyright (c) 2009-2013 Thomas Mayer
+			AboutWindow.License = Catalog.GetString(@"Copyright (c) 2009-2013 Thomas Mayer
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the ""Software""), to deal
@@ -295,7 +296,7 @@ namespace MonoMultiJack.Controllers
 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.";
+	THE SOFTWARE.");
 			AboutWindow.IconPath = ProgramIconPath;
 			AboutWindow.Show ();
 			AboutWindow.Closing += Window_Closing;

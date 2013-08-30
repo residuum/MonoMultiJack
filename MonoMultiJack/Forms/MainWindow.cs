@@ -30,6 +30,7 @@ using Gdk;
 using Gtk;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
+using Mono.Unix;
 
 namespace MonoMultiJack.Forms
 {
@@ -38,8 +39,8 @@ namespace MonoMultiJack.Forms
 	/// </summary>
 	public partial class MainWindow: Gtk.Window, IMainWindow
 	{		
-		readonly string JackdStatusRunning = "Jackd is running.";
-		readonly string JackdStatusStopped = "Jackd is stopped.";
+		readonly string JackdStatusRunning = Catalog.GetString("Jackd is running.");
+		readonly string JackdStatusStopped = Catalog.GetString("Jackd is stopped.");
 
 		/// <summary>
 		/// Constructor
@@ -145,7 +146,7 @@ namespace MonoMultiJack.Forms
 		/// </summary>
 		void BuildWindowContent ()
 		{
-			Title = "MonoMultiJack";
+			Title = Catalog.GetString("MonoMultiJack");
 
 			((IMainWindow)this).JackdIsRunning = false;
 		}

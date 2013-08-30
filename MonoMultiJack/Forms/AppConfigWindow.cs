@@ -26,6 +26,7 @@
 using System;
 using Gtk;
 using MonoMultiJack.Widgets;
+using Mono.Unix;
 
 namespace MonoMultiJack.Forms
 {
@@ -39,7 +40,7 @@ namespace MonoMultiJack.Forms
 			Close += HandleClose;
 			Response += HandleResponse;
 			
-			Title = "Configure Applications";
+			Title = Catalog.GetString("Configure Applications");
 			Resizable = true;
 		}
 
@@ -127,7 +128,7 @@ namespace MonoMultiJack.Forms
 			addButton.CanFocus = true;
 			addButton.UseUnderline = true;
 			addButton.Image = new Gtk.Image ("gtk-add", IconSize.Button);
-			addButton.Label = "Add Application";
+			addButton.Label = Catalog.GetString("Add Application");
 			addButton.Clicked += AddButtonClicked;
 			this.ActionArea.Add (addButton);
 			Button cancelButton = new Gtk.Button ();

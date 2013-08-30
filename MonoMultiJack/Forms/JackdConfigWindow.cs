@@ -28,6 +28,7 @@ using MonoMultiJack.Configuration;
 using System;
 using System.IO;
 using Gdk;
+using Mono.Unix;
 
 namespace MonoMultiJack.Forms
 {
@@ -122,7 +123,7 @@ namespace MonoMultiJack.Forms
 		/// </summary>
 		public JackdConfigWindow ()
 		{
-			Title = "Configure Jackd";
+			Title = Catalog.GetString ("Configure Jackd");
 			Resizable = false;
 			BuildDialog ();
 			Close += HandleClose;
@@ -157,25 +158,25 @@ namespace MonoMultiJack.Forms
 			table.ColumnSpacing = 3;
 			VBox.PackStart (table, false, false, 0);
 			
-			Label label = new Label ("Jackd Startup Path");
+			Label label = new Label (Catalog.GetString ("Jackd Startup Path"));
 			table.Attach (label, 0, 1, 0, 1);
 			_jackdPathEntry = new Entry ();
 			table.Attach (_jackdPathEntry, 1, 2, 0, 1);
 			label.MnemonicWidget = _jackdPathEntry;
 			
-			label = new Label ("General Options");
+			label = new Label (Catalog.GetString ("General Options"));
 			table.Attach (label, 0, 1, 1, 2);
 			_jackdGeneralOptionsEntry = new Entry ();
 			table.Attach (_jackdGeneralOptionsEntry, 1, 2, 1, 2);
 			label.MnemonicWidget = _jackdGeneralOptionsEntry;
 			
-			label = new Label ("Driver Infrastructure");
+			label = new Label (Catalog.GetString ("Driver Infrastructure"));
 			table.Attach (label, 0, 1, 2, 3);
 			_jackdDriverEntry = new Entry ();
 			table.Attach (_jackdDriverEntry, 1, 2, 2, 3);
 			label.MnemonicWidget = _jackdDriverEntry;
 			
-			label = new Label ("Driver Options");
+			label = new Label (Catalog.GetString ("Driver Options"));
 			table.Attach (label, 0, 1, 3, 4);
 			_jackdDriverOptionsEntry = new Entry ();
 			table.Attach (_jackdDriverOptionsEntry, 1, 2, 3, 4);
