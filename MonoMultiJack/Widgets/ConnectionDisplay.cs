@@ -265,14 +265,13 @@ namespace MonoMultiJack.Widgets
 			if (now - _lastLineUpdate < TimeSpan.FromSeconds (0.01)) {
 				return;
 			}
-			_lastLineUpdate = now;
 			try {
 				if (_connectionArea.GdkWindow == null) {
 					return;
 				}
 				_connectionArea.GdkWindow.Clear ();
 				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
-					List<IConnection> connections = _connections;
+					List<IConnection> connections = new List<IConnection>(_connections);
 					foreach (IConnection conn in connections) {
 						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
@@ -293,12 +292,13 @@ namespace MonoMultiJack.Widgets
 					g.LineWidth = 1;
 					g.Stroke ();
 					g.Target.Dispose ();
+					_lastLineUpdate = now;
 				}
 			} catch (Exception ex) {
 				#if DEBUG
 		Console.WriteLine (ex.Message);
-				#endif			
-			}	
+				#endif
+			}
 		}
 
 		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
