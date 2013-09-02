@@ -256,6 +256,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{		
 			if (!_portMapper.Any ()) {
 				_portMapper.AddRange (GetInitialPorts ());
+                _connections.AddRange(GetInitialConnections(_portMapper));
 			}
 			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
 		}
@@ -267,6 +268,34 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				yield return newPort;
 			}
 		}
+
+		private static IEnumerable<IConnection> GetInitialConnections(List<JackPort> portMapper)
+        {
+            IEnumerable<JackPort> outPorts = portMapper.Where(p => p.FlowDirection == FlowDirection.Out);
+            IEnumerable<JackPort> inPorts = portMapper.Where(p => p.FlowDirection == FlowDirection.In).ToList();
+
+	        foreach (var outPort in outPorts) {
+	            IntPtr inPortNamePointer = jack_port_get_all_connections(_jackClient, outPort.JackPortPointer);
+                if (inPortNamePointer == IntPtr.Zero) continue;
+	            string[] inPortNames = inPortNamePointer.PtrToStringArray();
+	            foreach (var name in inPortNames) {
+	                IntPtr inPortPtr = jack_port_by_name(_jackClient, name);
+	                JackPort inPort = inPorts.FirstOrDefault(p => p.JackPortPointer == inPortPtr);
+	                if (inPort == null) continue;
+
+	                switch (inPort.ConnectionType) {
+	                    case ConnectionType.JackAudio:
+	                        yield return new JackAudioConnection {InPort = inPort, OutPort = outPort};
+	                        break;
+	                    case ConnectionType.JackMidi:
+	                        yield return new JackMidiConnection {InPort = inPort, OutPort = outPort};
+	                        break;
+	                }
+	            }
+	            jack_free(inPortNamePointer);
+	        }
+	    }
+
 
 		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
 		{

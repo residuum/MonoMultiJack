@@ -102,5 +102,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		
 		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
 		static extern void jack_on_shutdown (IntPtr jack_client_t, JackShutdownCallback function, IntPtr args);
+
+		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
+		static extern void jack_free (IntPtr ptr);
 	}
 }
