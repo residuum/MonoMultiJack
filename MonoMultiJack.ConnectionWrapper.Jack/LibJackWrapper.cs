@@ -159,15 +159,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
 			jack_on_shutdown (_jackClient, OnJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = jack_activate (_jackClient);
-			//TODO: for Jackdmp: Call jack_get_ports() to populate initial clients or use some other methods;
-//			IntPtr portList = jack_get_ports(_jackClient, null, null, 0);
-//			string[] portNames = MarshallingHelper.PtrToStringArray(portList);
-//			foreach(string portName in portNames) {
-//				_portMapper.Add(GetJackPortData(portName));
-//			}
-//			if (portList != IntPtr.Zero){
-//				Marshal.FreeHGlobal(portList);
-//			}
 			return jackActivateStatus == 0;
 		}
 		
@@ -256,7 +247,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{		
 			if (!_portMapper.Any ()) {
 				_portMapper.AddRange (GetInitialPorts ());
-                _connections.AddRange(GetInitialConnections(_portMapper));
+				_connections.AddRange (GetInitialConnections (_portMapper));
 			}
 			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
 		}
@@ -264,38 +255,45 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		static IEnumerable<JackPort> GetInitialPorts ()
 		{
 			JackPort newPort;
-			for (uint i = 0; (newPort = GetJackPortData(i)) != null; i++) {
-				yield return newPort;
+			for (uint i = 0;; i++) {
+				newPort = GetJackPortData (i);
+				if (newPort != null) {
+					yield return newPort;
+					// Jackd 1 starts index at 0, Jackd 2 at 1.
+				} else if (i > 1) {
+					break;
+				}
 			}
 		}
 
-		private static IEnumerable<IConnection> GetInitialConnections(List<JackPort> portMapper)
-        {
-            IEnumerable<JackPort> outPorts = portMapper.Where(p => p.FlowDirection == FlowDirection.Out);
-            IEnumerable<JackPort> inPorts = portMapper.Where(p => p.FlowDirection == FlowDirection.In).ToList();
+		private static IEnumerable<IConnection> GetInitialConnections (List<JackPort> portMapper)
+		{
+			IEnumerable<JackPort> outPorts = portMapper.Where (p => p.FlowDirection == FlowDirection.Out);
+			IEnumerable<JackPort> inPorts = portMapper.Where (p => p.FlowDirection == FlowDirection.In).ToList ();
 
-	        foreach (var outPort in outPorts) {
-	            IntPtr inPortNamePointer = jack_port_get_all_connections(_jackClient, outPort.JackPortPointer);
-                if (inPortNamePointer == IntPtr.Zero) continue;
-	            string[] inPortNames = inPortNamePointer.PtrToStringArray();
-	            foreach (var name in inPortNames) {
-	                IntPtr inPortPtr = jack_port_by_name(_jackClient, name);
-	                JackPort inPort = inPorts.FirstOrDefault(p => p.JackPortPointer == inPortPtr);
-	                if (inPort == null) continue;
+			foreach (var outPort in outPorts) {
+				IntPtr inPortNamePointer = jack_port_get_all_connections (_jackClient, outPort.JackPortPointer);
+				if (inPortNamePointer == IntPtr.Zero)
+					continue;
+				string[] inPortNames = inPortNamePointer.PtrToStringArray ();
+				foreach (var name in inPortNames) {
+					IntPtr inPortPtr = jack_port_by_name (_jackClient, name);
+					JackPort inPort = inPorts.FirstOrDefault (p => p.JackPortPointer == inPortPtr);
+					if (inPort == null)
+						continue;
 
-	                switch (inPort.ConnectionType) {
-	                    case ConnectionType.JackAudio:
-	                        yield return new JackAudioConnection {InPort = inPort, OutPort = outPort};
-	                        break;
-	                    case ConnectionType.JackMidi:
-	                        yield return new JackMidiConnection {InPort = inPort, OutPort = outPort};
-	                        break;
-	                }
-	            }
-	            jack_free(inPortNamePointer);
-	        }
-	    }
-
+					switch (inPort.ConnectionType) {
+					case ConnectionType.JackAudio:
+						yield return new JackAudioConnection {InPort = inPort, OutPort = outPort};
+						break;
+					case ConnectionType.JackMidi:
+						yield return new JackMidiConnection {InPort = inPort, OutPort = outPort};
+						break;
+					}
+				}
+				jack_free (inPortNamePointer);
+			}
+		}
 
 		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
 		{
