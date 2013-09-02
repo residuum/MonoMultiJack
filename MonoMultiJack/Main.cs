@@ -43,8 +43,8 @@ namespace MonoMultiJack
 		/// </param>
 		public static void Main (string[] args)
 		{
-			Catalog.Init("MonoMultiJack","./locale");
 			Application.Init ();
+			Catalog.Init("MonoMultiJack","./locale");
 			MainController mainController = new MainController ();
 			mainController.Start ();
 			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
