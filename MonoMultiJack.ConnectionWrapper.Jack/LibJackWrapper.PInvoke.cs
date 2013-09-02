@@ -38,9 +38,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		/// For a full list of functions see http://jackaudio.org/files/docs/html/index.html
 		/// </summary>
 		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr jack_client_new (string client_name);
-		
-		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
 		static extern int jack_activate (IntPtr jack_client_t);
 		
 		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
@@ -51,18 +48,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		                                             byte jack_options_t, 
 		                                             IntPtr jack_status_t);
 
-		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
-		static extern string jack_client_thread_id (IntPtr jack_client_t);
-		
-		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
-		static extern int jack_deactivate (IntPtr jack_client_t);
-		
-		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr jack_get_ports (IntPtr jack_client_t, 
-		                                     string port_name_pattern,
-		                                     string type_name_pattern,
-		                                     ulong flags);
-		
 		[DllImport(JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr jack_port_by_id (IntPtr jack_client_t, 
 		                                     uint port_id);

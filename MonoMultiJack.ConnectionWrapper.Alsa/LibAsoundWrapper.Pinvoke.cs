@@ -12,9 +12,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		static extern int snd_seq_close (IntPtr seq);
 		
 		[DllImport(ASOUND_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
-		static extern int snd_seq_set_client_info (IntPtr seq, out IntPtr info);
-		
-		[DllImport(ASOUND_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
 		static extern int snd_seq_info_get_client (IntPtr info);
 		
 		[DllImport(ASOUND_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
