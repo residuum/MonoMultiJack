@@ -70,7 +70,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.Message = "Port unregistered.";
 			}
 			eventArgs.ConnectionType = connectionType;
-			PortOrConnectionHasChanged (null, eventArgs);			
+			if (PortOrConnectionHasChanged != null) {
+				PortOrConnectionHasChanged (null, eventArgs);
+			}
 		}
 
 		static IConnection MapConnection (JackPort outPort, JackPort inPort)
@@ -116,14 +118,18 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				eventArgs.Message = "Connection deleted";
 			}
 			eventArgs.MessageType = MessageType.Info;
-			PortOrConnectionHasChanged (null, eventArgs);
+			if (PortOrConnectionHasChanged != null) {
+				PortOrConnectionHasChanged (null, eventArgs);
+			}
 		}
 		
 		static void OnJackShutdown (IntPtr args)
 		{
 			_jackClient = IntPtr.Zero;
 			_portMapper.Clear ();
-			JackHasShutdown (null, new ConnectionEventArgs ());
+			if (JackHasShutdown != null) {
+				JackHasShutdown (null, new ConnectionEventArgs ());
+			}
 		}
 		
 		internal static event ConnectionEventHandler PortOrConnectionHasChanged;
@@ -254,9 +260,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 
 		static IEnumerable<JackPort> GetInitialPorts ()
 		{
-			JackPort newPort;
 			for (uint i = 0;; i++) {
-				newPort = GetJackPortData (i);
+				JackPort newPort = GetJackPortData (i);
 				if (newPort != null) {
 					yield return newPort;
 					// Jackd 1 starts index at 0, Jackd 2 at 1.

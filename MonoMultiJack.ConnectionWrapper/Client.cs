@@ -54,7 +54,7 @@ namespace MonoMultiJack.ConnectionWrapper
 		public void AddPort (Port port)
 		{
 			Debug.Assert (FlowDirection == port.FlowDirection, "Flow directions do not match");
-			Debug.Assert (ConnectionType == port.ConnectionType, "Flow directions do not match");
+			Debug.Assert (ConnectionType == port.ConnectionType, "Connection types do not match");
 			_ports.Add (port);
 			port.Client = this;
 		}
@@ -66,8 +66,8 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public override bool Equals (object obj)
 		{
-			Client otherPort = obj as Client;
-			return Equals (otherPort);
+			Client otherClient = obj as Client;
+			return Equals (otherClient);
 		}
 
 		public bool Equals (Client other)
