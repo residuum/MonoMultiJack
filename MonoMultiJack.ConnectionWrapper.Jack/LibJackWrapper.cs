@@ -258,17 +258,28 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
 		}
 
+		static int GetPortCount ()
+		{
+			IntPtr portNamesPtr = jack_get_ports (_jackClient, "", "", 0);
+			if (portNamesPtr == IntPtr.Zero)
+				return 0;
+
+			string[] portNames = portNamesPtr.PtrToStringArray ();
+			jack_free (portNamesPtr);
+			return portNames.Length;
+		}
+
 		static IEnumerable<JackPort> GetInitialPorts ()
 		{
-			for (uint i = 0;; i++) {
+			int portCount = GetPortCount ();
+			List<JackPort> newPorts = new List<JackPort> ();
+			for (uint i = 0; i < 256 && newPorts.Count < portCount; i++) {
 				JackPort newPort = GetJackPortData (i);
 				if (newPort != null) {
-					yield return newPort;
-					// Jackd 1 starts index at 0, Jackd 2 at 1.
-				} else if (i > 1) {
-					break;
+					newPorts.Add (newPort);
 				}
 			}
+			return newPorts;
 		}
 
 		private static IEnumerable<IConnection> GetInitialConnections (List<JackPort> portMapper)
@@ -277,10 +288,10 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			IEnumerable<JackPort> inPorts = portMapper.Where (p => p.FlowDirection == FlowDirection.In).ToList ();
 
 			foreach (var outPort in outPorts) {
-				IntPtr inPortNamePointer = jack_port_get_all_connections (_jackClient, outPort.JackPortPointer);
-				if (inPortNamePointer == IntPtr.Zero)
+				IntPtr inPortNamePtr = jack_port_get_all_connections (_jackClient, outPort.JackPortPointer);
+				if (inPortNamePtr == IntPtr.Zero)
 					continue;
-				string[] inPortNames = inPortNamePointer.PtrToStringArray ();
+				string[] inPortNames = inPortNamePtr.PtrToStringArray ();
 				foreach (var name in inPortNames) {
 					IntPtr inPortPtr = jack_port_by_name (_jackClient, name);
 					JackPort inPort = inPorts.FirstOrDefault (p => p.JackPortPointer == inPortPtr);
@@ -296,7 +307,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 						break;
 					}
 				}
-				jack_free (inPortNamePointer);
+				jack_free (inPortNamePtr);
 			}
 		}
 
