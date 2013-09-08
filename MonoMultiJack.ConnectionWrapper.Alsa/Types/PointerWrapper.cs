@@ -61,4 +61,3 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
 		}
 	}
 }
-

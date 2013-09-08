@@ -131,30 +131,26 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				if ((portCaps & SND_SEQ_PORT_CAP_NO_EXPORT) == SND_SEQ_PORT_CAP_NO_EXPORT 
 					|| ((snd_seq_client_info_get_type (clientInfo.Pointer) != SND_SEQ_USER_CLIENT)
 					&& ((portType == SND_SEQ_PORT_SYSTEM_TIMER) || portType == SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
-					return new List<AlsaPort> ();
+					yield break;
 				}
 
 				bool isInput = (portCaps & SND_SEQ_PORT_CAP_WRITE) == SND_SEQ_PORT_CAP_WRITE;
 				bool isOutput = (portCaps & SND_SEQ_PORT_CAP_READ) == SND_SEQ_PORT_CAP_READ;
 
-				List<AlsaPort> ports = new List<AlsaPort> ();
 				if (isOutput) {
-					ports.Add (new AlsaPort (
+					yield return new AlsaPort (
 						portAddress,
 						portName,
 						clientName,
-						FlowDirection.Out)
-					);
+						FlowDirection.Out);
 				}
 				if (isInput) {
-					ports.Add (new AlsaPort (
+					yield return new AlsaPort (
 						portAddress,
 						portName,
 						clientName,
-						FlowDirection.In)
-					);
+						FlowDirection.In);
 				}
-				return ports;
 			}
 		}
 
@@ -188,11 +184,10 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		static IEnumerable<AlsaMidiConnection> GetConnectionsForPort (AlsaPort outPort, IEnumerable<AlsaPort> allInPorts)
 		{
 			if (outPort == null || !allInPorts.Any ()) {
-				return new AlsaMidiConnection[0];
+				yield break;
 			}
 			using (PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ()))
 			using (PointerWrapper alsaAddress = new PointerWrapper (outPort.AlsaAddress.SndSeqAddrToPtr())) {
-				List<AlsaMidiConnection> connections = new List<AlsaMidiConnection> ();
 				snd_seq_query_subscribe_set_index (subscriberInfo.Pointer, 0);
 				snd_seq_query_subscribe_set_root (subscriberInfo.Pointer, alsaAddress.Pointer);
 				snd_seq_query_subscribe_set_type (subscriberInfo.Pointer, SND_SEQ_QUERY_SUBS_READ);
@@ -206,7 +201,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 						&& p.AlsaAddress.Port == connectedAddress.Port
 					);
 					if (connectedPort != null) {
-						connections.Add (new AlsaMidiConnection (){OutPort = outPort, InPort = connectedPort});
+						yield return new AlsaMidiConnection (){OutPort = outPort, InPort = connectedPort};
 					}
 					snd_seq_query_subscribe_set_index (
 						subscriberInfo.Pointer,
@@ -214,7 +209,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 					);
 				}
 
-				return connections;
 			}
 		}
 

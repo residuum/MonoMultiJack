@@ -37,8 +37,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		const int SND_SEQ_USER_CLIENT = 1;
 		const int SND_SEQ_PORT_SYSTEM_TIMER = 0;
 		const int SND_SEQ_PORT_SYSTEM_ANNOUNCE = 1;
-		const int SND_SEQ_PORT_TYPE_APPLICATION = (1 << 20);
 		const int SND_SEQ_QUERY_SUBS_READ = 0;
-		const int SND_SEQ_QUERY_SUBS_WRITE = 1;
 	}
 }

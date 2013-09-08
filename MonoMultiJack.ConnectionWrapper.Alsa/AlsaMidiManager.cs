@@ -59,7 +59,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			LibAsoundWrapper.DeActivate ();
 		}
 		
-	#region IConnectionManager implementation
+		#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasExited;
 
@@ -164,33 +164,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 		}
 
-		bool CheckForChanges ()
-		{
-			List<AlsaPort> newPorts;
-			List<AlsaPort> obsoletePorts;
-			_portMapper = UpdateList<AlsaPort> (
-				LibAsoundWrapper.GetPorts (), 
-				_portMapper, 
-				out newPorts, 
-				out obsoletePorts
-			).ToList ();
-
-			List<AlsaMidiConnection> newConnections;
-			List<AlsaMidiConnection> obsoleteConnections;
-			_connections = UpdateList<AlsaMidiConnection> (
-				LibAsoundWrapper.GetConnections (_portMapper).ToList (), 
-				_connections, 
-				out newConnections, 
-				out obsoleteConnections
-			).ToList ();
-			
-			SendMessage (obsoletePorts, obsoleteConnections, ChangeType.Deleted);
-			IEnumerable<Client> newClients = ClientsFromPorts (newPorts);
-			SendMessage (newClients, newConnections, ChangeType.New);
-			return true;
-		}
-
-		IEnumerable<T> UpdateList<T> (IEnumerable<T> all, List<T> mapped, out List<T> added, out List<T> obsolete) where T : class
+		IEnumerable<T> UpdateList<T> (
+			IEnumerable<T> all, 
+			List<T> mapped, 
+			out List<T> added, 
+			out List<T> obsolete) where T : class
 		{
 			added = new List<T> ();
 			obsolete = new List<T> ();
@@ -202,6 +180,41 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				obsolete.Add (old);
 			}
 			return all;
+		}
+
+		IEnumerable<T> CheckForChanges<T> (
+			List<T> existingPorts, 
+			IEnumerable<T> current, 
+			out List<T> added,
+			out List<T> obsolete) where T : class
+		{
+			added = new List<T> ();
+			obsolete = new List<T> ();
+			return UpdateList<T> (current, existingPorts, out added, out obsolete);
+		}
+
+		bool CheckForChanges ()
+		{
+			List<AlsaPort> newPorts;
+			List<AlsaPort> obsoletePorts;
+			_portMapper = CheckForChanges<AlsaPort> (
+				_portMapper, 
+				LibAsoundWrapper.GetPorts (), 
+				out newPorts, 
+				out obsoletePorts).ToList ();
+
+			List<AlsaMidiConnection> newConnections;
+			List<AlsaMidiConnection> obsoleteConnections;
+			_connections = CheckForChanges<AlsaMidiConnection> (
+				_connections, 
+				LibAsoundWrapper.GetConnections (_portMapper).ToList (), 
+				out newConnections, 
+				out obsoleteConnections).ToList ();
+			
+			SendMessage (obsoletePorts, obsoleteConnections, ChangeType.Deleted);
+			IEnumerable<Client> newClients = ClientsFromPorts (newPorts);
+			SendMessage (newClients, newConnections, ChangeType.New);
+			return true;
 		}
 	}
 }
