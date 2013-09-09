@@ -37,7 +37,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	internal static partial class LibJackWrapper
 	{		
 		static IntPtr _jackClient = IntPtr.Zero;
-		static readonly List<JackPort> _portMapper = new List<JackPort> ();
+		static List<JackPort> _portMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
 		static readonly string _clientName = "MonoMultiJack" 
 				+ (DateTime.Now.Ticks / 10000000).ToString ().Substring (6);
@@ -227,6 +227,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			if (outputPort.FlowDirection != FlowDirection.Out || inputPort.FlowDirection != FlowDirection.In || outputPort.ConnectionType != inputPort.ConnectionType) {
 				return false;
 			}
+			_portMapper = UpdatePortList (_portMapper).ToList ();
 			string outPortName = _portMapper.Where (map => map == outputPort)
 				.Select (map => map.JackPortName).First ();
 			string inPortName = _portMapper.Where (map => map == inputPort)
@@ -244,6 +245,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				|| outputPort.ConnectionType != inputPort.ConnectionType) {
 				return false;
 			}
+			_portMapper = UpdatePortList (_portMapper).ToList ();
 			string outPortName = _portMapper.First (map => map == outputPort).JackPortName;
 			string inPortName = _portMapper.First (map => map == inputPort).JackPortName;
 			return jack_connect (_jackClient, outPortName, inPortName) == 0;
@@ -252,10 +254,32 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		internal static IEnumerable<JackPort> GetPorts (ConnectionType connectionType)
 		{		
 			if (!_portMapper.Any ()) {
-				_portMapper.AddRange (GetInitialPorts ());
-				_connections.AddRange (GetInitialConnections (_portMapper));
+				_portMapper = GetInitialPorts ().ToList ();
+				_connections = GetInitialConnections (_portMapper).ToList ();
+			} else {
+				_portMapper = UpdatePortList (_portMapper).ToList ();
 			}
 			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
+		}
+
+		static IEnumerable<JackPort> UpdatePortList (IEnumerable<JackPort> existingPorts)
+		{
+			foreach (JackPort existing in existingPorts) {
+				JackPort current = GetJackPortData (existing.Id);
+				if (current.Name != existing.Name) { 					
+					existing.Client.ReplacePort (existing, current);
+					if (PortOrConnectionHasChanged != null) {
+						ConnectionEventArgs args = new ConnectionEventArgs ();
+						args.ConnectionType = current.ConnectionType;
+						args.Connectables = new List<IConnectable> {current};
+						args.ChangeType = ChangeType.Content;
+						PortOrConnectionHasChanged (null, args);
+					}
+					yield return current;
+				} else {
+					yield return existing;
+				}
+			}
 		}
 
 		static int GetPortCount ()

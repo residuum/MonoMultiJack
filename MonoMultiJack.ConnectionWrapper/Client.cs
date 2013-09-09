@@ -64,6 +64,15 @@ namespace MonoMultiJack.ConnectionWrapper
 			return _ports.Remove (port);
 		}
 
+		public bool ReplacePort (Port oldPort, Port newPort)
+		{
+			bool status = _ports.Remove (oldPort);
+			if (status) {
+				_ports.Add (newPort);
+			}
+			return status;
+		}
+
 		public override bool Equals (object obj)
 		{
 			Client otherClient = obj as Client;

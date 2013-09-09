@@ -35,11 +35,10 @@ namespace MonoMultiJack.Widgets
 		void Clear ();
 
 		void AddConnectable (IConnectable connectable);
-
 		void RemoveConnectable (IConnectable connectable);
+		void UpdateConnectable (IConnectable connectable);
 
 		void AddConnection (IConnection connection);
-
 		void RemoveConnection (IConnection connection);
 		
 		event ConnectEventHandler Connect;

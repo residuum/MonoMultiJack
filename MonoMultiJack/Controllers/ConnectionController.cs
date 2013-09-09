@@ -99,6 +99,12 @@ namespace MonoMultiJack.Controllers
 						_connectionWidget.RemoveConnectable (connectable);
 					}
 				}
+			} else if (args.ChangeType == ChangeType.Content) {
+				if (args.Connectables != null) {
+					foreach (IConnectable connectable in args.Connectables) {
+						_connectionWidget.UpdateConnectable (connectable);
+					}
+				}
 			}
 		}
 				

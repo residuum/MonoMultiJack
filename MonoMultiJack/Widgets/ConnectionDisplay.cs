@@ -172,6 +172,39 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
+		private void ReplaceTreeStoreValue (IConnectable connectable, TreeStore store)
+		{
+			Client client = connectable as Client;
+			if (client != null) {
+				TreeIter clientIter;
+				if (TryGetClientIter (store, client, false, out clientIter)) {
+					store.Remove (ref clientIter);
+				}
+				store.AppendValues (client);
+			} else {
+				Port port = connectable as Port;
+				if (port != null) {
+					TreeIter clientIter;
+					if (TryGetClientIter (store, port.Client, false, out clientIter)) {
+						TreeIter portIter;
+						if (TryGetPortIter (store, clientIter, port, out portIter)) {
+							store.Remove (ref portIter);
+						}
+						store.AppendValues (clientIter, port);
+					}
+				}
+			}
+		}
+
+		public void UpdateConnectable (IConnectable connectable)
+		{
+			if (connectable.FlowDirection == FlowDirection.In) {
+				ReplaceTreeStoreValue (connectable, _inputStore);
+			} else if (connectable.FlowDirection == FlowDirection.Out) {
+				ReplaceTreeStoreValue (connectable, _outputStore);
+			}
+		}
+
 		IConnectable GetSelectedConnectable (TreeStore connectionStore, TreeIter selectedIter)
 		{
 			return connectionStore.GetValue (selectedIter, 0) as IConnectable; 
@@ -271,7 +304,7 @@ namespace MonoMultiJack.Widgets
 				}
 				_connectionArea.GdkWindow.Clear ();
 				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
-					List<IConnection> connections = new List<IConnection>(_connections);
+					List<IConnection> connections = new List<IConnection> (_connections);
 					foreach (IConnection conn in connections) {
 						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);

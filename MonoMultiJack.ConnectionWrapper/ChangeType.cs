@@ -29,6 +29,7 @@ namespace MonoMultiJack.ConnectionWrapper
 	{
 		Undefined,
 		New,
-		Deleted
+		Deleted,
+		Content
 	}
 }
