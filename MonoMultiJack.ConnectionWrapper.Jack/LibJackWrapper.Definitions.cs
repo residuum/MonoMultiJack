@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Runtime.InteropServices;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
 {
@@ -35,8 +36,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		const string JACK_LIB_NAME = "libjack";
 		const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
 		const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void JackPortRegistrationCallback (uint port,int register,IntPtr args);
+        
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void JackPortConnectCallback (uint a,uint b,int connect,IntPtr args);
+        
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		delegate void JackShutdownCallback (IntPtr args);
+
 	}
 }
