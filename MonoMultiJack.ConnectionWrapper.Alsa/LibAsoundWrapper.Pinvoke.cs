@@ -108,7 +108,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		static extern int snd_seq_unsubscribe_port (IntPtr handle, IntPtr sub);
 		
 		[DllImport(ASOUND_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
-		static extern IntPtr snd_strerror(int errno);
-
+		static extern IntPtr snd_strerror (int errno);
 	}
 }
