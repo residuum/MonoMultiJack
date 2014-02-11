@@ -138,7 +138,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		public IEnumerable<IConnection> Connections {
 			get {
-				_connections = LibAsoundWrapper.GetConnections (_portMapper).ToList ();
+				_connections = LibAsoundWrapper.GetConnections (_portMapper).ToList ();	
 				return _connections.Cast<IConnection> ();
 			}
 		}
@@ -183,14 +183,14 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		}
 
 		IEnumerable<T> CheckForChanges<T> (
-			List<T> existingPorts, 
+			List<T> existing,
 			IEnumerable<T> current, 
 			out List<T> added,
 			out List<T> obsolete) where T : class
 		{
 			added = new List<T> ();
 			obsolete = new List<T> ();
-			return UpdateList<T> (current, existingPorts, out added, out obsolete);
+			return UpdateList<T> (current, existing, out added, out obsolete);
 		}
 
 		bool CheckForChanges ()
@@ -202,6 +202,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				LibAsoundWrapper.GetPorts (), 
 				out newPorts, 
 				out obsoletePorts).ToList ();
+
+			ClientsFromPorts (_portMapper);
 
 			List<AlsaMidiConnection> newConnections;
 			List<AlsaMidiConnection> obsoleteConnections;
