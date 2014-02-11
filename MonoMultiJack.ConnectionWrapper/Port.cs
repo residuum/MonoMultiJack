@@ -65,8 +65,8 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public override int GetHashCode ()
 		{
-			return Id.GetHashCode ()
-				^ ((int)FlowDirection).GetHashCode () 
+			return (Id.GetHashCode ()<<4)
+				^ (((int)FlowDirection).GetHashCode () << 2)
 				^ ((int)ConnectionType).GetHashCode ();
 		}
 
