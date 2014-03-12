@@ -41,7 +41,6 @@ namespace MonoMultiJack.OS.Windows
 		/// Signals the exit of program.
 		/// </summary>
 		public event ProgramEventHandler HasExited;
-
 		/// <summary>
 		/// Signals the start of program
 		/// </summary>
@@ -52,8 +51,9 @@ namespace MonoMultiJack.OS.Windows
 		/// </summary>
 		public bool IsRunning {
 			get {
-				if (_process == null)
+				if (_process == null) {
 					return false;
+				}
 				try {
 					return !_process.HasExited;
 				} catch (InvalidOperationException) {
@@ -113,10 +113,12 @@ namespace MonoMultiJack.OS.Windows
 		/// </summary>
 		public void Stop ()
 		{
-			if (!IsRunning)
+			if (!IsRunning) {
 				return;
-			if (!_process.CloseMainWindow ())
+			}
+			if (!_process.CloseMainWindow ()) {
 				return;
+			}
 			_process.Dispose ();
 
 			if (HasExited != null) {
@@ -126,10 +128,14 @@ namespace MonoMultiJack.OS.Windows
 
 		void StartProgram ()
 		{
-			if (IsRunning)
+			if (IsRunning) {
 				return;
+			}
 
-			_process = new Process {StartInfo = {FileName = _commandName, Arguments = _commandArguments}};
+			_process = new Process {
+				StartInfo = {FileName = _commandName, Arguments = _commandArguments},
+				EnableRaisingEvents = true
+			};
 			_process.Exited += Process_Exited;
 			if (_process.Start () && HasStarted != null) {
 				HasStarted (this, new EventArgs ());
@@ -157,6 +163,5 @@ namespace MonoMultiJack.OS.Windows
 				_process = processes.First ();
 			}
 		}
-        
 	}
 }
