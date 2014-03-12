@@ -25,23 +25,24 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using MonoMultiJack.ConnectionWrapper.Jack.Types;
-using System.Diagnostics;
 
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 {
 	/// <summary>
 	/// Wrapper class for libjack. This file contains the main logic.
 	/// </summary>
-	internal static partial class LibJackWrapper
+	internal static class Wrapper
 	{		
 		static IntPtr _jackClient = IntPtr.Zero;
 		static List<JackPort> _portMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
 		static readonly string _clientName = "MonoMultiJack" 
-				+ (DateTime.Now.Ticks / 10000000).ToString ().Substring (6);
-		
+			+ (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
+
 		static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
@@ -95,8 +96,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		static void OnPortConnect (uint a, uint b, int connect, IntPtr args)
 		{
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
-			JackPort outPort = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, a));
-			JackPort inPort = _portMapper.First (map => map.JackPortPointer == jack_port_by_id (_jackClient, b));
+			JackPort outPort = _portMapper.First (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, a));
+			JackPort inPort = _portMapper.First (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, b));
 			if (connect != 0) {
 				List<IConnection> connections = new List<IConnection> ();
 				IConnection newConn = MapConnection (outPort, inPort);
@@ -122,7 +123,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				PortOrConnectionHasChanged (null, eventArgs);
 			}
 		}
-		
+
 		static void OnJackShutdown (IntPtr args)
 		{
 			_jackClient = IntPtr.Zero;
@@ -131,14 +132,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				JackHasShutdown (null, new ConnectionEventArgs ());
 			}
 		}
-		
+
 		internal static event ConnectionEventHandler PortOrConnectionHasChanged;
 		internal static event ConnectionEventHandler JackHasShutdown;
-		
+
 		internal static bool ConnectToServer ()
 		{
 			if (_jackClient == IntPtr.Zero) {
-				_jackClient = jack_client_open (_clientName, 1, IntPtr.Zero);
+				_jackClient = Invoke.jack_client_open (_clientName, 1, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate ();
@@ -152,22 +153,22 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		internal static void Close ()
 		{
 			if (_jackClient != IntPtr.Zero) {
-				jack_client_close (_jackClient);
+				Invoke.jack_client_close (_jackClient);
 			}
 		}
-		
+
 		/// <summary>
 		/// Activates jack client
 		/// </summary>
 		static bool Activate ()
 		{
-			jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
-			jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
-			jack_on_shutdown (_jackClient, OnJackShutdown, IntPtr.Zero);
-			int jackActivateStatus = jack_activate (_jackClient);
+			Invoke.jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
+			Invoke.jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
+			Invoke.jack_on_shutdown (_jackClient, OnJackShutdown, IntPtr.Zero);
+			int jackActivateStatus = Invoke.jack_activate (_jackClient);
 			return jackActivateStatus == 0;
 		}
-		
+
 		public static bool IsActive {
 			get {
 				return _jackClient != IntPtr.Zero;
@@ -176,14 +177,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 
 		static JackPort GetJackPortData (uint portId)
 		{
-			IntPtr portPointer = jack_port_by_id (_jackClient, portId);			
+			IntPtr portPointer = Invoke.jack_port_by_id (_jackClient, portId);			
 			return MapPort (portPointer, portId);
 		}
 
 		static FlowDirection GetFlowDirection (IntPtr portPointer)
 		{
 			FlowDirection portType = FlowDirection.Undefined;
-			JackPortFlags portFlags = (JackPortFlags)jack_port_flags (portPointer);
+			JackPortFlags portFlags = (JackPortFlags)Invoke.jack_port_flags (portPointer);
 			if ((portFlags & JackPortFlags.JackPortIsInput) == JackPortFlags.JackPortIsInput) {
 				portType = FlowDirection.In;
 			} else if ((portFlags & JackPortFlags.JackPortIsOutput) == JackPortFlags.JackPortIsOutput) {
@@ -195,12 +196,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		static ConnectionType GetConnectionType (IntPtr portPointer)
 		{
 			ConnectionType connectionType = ConnectionType.Undefined;
-			string connectionTypeName = jack_port_type (portPointer).PtrToString ();
+			string connectionTypeName = Invoke.jack_port_type (portPointer).PtrToString ();
 			switch (connectionTypeName) {
-			case JACK_DEFAULT_AUDIO_TYPE:
+			case Definitions.JACK_DEFAULT_AUDIO_TYPE:
 				connectionType = ConnectionType.JackAudio;
 				break;
-			case JACK_DEFAULT_MIDI_TYPE:
+			case Definitions.JACK_DEFAULT_MIDI_TYPE:
 				connectionType = ConnectionType.JackMidi;
 				break;
 			}
@@ -212,7 +213,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			if (portPointer == IntPtr.Zero) {
 				return null;
 			}
-			string portName = jack_port_name (portPointer).PtrToString ();
+			string portName = Invoke.jack_port_name (portPointer).PtrToString ();
 			if (!string.IsNullOrEmpty (portName)) {
 				FlowDirection portType = GetFlowDirection (portPointer);
 				ConnectionType connectionType = GetConnectionType (portPointer);
@@ -221,7 +222,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 			return null;
 		}
-		
+
 		internal static bool Disconnect (Port outputPort, Port inputPort)
 		{
 			if (outputPort.FlowDirection != FlowDirection.Out || inputPort.FlowDirection != FlowDirection.In || outputPort.ConnectionType != inputPort.ConnectionType) {
@@ -233,11 +234,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			string inPortName = _portMapper.Where (map => map == inputPort)
 				.Select (map => map.JackPortName).First ();
 			if (_connections.Any (c => c.InPort == inputPort && c.OutPort == outputPort)) {
-				return jack_disconnect (_jackClient, outPortName, inPortName) == 0;			
+				return Invoke.jack_disconnect (_jackClient, outPortName, inPortName) == 0;			
 			}
 			return true;
 		}
-		
+
 		internal static bool Connect (Port outputPort, Port inputPort)
 		{
 			if (outputPort.FlowDirection != FlowDirection.Out 
@@ -248,9 +249,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			_portMapper = UpdatePortList (_portMapper).ToList ();
 			string outPortName = _portMapper.First (map => map == outputPort).JackPortName;
 			string inPortName = _portMapper.First (map => map == inputPort).JackPortName;
-			return jack_connect (_jackClient, outPortName, inPortName) == 0;
+			return Invoke.jack_connect (_jackClient, outPortName, inPortName) == 0;
 		}
-		
+
 		internal static IEnumerable<JackPort> GetPorts (ConnectionType connectionType)
 		{		
 			if (!_portMapper.Any ()) {
@@ -271,7 +272,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					if (PortOrConnectionHasChanged != null) {
 						ConnectionEventArgs args = new ConnectionEventArgs ();
 						args.ConnectionType = current.ConnectionType;
-						args.Connectables = new List<IConnectable> {current};
+						args.Connectables = new List<IConnectable> { current };
 						args.ChangeType = ChangeType.Content;
 						PortOrConnectionHasChanged (null, args);
 					}
@@ -284,12 +285,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 
 		static int GetPortCount ()
 		{
-			IntPtr portNamesPtr = jack_get_ports (_jackClient, "", "", 0);
-			if (portNamesPtr == IntPtr.Zero)
+			IntPtr portNamesPtr = Invoke.jack_get_ports (_jackClient, "", "", 0);
+			if (portNamesPtr == IntPtr.Zero) {
 				return 0;
+			}
 
 			string[] portNames = portNamesPtr.PtrToStringArray ();
-			jack_free (portNamesPtr);
+			Invoke.jack_free (portNamesPtr);
 			return portNames.Length;
 		}
 
@@ -312,26 +314,33 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			IEnumerable<JackPort> inPorts = portMapper.Where (p => p.FlowDirection == FlowDirection.In).ToList ();
 
 			foreach (var outPort in outPorts) {
-				IntPtr inPortNamePtr = jack_port_get_all_connections (_jackClient, outPort.JackPortPointer);
-				if (inPortNamePtr == IntPtr.Zero)
+				IntPtr inPortNamePtr = Invoke.jack_port_get_all_connections (_jackClient, outPort.JackPortPointer);
+				if (inPortNamePtr == IntPtr.Zero) {
 					continue;
+				}
 				string[] inPortNames = inPortNamePtr.PtrToStringArray ();
 				foreach (var name in inPortNames) {
-					IntPtr inPortPtr = jack_port_by_name (_jackClient, name);
+					IntPtr inPortPtr = Invoke.jack_port_by_name (_jackClient, name);
 					JackPort inPort = inPorts.FirstOrDefault (p => p.JackPortPointer == inPortPtr);
 					if (inPort == null)
 						continue;
 
 					switch (inPort.ConnectionType) {
 					case ConnectionType.JackAudio:
-						yield return new JackAudioConnection {InPort = inPort, OutPort = outPort};
+						yield return new JackAudioConnection {
+							InPort = inPort,
+							OutPort = outPort
+						};
 						break;
 					case ConnectionType.JackMidi:
-						yield return new JackMidiConnection {InPort = inPort, OutPort = outPort};
+						yield return new JackMidiConnection {
+							InPort = inPort,
+							OutPort = outPort
+						};
 						break;
 					}
 				}
-				jack_free (inPortNamePtr);
+				Invoke.jack_free (inPortNamePtr);
 			}
 		}
 

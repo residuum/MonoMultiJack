@@ -1,5 +1,5 @@
 // 
-// LibJackWrapper.Definitions.cs
+// LibAsoundWrapper.Definitions.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,27 +23,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.Runtime.InteropServices;
-
-namespace MonoMultiJack.ConnectionWrapper.Jack
+namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 {
-	/// <summary>
-	/// Wrapper class for libjack. This file contains definitions for private classes, enums and constants.
-	/// </summary>
-	internal static partial class LibJackWrapper
-	{		
-		const string JACK_LIB_NAME = "libjack";
-		const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
-		const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";		
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void JackPortRegistrationCallback (uint port,int register,IntPtr args);
-        
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void JackPortConnectCallback (uint a,uint b,int connect,IntPtr args);
-        
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		delegate void JackShutdownCallback (IntPtr args);
-
+	internal static class Definitions
+	{
+		public const string ASOUND_LIB_NAME = "libasound";
+		public const int SND_SEQ_NONBLOCK = 1;
+		public const int SND_SEQ_OPEN_DUPLEX = 3;
+		public const int SND_SEQ_PORT_CAP_NO_EXPORT = (1 << 7);
+		public const int SND_SEQ_PORT_CAP_READ = (1 << 0);
+		public const int SND_SEQ_PORT_CAP_WRITE = (1 << 1);
+		const int SND_SEQ_PORT_CAP_DUPLEX = (1 << 4);
+		public const int SND_SEQ_USER_CLIENT = 1;
+		public const int SND_SEQ_PORT_SYSTEM_TIMER = 0;
+		public const int SND_SEQ_PORT_SYSTEM_ANNOUNCE = 1;
+		public const int SND_SEQ_QUERY_SUBS_READ = 0;
 	}
 }

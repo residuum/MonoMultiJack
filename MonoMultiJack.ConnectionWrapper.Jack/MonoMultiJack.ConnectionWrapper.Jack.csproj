@@ -43,9 +43,9 @@
     <Compile Include="JackClientException.cs" />
     <Compile Include="JackConnectionManager.cs" />
     <Compile Include="JackMidiManager.cs" />
-    <Compile Include="LibJackWrapper.cs" />
-    <Compile Include="LibJackWrapper.Definitions.cs" />
-    <Compile Include="LibJackWrapper.PInvoke.cs" />
+    <Compile Include="LibJack\Wrapper.cs" />
+    <Compile Include="LibJack\Definitions.cs" />
+    <Compile Include="LibJack\Invoke.cs" />
     <Compile Include="Types\JackPortFlags.cs" />
     <Compile Include="Types\JackPort.cs" />
     <Compile Include="Types\JackMidiConnection.cs" />

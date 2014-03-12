@@ -27,6 +27,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using GLib;
+using MonoMultiJack.ConnectionWrapper.Alsa.LibAsound;
 using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Alsa
@@ -35,14 +36,14 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 	{
 		List<AlsaPort> _portMapper = new List<AlsaPort> ();
 		List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
-	
+
 		public AlsaMidiManager ()
 		{
-			LibAsoundWrapper.Activate ();
+			Wrapper.Activate ();
 			
 			Timeout.Add (2000, new TimeoutHandler (CheckForChanges));
 		}
-		
+
 		~AlsaMidiManager ()
 		{
 			Dispose (false);
@@ -53,12 +54,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-	
+
 		protected virtual void Dispose (bool isDisposing)
 		{
-			LibAsoundWrapper.DeActivate ();
+			Wrapper.DeActivate ();
 		}
-		
 		#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasExited;
@@ -78,7 +78,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				|| outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
 				return;
 			}
-			LibAsoundWrapper.Connect (alsaOutPort, alsaInPort);
+			Wrapper.Connect (alsaOutPort, alsaInPort);
 		}
 
 		public void Disconnect (IConnectable outlet, IConnectable inlet)
@@ -99,7 +99,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 				|| inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
 				return;
 			}
-			LibAsoundWrapper.Disconnect (alsaOutPort, alsaInPort);
+			Wrapper.Disconnect (alsaOutPort, alsaInPort);
 		}
 
 		public ConnectionType ConnectionType {
@@ -131,14 +131,14 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		public IEnumerable<Client> Clients {
 			get {
-				_portMapper = LibAsoundWrapper.GetPorts ().ToList ();
+				_portMapper = Wrapper.GetPorts ().ToList ();
 				return ClientsFromPorts (_portMapper);
 			}
 		}
 
 		public IEnumerable<IConnection> Connections {
 			get {
-				_connections = LibAsoundWrapper.GetConnections (_portMapper).ToList ();	
+				_connections = Wrapper.GetConnections (_portMapper).ToList ();	
 				return _connections.Cast<IConnection> ();
 			}
 		}
@@ -149,16 +149,16 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			}
 		}
 		#endregion
-
 		void SendMessage (IEnumerable<IConnectable> connectables, IEnumerable<IConnection> connections, ChangeType changeType)
 		{
 			if (!connectables.Any () && !connections.Any ()) {
 				return;
 			}
-			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs ();
-			oldEventArgs.ChangeType = changeType;
-			oldEventArgs.Connectables = connectables.ToList ();
-			oldEventArgs.Connections = connections.ToList ();
+			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs {
+				ChangeType = changeType,
+				Connectables = connectables.ToList(),
+				Connections = connections.ToList()
+			};
 			if (ConnectionHasChanged != null) {
 				ConnectionHasChanged (this, oldEventArgs);
 			}
@@ -199,7 +199,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			List<AlsaPort> obsoletePorts;
 			_portMapper = CheckForChanges<AlsaPort> (
 				_portMapper, 
-				LibAsoundWrapper.GetPorts (), 
+				Wrapper.GetPorts (), 
 				out newPorts, 
 				out obsoletePorts).ToList ();
 
@@ -209,7 +209,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			List<AlsaMidiConnection> obsoleteConnections;
 			_connections = CheckForChanges<AlsaMidiConnection> (
 				_connections, 
-				LibAsoundWrapper.GetConnections (_portMapper).ToList (), 
+				Wrapper.GetConnections (_portMapper).ToList (), 
 				out newConnections, 
 				out obsoleteConnections).ToList ();
 			

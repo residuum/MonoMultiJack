@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MonoMultiJack.ConnectionWrapper.Jack.LibJack;
 using MonoMultiJack.ConnectionWrapper.Jack.Types;
 
 namespace MonoMultiJack.ConnectionWrapper.Jack
@@ -34,8 +35,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 	{
 		protected JackConnectionManager ()
 		{
-			LibJackWrapper.PortOrConnectionHasChanged += OnLibJackWrapperHasChanged;
-			LibJackWrapper.JackHasShutdown += OnJackShutdown;
+			Wrapper.PortOrConnectionHasChanged += OnLibJackWrapperHasChanged;
+			Wrapper.JackHasShutdown += OnJackShutdown;
 		}
 
 		~JackConnectionManager ()
@@ -48,33 +49,32 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-	
+
 		protected virtual void Dispose (bool isDisposing)
 		{
 			if (isDisposing) {
-				LibJackWrapper.PortOrConnectionHasChanged -= OnLibJackWrapperHasChanged;
-				LibJackWrapper.JackHasShutdown -= OnJackShutdown;
+				Wrapper.PortOrConnectionHasChanged -= OnLibJackWrapperHasChanged;
+				Wrapper.JackHasShutdown -= OnJackShutdown;
 			}
 
-			LibJackWrapper.Close ();
+			Wrapper.Close ();
 		}
-		
 		#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasExited;
-		
+
 		public virtual ConnectionType ConnectionType {
 			get { return ConnectionType.Undefined;}
 		}
 
 		public bool IsActive {
-			get { return LibJackWrapper.IsActive; }
+			get { return Wrapper.IsActive; }
 		}
-		
+
 		public IEnumerable<Client> Clients {
 			get {
 				if (IsActive) {
-					IEnumerable<IGrouping<Client, JackPort>> portGroups = LibJackWrapper.GetPorts (ConnectionType)
+					IEnumerable<IGrouping<Client, JackPort>> portGroups = Wrapper.GetPorts (ConnectionType)
 						.GroupBy (p => new Client (p.ClientName, p.FlowDirection, p.ConnectionType));
 					List<Client> clients = new List<Client> ();
 					foreach (IGrouping<Client, JackPort> portGroup in portGroups) {
@@ -87,7 +87,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					return clients;
 				} else {
 					GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
-					LibJackWrapper.ConnectToServer ();
+					Wrapper.ConnectToServer ();
 					return null;
 				}
 			}
@@ -96,7 +96,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		public void Connect (IConnectable outlet, IConnectable inlet)
 		{
 			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
-				LibJackWrapper.Connect (portPair.Key, portPair.Value);
+				Wrapper.Connect (portPair.Key, portPair.Value);
 			}
 		}
 
@@ -104,14 +104,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			foreach (Port outPort in outlet.Ports) {
 				foreach (Port inPort in inlet.Ports) {
-					LibJackWrapper.Disconnect (outPort, inPort);
+					Wrapper.Disconnect (outPort, inPort);
 				}
 			}
 		}
 
 		public IEnumerable<IConnection> Connections {
 			get {
-				return LibJackWrapper.GetConnections (ConnectionType);
+				return Wrapper.GetConnections (ConnectionType);
 			}
 		}
 
@@ -121,10 +121,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 		#endregion
-
 		bool ConnectToServer ()
 		{
-			if (LibJackWrapper.ConnectToServer ()) {
+			if (Wrapper.ConnectToServer ()) {
 				ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
 				eventArgs.Connectables = Clients;
 				eventArgs.Connections = Connections;
@@ -138,7 +137,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			} 
 			return true;
 		}
-		
+
 		void OnLibJackWrapperHasChanged (object sender, ConnectionEventArgs args)
 		{
 #if DEBUG
@@ -148,7 +147,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 				ConnectionHasChanged (this, args);	
 			}
 		}
-		
+
 		void OnJackShutdown (object sender, ConnectionEventArgs args)
 		{
 			if (BackendHasExited != null) {
