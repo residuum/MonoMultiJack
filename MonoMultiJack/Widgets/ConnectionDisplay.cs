@@ -222,6 +222,8 @@ namespace MonoMultiJack.Widgets
 			Gdk.Rectangle rectangle = new Gdk.Rectangle ();
 			TreeViewColumn column = tree.GetColumn (0);
 			column.CellGetSize(rectangle, out offsetX, out offsetY, out cellWidth, out _cellHeight);
+			CellRenderer renderer = column.CellRenderers[0];
+			_cellHeight += (int)renderer.Ypad;
 			return _cellHeight;
 		}
 
