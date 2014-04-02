@@ -42,13 +42,14 @@ namespace MonoMultiJack.Widgets
 		readonly TreeStore _inputStore = new TreeStore (typeof(IConnectable));
 		readonly List<IConnection> _connections = new List<IConnection> ();
 		DateTime _lastLineUpdate = DateTime.Now;
+		int _cellHeight = 0;
 
 		public override void Dispose ()
 		{
 			base.Dispose ();
 		}
 
-		void RenderClientName (TreeViewColumn treeColumn, CellRenderer cell, TreeModel treeModel, TreeIter iter)
+		void RenderConnectableName (TreeViewColumn treeColumn, CellRenderer cell, TreeModel treeModel, TreeIter iter)
 		{
 			IConnectable connectable = (IConnectable)treeModel.GetValue (iter, 0);
 			((CellRendererText)cell).Text = connectable.Name;
@@ -60,14 +61,14 @@ namespace MonoMultiJack.Widgets
 			TreeViewColumn inClientColumn = new TreeViewColumn ();
 			CellRendererText inClientCell = new CellRendererText ();
 			inClientColumn.PackStart (inClientCell, true);
-			inClientColumn.SetCellDataFunc (inClientCell, new TreeCellDataFunc (RenderClientName));
+			inClientColumn.SetCellDataFunc (inClientCell, new TreeCellDataFunc (RenderConnectableName));
 			_inputTreeview.AppendColumn (inClientColumn);
 			_inputTreeview.Model = _inputStore;
 			
 			TreeViewColumn outClientColumn = new TreeViewColumn ();
 			CellRendererText outClientCell = new CellRendererText ();
 			outClientColumn.PackStart (outClientCell, true);
-			outClientColumn.SetCellDataFunc (outClientCell, new TreeCellDataFunc (RenderClientName));
+			outClientColumn.SetCellDataFunc (outClientCell, new TreeCellDataFunc (RenderConnectableName));
 			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
 			ConnectionManagerName = connectionManagerName;
@@ -210,9 +211,23 @@ namespace MonoMultiJack.Widgets
 			return connectionStore.GetValue (selectedIter, 0) as IConnectable; 
 		}
 
+		int GetCellHeight (TreeView tree)
+		{
+			if (_cellHeight > 0) {
+				return _cellHeight;
+			}
+			int offsetX;
+			int offsetY;
+			int cellWidth;
+			Gdk.Rectangle rectangle = new Gdk.Rectangle ();
+			TreeViewColumn column = tree.GetColumn (0);
+			column.CellGetSize(rectangle, out offsetX, out offsetY, out cellWidth, out _cellHeight);
+			return _cellHeight;
+		}
+
 		int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
 		{
-			int cellHeight = 24;
+			int cellHeight = GetCellHeight (tree);
 			//We start in the middle of the first Treeview item
 			int position = cellHeight / 2;
 
