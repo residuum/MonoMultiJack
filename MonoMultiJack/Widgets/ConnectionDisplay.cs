@@ -29,6 +29,7 @@ using Gtk;
 using MonoMultiJack.ConnectionWrapper;
 using Cairo;
 using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Widgets.ConnectionColors;
 
 namespace MonoMultiJack.Widgets
 {
@@ -221,8 +222,8 @@ namespace MonoMultiJack.Widgets
 			int cellWidth;
 			Gdk.Rectangle rectangle = new Gdk.Rectangle ();
 			TreeViewColumn column = tree.GetColumn (0);
-			column.CellGetSize(rectangle, out offsetX, out offsetY, out cellWidth, out _cellHeight);
-			CellRenderer renderer = column.CellRenderers[0];
+			column.CellGetSize (rectangle, out offsetX, out offsetY, out cellWidth, out _cellHeight);
+			CellRenderer renderer = column.CellRenderers [0];
 			_cellHeight += (int)renderer.Ypad;
 			return _cellHeight;
 		}
@@ -258,7 +259,6 @@ namespace MonoMultiJack.Widgets
 			return position;
 		}
 
-
 		/// <summary>
 		/// Handles the click event on the ConnectButton
 		/// </summary>
@@ -282,7 +282,7 @@ namespace MonoMultiJack.Widgets
 					selectedInIter
 				);
 				if (Connect != null) {
-					Connect (this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
+					Connect (this, new ConnectEventArgs { Outlet = outlet, Inlet = inlet });
 				}
 			}
 		}
@@ -301,7 +301,7 @@ namespace MonoMultiJack.Widgets
 					selectedInIter
 				);
 				if (Disconnect != null) {
-					Disconnect (this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
+					Disconnect (this, new ConnectEventArgs { Outlet = outlet, Inlet = inlet });
 				}
 			}
 		}
@@ -321,15 +321,16 @@ namespace MonoMultiJack.Widgets
 				}
 				_connectionArea.GdkWindow.Clear ();
 				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
+					g.Antialias = Antialias.Subpixel;
 					List<IConnection> connections = new List<IConnection> (_connections);
-					foreach (IConnection conn in connections) {
+					for (int i = 0; i < connections.Count; i++) {
+						IConnection conn = connections [i];
 						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
 						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
 						int areaWidth = _connectionArea.Allocation.Width;
 						if (outY != -1 && inY != -1) {
 							g.Save ();
 							g.MoveTo (0, outY);
-							//g.LineTo (areaWidth, inY);
 							g.CurveTo (
 								new PointD (areaWidth / 4, outY),
 								new PointD (3 * areaWidth / 4, inY),
@@ -337,10 +338,11 @@ namespace MonoMultiJack.Widgets
 							);
 							g.Restore ();
 						}
+						// TODO: Find a way to get the background color
+						g.Color = Colors.GetColor (i, new Color());
+						g.LineWidth = 1;
+						g.Stroke ();
 					}
-					g.Color = new Color (0, 0, 0);
-					g.LineWidth = 1;
-					g.Stroke ();
 					g.Target.Dispose ();
 					_lastLineUpdate = now;
 				}
@@ -402,6 +404,5 @@ namespace MonoMultiJack.Widgets
 
 		public string ConnectionManagerName { get; private set; }
 		#endregion
-
 	}
 }
