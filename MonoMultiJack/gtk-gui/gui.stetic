@@ -5,8 +5,8 @@
     <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
-    <widget-library name="../bin/Debug/MonoMultiJack.exe" internal="true" />
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Release/MonoMultiJack.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MonoMultiJack.Forms.MainWindow" design-size="801 505">
     <action-group name="Default">
@@ -173,7 +173,6 @@
     <property name="MemberName" />
     <property name="WidthRequest">500</property>
     <property name="HeightRequest">200</property>
-    <signal name="ExposeEvent" handler="Handle_ExposeEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
@@ -252,8 +251,6 @@
                     <property name="ShowScrollbars">True</property>
                     <property name="EnableSearch">False</property>
                     <property name="HeadersVisible">False</property>
-                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
-                    <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
                   </widget>
                 </child>
               </widget>
@@ -283,8 +280,6 @@
                     <property name="ShowScrollbars">True</property>
                     <property name="EnableSearch">False</property>
                     <property name="HeadersVisible">False</property>
-                    <signal name="RowExpanded" handler="OnTreeViewRowExpanded" />
-                    <signal name="RowCollapsed" handler="OnTreeViewRowCollapsed" />
                   </widget>
                 </child>
               </widget>

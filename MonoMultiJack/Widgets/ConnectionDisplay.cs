@@ -65,6 +65,8 @@ namespace MonoMultiJack.Widgets
 			inClientColumn.SetCellDataFunc (inClientCell, new TreeCellDataFunc (RenderConnectableName));
 			_inputTreeview.AppendColumn (inClientColumn);
 			_inputTreeview.Model = _inputStore;
+			_inputTreeview.RowExpanded += OnTreeViewRowExpanded;
+			_inputTreeview.RowCollapsed += OnTreeViewRowCollapsed;
 			
 			TreeViewColumn outClientColumn = new TreeViewColumn ();
 			CellRendererText outClientCell = new CellRendererText ();
@@ -72,7 +74,10 @@ namespace MonoMultiJack.Widgets
 			outClientColumn.SetCellDataFunc (outClientCell, new TreeCellDataFunc (RenderConnectableName));
 			_outputTreeview.AppendColumn (outClientColumn);
 			_outputTreeview.Model = _outputStore;
+			_outputTreeview.RowExpanded += OnTreeViewRowExpanded;
+			_outputTreeview.RowCollapsed += OnTreeViewRowCollapsed;
 			ConnectionManagerName = connectionManagerName;
+			this.ExposeEvent += OnExpose;
 		}
 
 		void AddTreeStoreValues (IConnectable connectable, TreeStore store)
@@ -363,7 +368,7 @@ namespace MonoMultiJack.Widgets
 			UpdateConnectionLines ();
 		}
 
-		protected virtual void Handle_ExposeEvent (object o, Gtk.ExposeEventArgs args)
+		protected virtual void OnExpose (object o, Gtk.ExposeEventArgs args)
 		{
 			UpdateConnectionLines ();
 		}
