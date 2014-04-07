@@ -360,17 +360,26 @@ namespace MonoMultiJack.Widgets
 
 		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
 		{
-			UpdateConnectionLines ();
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
+			}
+			);
 		}
 
 		protected virtual void OnTreeViewRowCollapsed (object o, Gtk.RowCollapsedArgs args)
 		{
-			UpdateConnectionLines ();
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
+			}
+			);
 		}
 
 		protected virtual void OnExpose (object o, Gtk.ExposeEventArgs args)
 		{
-			UpdateConnectionLines ();
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
+			}
+			);
 		}
 		#region IConnectionWidget implementation
 		public event ConnectEventHandler Connect;
