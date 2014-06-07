@@ -26,7 +26,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using GLib;
+using Xwt;
 using MonoMultiJack.ConnectionWrapper.Alsa.LibAsound;
 using MonoMultiJack.ConnectionWrapper.Alsa.Types;
 
@@ -41,7 +41,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		{
 			Wrapper.Activate ();
 			
-			Timeout.Add (2000, new TimeoutHandler (CheckForChanges));
+			Application.TimeoutInvoke (2000, CheckForChanges);
 		}
 
 		~AlsaMidiManager ()

@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.OS.Linux", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.OS.Windows", "MonoMultiJack.OS.Windows\MonoMultiJack.OS.Windows.csproj", "{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt", "xwt\Xwt\Xwt.csproj", "{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Gtk", "xwt\Xwt.Gtk\Xwt.Gtk.csproj", "{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95BED56E-4297-4668-B75B-A9DF6F522EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95BED56E-4297-4668-B75B-A9DF6F522EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95BED56E-4297-4668-B75B-A9DF6F522EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +55,10 @@ Global
 		{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D43459F9-41B8-467F-965E-8783BD10FC04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D43459F9-41B8-467F-965E-8783BD10FC04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D43459F9-41B8-467F-965E-8783BD10FC04}.Release|Any CPU.ActiveCfg = Release|Any CPU

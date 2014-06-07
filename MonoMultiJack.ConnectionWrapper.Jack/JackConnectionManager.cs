@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xwt;
 using MonoMultiJack.ConnectionWrapper.Jack.LibJack;
 using MonoMultiJack.ConnectionWrapper.Jack.Types;
 
@@ -86,7 +87,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 					}
 					return clients;
 				} else {
-					GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
+					Application.TimeoutInvoke (2000, ConnectToServer);
 					Wrapper.ConnectToServer ();
 					return null;
 				}
@@ -153,7 +154,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			if (BackendHasExited != null) {
 				BackendHasExited (this, args);
 			}
-			GLib.Timeout.Add (2000, new GLib.TimeoutHandler (ConnectToServer));
+			Application.TimeoutInvoke(2000, ConnectToServer);
 		}
 	}
 }

@@ -32,34 +32,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System" />
-    <Reference Include="Mono.Cairo" />
-    <Reference Include="Mono.Posix" />
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>glib-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-dotnet-2.0</Package>
-    </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>glade-sharp-2.0</Package>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\DependencyResolver.cs" />
@@ -68,10 +40,7 @@
     <Compile Include="Forms\MainWindow.cs" />
     <Compile Include="Forms\JackdConfigWindow.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
-    <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Widgets\ConnectionDisplay.cs" />
-    <Compile Include="gtk-gui\MonoMultiJack.Forms.MainWindow.cs" />
-    <Compile Include="gtk-gui\MonoMultiJack.Widgets.ConnectionDisplay.cs" />
     <Compile Include="Forms\IMainWindow.cs" />
     <Compile Include="Forms\IWindow.cs" />
     <Compile Include="Widgets\IWidget.cs" />
@@ -130,6 +99,14 @@
     <ProjectReference Include="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj">
       <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
       <Name>MonoMultiJack.OS.Linux</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj">
+      <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
+      <Name>Xwt.Gtk</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

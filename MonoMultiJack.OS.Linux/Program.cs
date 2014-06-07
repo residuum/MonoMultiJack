@@ -27,6 +27,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
+using Xwt;
 using MonoMultiJack.Configuration;
 
 namespace MonoMultiJack.OS.Linux
@@ -187,7 +188,7 @@ namespace MonoMultiJack.OS.Linux
 		public void Start ()
 		{
 			ExecuteShellScript (_startScriptFile, true);
-			GLib.Timeout.Add (1000, new GLib.TimeoutHandler (IsStillRunning));
+			Application.TimeoutInvoke (1000, IsStillRunning);
 		}
 		
 		/// <summary>
