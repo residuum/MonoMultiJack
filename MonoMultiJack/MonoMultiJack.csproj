@@ -111,4 +111,7 @@
       <Name>Xwt.Gtk</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Widgets\ConnectionColors\" />
+  </ItemGroup>
 </Project>
