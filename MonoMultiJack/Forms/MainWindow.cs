@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +26,95 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Gdk;
-using Gtk;
+using System.Linq;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
-using Mono.Unix;
+using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
 	/// <summary>
 	/// Main Window 
 	/// </summary>
-	public partial class MainWindow: Gtk.Window, IMainWindow
-	{		
-		readonly string JackdStatusRunning = Catalog.GetString("Jackd is running.");
-		readonly string JackdStatusStopped = Catalog.GetString("Jackd is stopped.");
+	public class MainWindow : Window, IMainWindow
+	{
+		readonly string JackdStatusRunning = "Jackd is running.";
+		readonly string JackdStatusStopped = "Jackd is stopped.";
+		private VBox _appButtonBox;
+		private Notebook _connectionNotebook;
+		private Label _statusbar;
+		private MenuItem _stopAction;
+		private MenuItem _stopAllAction;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public MainWindow () : base(Gtk.WindowType.Toplevel)
+		public MainWindow ()
 		{
-			Build ();
+			BuildMenu ();
 			BuildWindowContent ();
-			DeleteEvent += OnDelete;
+			this.Closed += OnCloseEvent;
 		}
 
+		private void BuildMenu ()
+		{
+			this.MainMenu = new Menu ();
+			MenuItem file = new MenuItem ("_File");
+			file.SubMenu = new Menu ();
+			foreach (MenuItem menuItem in BuildFileMenu()) {
+				file.SubMenu.Items.Add (menuItem);
+			}
+			this.MainMenu.Items.Add (file);
+			MenuItem configuration = new MenuItem ("_Configuration");
+			configuration.SubMenu = new Menu ();
+			foreach (MenuItem menuItem in BuildConfigMenu()) {
+				configuration.SubMenu.Items.Add (menuItem);
+			}
+			this.MainMenu.Items.Add (configuration);
+			MenuItem help = new MenuItem ("_Help");
+			help.SubMenu = new Menu ();
+			foreach (MenuItem menuItem in BuildHelpMenu()) {
+				help.SubMenu.Items.Add (menuItem);
+			}
+			this.MainMenu.Items.Add (help);
+
+		}
+
+		private IEnumerable<MenuItem> BuildHelpMenu ()
+		{
+			yield return CreateMenuItem ("About", ShowAbout, StockIcons.Information);
+		}
+
+		private IEnumerable<MenuItem> BuildConfigMenu ()
+		{
+			yield return CreateMenuItem ("Configure Jackd", CallShowConfigureJackd);
+			yield return CreateMenuItem ("Add / Remove Applications", CallShowConfigureApps);
+		}
+
+		private IEnumerable<MenuItem> BuildFileMenu ()
+		{
+			yield return CreateMenuItem ("(Re)Start _Jackd", CallStartJackd);
+			_stopAction = CreateMenuItem ("_Stop Jackd", CallStopJackd);
+			yield return _stopAction;
+			_stopAllAction = CreateMenuItem ("Stop _All", CallStopAll);
+			yield return _stopAllAction;
+			yield return CreateMenuItem ("_Quit", OnQuitActionActivated);
+		}
+
+		private static MenuItem CreateMenuItem (string name, EventHandler handler, Image icon = null)
+		{
+			MenuItem menuItem = new MenuItem (name);
+			if (icon != null) {
+				menuItem.Image = icon;
+			}
+			menuItem.Clicked += handler;
+			return menuItem;
+		}
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
 			this.Show ();
-		}
-
-		void IWidget.Destroy ()
-		{
-			this.Destroy ();
 		}
 
 		void IWidget.Hide ()
@@ -68,26 +122,24 @@ namespace MonoMultiJack.Forms
 			this.Hide ();
 		}
 		#endregion
-
 		#region IWindow implementation
 		string IWindow.IconPath {
 			set {
 				if (File.Exists (value)) {
-					this.Icon = new Pixbuf (value);
+					this.Icon = Image.FromFile (value);
 				}
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				//TODO
 			}
 		}
 
 		public event EventHandler Closing;
 		#endregion
-
-		#region IMainWindow implementation		
+		#region IMainWindow implementation
 		IEnumerable<IAppStartWidget> IMainWindow.AppStartWidgets {
 			set {
 				UpdateAppWidgets (value);
@@ -102,16 +154,7 @@ namespace MonoMultiJack.Forms
 
 		WindowConfiguration IMainWindow.WindowConfiguration {
 			get {
-				
-				int xPosition, yPosition, xSize, ySize;
-				GetPosition (out xPosition, out yPosition);
-				GetSize (out xSize, out ySize);
-				return new WindowConfiguration (
-		xPosition,
-		yPosition,
-		xSize,
-		ySize
-				);
+				return new WindowConfiguration (X, Y, Width, Height);
 			}
 			set {
 				UpdateWindowSize (value);
@@ -120,17 +163,23 @@ namespace MonoMultiJack.Forms
 
 		bool IMainWindow.JackdIsRunning {
 			set {
-				stopAction.Sensitive = value;
-				_statusbar.Push (0, value ? JackdStatusRunning : JackdStatusStopped);
+				Application.Invoke (() =>
+				{
+					_stopAction.Sensitive = value;
+					_statusbar.Text = value ? JackdStatusRunning : JackdStatusStopped;
+				});
 			}
 		}
 
 		bool IMainWindow.AppsAreRunning {
 			set {
-				stopAllAction.Sensitive = value;
+				Application.Invoke (() =>
+				{
+					_stopAllAction.Sensitive = value;
+				});
 			}
 		}
-		
+
 		public event EventHandler StartJackd;
 		public event EventHandler StopJackd;
 		public event EventHandler StopAll;
@@ -140,13 +189,30 @@ namespace MonoMultiJack.Forms
 		public event EventHandler ShowHelp;
 		public event EventHandler QuitApplication;
 		#endregion
-		
 		/// <summary>
 		/// builds window content
 		/// </summary>
 		void BuildWindowContent ()
 		{
-			Title = Catalog.GetString("MonoMultiJack");
+			Title = "MonoMultiJack";
+			_connectionNotebook = new Notebook {
+				ExpandHorizontal = true,
+				ExpandVertical = true
+			};
+			_appButtonBox = new VBox { ExpandVertical = true };
+			HBox mainContent = new HBox {
+				ExpandHorizontal = true,
+				ExpandVertical = true
+			};
+			mainContent.PackStart (_appButtonBox);
+			mainContent.PackStart (_connectionNotebook);
+
+			VBox container = new VBox ();
+			container.PackStart (mainContent);
+			_statusbar = new Label ();
+			container.PackEnd (_statusbar);
+
+			this.Content = container;
 
 			((IMainWindow)this).JackdIsRunning = false;
 		}
@@ -157,34 +223,35 @@ namespace MonoMultiJack.Forms
 		/// <param name="appWidgets">The app widgets.</param>
 		void UpdateAppWidgets (IEnumerable<IAppStartWidget> appWidgets)
 		{
-			foreach (Widget widget in _appButtonBox.Children) {
-				IAppStartWidget appWidget = widget as IAppStartWidget;
-				if (appWidget != null) {
-					appWidget.Destroy ();
+			Application.Invoke (() =>
+			{
+				foreach (IAppStartWidget appWidget in _appButtonBox.Children.OfType<IAppStartWidget>()) {
+					appWidget.Dispose ();
 				}
-			}
-			foreach (IAppStartWidget appWidget in appWidgets) {
-				_appButtonBox.Add ((Widget)appWidget);
-				appWidget.Show ();
-			}
-			_appButtonBox.ShowAll ();
+				_appButtonBox.Clear ();
+				foreach (IAppStartWidget appWidget in appWidgets) {
+					_appButtonBox.PackStart ((Widget)appWidget);
+					appWidget.Show ();
+				}
+			});
 		}
 
 		void CreateTabs (IEnumerable<IConnectionWidget> connectionWidgets)
 		{
 			foreach (IConnectionWidget widget in connectionWidgets) {
-				_connectionNotebook.AppendPage ((Widget)widget, new Label (widget.ConnectionManagerName));
-				widget.Show ();
+				_connectionNotebook.Add ((Widget)widget, widget.ConnectionManagerName);
 			}
-			_connectionNotebook.ShowAll ();
 		}
-		
+
 		void UpdateWindowSize (WindowConfiguration windowConfig)
 		{
-			Resize (windowConfig.XSize, windowConfig.YSize);
-			Move (windowConfig.XPosition, windowConfig.YPosition);
+			Height = windowConfig.Height;
+			Width = windowConfig.Width;
+
+			X = windowConfig.XPosition;
+			Y = windowConfig.YPosition;
 		}
-				
+
 		void CallQuitApplication ()
 		{
 			if (QuitApplication != null) {
@@ -198,19 +265,19 @@ namespace MonoMultiJack.Forms
 				StopJackd (this, new EventArgs ());
 			}
 		}
-		
+
 		void CallStopAll ()
 		{
 			if (StopAll != null) {
 				StopAll (this, new EventArgs ());
 			}
 		}
-		
-		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
+
+		protected void OnCloseEvent (object sender, EventArgs a)
 		{
 			CallQuitApplication ();
 		}
-		
+
 		protected virtual void CallStartJackd (object sender, EventArgs e)
 		{
 			CallStartJackd ();
@@ -222,24 +289,24 @@ namespace MonoMultiJack.Forms
 				StartJackd (this, new EventArgs ());
 			}
 		}
-	
+
 		protected virtual void CallStopJackd (object sender, EventArgs e)
 		{
 			CallStopJackd ();
 		}
-	
+
 		protected virtual void CallStopAll (object sender, EventArgs e)
 		{
 			CallStopAll ();
 		}
-		
+
 		protected virtual void CallShowConfigureJackd (object sender, EventArgs e)
 		{
 			if (ShowConfigureJackd != null) {
 				ShowConfigureJackd (this, new EventArgs ());
 			}
 		}
-		
+
 		protected virtual void CallShowConfigureApps (object sender, EventArgs e)
 		{
 			if (ShowConfigureApps != null) {
@@ -247,7 +314,7 @@ namespace MonoMultiJack.Forms
 			}
 
 		}
-	
+
 		/// <summary>
 		/// quits window
 		/// </summary>
@@ -261,7 +328,7 @@ namespace MonoMultiJack.Forms
 		{
 			CallQuitApplication ();
 		}
-		
+
 		/// <summary>
 		/// shows about dialog
 		/// </summary>
@@ -278,7 +345,7 @@ namespace MonoMultiJack.Forms
 			}
 
 		}
-		
+
 		/// <summary>
 		/// Event handler for destruction of main window
 		/// </summary>
@@ -292,6 +359,5 @@ namespace MonoMultiJack.Forms
 		{
 			CallQuitApplication ();
 		}
-
 	}
 }

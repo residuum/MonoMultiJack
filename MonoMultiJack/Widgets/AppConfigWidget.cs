@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,78 +23,67 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 using System;
-using MonoMultiJack.Configuration;
+using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Widgets
 {
 	/// <summary>
 	/// Widget for configuring an application for use with jackd
 	/// </summary>
-	public class AppConfigWidget : Fixed, IAppConfigWidget
+	public class AppConfigWidget : Widget, IAppConfigWidget
 	{
-		Entry _appNameEntry;
-		Entry _appCommandEntry;
-		Entry _appArgumentsEntry;
+		TextEntry _appNameEntry;
+		TextEntry _appCommandEntry;
+		TextEntry _appArgumentsEntry;
 		Button _removeApp;
-						
+
 		/// <summary>
 		/// constructor
 		/// </summary>
-		/// <param name="appConfig">
-		/// The <see cref="AppConfiguration"/> to edit
-		/// </param>
 		public AppConfigWidget ()
 		{
 			BuildWidget ();
+			BindEvents ();
 		}
-		
+
+		private void BindEvents ()
+		{
+			_removeApp.Clicked += HandleRemoveClick;
+		}
+
 		/// <summary>
 		/// builds subwidgets and layout
 		/// </summary>
 		void BuildWidget ()
 		{
-			Table table = new Table (3, 4, false);
-			table.RowSpacing = 3;
-			table.ColumnSpacing = 3;
-			table.BorderWidth = 1;
-			
+			Table table = new Table ();
+
 			Label label = new Label ("Application");
-			label.Xalign = 0;
-			table.Attach (label, 0, 2, 0, 1);
+			label.Font = label.Font.WithWeight (FontWeight.Bold);
+			table.Add (label, 0, 0, 1, 3);
 
-			label = new Label ("Name");
-			label.Xalign = 0;
-			table.Attach (label, 0, 1, 1, 2);
-			_appNameEntry = new Entry ();
-			table.Attach (_appNameEntry, 1, 2, 1, 2);
-			label.MnemonicWidget = _appNameEntry;
-			
-			label = new Label ("Command");
-			label.Xalign = 0;
-			table.Attach (label, 0, 1, 2, 3);
-			_appCommandEntry = new Entry ();
-			table.Attach (_appCommandEntry, 1, 2, 2, 3);
-			label.MnemonicWidget = _appCommandEntry;
-			
-			label = new Label ("Command Arguments");
-			label.Xalign = 0;
-			table.Attach (label, 0, 1, 3, 4);
-			_appArgumentsEntry = new Entry ();
-			table.Attach (_appArgumentsEntry, 1, 2, 3, 4);
-			label.MnemonicWidget = _appArgumentsEntry;
-			
-			_removeApp = new Button (Stock.Delete);
-			_removeApp.Clicked += HandleClicked;
-			;
-			table.Attach (_removeApp, 2, 3, 1, 2);
+			_appNameEntry = BuildRow (table, 1, "Name");
+			_appCommandEntry = BuildRow (table, 2, "Command");
+			_appArgumentsEntry = BuildRow (table, 3, "Command Arguments");
 
-			Put (table, 0, 0);
-			table.Show ();
+			_removeApp = new Button ("Delete") { Image = StockIcons.Remove };
+			table.Add (_removeApp, 2, 2);
+			Content = table;
 		}
 
-		void HandleClicked (object sender, EventArgs e)
+		private TextEntry BuildRow (Table table, int index, string labelText)
+		{
+			Label label = new Label (labelText);
+			table.Add (label, 0, index);
+			TextEntry entry = new TextEntry { MultiLine = false };
+			table.Add (entry, 1, index);
+			label.LinkClicked += (sender, args) => entry.SetFocus ();
+			return entry;
+		}
+
+		void HandleRemoveClick (object sender, EventArgs e)
 		{
 			if (RemoveApplication != null) {
 				RemoveApplication (this, new EventArgs ());
@@ -106,16 +95,10 @@ namespace MonoMultiJack.Widgets
 			this.Dispose ();
 		}
 		#endregion
-
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
-			this.ShowAll ();
-		}
-
-		void IWidget.Destroy ()
-		{
-			this.Destroy ();
+			this.Show ();
 		}
 
 		void IWidget.Hide ()
@@ -123,7 +106,6 @@ namespace MonoMultiJack.Widgets
 			this.Hide ();
 		}
 		#endregion
-
 		#region IAppConfigWidget implementation
 		string IAppConfigWidget.Name {
 			get {

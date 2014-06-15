@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
-using MonoMultiJack.Configuration;
 using System;
-using System.IO;
-using Gdk;
-using Mono.Unix;
+using Xwt;
 
 namespace MonoMultiJack.Forms
 {
@@ -37,46 +33,38 @@ namespace MonoMultiJack.Forms
 	/// </summary>
 	public class JackdConfigWindow : Dialog, IJackdConfigWindow
 	{
-		Entry _jackdPathEntry;
-		Entry _jackdGeneralOptionsEntry;
-		Entry _jackdDriverEntry;
-		Entry _jackdDriverOptionsEntry;
-
+		TextEntry _jackdPathEntry;
+		TextEntry _jackdGeneralOptionsEntry;
+		TextEntry _jackdDriverEntry;
+		TextEntry _jackdDriverOptionsEntry;
 		#region IWidget implementation
-		void MonoMultiJack.Widgets.IWidget.Show ()
+		void Widgets.IWidget.Show ()
 		{
 			this.Show ();
 		}
 
-		void MonoMultiJack.Widgets.IWidget.Destroy ()
-		{
-			this.Destroy ();
-		}
-
-		void MonoMultiJack.Widgets.IWidget.Hide ()
+		void Widgets.IWidget.Hide ()
 		{
 			this.Hide ();
 		}
 		#endregion
-
 		#region IWindow implementation
 		public event EventHandler Closing;
 
 		string IWindow.IconPath {
 			set {				
-				if (File.Exists (value)) {
-					this.Icon = new Pixbuf (value);
-				}
+				//if (File.Exists (value)) {
+				//    this.Icon = new Pixbuf (value);
+				//}
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				//this.Sensitive = value;
 			}
 		}
 		#endregion
-
 		#region IJackdConfigWindow implementation
 		string IJackdConfigWindow.Path {
 			get {
@@ -116,23 +104,26 @@ namespace MonoMultiJack.Forms
 
 		public event EventHandler SaveJackd;
 		#endregion
-
-		
 		/// <summary>
 		/// constructor
 		/// </summary>
 		public JackdConfigWindow ()
 		{
-			Title = Catalog.GetString ("Configure Jackd");
+			Title = "Configure Jackd";
 			Resizable = false;
 			BuildDialog ();
-			Close += HandleClose;
-			Response += HandleResponse;
+			BindEvents ();
 		}
 
-		void HandleResponse (object o, ResponseArgs args)
+		private void BindEvents ()
 		{
-			if (args.ResponseId == ResponseType.Ok && SaveJackd != null) {
+			Closed += HandleClose;
+			this.Buttons.GetCommandButton (Command.Ok).Clicked += HandleOkClick;
+		}
+
+		void HandleOkClick (object o, EventArgs args)
+		{
+			if (SaveJackd != null) {
 				SaveJackd (this, new EventArgs ());
 			}
 			HandleClose (o, args);
@@ -144,47 +135,33 @@ namespace MonoMultiJack.Forms
 				Closing (this, new EventArgs ());
 			}
 		}
-		
+
 		/// <summary>
-		/// builds dialog window, fills entry fields
+		/// builds dialog window
 		/// </summary>
-		/// <param name="jackdConfig">
-		/// A <see cref="JackdConfiguration"/>
-		/// </param>
 		void BuildDialog ()
 		{
-			Table table = new Table (5, 2, false);
-			table.RowSpacing = 2;
-			table.ColumnSpacing = 3;
-			VBox.PackStart (table, false, false, 0);
-			
-			Label label = new Label (Catalog.GetString ("Jackd Startup Path"));
-			table.Attach (label, 0, 1, 0, 1);
-			_jackdPathEntry = new Entry ();
-			table.Attach (_jackdPathEntry, 1, 2, 0, 1);
-			label.MnemonicWidget = _jackdPathEntry;
-			
-			label = new Label (Catalog.GetString ("General Options"));
-			table.Attach (label, 0, 1, 1, 2);
-			_jackdGeneralOptionsEntry = new Entry ();
-			table.Attach (_jackdGeneralOptionsEntry, 1, 2, 1, 2);
-			label.MnemonicWidget = _jackdGeneralOptionsEntry;
-			
-			label = new Label (Catalog.GetString ("Driver Infrastructure"));
-			table.Attach (label, 0, 1, 2, 3);
-			_jackdDriverEntry = new Entry ();
-			table.Attach (_jackdDriverEntry, 1, 2, 2, 3);
-			label.MnemonicWidget = _jackdDriverEntry;
-			
-			label = new Label (Catalog.GetString ("Driver Options"));
-			table.Attach (label, 0, 1, 3, 4);
-			_jackdDriverOptionsEntry = new Entry ();
-			table.Attach (_jackdDriverOptionsEntry, 1, 2, 3, 4);
-			label.MnemonicWidget = _jackdDriverOptionsEntry;
-			
-			VBox.ShowAll ();
-			AddButton (Stock.Ok, ResponseType.Ok);
-			AddButton (Stock.Cancel, ResponseType.Cancel);
+			Table table = new Table ();
+
+			_jackdPathEntry = BuildRow (table, 0, "Jackd Startup Path");
+			_jackdGeneralOptionsEntry = BuildRow (table, 1, "General Options");
+			_jackdDriverEntry = BuildRow (table, 2, "Driver Infrastructure");
+			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options");
+
+			this.Content = table;
+
+			this.Buttons.Add (new DialogButton (Command.Ok));
+			this.Buttons.Add (new DialogButton (Command.Cancel));
+		}
+
+		private TextEntry BuildRow (Table table, int index, string labelText)
+		{
+			Label label = new Label (labelText);
+			table.Add (label, 0, index);
+			TextEntry entry = new TextEntry { MultiLine = false };
+			table.Add (entry, 1, index);
+			label.LinkClicked += (sender, args) => entry.SetFocus ();
+			return entry;
 		}
 	}
 }

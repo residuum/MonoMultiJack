@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,18 +29,20 @@ using MonoMultiJack.Controllers.EventArguments;
 namespace MonoMultiJack.Widgets
 {
 	public delegate void ConnectEventHandler (object sender,ConnectEventArgs e);
-
 	public interface IConnectionWidget :IWidget
 	{
 		void Clear ();
 
 		void AddConnectable (IConnectable connectable);
+
 		void RemoveConnectable (IConnectable connectable);
+
 		void UpdateConnectable (IConnectable connectable);
 
 		void AddConnection (IConnection connection);
+
 		void RemoveConnection (IConnection connection);
-		
+
 		event ConnectEventHandler Connect;
 		event ConnectEventHandler Disconnect;
 

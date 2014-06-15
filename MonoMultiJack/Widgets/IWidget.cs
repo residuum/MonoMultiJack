@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,7 @@ namespace MonoMultiJack.Widgets
 	{
 		void Show ();
 
-		void Destroy ();
-
 		void Hide ();
 	}
-
 }
 

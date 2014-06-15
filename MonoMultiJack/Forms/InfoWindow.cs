@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
 using System.IO;
-using Gdk;
+using Xwt;
 
 namespace MonoMultiJack.Forms
 {
@@ -35,10 +34,10 @@ namespace MonoMultiJack.Forms
 
 		public InfoWindow ()
 		{
-			MessageType = MessageType.Info;
-			Close += HandleClose;
-			Response += HandleClose;
-			AddButton ("Close", ResponseType.Close);
+			//MessageType = MessageType.Info;
+			//Close += HandleClose;
+			//Response += HandleClose;
+			//AddButton ("Close", ResponseType.Close);
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -47,23 +46,16 @@ namespace MonoMultiJack.Forms
 				Closing (this, new EventArgs ());
 			}
 		}
-
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
 			this.Dispose ();
 		}
 		#endregion
-
 		#region IWidget implementation
 		void MonoMultiJack.Widgets.IWidget.Show ()
 		{
 			this.Show ();
-		}
-
-		void MonoMultiJack.Widgets.IWidget.Destroy ()
-		{
-			this.Destroy ();
 		}
 
 		void MonoMultiJack.Widgets.IWidget.Hide ()
@@ -71,29 +63,27 @@ namespace MonoMultiJack.Forms
 			this.Hide ();
 		}
 		#endregion
-
 		#region IWindow implementation
 		public event EventHandler Closing;
 
 		string IWindow.IconPath {
 			set {				
 				if (File.Exists (value)) {
-					this.Icon = new Pixbuf (value);
+					//this.Icon = new Pixbuf (value);
 				}
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				//this.Sensitive = value;
 			}
 		}
 		#endregion
-
 		#region IInfoMessage implementation
 		string IInfoWindow.Message {
 			set {
-				this.Text = value;
+				//this.Text = value;
 			}
 		}
 		#endregion

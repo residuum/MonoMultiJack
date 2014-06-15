@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ using System.Reflection;
 using System.IO;
 using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.ConnectionWrapper;
-using Mono.Unix;
 
 namespace MonoMultiJack.Controllers
 {
@@ -62,7 +61,7 @@ namespace MonoMultiJack.Controllers
 
 		public MainController ()
 		{
-			_mainWindow = new Forms.MainWindow ();
+			_mainWindow = new MainWindow ();
 			_mainWindow.IconPath = _programIcon;
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
@@ -84,7 +83,7 @@ namespace MonoMultiJack.Controllers
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-	
+
 		protected virtual void Dispose (bool isDisposing)
 		{
 			if (_jackd != null) {
@@ -167,13 +166,13 @@ namespace MonoMultiJack.Controllers
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage (Catalog.GetString("Application configuration File is corrupt."));
+				ShowInfoMessage ("Application configuration File is corrupt.");
 				appConfigs = new List<AppConfiguration> ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage (Catalog.GetString("Applications are not configured."));
+				ShowInfoMessage ("Applications are not configured.");
 				appConfigs = new List<AppConfiguration> ();
 			}
 			return false;
@@ -183,12 +182,12 @@ namespace MonoMultiJack.Controllers
 		{
 			try {
 				windowConfig = PersistantConfiguration.LoadWindowSize ();
-				if (windowConfig.XSize != 0 && windowConfig.YSize != 0) {
+				if (windowConfig.Width != 0 && windowConfig.Height != 0) {
 					return true;
 				}
 			} catch (Exception e) {
 				#if DEBUG
-                Console.WriteLine (e.Message);
+				Console.WriteLine (e.Message);
 				#endif
 			}
 			windowConfig = new WindowConfiguration (0, 0, 0, 0);
@@ -203,12 +202,11 @@ namespace MonoMultiJack.Controllers
 				_jackd.HasExited -= Jackd_HasExited;
 				_jackd.Dispose ();
 			}
-			_jackd = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[]{jackdConfig});
+			_jackd = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[] { jackdConfig });
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}
-
-#region Model events
+		#region Model events
 		void Jackd_HasStarted (object sender, EventArgs e)
 		{
 			UpdateRunningStatus ();
@@ -218,9 +216,8 @@ namespace MonoMultiJack.Controllers
 		{
 			UpdateRunningStatus ();
 		}
-#endregion
-
-#region IMainWindow events
+		#endregion
+		#region IMainWindow events
 		void MainWindow_StartJackd (object sender, EventArgs e)
 		{
 			if (_jackd.IsRunning) {
@@ -270,14 +267,13 @@ namespace MonoMultiJack.Controllers
 		{
 			//TODO: Move to view.
 			IAboutWindow AboutWindow = new AboutWindow ();
-			AboutWindow.ProgramName = Catalog.GetString("MonoMultiJack");
+			AboutWindow.ProgramName = "MonoMultiJack";
 			AboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
-			AboutWindow.Copyright = "(c) Thomas Mayer 2009-2013";
-			AboutWindow.Comments = Catalog.GetString(@"MonoMultiJack is a simple tool for controlling Jackd and diverse audio 
-	programs.");
+			AboutWindow.Copyright = "(c) Thomas Mayer 2009-2014";
+			AboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio programs.";
 			AboutWindow.Website = "http://ix.residuum.org/";
-			AboutWindow.Authors = new String[] {"Thomas Mayer"};
-			AboutWindow.License = Catalog.GetString(@"Copyright (c) 2009-2013 Thomas Mayer
+			AboutWindow.Authors = new string[] { "Thomas Mayer" };
+			AboutWindow.License = @"Copyright (c) 2009-2014 Thomas Mayer
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the ""Software""), to deal
@@ -296,7 +292,7 @@ namespace MonoMultiJack.Controllers
 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.");
+	THE SOFTWARE.";
 			AboutWindow.IconPath = ProgramIconPath;
 			AboutWindow.Show ();
 			AboutWindow.Closing += Window_Closing;
@@ -316,15 +312,13 @@ namespace MonoMultiJack.Controllers
 				AllWidgetsAreClosed (this, new EventArgs ());
 			}
 		}
-#endregion
-
+		#endregion
 		void Window_Closing (object sender, EventArgs e)
 		{
 			IWindow window = sender as IWindow;
 			if (window == null) {
 				return;
 			}
-			window.Destroy ();
 			window.Dispose ();
 			_mainWindow.Sensitive = true;
 		}
@@ -337,14 +331,14 @@ namespace MonoMultiJack.Controllers
 				_mainWindow.Sensitive = true;
 			}
 		}
-		
+
 		void Controller_UpdateJackd (object sender, UpdateJackdEventArgs e)
 		{
 			_jackdConfiguration = e.JackdConfiguration;
 			PersistantConfiguration.SaveJackdConfig (_jackdConfiguration);
 			InitJackd (_jackdConfiguration);
 		}
-				
+
 		void Controller_UpdateApps (object sender, UpdateAppsEventArgs e)
 		{
 			_appConfigurations = e.AppConfigurations;
@@ -375,13 +369,12 @@ namespace MonoMultiJack.Controllers
 
 		void ShowInfoMessage (string message)
 		{
-			IInfoWindow messageWindow = new InfoWindow ();
-			messageWindow.Message = message;
-			messageWindow.Closing += Window_Closing;
-			messageWindow.Show ();
+//			IInfoWindow messageWindow = new InfoWindow ();
+//			messageWindow.Message = message;
+//			messageWindow.Closing += Window_Closing;
+//			messageWindow.Show ();
 		}
 
 		public event EventHandler AllWidgetsAreClosed;
-
 	}
 }

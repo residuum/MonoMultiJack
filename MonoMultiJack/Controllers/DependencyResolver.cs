@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -49,6 +50,16 @@ namespace MonoMultiJack.Controllers
 		public static T GetImplementation<T> (string configEntry) where T : class
 		{
 			return GetImplementation<T> (configEntry, null);
+		}
+
+		public static T GetValue<T> (string configEntry) where T : struct, IConvertible
+		{
+			if (!typeof(T).IsEnum) {
+				throw new ArgumentException ("T must be an enumerated type");
+			}
+			string appSetting = ConfigurationManager.AppSettings [configEntry];
+			var values = Enum.GetValues (typeof(T));
+			return values.Cast<T> ().First (v => v.ToString (CultureInfo.InvariantCulture) == appSetting);
 		}
 	}
 }

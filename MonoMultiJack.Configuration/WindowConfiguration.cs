@@ -33,7 +33,7 @@ namespace MonoMultiJack.Configuration
 		/// <value>
 		/// The X position.
 		/// </value>
-		public int XPosition { get; private set; }
+		public double XPosition { get; private set; }
 
 		/// <summary>
 		/// Gets the Y position.
@@ -41,7 +41,7 @@ namespace MonoMultiJack.Configuration
 		/// <value>
 		/// The Y position.
 		/// </value>
-		public int YPosition { get; private set; }
+		public double YPosition { get; private set; }
 
 		/// <summary>
 		/// Gets the size of the X.
@@ -49,7 +49,7 @@ namespace MonoMultiJack.Configuration
 		/// <value>
 		/// The size of the X.
 		/// </value>
-		public int XSize { get; private set; }
+		public double Width { get; private set; }
 
 		/// <summary>
 		/// Gets the size of the Y.
@@ -57,7 +57,7 @@ namespace MonoMultiJack.Configuration
 		/// <value>
 		/// The size of the Y.
 		/// </value>
-		public int YSize { get; private set; }
+		public double Height { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MonoMultiJack.BusinessLogic.WindowConfiguration"/> struct.
@@ -74,12 +74,12 @@ namespace MonoMultiJack.Configuration
 		/// <param name='ySize'>
 		/// Y size.
 		/// </param>
-		public WindowConfiguration (int xPosition, int yPosition, int xSize, int ySize) : this()
+		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize) : this()
 		{
 			XPosition = xPosition;
 			YPosition = yPosition;
-			XSize = xSize;
-			YSize = ySize;
+			Width = xSize;
+			Height = ySize;
 		}
 	}
 }

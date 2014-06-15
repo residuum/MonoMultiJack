@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
 using System.IO;
-using Gdk;
+using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
-	public class AboutWindow : AboutDialog, IAboutWindow
+	public class AboutWindow : Window, IAboutWindow
 	{
 		public AboutWindow ()
 		{
-			Close += HandleClose;
-			Response += HandleClose;
+			Closed += HandleClose;
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -44,23 +43,16 @@ namespace MonoMultiJack.Forms
 				Closing (this, new EventArgs ());
 			}
 		}
-
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
 			this.Dispose ();
 		}
 		#endregion
-
 		#region IWidget implementation
 		void MonoMultiJack.Widgets.IWidget.Show ()
 		{
 			this.Show ();
-		}
-
-		void MonoMultiJack.Widgets.IWidget.Destroy ()
-		{
-			this.Destroy ();
 		}
 
 		void MonoMultiJack.Widgets.IWidget.Hide ()
@@ -68,61 +60,70 @@ namespace MonoMultiJack.Forms
 			this.Hide ();
 		}
 		#endregion
-
 		public event EventHandler Closing;
-
 		#region IAboutWindow implementation
 		string IAboutWindow.ProgramName {
 			set {
-				this.ProgramName = value;
+
+				//TODO
+				//this.ProgramName = value;
 			}
 		}
 
 		string IAboutWindow.Copyright {
 			set {
-				this.Copyright = value;
+
+				//TODO
+				//this.Copyright = value;
 			}
 		}
 
 		string IAboutWindow.Comments {
 			set {
-				this.Comments = value;
+
+				//TODO
+				//this.Comments = value;
 			}
 		}
 
 		string IAboutWindow.Version {
 			set {
-				this.Version = value;
+				//TODO
+				//this.Version = value;
 			}
 		}
 
 		string IAboutWindow.Website {
 			set {
-				this.Website = value;
+				//TODO
+				//this.Website = value;
 			}
 		}
 
 		string[] IAboutWindow.Authors {
 			set {
-				this.Authors = value;
+				//TODO
+				//this.Authors = value;
 			}
 		}
 
 		string IAboutWindow.License {
 			set {
-				this.License = value;
+				//TODO
+				//this.License = value;
 			}
 		}
 
 		string IWindow.IconPath {
 			set {
 				if (File.Exists (value)) {
-					this.Icon = new Pixbuf (value);
+					this.Icon = Image.FromFile (value);
 				}
 			}
 		}
-		#endregion
 
+		public bool Sensitive { set; private get; }
+		#endregion
 	}
 }
 

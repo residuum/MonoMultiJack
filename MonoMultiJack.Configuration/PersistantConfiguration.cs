@@ -36,16 +36,16 @@ namespace MonoMultiJack.Configuration
 	public static class PersistantConfiguration
 	{
 		static readonly string _applicationFolder = Path.Combine (
-		Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
-		"MonoMultiJack"
-			);
+			Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
+			"MonoMultiJack"
+		);
 
 		static string JackdConfigFile {
 			get {
 				return Path.Combine (_applicationFolder, "jack.xml");
 			}
 		}
-		
+
 		static string ApplicationsConfigFile {
 			get {
 				return Path.Combine (_applicationFolder, "applications.xml");
@@ -247,8 +247,8 @@ namespace MonoMultiJack.Configuration
 					"y-position",
 					newWindowConfig.YPosition.ToString ()
 				);
-				writer.WriteElementString ("x-size", newWindowConfig.XSize.ToString ());
-				writer.WriteElementString ("y-size", newWindowConfig.YSize.ToString ());
+				writer.WriteElementString ("x-size", newWindowConfig.Width.ToString ());
+				writer.WriteElementString ("y-size", newWindowConfig.Height.ToString ());
 				writer.WriteEndElement ();
 				writer.Flush ();
 			}

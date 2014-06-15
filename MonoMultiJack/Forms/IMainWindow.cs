@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -76,37 +76,30 @@ namespace MonoMultiJack.Forms
 		/// Controller should start Jackd.
 		/// </summary>
 		event EventHandler StartJackd;
-
 		/// <summary>
 		/// Controller should stop Jackd.
 		/// </summary>
 		event EventHandler StopJackd;
-
 		/// <summary>
 		/// Controller should stop all audio apps and Jackd.
 		/// </summary>
 		event EventHandler StopAll;
-
 		/// <summary>
 		/// Controller should show Jackd configuration.
 		/// </summary>
 		event EventHandler ShowConfigureJackd;
-
 		/// <summary>
 		/// Controller should show configuration for audio applications.
 		/// </summary>
 		event EventHandler ShowConfigureApps;
-
 		/// <summary>
 		/// Controller should show about.
 		/// </summary>
 		event EventHandler ShowAbout;
-
 		/// <summary>
 		/// Controller should show help.
 		/// </summary>
 		event EventHandler ShowHelp;
-
 		/// <summary>
 		/// Controller should quit application.
 		/// </summary>

@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,12 @@ namespace MonoMultiJack.Controllers
 {
 	public class AppStartController : IController
 	{
-		readonly AppConfiguration _appConfiguration;
 		readonly IProgram _application;
 		readonly IAppStartWidget _appWidget;
 
 		public AppStartController (AppConfiguration appConfiguration)
 		{
-			_appConfiguration = appConfiguration;
-			_application = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[]{_appConfiguration});
+			_application = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[] { appConfiguration });
 			_appWidget = new AppStartWidget ();
 			_appWidget.SetApp (appConfiguration.Name, appConfiguration.Command);
 			_appWidget.StartApplication += AppWidget_StartApplication;
@@ -64,7 +62,7 @@ namespace MonoMultiJack.Controllers
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-	
+
 		protected virtual void Dispose (bool isDisposing)
 		{
 			if (_application != null) {
@@ -73,17 +71,17 @@ namespace MonoMultiJack.Controllers
 			}
 			_appWidget.Dispose ();
 		}
-		
+
 		void AppWidget_StartApplication (object sender, EventArgs e)
 		{
 			_application.Start ();
 		}
-		
+
 		void AppWidget_StopApplication (object sender, EventArgs e)
 		{
 			_application.Stop ();
 		}
-		
+
 		void Application_HasExited (object sender, EventArgs e)
 		{
 			_appWidget.IsRunning = false;
@@ -91,7 +89,7 @@ namespace MonoMultiJack.Controllers
 				ApplicationStatusHasChanged (this, new EventArgs ());
 			}
 		}
-		
+
 		void Application_HasStarted (object sender, EventArgs e)
 		{
 			_appWidget.IsRunning = true;
@@ -114,7 +112,6 @@ namespace MonoMultiJack.Controllers
 
 		public event EventHandler ApplicationStatusHasChanged;
 		public event EventHandler AllWidgetsAreClosed;
-
 	}
 }
 

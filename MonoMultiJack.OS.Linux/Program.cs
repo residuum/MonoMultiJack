@@ -41,37 +41,32 @@ namespace MonoMultiJack.OS.Linux
 		/// Name of the command to start
 		/// </summary>
 		readonly string _commandName;
-		
 		/// <summary>
 		/// Arguments for program
 		/// </summary>
 		readonly string _commandArguments;
-		
 		/// <summary>
 		/// Path to shell script for starting
 		/// </summary>
 		string _startScriptFile;
-		
 		/// <summary>
 		/// Path to shell script for testing
 		/// </summary>
 		string _testingScriptFile;
-		
 		/// <summary>
 		/// Process ID of program
 		/// </summary>
 		string _pid;
-				
+
 		/// <summary>
 		/// Signals the exit of program.
 		/// </summary>
 		public event ProgramEventHandler HasExited;
-		
 		/// <summary>
 		/// Signals the start of program
 		/// </summary>
 		public event ProgramEventHandler HasStarted;
-		
+
 		/// <summary>
 		/// Returns true if program is running.
 		/// </summary>
@@ -81,7 +76,7 @@ namespace MonoMultiJack.OS.Linux
 				return !string.IsNullOrEmpty (_pid) && _pid != "0";
 			}
 		}
-		
+
 		public Program (JackdConfiguration jackdConfig)
 		{
 			_commandName = jackdConfig.Path;
@@ -100,7 +95,7 @@ namespace MonoMultiJack.OS.Linux
 			_commandArguments = appConfig.Arguments;
 			BuildStartScript (false);
 		}
-		
+
 		/// <summary>
 		/// Destructs instance and cleans up temporary files.
 		/// </summary>
@@ -114,7 +109,7 @@ namespace MonoMultiJack.OS.Linux
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-	
+
 		protected virtual void Dispose (bool isDisposing)
 		{
 			Stop ();
@@ -126,7 +121,7 @@ namespace MonoMultiJack.OS.Linux
 			}
 			
 		}
-		
+
 		/// <summary>
 		/// Builds and saves the shell script for starting the program.
 		/// </summary>
@@ -156,7 +151,7 @@ namespace MonoMultiJack.OS.Linux
 				new IOException ("Unable to write to temporary file.", ex);
 			}
 		}
-		
+
 		/// <summary>
 		/// Builds and saves the shell script for starting the program.
 		/// </summary>
@@ -181,7 +176,7 @@ namespace MonoMultiJack.OS.Linux
 				new IOException ("Unable to write to temporary file.", ex);
 			}
 		}
-		
+
 		/// <summary>
 		/// Starts the program.
 		/// </summary>
@@ -190,7 +185,7 @@ namespace MonoMultiJack.OS.Linux
 			ExecuteShellScript (_startScriptFile, true);
 			Application.TimeoutInvoke (1000, IsStillRunning);
 		}
-		
+
 		/// <summary>
 		/// Executes the indicated shell script.
 		/// </summary>
@@ -225,7 +220,7 @@ namespace MonoMultiJack.OS.Linux
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Stops the program.
 		/// </summary>
@@ -245,31 +240,31 @@ namespace MonoMultiJack.OS.Linux
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Tests, if singleton process is already running.
 		/// </summary>
 		void TestForRunningSingleton ()
 		{
 			using (Process pgrepProgram = new Process()) {
-			    pgrepProgram.StartInfo.FileName = "pgrep";
-			    string[] commandPaths = _commandName.Split(Path.DirectorySeparatorChar);
-			    pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1];
-			    pgrepProgram.StartInfo.RedirectStandardOutput = true;
-			    pgrepProgram.EnableRaisingEvents = true;
-			    pgrepProgram.StartInfo.UseShellExecute = false;
-			    if (pgrepProgram.Start()) {
-			        _pid = pgrepProgram.StandardOutput.ReadToEnd().TrimEnd();
-			        if (_pid == "0" || string.IsNullOrEmpty(_pid)) {
-			            _pid = null;
-			        } else {
-			            BuildStillRunningScript();
-			        }
-			        pgrepProgram.WaitForExit();
-			    }
+				pgrepProgram.StartInfo.FileName = "pgrep";
+				string[] commandPaths = _commandName.Split (Path.DirectorySeparatorChar);
+				pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1];
+				pgrepProgram.StartInfo.RedirectStandardOutput = true;
+				pgrepProgram.EnableRaisingEvents = true;
+				pgrepProgram.StartInfo.UseShellExecute = false;
+				if (pgrepProgram.Start ()) {
+					_pid = pgrepProgram.StandardOutput.ReadToEnd ().TrimEnd ();
+					if (_pid == "0" || string.IsNullOrEmpty (_pid)) {
+						_pid = null;
+					} else {
+						BuildStillRunningScript ();
+					}
+					pgrepProgram.WaitForExit ();
+				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Tests, if process is still running.
 		/// </summary>
@@ -279,7 +274,7 @@ namespace MonoMultiJack.OS.Linux
 				ExecuteShellScript (_testingScriptFile, false);
 			}
 		}
-		
+
 		/// <summary>
 		/// Tests for still running and invokes the HasExited event, if not.
 		/// </summary>

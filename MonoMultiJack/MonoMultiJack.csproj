@@ -32,6 +32,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System" />
+    <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\DependencyResolver.cs" />
@@ -50,7 +51,6 @@
     <Compile Include="Forms\IAboutWindow.cs" />
     <Compile Include="Forms\AboutWindow.cs" />
     <Compile Include="Forms\IInfoWindow.cs" />
-    <Compile Include="Forms\InfoWindow.cs" />
     <Compile Include="Widgets\IAppConfigWidget.cs" />
     <Compile Include="Forms\IJackdConfigWindow.cs" />
     <Compile Include="Forms\IAppConfigWindow.cs" />
@@ -64,6 +64,8 @@
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
+    <Compile Include="Widgets\ConnectableTreeView.cs" />
+    <Compile Include="Widgets\ConnectionColors\Colors.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

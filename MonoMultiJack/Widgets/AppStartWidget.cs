@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +24,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
-using MonoMultiJack.Configuration;
+using Xwt;
 
 namespace MonoMultiJack.Widgets
-{	
+{
 	/// <summary>
 	/// Widget for applications to start / stop
 	/// </summary>
-	public class AppStartWidget : Fixed, IAppStartWidget
+	public class AppStartWidget : Table, IAppStartWidget
 	{
-		public override void Dispose ()
+		public new void Dispose ()
 		{
 			base.Dispose ();
 		}
-
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
 			this.Show ();
-		}
-
-		void IWidget.Destroy ()
-		{
-			this.Destroy ();
 		}
 
 		void IWidget.Hide ()
@@ -55,7 +48,6 @@ namespace MonoMultiJack.Widgets
 			this.Hide ();
 		}
 		#endregion
-
 		#region IAppWidget implementation
 		void IAppStartWidget.SetApp (string name, string commandName)
 		{
@@ -72,38 +64,36 @@ namespace MonoMultiJack.Widgets
 						_startButton.Active = true;
 						_startButton.Clicked -= CallStopApplication;
 						_startButton.Clicked -= CallStartApplication;
-						_startButton.Clicked += CallStopApplication;	
+						_startButton.Clicked += CallStopApplication;
+						_startButton.Image = StockIcons.Remove;
 					} else {
 						_startButton.Active = false;
 						_startButton.Clicked -= CallStopApplication;
 						_startButton.Clicked -= CallStartApplication;
 						_startButton.Clicked += CallStartApplication;
+						_startButton.Image = StockIcons.Add;
 					}
 				}
 				);
 			}
 		}
-		
+
 		public event EventHandler StartApplication;
 		public event EventHandler StopApplication;
 		#endregion
-
 		readonly ToggleButton _startButton;
-		
+
 		/// <summary>
 		/// constructor
 		/// </summary>
-		/// <param name="appConfig">
-		/// A <see cref="AppConfiguration"/>
-		/// </param>
 		public AppStartWidget ()
 		{
-			_startButton = new ToggleButton ();
-			_startButton.WidthRequest = 100;
+			_startButton = new ToggleButton { WidthRequest = 100 };
 			_startButton.Clicked += CallStartApplication;
-			Put (_startButton, 0, 0);		
+			Add (_startButton, 0, 0);
+			_startButton.Image = StockIcons.Add;
 		}
-		
+
 		/// <summary>
 		/// stops application, if running
 		/// </summary>
@@ -113,7 +103,7 @@ namespace MonoMultiJack.Widgets
 				StopApplication (this, new EventArgs ());
 			}
 		}
-		
+
 		/// <summary>
 		/// starts application, updates action for togglebutton
 		/// </summary>
@@ -137,6 +127,7 @@ namespace MonoMultiJack.Widgets
 		{
 			CallStartApplication ();
 		}
+
 		/// <summary>
 		/// stops application, updates action for ToggleButton
 		/// </summary>

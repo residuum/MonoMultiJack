@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,239 +25,114 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using Gtk;
+using System.Configuration;
 using MonoMultiJack.ConnectionWrapper;
-using Cairo;
 using MonoMultiJack.Controllers.EventArguments;
+using Xwt;
+using Xwt.Drawing;
+using Colors = MonoMultiJack.Widgets.ConnectionColors.Colors;
 
 namespace MonoMultiJack.Widgets
 {
 	/// <summary>
 	/// Widget for displaying and managing connections.
 	/// </summary>
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class ConnectionDisplay : Bin, IConnectionWidget
-	{		
-		readonly TreeStore _outputStore = new TreeStore (typeof(IConnectable));
-		readonly TreeStore _inputStore = new TreeStore (typeof(IConnectable));
+	public class ConnectionDisplay : Widget, IConnectionWidget
+	{
+		private ConnectableTreeView _outTreeView;
+		private ConnectableTreeView _inTreeView;
 		readonly List<IConnection> _connections = new List<IConnection> ();
+		private Button _connectButton;
+		private Button _disconnectButton;
+		private Canvas _connectionArea;
 		DateTime _lastLineUpdate = DateTime.Now;
 		int _cellHeight = 0;
 
-		public override void Dispose ()
+		public new void Dispose ()
 		{
 			base.Dispose ();
 		}
 
-		void RenderConnectableName (TreeViewColumn treeColumn, CellRenderer cell, TreeModel treeModel, TreeIter iter)
-		{
-			IConnectable connectable = (IConnectable)treeModel.GetValue (iter, 0);
-			((CellRendererText)cell).Text = connectable.Name;
-		}
-
 		public ConnectionDisplay (string connectionManagerName)
 		{
-			this.Build ();
-			TreeViewColumn inClientColumn = new TreeViewColumn ();
-			CellRendererText inClientCell = new CellRendererText ();
-			inClientColumn.PackStart (inClientCell, true);
-			inClientColumn.SetCellDataFunc (inClientCell, new TreeCellDataFunc (RenderConnectableName));
-			_inputTreeview.AppendColumn (inClientColumn);
-			_inputTreeview.Model = _inputStore;
-			
-			TreeViewColumn outClientColumn = new TreeViewColumn ();
-			CellRendererText outClientCell = new CellRendererText ();
-			outClientColumn.PackStart (outClientCell, true);
-			outClientColumn.SetCellDataFunc (outClientCell, new TreeCellDataFunc (RenderConnectableName));
-			_outputTreeview.AppendColumn (outClientColumn);
-			_outputTreeview.Model = _outputStore;
 			ConnectionManagerName = connectionManagerName;
+			BuildWidget ();
+			BindEvents ();
 		}
 
-		void AddTreeStoreValues (IConnectable connectable, TreeStore store)
+		void BuildWidget ()
 		{
-			Client client = connectable as Client;
-			if (client != null) {
-				TreeIter clientIter;
-				if (TryGetClientIter (store, client, true, out clientIter)) {
-					foreach (Port port in client.Ports) {
-						TreeIter portIter;
-						if (!TryGetPortIter (store, clientIter, port, out portIter)) {							
-							store.AppendValues (clientIter, port);
-						}
-					}
-				}
-			} else {				
-				Port port = connectable as Port;
-				if (port != null) {
-					throw new NotSupportedException ("Only clients can be appended to tree store.");
-				}
-			}
+			VBox vbox = new VBox {
+				ExpandVertical = true,
+				ExpandHorizontal = true
+			};
+
+			HBox hbox1 = new HBox ();
+			this._connectButton = new Button ("Connect");
+			hbox1.PackStart (this._connectButton);
+			this._disconnectButton = new Button ("Disconnect");
+			hbox1.PackStart (this._disconnectButton);
+			vbox.PackStart (hbox1); 
+            
+            
+			_inTreeView = new ConnectableTreeView ();
+			_outTreeView = new ConnectableTreeView ();
+
+			_connectionArea = new Canvas {
+				MinWidth = 200,
+				MinHeight = 200,
+				ExpandVertical = true,
+				ExpandHorizontal = true
+			};
+			HBox hbox2 = new HBox { ExpandVertical = true, ExpandHorizontal = true };
+			hbox2.PackStart (_outTreeView);
+			hbox2.PackStart (_connectionArea);
+			hbox2.PackStart (_inTreeView);
+
+			vbox.PackEnd (hbox2);
+			Content = vbox;
+			this.ExpandHorizontal = true;
+			this.ExpandVertical = true;
+
 		}
 
-		bool TryGetClientIter (TreeStore store, Client client, bool createIfNotExists, out TreeIter clientIter)
+		void BindEvents ()
 		{
-			if (store.GetIterFirst (out clientIter)) {
-				while (client != (Client) store.GetValue(clientIter, 0)) {
-					if (!store.IterNext (ref clientIter)) {
-						if (createIfNotExists) {
-							clientIter = store.AppendValues (client);
-							return true;
-						}
-						return false;
-					}
-				}
-			} else if (createIfNotExists) {
-				clientIter = store.AppendValues (client);
-				return true;
-			}
-			return !clientIter.Equals (TreeIter.Zero);
-		}
+			_connectButton.Clicked += ConnectButton_Click;
+			_disconnectButton.Clicked += DisconnectButton_Click;
+			_inTreeView.ViewChanged += OnTreeViewRowExpanded;
+			_outTreeView.ViewChanged += OnTreeViewRowExpanded;
+            
+			//this.GotFocus += OnExpose;
 
-		bool TryGetPortIter (TreeStore store, TreeIter clientIter, Port port, out TreeIter portIter)
-		{
-			portIter = TreeIter.Zero;
-			if (store.IterHasChild (clientIter)) {
-				if (store.IterChildren (out portIter, clientIter)) {
-					while ((Port)store.GetValue(portIter, 0) != port) { 
-						if (!store.IterNext (ref portIter)) {
-							return false;
-						}
-					}
-					return true;
-				}
-			}
-			return false;
 		}
 
 		public void AddConnectable (IConnectable connectable)
 		{
-			if (connectable.FlowDirection == FlowDirection.In) {					
-				AddTreeStoreValues (connectable, _inputStore);
-			} else if (connectable.FlowDirection == FlowDirection.Out) {			
-				AddTreeStoreValues (connectable, _outputStore);
-			}
-		}
-
-		void RemoveTreeStoreValues (IConnectable connectable, TreeStore store)
-		{
-			Client client = connectable as Client;
-			if (client != null) {
-				TreeIter clientIter;
-				if (TryGetClientIter (store, client, false, out clientIter)) {
-					store.Remove (ref clientIter);
-				}
-			} else {				
-				Port port = connectable as Port;
-				if (port != null) {
-					TreeIter clientIter;
-					if (TryGetClientIter (store, port.Client, false, out clientIter)) {
-						TreeIter portIter;
-						if (TryGetPortIter (store, clientIter, port, out portIter)) {
-							store.Remove (ref portIter);
-						}
-						if (!store.IterHasChild (clientIter)) {
-							store.Remove (ref clientIter);
-						}
-					}
-				}
+			if (connectable.FlowDirection == FlowDirection.In) {
+				_inTreeView.AddConnectable (connectable);
+			} else if (connectable.FlowDirection == FlowDirection.Out) {
+				_outTreeView.AddConnectable (connectable);
 			}
 		}
 
 		public void RemoveConnectable (IConnectable connectable)
 		{
 			if (connectable.FlowDirection == FlowDirection.In) {
-				RemoveTreeStoreValues (connectable, _inputStore);
+				_inTreeView.RemoveConnectable (connectable);
 			} else if (connectable.FlowDirection == FlowDirection.Out) {
-				RemoveTreeStoreValues (connectable, _outputStore);
-			}
-		}
-
-		private void ReplaceTreeStoreValue (IConnectable connectable, TreeStore store)
-		{
-			Client client = connectable as Client;
-			if (client != null) {
-				TreeIter clientIter;
-				if (TryGetClientIter (store, client, false, out clientIter)) {
-					store.Remove (ref clientIter);
-				}
-				store.AppendValues (client);
-			} else {
-				Port port = connectable as Port;
-				if (port != null) {
-					TreeIter clientIter;
-					if (TryGetClientIter (store, port.Client, false, out clientIter)) {
-						TreeIter portIter;
-						if (TryGetPortIter (store, clientIter, port, out portIter)) {
-							store.Remove (ref portIter);
-						}
-						store.AppendValues (clientIter, port);
-					}
-				}
+				_outTreeView.RemoveConnectable (connectable);
 			}
 		}
 
 		public void UpdateConnectable (IConnectable connectable)
 		{
 			if (connectable.FlowDirection == FlowDirection.In) {
-				ReplaceTreeStoreValue (connectable, _inputStore);
+				_inTreeView.UpdateConnectable (connectable);
 			} else if (connectable.FlowDirection == FlowDirection.Out) {
-				ReplaceTreeStoreValue (connectable, _outputStore);
+				_outTreeView.UpdateConnectable (connectable);
 			}
 		}
-
-		IConnectable GetSelectedConnectable (TreeStore connectionStore, TreeIter selectedIter)
-		{
-			return connectionStore.GetValue (selectedIter, 0) as IConnectable; 
-		}
-
-		int GetCellHeight (TreeView tree)
-		{
-			if (_cellHeight > 0) {
-				return _cellHeight;
-			}
-			int offsetX;
-			int offsetY;
-			int cellWidth;
-			Gdk.Rectangle rectangle = new Gdk.Rectangle ();
-			TreeViewColumn column = tree.GetColumn (0);
-			column.CellGetSize(rectangle, out offsetX, out offsetY, out cellWidth, out _cellHeight);
-			CellRenderer renderer = column.CellRenderers[0];
-			_cellHeight += (int)renderer.Ypad;
-			return _cellHeight;
-		}
-
-		int GetYPositionForPort (TreeView tree, TreeStore store, Port selectedPort)
-		{
-			int cellHeight = GetCellHeight (tree);
-			//We start in the middle of the first Treeview item
-			int position = cellHeight / 2;
-
-			ScrolledWindow treeParent = tree.Parent as ScrolledWindow;
-			if (treeParent != null) {
-				position -= Convert.ToInt32 (treeParent.Vadjustment.Value);
-			}
-			TreeIter clientIter;
-			TreeIter portIter;
-			if (store.GetIterFirst (out clientIter)) {
-				do {
-					if (store.IterHasChild (clientIter) && tree.GetRowExpanded (store.GetPath (clientIter))) {
-						if (store.IterChildren (out portIter, clientIter)) {
-							do {
-								position += cellHeight;
-							} while (((Port)store.GetValue(portIter, 0) != selectedPort || (Client)store.GetValue(clientIter, 0) != selectedPort.Client) && store.IterNext(ref portIter));
-						}
-					}
-					//Necessary because the first Treeview item only counts as 1/2 cell height.
-					if (((Client)store.GetValue (clientIter, 0)) == selectedPort.Client) {
-						break;
-					}
-					position += cellHeight;
-				} while (store.IterNext(ref clientIter));
-			}
-			return position;
-		}
-
 
 		/// <summary>
 		/// Handles the click event on the ConnectButton
@@ -270,39 +145,21 @@ namespace MonoMultiJack.Widgets
 		/// </param>
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
-			TreeIter selectedOutIter;
-			TreeIter selectedInIter;
-			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter)) {
-				IConnectable outlet = GetSelectedConnectable (
-					_outputStore,
-					selectedOutIter
-				);
-				IConnectable inlet = GetSelectedConnectable (
-					_inputStore,
-					selectedInIter
-				);
-				if (Connect != null) {
-					Connect (this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
-				}
+			if (Connect != null) {
+				Connect (this, new ConnectEventArgs {
+					Outlet = _outTreeView.GetSelected (),
+					Inlet = _inTreeView.GetSelected ()
+				});
 			}
 		}
 
-		protected virtual void DisconnectButton_Click (object sender, System.EventArgs e)
+		protected virtual void DisconnectButton_Click (object sender, EventArgs e)
 		{
-			TreeIter selectedOutIter;
-			TreeIter selectedInIter;
-			if (_outputTreeview.Selection.GetSelected (out selectedOutIter) && _inputTreeview.Selection.GetSelected (out selectedInIter)) {
-				IConnectable outlet = GetSelectedConnectable (
-					_outputStore,
-					selectedOutIter
-				);
-				IConnectable inlet = GetSelectedConnectable (
-					_inputStore,
-					selectedInIter
-				);
-				if (Disconnect != null) {
-					Disconnect (this, new ConnectEventArgs{Outlet = outlet, Inlet = inlet});
-				}
+			if (Disconnect != null) {
+				Disconnect (this, new ConnectEventArgs {
+					Outlet = _outTreeView.GetSelected (),
+					Inlet = _inTreeView.GetSelected ()
+				});
 			}
 		}
 
@@ -316,54 +173,61 @@ namespace MonoMultiJack.Widgets
 				return;
 			}
 			try {
-				if (_connectionArea.GdkWindow == null) {
-					return;
-				}
-				_connectionArea.GdkWindow.Clear ();
-				using (Context g = Gdk.CairoHelper.Create (_connectionArea.GdkWindow)) {
-					List<IConnection> connections = new List<IConnection> (_connections);
-					foreach (IConnection conn in connections) {
-						int outY = GetYPositionForPort (_outputTreeview, _outputStore, conn.OutPort);
-						int inY = GetYPositionForPort (_inputTreeview, _inputStore, conn.InPort);
-						int areaWidth = _connectionArea.Allocation.Width;
-						if (outY != -1 && inY != -1) {
-							g.Save ();
-							g.MoveTo (0, outY);
-							//g.LineTo (areaWidth, inY);
-							g.CurveTo (
-								new PointD (areaWidth / 4, outY),
-								new PointD (3 * areaWidth / 4, inY),
-								new PointD (areaWidth, inY)
-							);
-							g.Restore ();
-						}
-					}
-					g.Color = new Color (0, 0, 0);
-					g.LineWidth = 1;
-					g.Stroke ();
-					g.Target.Dispose ();
-					_lastLineUpdate = now;
-				}
+				//if (_connectionArea.GdkWindow == null)
+				//{
+				//    return;
+				//}
+				//_connectionArea.GdkWindow.Clear();
+				//using (Context g = Gdk.CairoHelper.Create(_connectionArea.GdkWindow))
+				//{
+				//    g.Antialias = Antialias.Subpixel;
+				//    List<IConnection> connections = new List<IConnection>(_connections);
+				//    for (int i = 0; i < connections.Count; i++)
+				//    {
+				//        IConnection conn = connections[i];
+				//        int outY = GetYPositionForPort(_outputTreeview, _outputStore, conn.OutPort);
+				//        int inY = GetYPositionForPort(_inputTreeview, _inputStore, conn.InPort);
+				//        int areaWidth = _connectionArea.Allocation.Width;
+				//        if (outY != -1 && inY != -1)
+				//        {
+				//            g.Save();
+				//            g.MoveTo(0, outY);
+				//            g.CurveTo(
+				//                new PointD(areaWidth / 4, outY),
+				//                new PointD(3 * areaWidth / 4, inY),
+				//                new PointD(areaWidth, inY)
+				//            );
+				//            g.Restore();
+				//        }
+				//        // TODO: Find a way to get the background color
+				//        g.Color = Colors.GetColor(i, new Color());
+				//        g.LineWidth = 1;
+				//        g.Stroke();
+				//    }
+				//    g.Target.Dispose();
+				//    _lastLineUpdate = now;
+				//}
 			} catch (Exception ex) {
-				#if DEBUG
-		Console.WriteLine (ex.Message);
-				#endif
+#if DEBUG
+				Console.WriteLine (ex.Message);
+#endif
 			}
 		}
 
-		protected virtual void OnTreeViewRowExpanded (object o, Gtk.RowExpandedArgs args)
+		protected virtual void OnTreeViewRowExpanded (object o, EventArgs args)
 		{
-			UpdateConnectionLines ();
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
+			}
+			);
 		}
 
-		protected virtual void OnTreeViewRowCollapsed (object o, Gtk.RowCollapsedArgs args)
+		protected virtual void OnTreeViewRowCollapsed (object o, EventArgs args)
 		{
-			UpdateConnectionLines ();
-		}
-
-		protected virtual void Handle_ExposeEvent (object o, Gtk.ExposeEventArgs args)
-		{
-			UpdateConnectionLines ();
+			Application.Invoke (delegate {
+				UpdateConnectionLines ();
+			}
+			);
 		}
 		#region IConnectionWidget implementation
 		public event ConnectEventHandler Connect;
@@ -371,37 +235,36 @@ namespace MonoMultiJack.Widgets
 
 		public void Clear ()
 		{
-			_inputStore.Clear ();
-			_outputStore.Clear ();
-			_connections.Clear ();
-			Application.Invoke (delegate {
-				UpdateConnectionLines ();
-			}
-			);
+			//_inputStore.Clear ();
+			//_outputStore.Clear ();
+			//_connections.Clear ();
+			//Application.Invoke (delegate {
+			//    UpdateConnectionLines ();
+			//}
+			//);
 		}
 
 		public void AddConnection (IConnection connection)
 		{			
-			_connections.Add (connection);
+			//_connections.Add (connection);
 			
-			Application.Invoke (delegate {
-				UpdateConnectionLines ();
-			}
-			);
+			//Application.Invoke (delegate {
+			//    UpdateConnectionLines ();
+			//}
+			//);
 		}
 
 		public void RemoveConnection (IConnection connection)
 		{
-			_connections.Remove (connection);
+			//_connections.Remove (connection);
 			
-			Application.Invoke (delegate {
-				UpdateConnectionLines ();
-			}
-			);
+			//Application.Invoke (delegate {
+			//    UpdateConnectionLines ();
+			//}
+			//);
 		}
 
 		public string ConnectionManagerName { get; private set; }
 		#endregion
-
 	}
 }

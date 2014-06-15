@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
 using MonoMultiJack.Controllers;
-using Mono.Unix;
+using Xwt;
 
 namespace MonoMultiJack
 {
@@ -41,10 +40,10 @@ namespace MonoMultiJack
 		/// <param name='args'>
 		/// The command-line arguments.
 		/// </param>
+		[STAThread]
 		public static void Main (string[] args)
 		{
-			Application.Init ();
-			Catalog.Init("MonoMultiJack","./locale");
+			Application.Initialize ();
 			MainController mainController = new MainController ();
 			mainController.Start ();
 			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
@@ -56,7 +55,7 @@ namespace MonoMultiJack
 			IController controller = sender as IController;
 			if (controller != null) {
 				controller.Dispose ();				
-				Application.Quit ();	
+				Application.Exit ();
 			}
 		}
 	}

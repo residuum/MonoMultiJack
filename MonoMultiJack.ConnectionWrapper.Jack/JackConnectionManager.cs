@@ -154,7 +154,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			if (BackendHasExited != null) {
 				BackendHasExited (this, args);
 			}
-			Application.TimeoutInvoke(2000, ConnectToServer);
+			Application.TimeoutInvoke (2000, ConnectToServer);
 		}
 	}
 }

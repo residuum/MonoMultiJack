@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,29 +24,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
+using System.Linq;
 using MonoMultiJack.Widgets;
-using Mono.Unix;
+using Xwt;
 
 namespace MonoMultiJack.Forms
 {
-	public class AppConfigWindow : Dialog, IAppConfigWindow
+	public class AppConfigWindow : Window, IAppConfigWindow
 	{
 		Table _configTable;
-				
+		private Button _addButton;
+		private Button _okButton;
+		private Button _cancelButton;
+
 		public AppConfigWindow ()
 		{
-			BuildDialog ();
-			Close += HandleClose;
-			Response += HandleResponse;
+			BuildWindow ();
+			BindEvents ();
 			
-			Title = Catalog.GetString("Configure Applications");
+			Title = "Configure Applications";
 			Resizable = true;
 		}
 
-		void HandleResponse (object o, ResponseArgs args)
+		private void BindEvents ()
 		{
-			if (args.ResponseId == ResponseType.Ok && SaveApplicationConfigs != null) {
+			Closed += HandleClose;
+			_okButton.Clicked += HandleOkClick;
+			_cancelButton.Clicked += HandleCancelClick;
+			_addButton.Clicked += HandleAddClick;
+		}
+
+		private void HandleCancelClick (object sender, EventArgs e)
+		{
+			HandleClose (sender, e);
+		}
+
+		void HandleOkClick (object o, EventArgs args)
+		{
+			if (SaveApplicationConfigs != null) {
 				SaveApplicationConfigs (this, new EventArgs ());
 			}
 			HandleClose (o, args);
@@ -58,23 +73,16 @@ namespace MonoMultiJack.Forms
 				Closing (this, new EventArgs ());
 			}
 		}
-
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
 			this.Dispose ();
 		}
 		#endregion
-
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
 			this.Show ();
-		}
-
-		void IWidget.Destroy ()
-		{
-			this.Destroy ();
 		}
 
 		void IWidget.Hide ()
@@ -82,7 +90,6 @@ namespace MonoMultiJack.Forms
 			this.Hide ();
 		}
 		#endregion
-
 		#region IWindow implementation
 		string IWindow.IconPath {
 			set {
@@ -92,74 +99,47 @@ namespace MonoMultiJack.Forms
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				//this.Sensitive = value;
 			}
 		}
-		
+
 		public event EventHandler Closing;
 		#endregion
-
 		#region IAppConfigWindow implementation
 		public event EventHandler SaveApplicationConfigs;
 		public event EventHandler AddApplication;
 
 		void IAppConfigWindow.AddAppConfigWidget (IAppConfigWidget widget)
 		{
-			uint count = _configTable.NRows;
-			_configTable.NRows += 1;
-			_configTable.Attach ((Widget)widget, 0, 1, count, count + 1);
-			widget.Show ();
+			_configTable.Add ((Widget)widget, 0, _configTable.Children.Count ());
 		}
 
 		void IAppConfigWindow.RemoveAppConfigWidget (IAppConfigWidget widget)
 		{
 			_configTable.Remove ((Widget)widget);
 		}
-		#endregion		
-
-		void BuildDialog ()
+		#endregion
+		void BuildWindow ()
 		{
-			Modal = true;
-			this.VBox.BorderWidth = ((uint)(2));
-			this.ActionArea.Spacing = 10;
-			this.ActionArea.BorderWidth = (uint)(5);
-			this.ActionArea.LayoutStyle = ButtonBoxStyle.End;
-			Button addButton = new Button ();
-			addButton.CanFocus = true;
-			addButton.UseUnderline = true;
-			addButton.Image = new Gtk.Image ("gtk-add", IconSize.Button);
-			addButton.Label = Catalog.GetString("Add Application");
-			addButton.Clicked += AddButtonClicked;
-			this.ActionArea.Add (addButton);
-			Button cancelButton = new Gtk.Button ();
-			cancelButton.CanDefault = true;
-			cancelButton.CanFocus = true;
-			cancelButton.Name = "buttonCancel";
-			cancelButton.UseStock = true;
-			cancelButton.UseUnderline = true;
-			cancelButton.Label = "gtk-cancel";
-			this.AddActionWidget (cancelButton, ResponseType.Cancel);
-			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			Button okButton = new Button ();
-			okButton.CanDefault = true;
-			okButton.CanFocus = true;
-			okButton.Name = "buttonOk";
-			okButton.UseStock = true;
-			okButton.UseUnderline = true;
-			okButton.Label = "gtk-ok";
-			this.AddActionWidget (okButton, ResponseType.Ok);
-			this.DefaultWidth = 466;
-			this.DefaultHeight = 300;
-			this.Show ();
-			_configTable = new Table (1, 1, false);
-			_configTable.ColumnSpacing = 10;
-			_configTable.RowSpacing = 10;
-			ScrolledWindow appScrolledWindow = new ScrolledWindow ();
-			appScrolledWindow.AddWithViewport (_configTable);
-			this.VBox.Add (appScrolledWindow);
-			this.VBox.ShowAll ();
+			_configTable = new Table ();
+			ScrollView scrollView = new ScrollView (_configTable);
+			scrollView.ExpandHorizontal = true;
+			scrollView.ExpandVertical = true;
+			scrollView.HorizontalScrollPolicy = ScrollPolicy.Never;
+			HBox buttonBox = new HBox ();
+			_addButton = new Button (Command.Add.Label) { Image = StockIcons.Add };
+			_okButton = new Button (Command.Ok.Label);
+			_cancelButton = new Button (Command.Cancel.Label);
+			buttonBox.PackEnd (_addButton);
+			buttonBox.PackEnd (_okButton);
+			buttonBox.PackEnd (_cancelButton);
+            
+			VBox box = new VBox ();
+			box.PackStart (scrollView);
+			box.PackEnd (buttonBox);
+			this.Content = box;
 		}
-				
+
 		void CallAddNewConfigWidget ()
 		{
 			if (AddApplication != null) {
@@ -167,7 +147,7 @@ namespace MonoMultiJack.Forms
 			}
 		}
 
-		protected void AddButtonClicked (object sender, EventArgs e)
+		protected void HandleAddClick (object sender, EventArgs e)
 		{
 			CallAddNewConfigWidget ();
 		}

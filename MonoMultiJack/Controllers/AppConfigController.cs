@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,102 +35,98 @@ namespace MonoMultiJack.Controllers
 	public class AppConfigController : IController
 	{
 		readonly List<AppConfiguration> _configurations;
-        readonly IAppConfigWindow _configWindow;
-        readonly List<IAppConfigWidget> _widgets = new List<IAppConfigWidget>();
+		readonly IAppConfigWindow _configWindow;
+		readonly List<IAppConfigWidget> _widgets = new List<IAppConfigWidget> ();
 
-		public AppConfigController(List<AppConfiguration> appConfigurations)
+		public AppConfigController (List<AppConfiguration> appConfigurations)
 		{
 			_configurations = appConfigurations;
-			_configWindow = new AppConfigWindow();
-			_configWindow.Show();
+			_configWindow = new AppConfigWindow ();
+			_configWindow.Show ();
 			_configWindow.Closing += Window_Closing;
 			_configWindow.AddApplication += Window_AddApplication;
 			_configWindow.SaveApplicationConfigs += Window_SaveConfigs;
 			foreach (AppConfiguration config in _configurations) {
-				IAppConfigWidget widget = CreateWidget();	
+				IAppConfigWidget widget = CreateWidget ();	
 				widget.Name = config.Name;
 				widget.Command = config.Command;
 				widget.Arguments = config.Arguments;			
-				_configWindow.AddAppConfigWidget(widget);
-				_widgets.Add(widget);
+				_configWindow.AddAppConfigWidget (widget);
+				_widgets.Add (widget);
 			}
 		}
 
-		~AppConfigController()
+		~AppConfigController ()
 		{
-			Dispose(false);
+			Dispose (false);
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			Dispose (true);
+			GC.SuppressFinalize (this);
 		}
-	
-		protected virtual void Dispose(bool isDisposing)
+
+		protected virtual void Dispose (bool isDisposing)
 		{
 			for (int i = _widgets.Count - 1; i >= 0; i--) {
-				_widgets [i].Dispose();
+				_widgets [i].Dispose ();
 			}
-			_configWindow.Dispose();
+			_configWindow.Dispose ();
 		}
 
-		IAppConfigWidget CreateWidget()
+		IAppConfigWidget CreateWidget ()
 		{
-			IAppConfigWidget widget = new AppConfigWidget();
+			IAppConfigWidget widget = new AppConfigWidget ();
 			widget.RemoveApplication += Widget_RemoveApplication;
 			return widget;
 		}
 
-		void Widget_RemoveApplication(object sender, EventArgs e)
+		void Widget_RemoveApplication (object sender, EventArgs e)
 		{
 			IAppConfigWidget widget = sender as IAppConfigWidget;
 			if (widget == null) {
 				return;
 			}
-			_configWindow.RemoveAppConfigWidget(widget);
-			_widgets.Remove(widget);
-			widget.Dispose();
+			_configWindow.RemoveAppConfigWidget (widget);
+			_widgets.Remove (widget);
+			widget.Dispose ();
 		}
 
-		void Window_SaveConfigs(object sender, EventArgs e)
+		void Window_SaveConfigs (object sender, EventArgs e)
 		{
 			if (UpdateApps != null) {
-				List<AppConfiguration> newConfigurations = new List<AppConfiguration>();
+				List<AppConfiguration> newConfigurations = new List<AppConfiguration> ();
 				foreach (IAppConfigWidget widget in _widgets) {
-					AppConfiguration newConfig = new AppConfiguration(widget.Name, widget.Command, widget.Arguments);
-					newConfigurations.Add(newConfig);
+					AppConfiguration newConfig = new AppConfiguration (widget.Name, widget.Command, widget.Arguments);
+					newConfigurations.Add (newConfig);
 				}
-				UpdateApps(this, new UpdateAppsEventArgs{AppConfigurations = newConfigurations});
+				UpdateApps (this, new UpdateAppsEventArgs { AppConfigurations = newConfigurations });
 			}
 
 		}
 
-		void Window_AddApplication(object sender, EventArgs e)
+		void Window_AddApplication (object sender, EventArgs e)
 		{
-			IAppConfigWidget newWidget = CreateWidget();
-			_configWindow.AddAppConfigWidget(newWidget);
-			_widgets.Add(newWidget);
+			IAppConfigWidget newWidget = CreateWidget ();
+			_configWindow.AddAppConfigWidget (newWidget);
+			_widgets.Add (newWidget);
 		}
 
-		void Window_Closing(object sender, EventArgs e)
+		void Window_Closing (object sender, EventArgs e)
 		{				
 			IWindow window = sender as IWindow;
-			if (window != null){
-				window.Destroy();
-				window.Dispose();
+			if (window != null) {
+				window.Dispose ();
 			}
 			if (AllWidgetsAreClosed != null) {
-				AllWidgetsAreClosed(this, new EventArgs());
+				AllWidgetsAreClosed (this, new EventArgs ());
 			}
 		}
-
 		#region IController implementation
 		public event EventHandler AllWidgetsAreClosed;
 		#endregion
-
 		public event EventHandler<UpdateAppsEventArgs> UpdateApps;
-
 	}
 }
 
