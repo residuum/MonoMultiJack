@@ -66,6 +66,7 @@
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
     <Compile Include="Widgets\ConnectableTreeView.cs" />
     <Compile Include="Widgets\ConnectionColors\Colors.cs" />
+    <Compile Include="Widgets\ConnectionArea.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -22,9 +22,8 @@
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.using System;
+// THE SOFTWARE.
 using System;
-using System.Management.Instrumentation;
 using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 
@@ -32,50 +31,63 @@ namespace MonoMultiJack.Widgets
 {
 	class ConnectableTreeView : Widget
 	{
-		private ScrollView scrollView;
-		private TreeView treeView;
-		private readonly TreeStore treeStore;
-		private readonly IDataField<IConnectable> dataField;
-		private readonly IDataField<string> textField;
+		private readonly TreeView _treeView;
+		private readonly TreeStore _treeStore;
+		private readonly IDataField<IConnectable> _dataField;
+		private readonly IDataField<string> _textField;
 
 		public ConnectableTreeView ()
 		{
-			dataField = new DataField<IConnectable> ();
-			textField = new DataField<string> ();
-			treeStore = new TreeStore (new IDataField[] { dataField, textField });
-			treeView = new TreeView (treeStore);
-			treeView.Columns.Add ("", textField);
-			scrollView = new ScrollView (treeView) {
-				MinHeight = 200,
-				MinWidth = 300,
-				ExpandVertical = true
-			};
-			this.Content = scrollView;
-			scrollView.VisibleRectChanged += UpdateParent;
-			treeView.RowExpanded += UpdateParent;
+			_dataField = new DataField<IConnectable> ();
+			_textField = new DataField<string> ();
+			_treeStore = new TreeStore (new IDataField[] {
+				_dataField,
+				_textField
+			});
+			_treeView = new TreeView (_treeStore);
+			_treeView.Columns.Add ("", _textField);
+			_treeView.MinHeight = 200;
+			_treeView.MinWidth = 300;
+			_treeView.ExpandVertical = true;
+			_treeView.ExpandHorizontal = false;
+			_treeView.HeadersVisible = false;
+			this.Content = _treeView;
+			_treeView.MouseScrolled += UpdateParent;
+			_treeView.RowExpanded += UpdateParent;
 		}
 
 		public event EventHandler ViewChanged;
 
-		private void UpdateParent (object sender, EventArgs e)
+		private void NotifyParent ()
 		{
 			if (ViewChanged != null) {
-				ViewChanged (this, e);
+				ViewChanged (this, new EventArgs ());
 			}
+		}
+
+		private void UpdateParent (object sender, EventArgs e)
+		{
+			NotifyParent ();
 		}
 
 		public void AddConnectable (IConnectable connectable)
 		{
 			Client client = connectable as Client;
+			Port port = connectable as Port;
 			if (client != null) {
-				TreeNavigator navigator = treeStore.GetFirstNode ();
+				TreeNavigator navigator = _treeStore.GetFirstNode ();
 				navigator = AddClient (navigator, client);
-				foreach (Port port in client.Ports) {
-					navigator = AddPort (navigator, port);
+				foreach (Port clientPort in client.Ports) {
+					navigator = AddPort (navigator, clientPort);
 				}
-			} else {
-				throw new ArgumentOutOfRangeException ("connectable", connectable, "Only clients can be added to TreeView.");
 			}
+			if (port != null) {
+				TreeNavigator navigator = FindClientNavigator (port.Client);
+				if (navigator != null) {
+					AddPort (navigator, port);
+				}
+			}
+			NotifyParent ();
 		}
 
 		private TreeNavigator AddClient (TreeNavigator navigator, Client client)
@@ -83,14 +95,14 @@ namespace MonoMultiJack.Widgets
 			bool alreadyAdded = false;
 			do {
 				if (navigator.CurrentPosition != null) {
-					if (client.Equals (navigator.GetValue (dataField))) {
+					if (client.Equals (navigator.GetValue (_dataField))) {
 						alreadyAdded = true;
 						break;
 					}
 				}
 			} while (navigator.CurrentPosition != null && navigator.MoveNext());
 			if (!alreadyAdded) {
-				navigator = treeStore.AddNode ().SetValue (dataField, client).SetValue (textField, client.Name);
+				navigator = _treeStore.AddNode ().SetValue (_dataField, client).SetValue (_textField, client.Name);
 			}
 			return navigator;
 		}
@@ -101,7 +113,7 @@ namespace MonoMultiJack.Widgets
 			bool alreadyAdded = false;
 			do {
 				if (navigator.CurrentPosition != null) {
-					if (port.Equals (navigator.GetValue (dataField))) {
+					if (port.Equals (navigator.GetValue (_dataField))) {
 						alreadyAdded = true;
 						break;
 					}
@@ -109,7 +121,7 @@ namespace MonoMultiJack.Widgets
 			} while (navigator.CurrentPosition != null && navigator.MoveNext());
 			navigator.MoveToParent ();
 			if (!alreadyAdded) {
-				navigator.AddChild ().SetValue (dataField, port).SetValue (textField, port.Name);
+				navigator.AddChild ().SetValue (_dataField, port).SetValue (_textField, port.Name);
 			}
 			navigator.MoveToParent ();
 			return navigator;
@@ -125,13 +137,17 @@ namespace MonoMultiJack.Widgets
 			if (port != null) {
 				RemovePort (port);
 			}
+			NotifyParent ();
 		}
 
 		private void RemoveClient (Client client)
 		{
 			TreeNavigator navigator = FindClientNavigator (client);
-			navigator.RemoveChildren ();
-			navigator.Remove ();
+			Application.Invoke (() =>
+			{
+				navigator.RemoveChildren ();
+				navigator.Remove ();
+			});
 		}
 
 		private void RemovePort (Port port)
@@ -139,40 +155,125 @@ namespace MonoMultiJack.Widgets
 			TreeNavigator navigator = FindClientNavigator (port.Client);
 			navigator.MoveToChild ();
 			do {
-				if (port.Equals (navigator.GetValue (dataField))) {
-					navigator.Remove ();
+				if (port.Equals (navigator.GetValue (_dataField))) {
+					Application.Invoke (navigator.Remove);
 					break;
 				}
 			} while (navigator.MoveNext());
 			navigator.MoveToParent ();
 			if (!navigator.MoveToChild ()) {
-				navigator.Remove ();
+				Application.Invoke (navigator.Remove);
 			}
 		}
 
 		private TreeNavigator FindClientNavigator (Client client)
 		{
-			TreeNavigator navigator = treeStore.GetFirstNode ();
+			TreeNavigator navigator = _treeStore.GetFirstNode ();
 			do {
-				if (client.Equals (navigator.GetValue (dataField)))
+				if (client.Equals (navigator.GetValue (_dataField))) {
 					return navigator;
+				}
 			} while (navigator.MoveNext());
+			return null;
+		}
+
+		private TreeNavigator FindPortNavigator (Port port)
+		{
+			TreeNavigator navigator = FindClientNavigator (port.Client);
+			if (navigator == null) {
+				return null;
+			}
+			if (navigator.MoveToChild ()) {
+				do {
+					if (port.Equals (navigator.GetValue (_dataField))) {
+						return navigator;
+					}
+				} while (navigator.MoveNext());
+			}
 			return null;
 		}
 
 		public void UpdateConnectable (IConnectable connectable)
 		{
-			throw new NotImplementedException ();
+			Client client = connectable as Client;
+			Port port = connectable as Port;
+			if (client != null) {
+				TreeNavigator navigator = FindClientNavigator (client);
+				UpdateTreeStoreValues (navigator, connectable);
+			}
+			if (port != null) {
+				TreeNavigator navigator = FindPortNavigator (port);
+				UpdateTreeStoreValues (navigator, connectable);
+			}
+		}
+
+		private void UpdateTreeStoreValues (TreeNavigator navigator, IConnectable connectable)
+		{
+			if (navigator != null) {
+				Application.Invoke (() =>
+				{
+					navigator.SetValue (_dataField, connectable);
+					navigator.SetValue (_textField, connectable.Name);
+				});
+			}
 		}
 
 		public IConnectable GetSelected ()
 		{
-			throw new NotImplementedException ();
+			TreePosition position = _treeView.SelectedRow;
+			TreeNavigator navigator = _treeStore.GetNavigatorAt (position);
+			return navigator.GetValue (_dataField);
 		}
 
-		public int GetYPositionOfConnectable (IConnectable connectable)
+		public double GetYPositionOfConnectable (IConnectable connectable)
 		{
-			return 12;
+			double startPos = _treeView.HorizontalScrollControl.Value;
+			// TODO: Get real row height
+			double rowHeight = 24;
+			// Start in the middle of line
+			startPos -= rowHeight / 2;
+			TreeNavigator navigator = _treeStore.GetFirstNode ();
+			double clientHeight = 0;
+			do {
+				startPos += clientHeight;
+			} while (!IsInClient(navigator, connectable, rowHeight, out clientHeight));
+			startPos += clientHeight;
+			return startPos;
+		}
+
+		private bool IsInClient (TreeNavigator navigator, IConnectable connectable, double rowHeight, out double clientHeight)
+		{
+			clientHeight = rowHeight;
+			IConnectable value = navigator.GetValue (_dataField);
+			if (connectable.Equals (value)) {
+				return true;
+			}
+			bool isClientExpanded = _treeView.IsRowExpanded (navigator.CurrentPosition);
+			if (!navigator.MoveToChild ()) {
+				return false;
+			}
+			do {
+				if (IsPort (navigator, connectable, rowHeight, isClientExpanded, ref clientHeight)) {
+					return true;
+				}
+			} while (navigator.MoveNext());
+			navigator.MoveToParent ();
+			return !navigator.MoveNext ();
+		}
+
+		private bool IsPort (TreeNavigator navigator, IConnectable connectable, double rowHeight, bool isClientExpanded, ref double clientHeight)
+		{
+			IConnectable value = navigator.GetValue (_dataField);
+			if (isClientExpanded) {
+				clientHeight += rowHeight;
+			}
+			return connectable.Equals (value);
+		}
+
+		public void Clear ()
+		{
+			Application.Invoke (_treeStore.Clear);
+			NotifyParent ();
 		}
 	}
 }

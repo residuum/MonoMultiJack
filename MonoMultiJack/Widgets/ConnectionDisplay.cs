@@ -25,12 +25,9 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
-using Xwt.Drawing;
-using Colors = MonoMultiJack.Widgets.ConnectionColors.Colors;
 
 namespace MonoMultiJack.Widgets
 {
@@ -44,9 +41,8 @@ namespace MonoMultiJack.Widgets
 		readonly List<IConnection> _connections = new List<IConnection> ();
 		private Button _connectButton;
 		private Button _disconnectButton;
-		private Canvas _connectionArea;
+		private ConnectionArea _connectionArea;
 		DateTime _lastLineUpdate = DateTime.Now;
-		int _cellHeight = 0;
 
 		public new void Dispose ()
 		{
@@ -68,31 +64,34 @@ namespace MonoMultiJack.Widgets
 			};
 
 			HBox hbox1 = new HBox ();
-			this._connectButton = new Button ("Connect");
-			hbox1.PackStart (this._connectButton);
-			this._disconnectButton = new Button ("Disconnect");
-			hbox1.PackStart (this._disconnectButton);
+			_connectButton = new Button ("Connect");
+			hbox1.PackStart (_connectButton);
+			_disconnectButton = new Button ("Disconnect");
+			hbox1.PackStart (_disconnectButton);
 			vbox.PackStart (hbox1); 
             
             
 			_inTreeView = new ConnectableTreeView ();
 			_outTreeView = new ConnectableTreeView ();
 
-			_connectionArea = new Canvas {
+			_connectionArea = new ConnectionArea (_outTreeView, _inTreeView) {
 				MinWidth = 200,
 				MinHeight = 200,
 				ExpandVertical = true,
 				ExpandHorizontal = true
 			};
-			HBox hbox2 = new HBox { ExpandVertical = true, ExpandHorizontal = true };
+			HBox hbox2 = new HBox {
+				ExpandVertical = true,
+				ExpandHorizontal = true
+			};
 			hbox2.PackStart (_outTreeView);
 			hbox2.PackStart (_connectionArea);
 			hbox2.PackStart (_inTreeView);
 
 			vbox.PackEnd (hbox2);
 			Content = vbox;
-			this.ExpandHorizontal = true;
-			this.ExpandVertical = true;
+			ExpandHorizontal = true;
+			ExpandVertical = true;
 
 		}
 
@@ -173,40 +172,10 @@ namespace MonoMultiJack.Widgets
 				return;
 			}
 			try {
-				//if (_connectionArea.GdkWindow == null)
-				//{
-				//    return;
-				//}
-				//_connectionArea.GdkWindow.Clear();
-				//using (Context g = Gdk.CairoHelper.Create(_connectionArea.GdkWindow))
-				//{
-				//    g.Antialias = Antialias.Subpixel;
-				//    List<IConnection> connections = new List<IConnection>(_connections);
-				//    for (int i = 0; i < connections.Count; i++)
-				//    {
-				//        IConnection conn = connections[i];
-				//        int outY = GetYPositionForPort(_outputTreeview, _outputStore, conn.OutPort);
-				//        int inY = GetYPositionForPort(_inputTreeview, _inputStore, conn.InPort);
-				//        int areaWidth = _connectionArea.Allocation.Width;
-				//        if (outY != -1 && inY != -1)
-				//        {
-				//            g.Save();
-				//            g.MoveTo(0, outY);
-				//            g.CurveTo(
-				//                new PointD(areaWidth / 4, outY),
-				//                new PointD(3 * areaWidth / 4, inY),
-				//                new PointD(areaWidth, inY)
-				//            );
-				//            g.Restore();
-				//        }
-				//        // TODO: Find a way to get the background color
-				//        g.Color = Colors.GetColor(i, new Color());
-				//        g.LineWidth = 1;
-				//        g.Stroke();
-				//    }
-				//    g.Target.Dispose();
-				//    _lastLineUpdate = now;
-				//}
+				_connectionArea.Clear ();
+				_connectionArea.SetConnections (_connections);
+				_connectionArea.QueueDraw (_connectionArea.Bounds);
+				_lastLineUpdate = now;
 			} catch (Exception ex) {
 #if DEBUG
 				Console.WriteLine (ex.Message);
@@ -216,18 +185,12 @@ namespace MonoMultiJack.Widgets
 
 		protected virtual void OnTreeViewRowExpanded (object o, EventArgs args)
 		{
-			Application.Invoke (delegate {
-				UpdateConnectionLines ();
-			}
-			);
+			Application.Invoke (UpdateConnectionLines);
 		}
 
 		protected virtual void OnTreeViewRowCollapsed (object o, EventArgs args)
 		{
-			Application.Invoke (delegate {
-				UpdateConnectionLines ();
-			}
-			);
+			Application.Invoke (UpdateConnectionLines);
 		}
 		#region IConnectionWidget implementation
 		public event ConnectEventHandler Connect;
@@ -235,33 +198,24 @@ namespace MonoMultiJack.Widgets
 
 		public void Clear ()
 		{
-			//_inputStore.Clear ();
-			//_outputStore.Clear ();
-			//_connections.Clear ();
-			//Application.Invoke (delegate {
-			//    UpdateConnectionLines ();
-			//}
-			//);
+			_inTreeView.Clear ();
+			_outTreeView.Clear ();
+			_connections.Clear ();
+			Application.Invoke (UpdateConnectionLines);
 		}
 
 		public void AddConnection (IConnection connection)
 		{			
-			//_connections.Add (connection);
-			
-			//Application.Invoke (delegate {
-			//    UpdateConnectionLines ();
-			//}
-			//);
+			_connections.Add (connection);
+            
+			Application.Invoke (UpdateConnectionLines);
 		}
 
 		public void RemoveConnection (IConnection connection)
 		{
-			//_connections.Remove (connection);
-			
-			//Application.Invoke (delegate {
-			//    UpdateConnectionLines ();
-			//}
-			//);
+			_connections.Remove (connection);
+
+			Application.Invoke (UpdateConnectionLines);
 		}
 
 		public string ConnectionManagerName { get; private set; }
