@@ -56,7 +56,7 @@ namespace MonoMultiJack.Forms
 
 		void HandleCancelClick (object sender, EventArgs e)
 		{
-			HandleClose (sender, e);
+			this.Close ();
 		}
 
 		void HandleOkClick (object o, EventArgs args)
@@ -122,10 +122,12 @@ namespace MonoMultiJack.Forms
 		void BuildWindow ()
 		{
 			_configTable = new Table ();
-			ScrollView scrollView = new ScrollView (_configTable);
-			scrollView.ExpandHorizontal = true;
-			scrollView.ExpandVertical = true;
-			scrollView.HorizontalScrollPolicy = ScrollPolicy.Never;
+			ScrollView scrollView = new ScrollView (_configTable) {
+				ExpandHorizontal = true,
+				ExpandVertical = true,
+				HorizontalScrollPolicy = ScrollPolicy.Never,
+				MinHeight = 300
+			};
 			HBox buttonBox = new HBox ();
 			_addButton = new Button (Command.Add.Label) { Image = StockIcons.Add };
 			_okButton = new Button (Command.Ok.Label);
@@ -135,7 +137,7 @@ namespace MonoMultiJack.Forms
 			buttonBox.PackEnd (_cancelButton);
             
 			VBox box = new VBox ();
-			box.PackStart (scrollView);
+			box.PackStart (scrollView, true, true);
 			box.PackEnd (buttonBox);
 			this.Content = box;
 		}

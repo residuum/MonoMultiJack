@@ -119,6 +119,12 @@ namespace MonoMultiJack.Forms
 		{
 			Closed += HandleClose;
 			this.Buttons.GetCommandButton (Command.Ok).Clicked += HandleOkClick;
+			this.Buttons.GetCommandButton (Command.Cancel).Clicked += HandleCancelClick; 
+		}
+
+		void HandleCancelClick (object sender, EventArgs e)
+		{
+			this.Close ();
 		}
 
 		void HandleOkClick (object o, EventArgs args)
