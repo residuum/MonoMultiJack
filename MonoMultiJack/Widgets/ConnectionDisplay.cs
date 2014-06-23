@@ -34,7 +34,7 @@ namespace MonoMultiJack.Widgets
 	/// <summary>
 	/// Widget for displaying and managing connections.
 	/// </summary>
-	public class ConnectionDisplay : Widget, IConnectionWidget
+	public partial class ConnectionDisplay : Widget, IConnectionWidget
 	{
 		ConnectableTreeView _outTreeView;
 		ConnectableTreeView _inTreeView;

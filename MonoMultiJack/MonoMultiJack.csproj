@@ -64,9 +64,9 @@
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
-    <Compile Include="Widgets\ConnectableTreeView.cs" />
-    <Compile Include="Widgets\ConnectionColors\Colors.cs" />
-    <Compile Include="Widgets\ConnectionArea.cs" />
+    <Compile Include="Widgets\ConnectionDisplay\Colors.cs" />
+    <Compile Include="Widgets\ConnectionDisplay\ConnectableTreeView.cs" />
+    <Compile Include="Widgets\ConnectionDisplay\ConnectionArea.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -113,6 +113,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Widgets\ConnectionColors\" />
+    <Folder Include="Widgets\ConnectionDisplay\" />
   </ItemGroup>
 </Project>

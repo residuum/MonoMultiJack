@@ -26,48 +26,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Widgets.ConnectionColors;
 using Xwt;
 using Xwt.Drawing;
 
 namespace MonoMultiJack.Widgets
 {
-	class ConnectionArea : Canvas
+	public partial class ConnectionDisplay
 	{
-		readonly ConnectableTreeView _outTreeView;
-		readonly ConnectableTreeView _inTreeView;
-		IEnumerable<IConnection> _connections;
-
-		public ConnectionArea (ConnectableTreeView outTreeView, ConnectableTreeView inTreeView)
+		class ConnectionArea : Canvas
 		{
-			_outTreeView = outTreeView;
-			_inTreeView = inTreeView;
-		}
+			readonly ConnectableTreeView _outTreeView;
+			readonly ConnectableTreeView _inTreeView;
+			IEnumerable<IConnection> _connections;
 
-		public void SetConnections (IEnumerable<IConnection> connections)
-		{
-			_connections = connections;
-		}
-
-		protected override void OnDraw (Context ctx, Rectangle dirtyRect)
-		{
-			List<IConnection> connections = new List<IConnection> (_connections ?? Enumerable.Empty<IConnection> ());
-			for (int i = 0; i < connections.Count; i++) {
-				IConnection conn = connections [i];
-				double outY = _outTreeView.GetYPositionOfConnectable (conn.OutPort);
-				double inY = _inTreeView.GetYPositionOfConnectable (conn.InPort);
-				double areaWidth = this.Bounds.Width;
-				ctx.Save ();
-				ctx.MoveTo (0, outY);
-				ctx.CurveTo (new Point (areaWidth / 4, outY),
-				             new Point (3 * areaWidth / 4, inY),
-				             new Point (areaWidth, inY));
-				ctx.Restore ();
-				ctx.SetColor (i.GetColor (BackgroundColor));
-				ctx.SetLineWidth (1);
-				ctx.Stroke ();
+			public ConnectionArea (ConnectableTreeView outTreeView, ConnectableTreeView inTreeView)
+			{
+				_outTreeView = outTreeView;
+				_inTreeView = inTreeView;
 			}
-			base.OnDraw (ctx, dirtyRect);
+
+			public void SetConnections (IEnumerable<IConnection> connections)
+			{
+				_connections = connections;
+			}
+
+			protected override void OnDraw (Context ctx, Rectangle dirtyRect)
+			{
+				List<IConnection> connections = new List<IConnection> (_connections ?? Enumerable.Empty<IConnection> ());
+				for (int i = 0; i < connections.Count; i++) {
+					IConnection conn = connections [i];
+					double outY = _outTreeView.GetYPositionOfConnectable (conn.OutPort);
+					double inY = _inTreeView.GetYPositionOfConnectable (conn.InPort);
+					double areaWidth = this.Bounds.Width;
+					ctx.Save ();
+					ctx.MoveTo (0, outY);
+					ctx.CurveTo (new Point (areaWidth / 4, outY),
+					            new Point (3 * areaWidth / 4, inY),
+					            new Point (areaWidth, inY));
+					ctx.Restore ();
+					ctx.SetColor (i.GetColor (BackgroundColor));
+					ctx.SetLineWidth (1);
+					ctx.Stroke ();
+				}
+				base.OnDraw (ctx, dirtyRect);
+			}
 		}
 	}
 }
