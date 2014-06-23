@@ -246,6 +246,9 @@ namespace MonoMultiJack.OS.Linux
 		/// </summary>
 		void TestForRunningSingleton ()
 		{
+			if (string.IsNullOrEmpty(_commandName)){
+				return;
+			}
 			using (Process pgrepProgram = new Process()) {
 				pgrepProgram.StartInfo.FileName = "pgrep";
 				string[] commandPaths = _commandName.Split (Path.DirectorySeparatorChar);
