@@ -369,10 +369,10 @@ namespace MonoMultiJack.Controllers
 
 		void ShowInfoMessage (string message)
 		{
-//			IInfoWindow messageWindow = new InfoWindow ();
-//			messageWindow.Message = message;
-//			messageWindow.Closing += Window_Closing;
-//			messageWindow.Show ();
+			IInfoWindow messageWindow = new InfoWindow ();
+			messageWindow.Message = message;
+			messageWindow.Closing += Window_Closing;
+			messageWindow.Show ();
 		}
 
 		public event EventHandler AllWidgetsAreClosed;

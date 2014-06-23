@@ -67,6 +67,7 @@
     <Compile Include="Widgets\ConnectionDisplay\Colors.cs" />
     <Compile Include="Widgets\ConnectionDisplay\ConnectableTreeView.cs" />
     <Compile Include="Widgets\ConnectionDisplay\ConnectionArea.cs" />
+    <Compile Include="Forms\InfoWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

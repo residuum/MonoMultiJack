@@ -29,15 +29,12 @@ using Xwt;
 
 namespace MonoMultiJack.Forms
 {
-	public class InfoWindow : MessageDialog, IInfoWindow
+	public class InfoWindow : IInfoWindow
 	{
+		string _message;
 
 		public InfoWindow ()
 		{
-			//MessageType = MessageType.Info;
-			//Close += HandleClose;
-			//Response += HandleClose;
-			//AddButton ("Close", ResponseType.Close);
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -49,18 +46,17 @@ namespace MonoMultiJack.Forms
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
-			this.Dispose ();
 		}
 		#endregion
 		#region IWidget implementation
 		void MonoMultiJack.Widgets.IWidget.Show ()
 		{
-			this.Show ();
+			MessageDialog.ShowMessage (_message);
 		}
 
 		void MonoMultiJack.Widgets.IWidget.Hide ()
 		{
-			this.Hide ();
+
 		}
 		#endregion
 		#region IWindow implementation
@@ -81,11 +77,7 @@ namespace MonoMultiJack.Forms
 		}
 		#endregion
 		#region IInfoMessage implementation
-		string IInfoWindow.Message {
-			set {
-				//this.Text = value;
-			}
-		}
+		string IInfoWindow.Message { set { _message = value; } }
 		#endregion
 	}
 }
