@@ -48,7 +48,7 @@ namespace MonoMultiJack.Widgets
 			BindEvents ();
 		}
 
-		private void BindEvents ()
+		void BindEvents ()
 		{
 			_removeApp.Clicked += HandleRemoveClick;
 		}
@@ -73,7 +73,7 @@ namespace MonoMultiJack.Widgets
 			Content = table;
 		}
 
-		private TextEntry BuildRow (Table table, int index, string labelText)
+		TextEntry BuildRow (Table table, int index, string labelText)
 		{
 			Label label = new Label (labelText);
 			table.Add (label, 0, index);

@@ -28,8 +28,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
 	public class JackAudioConnection : Connection
 	{
-		private Port _outPort;
-		private Port _inPort;
+		Port _outPort;
+		Port _inPort;
 		
 		#region IConnection implementation
 		public override Port OutPort {

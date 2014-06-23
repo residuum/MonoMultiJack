@@ -41,11 +41,11 @@ namespace MonoMultiJack.Forms
 	{
 		readonly string JackdStatusRunning = "Jackd is running.";
 		readonly string JackdStatusStopped = "Jackd is stopped.";
-		private VBox _appButtonBox;
-		private Notebook _connectionNotebook;
-		private Label _statusbar;
-		private MenuItem _stopAction;
-		private MenuItem _stopAllAction;
+		VBox _appButtonBox;
+		Notebook _connectionNotebook;
+		Label _statusbar;
+		MenuItem _stopAction;
+		MenuItem _stopAllAction;
 
 		/// <summary>
 		/// Constructor
@@ -57,7 +57,7 @@ namespace MonoMultiJack.Forms
 			this.Closed += OnCloseEvent;
 		}
 
-		private void BuildMenu ()
+		void BuildMenu ()
 		{
 			this.MainMenu = new Menu ();
 			MenuItem file = new MenuItem ("_File");
@@ -81,18 +81,18 @@ namespace MonoMultiJack.Forms
 
 		}
 
-		private IEnumerable<MenuItem> BuildHelpMenu ()
+		IEnumerable<MenuItem> BuildHelpMenu ()
 		{
 			yield return CreateMenuItem ("About", ShowAbout, StockIcons.Information);
 		}
 
-		private IEnumerable<MenuItem> BuildConfigMenu ()
+		IEnumerable<MenuItem> BuildConfigMenu ()
 		{
 			yield return CreateMenuItem ("Configure Jackd", CallShowConfigureJackd);
 			yield return CreateMenuItem ("Add / Remove Applications", CallShowConfigureApps);
 		}
 
-		private IEnumerable<MenuItem> BuildFileMenu ()
+		IEnumerable<MenuItem> BuildFileMenu ()
 		{
 			yield return CreateMenuItem ("(Re)Start _Jackd", CallStartJackd);
 			_stopAction = CreateMenuItem ("_Stop Jackd", CallStopJackd);
@@ -102,7 +102,7 @@ namespace MonoMultiJack.Forms
 			yield return CreateMenuItem ("_Quit", OnQuitActionActivated);
 		}
 
-		private static MenuItem CreateMenuItem (string name, EventHandler handler, Image icon = null)
+		static MenuItem CreateMenuItem (string name, EventHandler handler, Image icon = null)
 		{
 			MenuItem menuItem = new MenuItem (name);
 			if (icon != null) {
@@ -205,10 +205,10 @@ namespace MonoMultiJack.Forms
 				ExpandVertical = true
 			};
 			mainContent.PackStart (_appButtonBox);
-			mainContent.PackStart (_connectionNotebook);
+			mainContent.PackStart (_connectionNotebook, true, true);
 
 			VBox container = new VBox ();
-			container.PackStart (mainContent);
+			container.PackStart (mainContent, true, true);
 			_statusbar = new Label ();
 			container.PackEnd (_statusbar);
 

@@ -33,9 +33,9 @@ namespace MonoMultiJack.Forms
 	public class AppConfigWindow : Window, IAppConfigWindow
 	{
 		Table _configTable;
-		private Button _addButton;
-		private Button _okButton;
-		private Button _cancelButton;
+		Button _addButton;
+		Button _okButton;
+		Button _cancelButton;
 
 		public AppConfigWindow ()
 		{
@@ -46,7 +46,7 @@ namespace MonoMultiJack.Forms
 			Resizable = true;
 		}
 
-		private void BindEvents ()
+		void BindEvents ()
 		{
 			Closed += HandleClose;
 			_okButton.Clicked += HandleOkClick;
@@ -54,7 +54,7 @@ namespace MonoMultiJack.Forms
 			_addButton.Clicked += HandleAddClick;
 		}
 
-		private void HandleCancelClick (object sender, EventArgs e)
+		void HandleCancelClick (object sender, EventArgs e)
 		{
 			HandleClose (sender, e);
 		}

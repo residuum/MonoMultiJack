@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 
@@ -31,10 +32,10 @@ namespace MonoMultiJack.Widgets
 {
 	class ConnectableTreeView : Widget
 	{
-		private readonly TreeView _treeView;
-		private readonly TreeStore _treeStore;
-		private readonly IDataField<IConnectable> _dataField;
-		private readonly IDataField<string> _textField;
+		readonly TreeView _treeView;
+		readonly TreeStore _treeStore;
+		readonly IDataField<IConnectable> _dataField;
+		readonly IDataField<string> _textField;
 
 		public ConnectableTreeView ()
 		{
@@ -47,25 +48,26 @@ namespace MonoMultiJack.Widgets
 			_treeView = new TreeView (_treeStore);
 			_treeView.Columns.Add ("", _textField);
 			_treeView.MinHeight = 200;
-			_treeView.MinWidth = 300;
+			_treeView.MinWidth = 200;
 			_treeView.ExpandVertical = true;
 			_treeView.ExpandHorizontal = false;
 			_treeView.HeadersVisible = false;
 			this.Content = _treeView;
 			_treeView.MouseScrolled += UpdateParent;
 			_treeView.RowExpanded += UpdateParent;
+			//_treeView.RowCollapsed += UpdateParent;
 		}
 
 		public event EventHandler ViewChanged;
 
-		private void NotifyParent ()
+		void NotifyParent ()
 		{
 			if (ViewChanged != null) {
 				ViewChanged (this, new EventArgs ());
 			}
 		}
 
-		private void UpdateParent (object sender, EventArgs e)
+		void UpdateParent (object sender, EventArgs e)
 		{
 			NotifyParent ();
 		}
@@ -90,7 +92,7 @@ namespace MonoMultiJack.Widgets
 			NotifyParent ();
 		}
 
-		private TreeNavigator AddClient (TreeNavigator navigator, Client client)
+		TreeNavigator AddClient (TreeNavigator navigator, Client client)
 		{
 			bool alreadyAdded = false;
 			do {
@@ -107,7 +109,7 @@ namespace MonoMultiJack.Widgets
 			return navigator;
 		}
 
-		private TreeNavigator AddPort (TreeNavigator navigator, Port port)
+		TreeNavigator AddPort (TreeNavigator navigator, Port port)
 		{
 			navigator.MoveToChild ();
 			bool alreadyAdded = false;
@@ -140,7 +142,7 @@ namespace MonoMultiJack.Widgets
 			NotifyParent ();
 		}
 
-		private void RemoveClient (Client client)
+		void RemoveClient (Client client)
 		{
 			TreeNavigator navigator = FindClientNavigator (client);
 			Application.Invoke (() =>
@@ -150,7 +152,7 @@ namespace MonoMultiJack.Widgets
 			});
 		}
 
-		private void RemovePort (Port port)
+		void RemovePort (Port port)
 		{
 			TreeNavigator navigator = FindClientNavigator (port.Client);
 			navigator.MoveToChild ();
@@ -166,7 +168,7 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
-		private TreeNavigator FindClientNavigator (Client client)
+		TreeNavigator FindClientNavigator (Client client)
 		{
 			TreeNavigator navigator = _treeStore.GetFirstNode ();
 			do {
@@ -177,7 +179,7 @@ namespace MonoMultiJack.Widgets
 			return null;
 		}
 
-		private TreeNavigator FindPortNavigator (Port port)
+		TreeNavigator FindPortNavigator (Port port)
 		{
 			TreeNavigator navigator = FindClientNavigator (port.Client);
 			if (navigator == null) {
@@ -207,7 +209,7 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
-		private void UpdateTreeStoreValues (TreeNavigator navigator, IConnectable connectable)
+		void UpdateTreeStoreValues (TreeNavigator navigator, IConnectable connectable)
 		{
 			if (navigator != null) {
 				Application.Invoke (() =>
@@ -227,7 +229,7 @@ namespace MonoMultiJack.Widgets
 
 		public double GetYPositionOfConnectable (IConnectable connectable)
 		{
-			double startPos = _treeView.HorizontalScrollControl.Value;
+			double startPos = _treeView.VerticalScrollControl.Value * -1;
 			// TODO: Get real row height
 			double rowHeight = 24;
 			// Start in the middle of line
@@ -241,7 +243,7 @@ namespace MonoMultiJack.Widgets
 			return startPos;
 		}
 
-		private bool IsInClient (TreeNavigator navigator, IConnectable connectable, double rowHeight, out double clientHeight)
+		bool IsInClient (TreeNavigator navigator, IConnectable connectable, double rowHeight, out double clientHeight)
 		{
 			clientHeight = rowHeight;
 			IConnectable value = navigator.GetValue (_dataField);
@@ -261,7 +263,7 @@ namespace MonoMultiJack.Widgets
 			return !navigator.MoveNext ();
 		}
 
-		private bool IsPort (TreeNavigator navigator, IConnectable connectable, double rowHeight, bool isClientExpanded, ref double clientHeight)
+		bool IsPort (TreeNavigator navigator, IConnectable connectable, double rowHeight, bool isClientExpanded, ref double clientHeight)
 		{
 			IConnectable value = navigator.GetValue (_dataField);
 			if (isClientExpanded) {

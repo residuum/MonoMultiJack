@@ -1,4 +1,4 @@
-﻿// 
+// 
 // ConnectionArea.cs
 //  
 // Author:
@@ -34,9 +34,9 @@ namespace MonoMultiJack.Widgets
 {
 	class ConnectionArea : Canvas
 	{
-		private readonly ConnectableTreeView _outTreeView;
-		private readonly ConnectableTreeView _inTreeView;
-		private IEnumerable<IConnection> _connections;
+		readonly ConnectableTreeView _outTreeView;
+		readonly ConnectableTreeView _inTreeView;
+		IEnumerable<IConnection> _connections;
 
 		public ConnectionArea (ConnectableTreeView outTreeView, ConnectableTreeView inTreeView)
 		{

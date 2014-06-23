@@ -308,7 +308,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 			return newPorts;
 		}
 
-		private static IEnumerable<IConnection> GetInitialConnections (List<JackPort> portMapper)
+		static IEnumerable<IConnection> GetInitialConnections (List<JackPort> portMapper)
 		{
 			IEnumerable<JackPort> outPorts = portMapper.Where (p => p.FlowDirection == FlowDirection.Out);
 			IEnumerable<JackPort> inPorts = portMapper.Where (p => p.FlowDirection == FlowDirection.In).ToList ();

@@ -36,12 +36,12 @@ namespace MonoMultiJack.Widgets
 	/// </summary>
 	public class ConnectionDisplay : Widget, IConnectionWidget
 	{
-		private ConnectableTreeView _outTreeView;
-		private ConnectableTreeView _inTreeView;
+		ConnectableTreeView _outTreeView;
+		ConnectableTreeView _inTreeView;
 		readonly List<IConnection> _connections = new List<IConnection> ();
-		private Button _connectButton;
-		private Button _disconnectButton;
-		private ConnectionArea _connectionArea;
+		Button _connectButton;
+		Button _disconnectButton;
+		ConnectionArea _connectionArea;
 		DateTime _lastLineUpdate = DateTime.Now;
 
 		public new void Dispose ()
@@ -84,11 +84,11 @@ namespace MonoMultiJack.Widgets
 				ExpandVertical = true,
 				ExpandHorizontal = true
 			};
-			hbox2.PackStart (_outTreeView);
-			hbox2.PackStart (_connectionArea);
-			hbox2.PackStart (_inTreeView);
+			hbox2.PackStart (_outTreeView, false, false);
+			hbox2.PackStart (_connectionArea, true, true);
+			hbox2.PackStart (_inTreeView, false, false);
 
-			vbox.PackEnd (hbox2);
+			vbox.PackEnd (hbox2, true, true);
 			Content = vbox;
 			ExpandHorizontal = true;
 			ExpandVertical = true;
@@ -101,9 +101,6 @@ namespace MonoMultiJack.Widgets
 			_disconnectButton.Clicked += DisconnectButton_Click;
 			_inTreeView.ViewChanged += OnTreeViewRowExpanded;
 			_outTreeView.ViewChanged += OnTreeViewRowExpanded;
-            
-			//this.GotFocus += OnExpose;
-
 		}
 
 		public void AddConnectable (IConnectable connectable)

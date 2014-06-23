@@ -115,7 +115,7 @@ namespace MonoMultiJack.Forms
 			BindEvents ();
 		}
 
-		private void BindEvents ()
+		void BindEvents ()
 		{
 			Closed += HandleClose;
 			this.Buttons.GetCommandButton (Command.Ok).Clicked += HandleOkClick;
@@ -154,7 +154,7 @@ namespace MonoMultiJack.Forms
 			this.Buttons.Add (new DialogButton (Command.Cancel));
 		}
 
-		private TextEntry BuildRow (Table table, int index, string labelText)
+		TextEntry BuildRow (Table table, int index, string labelText)
 		{
 			Label label = new Label (labelText);
 			table.Add (label, 0, index);

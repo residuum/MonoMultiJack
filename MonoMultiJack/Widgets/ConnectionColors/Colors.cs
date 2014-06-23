@@ -29,7 +29,7 @@ namespace MonoMultiJack.Widgets.ConnectionColors
 {
 	static class Colors
 	{
-		internal static Color GetColor (this int index, Color bg)
+		public static Color GetColor (this int index, Color bg)
 		{
 			switch (index % 13) {
 			case 1:
@@ -66,8 +66,8 @@ namespace MonoMultiJack.Widgets.ConnectionColors
 		static Color FromBackground (this Color baseColor, Color bg)
 		{
 			return new Color ((baseColor.Red - bg.Red).Wrap (),
-			                 (baseColor.Blue - bg.Blue).Wrap (),
-			                 (baseColor.Green - bg.Green).Wrap ());
+			                  (baseColor.Blue - bg.Blue).Wrap (),
+			                  (baseColor.Green - bg.Green).Wrap ());
 		}
 
 		static double Wrap (this double value)
