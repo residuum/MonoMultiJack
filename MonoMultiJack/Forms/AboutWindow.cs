@@ -32,9 +32,44 @@ namespace MonoMultiJack.Forms
 {
 	public class AboutWindow : Window, IAboutWindow
 	{
+		string _nameText;
+		string _versionText;
+		Label _programName;
+		Label _copyright;
+		Label _comments;
+		LinkLabel _website;
+		Label _authors;
+		Label _license;
+
 		public AboutWindow ()
 		{
+			BuildWindowContent ();
 			Closed += HandleClose;
+		}
+
+		void BuildWindowContent ()
+		{
+			VBox mainContent = new VBox ();
+			_programName = new Label ();
+			_programName.Font = _programName.Font.WithScaledSize (1.5).WithWeight(FontWeight.Bold);
+			mainContent.PackStart (_programName);
+			_comments = new Label ();
+			_comments.Wrap = WrapMode.Word;
+			mainContent.PackStart (_comments);
+			_copyright = new Label ();
+			_copyright.Font = _copyright.Font.WithScaledSize (0.8);
+			mainContent.PackStart (_copyright);
+			_website = new LinkLabel ();
+			_website.Font = _website.Font.WithScaledSize (0.8);
+			mainContent.PackStart (_website);
+
+
+			this.Content = mainContent;
+		}
+
+		void SetProgramName ()
+		{
+			_programName.Text = string.Format("{0} {1}", _nameText, _versionText);
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -64,39 +99,35 @@ namespace MonoMultiJack.Forms
 		#region IAboutWindow implementation
 		string IAboutWindow.ProgramName {
 			set {
-
-				//TODO
-				//this.ProgramName = value;
+				this.Title = string.Format ("Info about {0}", value);
+				_nameText = value;
+				SetProgramName ();
 			}
 		}
 
 		string IAboutWindow.Copyright {
 			set {
-
-				//TODO
-				//this.Copyright = value;
+				_copyright.Text = value;
 			}
 		}
 
 		string IAboutWindow.Comments {
 			set {
-
-				//TODO
-				//this.Comments = value;
+				_comments.Text = value;
 			}
 		}
 
 		string IAboutWindow.Version {
 			set {
-				//TODO
-				//this.Version = value;
+				_versionText = value;
+				SetProgramName ();
 			}
 		}
 
 		string IAboutWindow.Website {
 			set {
-				//TODO
-				//this.Website = value;
+				_website.Text = value;
+				_website.Uri = new Uri(value);
 			}
 		}
 
