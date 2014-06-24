@@ -11,7 +11,7 @@
     <RootNamespace>MonoMultiJack.OS.Windows</RootNamespace>
     <AssemblyName>MonoMultiJack.OS.Windows</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <ReleaseVersion>0.3.0</ReleaseVersion>
+    <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

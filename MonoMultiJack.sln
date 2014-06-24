@@ -260,7 +260,7 @@ Global
 		$0.TextStylePolicy = $38
 		$38.inheritsSet = null
 		$38.scope = application/xml
-		version = 0.3.0
+		version = 0.4.0
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
