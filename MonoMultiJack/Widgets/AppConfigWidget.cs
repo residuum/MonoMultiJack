@@ -64,20 +64,20 @@ namespace MonoMultiJack.Widgets
 			label.Font = label.Font.WithWeight (FontWeight.Bold);
 			table.Add (label, 0, 0, 1, 3);
 
-			_appNameEntry = BuildRow (table, 1, "Name");
-			_appCommandEntry = BuildRow (table, 2, "Command");
-			_appArgumentsEntry = BuildRow (table, 3, "Command Arguments");
+			_appNameEntry = BuildRow (table, 1, "Name", "e.g. Ardour");
+			_appCommandEntry = BuildRow (table, 2, "Command", "e.g. /usr/bin/ardour3");
+			_appArgumentsEntry = BuildRow (table, 3, "Command Arguments", "optional");
 
 			_removeApp = new Button ("Delete") { Image = StockIcons.Remove };
 			table.Add (_removeApp, 2, 2);
 			Content = table;
 		}
 
-		TextEntry BuildRow (Table table, int index, string labelText)
+		TextEntry BuildRow (Table table, int index, string labelText, string placeholder)
 		{
 			Label label = new Label (labelText);
 			table.Add (label, 0, index);
-			TextEntry entry = new TextEntry { MultiLine = false };
+			TextEntry entry = new TextEntry { MultiLine = false, PlaceholderText = placeholder };
 			table.Add (entry, 1, index);
 			label.LinkClicked += (sender, args) => entry.SetFocus ();
 			return entry;

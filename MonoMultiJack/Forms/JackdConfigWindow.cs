@@ -149,10 +149,10 @@ namespace MonoMultiJack.Forms
 		{
 			Table table = new Table ();
 
-			_jackdPathEntry = BuildRow (table, 0, "Jackd Startup Path");
-			_jackdGeneralOptionsEntry = BuildRow (table, 1, "General Options");
-			_jackdDriverEntry = BuildRow (table, 2, "Driver Infrastructure");
-			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options");
+			_jackdPathEntry = BuildRow (table, 0, "Jackd Startup Path", "e.g. /usr/bin/jackd");
+			_jackdGeneralOptionsEntry = BuildRow (table, 1, "General Options", "optional");
+			_jackdDriverEntry = BuildRow (table, 2, "Driver Infrastructure", "e.g. alsa");
+			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options", "optional");
 
 			this.Content = table;
 
@@ -160,11 +160,11 @@ namespace MonoMultiJack.Forms
 			this.Buttons.Add (new DialogButton (Command.Cancel));
 		}
 
-		TextEntry BuildRow (Table table, int index, string labelText)
+		TextEntry BuildRow (Table table, int index, string labelText, string placeholder)
 		{
 			Label label = new Label (labelText);
 			table.Add (label, 0, index);
-			TextEntry entry = new TextEntry { MultiLine = false };
+			TextEntry entry = new TextEntry { MultiLine = false, PlaceholderText = placeholder };
 			table.Add (entry, 1, index);
 			label.LinkClicked += (sender, args) => entry.SetFocus ();
 			return entry;
