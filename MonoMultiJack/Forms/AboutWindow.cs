@@ -38,8 +38,8 @@ namespace MonoMultiJack.Forms
 		Label _copyright;
 		Label _comments;
 		LinkLabel _website;
-		Label _authors;
-		Label _license;
+		string _authors;
+		string _license;
 
 		public AboutWindow ()
 		{
@@ -62,14 +62,31 @@ namespace MonoMultiJack.Forms
 			_website = new LinkLabel ();
 			_website.Font = _website.Font.WithScaledSize (0.8);
 			mainContent.PackStart (_website);
-
-
+			HBox buttonRow = new HBox ();
+			Button authors = new Button { Label = "Authors" };
+			authors.Clicked += (sender, args) => ShowAuthors ();
+			buttonRow.PackStart (authors);
+			Button license = new Button { Label = "License" };
+			license.Clicked += (sender, args) => ShowLicense ();
+			buttonRow.PackStart (license);
+			Button ok = new Button { Label = "Close" };
+			ok.Clicked += (sender, args) => Close ();
+			buttonRow.PackStart (ok);
+			mainContent.PackEnd (buttonRow);
 			this.Content = mainContent;
 		}
 
 		void SetProgramName ()
 		{
 			_programName.Text = string.Format("{0} {1}", _nameText, _versionText);
+		}
+
+		void ShowLicense(){
+			MessageDialog.ShowMessage(_license);
+		}
+
+		void ShowAuthors() {
+			MessageDialog.ShowMessage(_authors);
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -133,15 +150,13 @@ namespace MonoMultiJack.Forms
 
 		string[] IAboutWindow.Authors {
 			set {
-				//TODO
-				//this.Authors = value;
+				_authors = string.Join ("\n", value);
 			}
 		}
 
 		string IAboutWindow.License {
 			set {
-				//TODO
-				//this.License = value;
+				_license = value;
 			}
 		}
 
