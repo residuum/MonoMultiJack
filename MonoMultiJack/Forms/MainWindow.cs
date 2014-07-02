@@ -133,7 +133,7 @@ namespace MonoMultiJack.Forms
 
 		bool IWindow.Sensitive {
 			set {
-				//TODO
+				this.Sensitive = value;
 			}
 		}
 

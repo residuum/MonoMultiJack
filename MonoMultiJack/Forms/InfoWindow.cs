@@ -29,7 +29,7 @@ using Xwt;
 
 namespace MonoMultiJack.Forms
 {
-	public class InfoWindow : IInfoWindow
+	public class InfoWindow : Dialog,IInfoWindow
 	{
 		string _message;
 
@@ -63,16 +63,16 @@ namespace MonoMultiJack.Forms
 		public event EventHandler Closing;
 
 		string IWindow.IconPath {
-			set {				
-				if (File.Exists (value)) {
-					//this.Icon = new Pixbuf (value);
-				}
+			set {
+//				if (File.Exists (value)) {
+//					this.Icon = Image.FromFile (value);
+//				}
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				//this.Sensitive = value;
+				this.Sensitive = value;
 			}
 		}
 		#endregion

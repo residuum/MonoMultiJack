@@ -169,8 +169,6 @@ namespace MonoMultiJack.Forms
 				}
 			}
 		}
-
-		public bool Sensitive { set; private get; }
 		#endregion
 	}
 }
