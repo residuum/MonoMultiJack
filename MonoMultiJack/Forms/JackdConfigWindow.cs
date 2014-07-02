@@ -164,7 +164,10 @@ namespace MonoMultiJack.Forms
 		{
 			Label label = new Label (labelText);
 			table.Add (label, 0, index);
-			TextEntry entry = new TextEntry { MultiLine = false, PlaceholderText = placeholder };
+			TextEntry entry = new TextEntry {
+				MultiLine = false,
+				PlaceholderText = placeholder
+			};
 			table.Add (entry, 1, index);
 			label.LinkClicked += (sender, args) => entry.SetFocus ();
 			return entry;

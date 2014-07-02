@@ -51,7 +51,7 @@ namespace MonoMultiJack.Forms
 		{
 			VBox mainContent = new VBox ();
 			_programName = new Label ();
-			_programName.Font = _programName.Font.WithScaledSize (1.5).WithWeight(FontWeight.Bold);
+			_programName.Font = _programName.Font.WithScaledSize (1.5).WithWeight (FontWeight.Bold);
 			mainContent.PackStart (_programName);
 			_comments = new Label ();
 			_comments.Wrap = WrapMode.Word;
@@ -78,15 +78,17 @@ namespace MonoMultiJack.Forms
 
 		void SetProgramName ()
 		{
-			_programName.Text = string.Format("{0} {1}", _nameText, _versionText);
+			_programName.Text = string.Format ("{0} {1}", _nameText, _versionText);
 		}
 
-		void ShowLicense(){
-			MessageDialog.ShowMessage(_license);
+		void ShowLicense ()
+		{
+			MessageDialog.ShowMessage (_license);
 		}
 
-		void ShowAuthors() {
-			MessageDialog.ShowMessage(_authors);
+		void ShowAuthors ()
+		{
+			MessageDialog.ShowMessage (_authors);
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -144,7 +146,7 @@ namespace MonoMultiJack.Forms
 		string IAboutWindow.Website {
 			set {
 				_website.Text = value;
-				_website.Uri = new Uri(value);
+				_website.Uri = new Uri (value);
 			}
 		}
 
