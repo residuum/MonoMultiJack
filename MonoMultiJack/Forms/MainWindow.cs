@@ -83,13 +83,13 @@ namespace MonoMultiJack.Forms
 
 		IEnumerable<MenuItem> BuildHelpMenu ()
 		{
-			yield return CreateMenuItem ("About", CallShowAbout, StockIcons.Information);
+			yield return CreateMenuItem ("_About", CallShowAbout, StockIcons.Information);
 		}
 
 		IEnumerable<MenuItem> BuildConfigMenu ()
 		{
-			yield return CreateMenuItem ("Configure Jackd", CallShowConfigureJackd);
-			yield return CreateMenuItem ("Add / Remove Applications", CallShowConfigureApps);
+			yield return CreateMenuItem ("Configure _Jackd", CallShowConfigureJackd);
+			yield return CreateMenuItem ("Add / Remove _Applications", CallShowConfigureApps);
 		}
 
 		IEnumerable<MenuItem> BuildFileMenu ()
@@ -207,9 +207,13 @@ namespace MonoMultiJack.Forms
 			mainContent.PackStart (_appButtonBox);
 			mainContent.PackStart (_connectionNotebook, true, true);
 
-			VBox container = new VBox ();
+			VBox container = new VBox {
+				Margin = new WidgetSpacing(0, 0, 0, 0)
+			};
 			container.PackStart (mainContent, true, true);
-			_statusbar = new Label ();
+			_statusbar = new Label {
+				Margin = new WidgetSpacing(0, 0, 0, 0)
+			};
 			container.PackEnd (_statusbar);
 
 			this.Content = container;
