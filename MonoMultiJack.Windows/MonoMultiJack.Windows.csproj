@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D43459F9-41B8-467F-965E-8783BD10FC04}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AssemblyName>MonoMultiJack</AssemblyName>
+    <ProjectGuid>{48716E31-9E50-469A-8EA4-3F722C79D7B8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>MonoMultiJack.Windows</AssemblyName>
     <RootNamespace>MonoMultiJack</RootNamespace>
     <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>
@@ -19,6 +19,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -26,9 +27,6 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
@@ -38,52 +36,43 @@
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\DependencyResolver.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Forms\MainWindow.cs" />
-    <Compile Include="Forms\JackdConfigWindow.cs" />
-    <Compile Include="Widgets\AppConfigWidget.cs" />
-    <Compile Include="Widgets\ConnectionDisplay.cs" />
-    <Compile Include="Forms\IMainWindow.cs" />
-    <Compile Include="Forms\IWindow.cs" />
-    <Compile Include="Widgets\IWidget.cs" />
-    <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Widgets\AppStartWidget.cs" />
-    <Compile Include="Widgets\IAppStartWidget.cs" />
-    <Compile Include="Forms\IAboutWindow.cs" />
-    <Compile Include="Forms\AboutWindow.cs" />
-    <Compile Include="Forms\IInfoWindow.cs" />
-    <Compile Include="Widgets\IAppConfigWidget.cs" />
-    <Compile Include="Forms\IJackdConfigWindow.cs" />
-    <Compile Include="Forms\IAppConfigWindow.cs" />
-    <Compile Include="Controllers\AppStartController.cs" />
-    <Compile Include="Controllers\JackdConfigController.cs" />
-    <Compile Include="Controllers\AppConfigController.cs" />
-    <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Forms\AppConfigWindow.cs" />
-    <Compile Include="Widgets\IConnectionWidget.cs" />
-    <Compile Include="Controllers\ConnectionController.cs" />
-    <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
-    <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
-    <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\Colors.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\ConnectableTreeView.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\ConnectionArea.cs" />
-    <Compile Include="Forms\InfoWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>MonoMultiJack.ConnectionWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj">
+      <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
+      <Name>MonoMultiJack.ConnectionWrapper.Jack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonoMultiJack.Configuration\MonoMultiJack.Configuration.csproj">
       <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
       <Name>MonoMultiJack.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.OS.Windows\MonoMultiJack.OS.Windows.csproj">
+      <Project>{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}</Project>
+      <Name>MonoMultiJack.OS.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonoMultiJack.OS\MonoMultiJack.OS.csproj">
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>MonoMultiJack.OS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack\MonoMultiJack.csproj">
+      <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
+      <Name>MonoMultiJack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\xwt\Xwt.WPF\Xwt.WPF.csproj">
+      <Project>{C93D746E-1586-4D4F-B411-BF5A966E6A08}</Project>
+      <Name>Xwt.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
