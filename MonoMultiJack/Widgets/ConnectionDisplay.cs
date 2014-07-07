@@ -171,7 +171,7 @@ namespace MonoMultiJack.Widgets
 			try {
 				_connectionArea.Clear ();
 				_connectionArea.SetConnections (_connections);
-				_connectionArea.QueueDraw (_connectionArea.Bounds);
+				_connectionArea.QueueDraw ();
 				_lastLineUpdate = now;
 			} catch (Exception ex) {
 #if DEBUG

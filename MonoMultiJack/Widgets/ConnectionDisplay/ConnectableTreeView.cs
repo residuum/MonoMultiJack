@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 
@@ -76,22 +75,24 @@ namespace MonoMultiJack.Widgets
 
 			public void AddConnectable (IConnectable connectable)
 			{
-				Client client = connectable as Client;
-				Port port = connectable as Port;
-				if (client != null) {
-					TreeNavigator navigator = _treeStore.GetFirstNode ();
-					navigator = AddClient (navigator, client);
-					foreach (Port clientPort in client.Ports) {
-						navigator = AddPort (navigator, clientPort);
+				Application.Invoke (() => {
+					Client client = connectable as Client;
+					Port port = connectable as Port;
+					if (client != null) {
+						TreeNavigator navigator = _treeStore.GetFirstNode ();
+						navigator = AddClient (navigator, client);
+						foreach (Port clientPort in client.Ports) {
+							navigator = AddPort (navigator, clientPort);
+						}
 					}
-				}
-				if (port != null) {
-					TreeNavigator navigator = FindClientNavigator (port.Client);
-					if (navigator != null) {
-						AddPort (navigator, port);
+					if (port != null) {
+						TreeNavigator navigator = FindClientNavigator (port.Client);
+						if (navigator != null) {
+							AddPort (navigator, port);
+						}
 					}
-				}
-				NotifyParent ();
+					NotifyParent ();
+				});
 			}
 
 			TreeNavigator AddClient (TreeNavigator navigator, Client client)
@@ -133,25 +134,25 @@ namespace MonoMultiJack.Widgets
 
 			public void RemoveConnectable (IConnectable connectable)
 			{
-				Client client = connectable as Client;
-				Port port = connectable as Port;
-				if (client != null) {
-					RemoveClient (client);
-				}
-				if (port != null) {
-					RemovePort (port);
-				}
-				NotifyParent ();
+				Application.Invoke (() =>
+				{
+					Client client = connectable as Client;
+					Port port = connectable as Port;
+					if (client != null) {
+						RemoveClient (client);
+					}
+					if (port != null) {
+						RemovePort (port);
+					}
+					NotifyParent ();
+				});
 			}
 
 			void RemoveClient (Client client)
 			{
 				TreeNavigator navigator = FindClientNavigator (client);
-				Application.Invoke (() =>
-				{
-					navigator.RemoveChildren ();
-					navigator.Remove ();
-				});
+				navigator.RemoveChildren ();
+				navigator.Remove ();
 			}
 
 			void RemovePort (Port port)
@@ -160,13 +161,13 @@ namespace MonoMultiJack.Widgets
 				navigator.MoveToChild ();
 				do {
 					if (port.Equals (navigator.GetValue (_dataField))) {
-						Application.Invoke (navigator.Remove);
+						navigator.Remove ();
 						break;
 					}
 				} while (navigator.MoveNext());
 				navigator.MoveToParent ();
 				if (!navigator.MoveToChild ()) {
-					Application.Invoke (navigator.Remove);
+					navigator.Remove ();
 				}
 			}
 
@@ -199,26 +200,26 @@ namespace MonoMultiJack.Widgets
 
 			public void UpdateConnectable (IConnectable connectable)
 			{
-				Client client = connectable as Client;
-				Port port = connectable as Port;
-				if (client != null) {
-					TreeNavigator navigator = FindClientNavigator (client);
-					UpdateTreeStoreValues (navigator, connectable);
-				}
-				if (port != null) {
-					TreeNavigator navigator = FindPortNavigator (port);
-					UpdateTreeStoreValues (navigator, connectable);
-				}
+				Application.Invoke (() =>
+				{
+					Client client = connectable as Client;
+					Port port = connectable as Port;
+					if (client != null) {
+						TreeNavigator navigator = FindClientNavigator (client);
+						UpdateTreeStoreValues (navigator, connectable);
+					}
+					if (port != null) {
+						TreeNavigator navigator = FindPortNavigator (port);
+						UpdateTreeStoreValues (navigator, connectable);
+					}
+				});
 			}
 
 			void UpdateTreeStoreValues (TreeNavigator navigator, IConnectable connectable)
 			{
 				if (navigator != null) {
-					Application.Invoke (() =>
-					{
-						navigator.SetValue (_dataField, connectable);
-						navigator.SetValue (_textField, connectable.Name);
-					});
+					navigator.SetValue (_dataField, connectable);
+					navigator.SetValue (_textField, connectable.Name);
 				}
 			}
 
