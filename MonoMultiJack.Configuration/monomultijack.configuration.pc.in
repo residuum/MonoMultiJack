@@ -1,6 +1,0 @@
-Name: MonoMultiJack.Configuration
-Description: MonoMultiJack.Configuration
-Version: 0.3.0
-
-Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/MonoMultiJack.Configuration.dll

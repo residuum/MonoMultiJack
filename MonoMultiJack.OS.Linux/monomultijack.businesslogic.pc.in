@@ -1,6 +1,0 @@
-Name: MonoMultiJack.BusinessLogic
-Description: MonoMultiJack.BusinessLogic
-Version: 0.2
-
-Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/MonoMultiJack.BusinessLogic.dll

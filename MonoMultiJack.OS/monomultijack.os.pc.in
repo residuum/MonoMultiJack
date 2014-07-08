@@ -1,6 +1,0 @@
-Name: MonoMultiJack.OS
-Description: MonoMultiJack.OS
-Version: 0.3.0
-
-Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/MonoMultiJack.OS.dll
