@@ -40,8 +40,11 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		static IntPtr _jackClient = IntPtr.Zero;
 		static List<JackPort> _portMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
-		static readonly string _clientName = "MonoMultiJack" 
-			+ (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
+		static readonly string _clientName = "MonoMultiJack"
+		    + (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
+		static readonly Definitions.JackPortConnectCallback _onPortConnect = OnPortConnect;
+		static readonly Definitions.JackPortRegistrationCallback _onPortRegistration = OnPortRegistration;
+		static readonly Definitions.JackShutdownCallback _onJackShutdown = OnJackShutdown;
 
 		static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
@@ -162,9 +165,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		/// </summary>
 		static bool Activate ()
 		{
-			Invoke.jack_set_port_connect_callback (_jackClient, OnPortConnect, IntPtr.Zero);
-			Invoke.jack_set_port_registration_callback (_jackClient, OnPortRegistration, IntPtr.Zero);
-			Invoke.jack_on_shutdown (_jackClient, OnJackShutdown, IntPtr.Zero);
+			Invoke.jack_set_port_connect_callback (_jackClient, _onPortConnect, IntPtr.Zero);
+			Invoke.jack_set_port_registration_callback (_jackClient, _onPortRegistration, IntPtr.Zero);
+			Invoke.jack_on_shutdown (_jackClient, _onJackShutdown, IntPtr.Zero);
 			int jackActivateStatus = Invoke.jack_activate (_jackClient);
 			return jackActivateStatus == 0;
 		}
