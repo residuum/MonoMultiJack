@@ -60,16 +60,13 @@ namespace MonoMultiJack.Widgets
 		{
 			Table table = new Table ();
 
-			Label label = new Label ("Application");
-			label.Font = label.Font.WithWeight (FontWeight.Bold);
-			table.Add (label, 0, 0, 1, 3);
-
-			_appNameEntry = BuildRow (table, 1, "Name", "e.g. Ardour");
-			_appCommandEntry = BuildRow (table, 2, "Command", "e.g. /usr/bin/ardour3");
-			_appArgumentsEntry = BuildRow (table, 3, "Command Arguments", "optional");
+			_appNameEntry = BuildRow (table, 0, "Name", "e.g. Ardour");
+			_appCommandEntry = BuildRow (table, 1, "Command", "e.g. /usr/bin/ardour3");
+			_appArgumentsEntry = BuildRow (table, 2, "Command Arguments", "optional");
 
 			_removeApp = new Button ("Delete") { Image = StockIcons.Remove };
-			table.Add (_removeApp, 2, 2);
+			table.Add (_removeApp, 2, 1);
+			table.Margin = new WidgetSpacing(4, 8, 4, 8);
 			Content = table;
 		}
 

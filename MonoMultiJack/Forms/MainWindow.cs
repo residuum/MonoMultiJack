@@ -208,12 +208,15 @@ namespace MonoMultiJack.Forms
 			mainContent.PackStart (_connectionNotebook, true, true);
 
 			VBox container = new VBox {
-				Margin = new WidgetSpacing(0, 0, 0, 0)
+				Margin = new WidgetSpacing(0, 0, 0, 0),
 			};
 			container.PackStart (mainContent, true, true);
 			_statusbar = new Label {
-				Margin = new WidgetSpacing(0, 0, 0, 0)
+				Margin = new WidgetSpacing(0, 0, 0, 0),
 			};
+			_statusbar.Font = _statusbar.Font.WithScaledSize (0.8);
+			_statusbar.TextAlignment = Alignment.End;
+			this.PaddingBottom = this.PaddingBottom / 2;
 			container.PackEnd (_statusbar);
 
 			this.Content = container;
