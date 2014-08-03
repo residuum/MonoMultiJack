@@ -56,7 +56,22 @@ namespace MonoMultiJack.Widgets
 				this.Content = _treeView;
 				_treeView.MouseScrolled += UpdateParent;
 				_treeView.RowExpanded += UpdateParent;
-				//_treeView.RowCollapsed += UpdateParent;
+				_treeView.SetDragSource (TransferDataType.Text);
+				_treeView.DragStarted += HandleDragStarted;
+				_treeView.DragDrop += CallConnect;
+				_treeView.DragOver += HandleDragOver;
+				_treeView.RowCollapsed += UpdateParent;
+			}
+
+			void HandleDragOver (object sender, DragOverEventArgs e)
+			{
+				e.AllowedAction = e.Action;
+			}
+
+			void HandleDragStarted (object sender, DragStartedEventArgs e)
+			{
+				e.DragOperation.AllowedActions = DragDropAction.All;
+				
 			}
 
 			public event EventHandler ViewChanged;
@@ -66,6 +81,10 @@ namespace MonoMultiJack.Widgets
 				if (ViewChanged != null) {
 					ViewChanged (this, new EventArgs ());
 				}
+			}
+
+			void CallConnect (object sender, DragEventArgs e)
+			{
 			}
 
 			void UpdateParent (object sender, EventArgs e)
