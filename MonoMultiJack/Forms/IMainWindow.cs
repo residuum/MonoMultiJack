@@ -106,4 +106,3 @@ namespace MonoMultiJack.Forms
 		event EventHandler QuitApplication;
 	}
 }
-

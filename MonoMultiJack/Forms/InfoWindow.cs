@@ -81,4 +81,3 @@ namespace MonoMultiJack.Forms
 		#endregion
 	}
 }
-

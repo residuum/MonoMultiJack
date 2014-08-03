@@ -33,4 +33,3 @@ namespace MonoMultiJack.OS
 		IEnumerable<IConnectionManager> GetConnectionManagers ();
 	}
 }
-

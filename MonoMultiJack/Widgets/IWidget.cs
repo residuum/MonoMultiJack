@@ -34,4 +34,3 @@ namespace MonoMultiJack.Widgets
 		void Hide ();
 	}
 }
-

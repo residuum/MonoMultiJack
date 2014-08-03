@@ -130,4 +130,3 @@ namespace MonoMultiJack.Controllers
 		public event EventHandler<UpdateAppsEventArgs> UpdateApps;
 	}
 }
-

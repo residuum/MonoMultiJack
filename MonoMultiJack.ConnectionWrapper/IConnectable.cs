@@ -62,4 +62,3 @@ namespace MonoMultiJack.ConnectionWrapper
 		FlowDirection FlowDirection { get; }
 	}
 }
-

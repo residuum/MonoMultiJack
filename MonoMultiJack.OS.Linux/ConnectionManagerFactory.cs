@@ -50,4 +50,3 @@ namespace MonoMultiJack.OS.Linux
 
 	}
 }
-

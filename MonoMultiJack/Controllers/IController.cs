@@ -32,4 +32,3 @@ namespace MonoMultiJack.Controllers
 		event EventHandler AllWidgetsAreClosed;
 	}
 }
-

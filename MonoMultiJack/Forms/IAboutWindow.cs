@@ -42,4 +42,3 @@ namespace MonoMultiJack.Forms
 		string License { set; }
 	}
 }
-

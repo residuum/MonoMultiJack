@@ -33,4 +33,3 @@ namespace MonoMultiJack.Controllers.EventArguments
 		public JackdConfiguration JackdConfiguration { get; set; }
 	}
 }
-

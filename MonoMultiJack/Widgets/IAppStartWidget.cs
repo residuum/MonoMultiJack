@@ -37,4 +37,3 @@ namespace MonoMultiJack.Widgets
 		event EventHandler StopApplication;
 	}
 }
-

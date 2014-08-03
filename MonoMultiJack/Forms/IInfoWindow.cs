@@ -31,4 +31,3 @@ namespace MonoMultiJack.Forms
 		string Message { set; }
 	}
 }
-

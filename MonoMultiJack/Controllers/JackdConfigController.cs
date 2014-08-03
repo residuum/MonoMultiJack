@@ -91,4 +91,3 @@ namespace MonoMultiJack.Controllers
 		public event EventHandler<UpdateJackdEventArgs> UpdateJackd;
 	}
 }
-

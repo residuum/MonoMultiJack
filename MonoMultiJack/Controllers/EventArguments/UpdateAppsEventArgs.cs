@@ -34,4 +34,3 @@ namespace MonoMultiJack.Controllers.EventArguments
 		public List<AppConfiguration> AppConfigurations { get; set; }
 	}
 }
-

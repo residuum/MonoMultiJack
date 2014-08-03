@@ -37,4 +37,3 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 	}
 	
 }
-

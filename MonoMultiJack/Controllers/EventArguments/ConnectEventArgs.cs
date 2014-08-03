@@ -35,4 +35,3 @@ namespace MonoMultiJack.Controllers.EventArguments
 		public IConnectable Outlet { get; set; }
 	}
 }
-

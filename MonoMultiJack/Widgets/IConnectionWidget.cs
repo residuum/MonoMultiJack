@@ -49,4 +49,3 @@ namespace MonoMultiJack.Widgets
 		string ConnectionManagerName { get; }
 	}
 }
-

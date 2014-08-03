@@ -38,4 +38,3 @@ namespace MonoMultiJack.Widgets
 		event EventHandler RemoveApplication;
 	}
 }
-

@@ -37,4 +37,3 @@ namespace MonoMultiJack.Forms
 		bool Sensitive { set; }
 	}
 }
-
