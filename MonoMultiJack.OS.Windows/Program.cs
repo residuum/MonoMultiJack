@@ -157,6 +157,9 @@ namespace MonoMultiJack.OS.Windows
 		/// </summary>
 		void TestForRunningSingleton ()
 		{
+			if (string.IsNullOrEmpty (_commandName)) {
+				return;
+			}
 			string[] processName = _commandName.Split (Path.DirectorySeparatorChar);
 			Process[] processes = Process.GetProcessesByName (processName.Last ());
 			if (processes.Any ()) {
