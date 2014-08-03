@@ -41,13 +41,14 @@ namespace MonoMultiJack.Controllers
 			_jackdConfigWindow = new JackdConfigWindow ();
 			_jackdConfigWindow.Closing += HandleClosing;
 			_jackdConfigWindow.SaveJackd += HandleSaveJackd;
+			_jackdConfigWindow.IconPath = Icons.ProgramIcon;
 			_jackdConfigWindow.Show ();
 			_jackdConfigWindow.Path = jackdConfig.Path;
 			_jackdConfigWindow.DriverOptions = jackdConfig.GeneralOptions;
 			_jackdConfigWindow.Driver = jackdConfig.Driver;
 			_jackdConfigWindow.DriverOptions = jackdConfig.DriverOptions;
 		}
-				
+
 		~JackdConfigController ()
 		{
 			Dispose (false);
@@ -58,7 +59,7 @@ namespace MonoMultiJack.Controllers
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
-	
+
 		protected virtual void Dispose (bool isDisposing)
 		{
 			_jackdConfigWindow.Dispose ();
@@ -74,7 +75,7 @@ namespace MonoMultiJack.Controllers
 					configWindow.Driver,
 					configWindow.DriverOptions);
 				if (UpdateJackd != null) {
-					UpdateJackd (this, new UpdateJackdEventArgs{JackdConfiguration = _jackdConfig});
+					UpdateJackd (this, new UpdateJackdEventArgs { JackdConfiguration = _jackdConfig });
 				}
 			}
 		}

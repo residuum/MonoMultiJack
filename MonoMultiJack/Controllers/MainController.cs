@@ -37,21 +37,7 @@ using MonoMultiJack.ConnectionWrapper;
 namespace MonoMultiJack.Controllers
 {
 	public class MainController :IController
-	{				
-		readonly string _iconFile = "monomultijack.png";
-		string _programIcon;
-
-		string ProgramIconPath {
-			get {
-				if (_programIcon == null) {
-					Assembly executable = Assembly.GetEntryAssembly ();
-					string baseDir = Path.GetDirectoryName (executable.Location);
-					_programIcon = Path.Combine (baseDir, _iconFile);
-				}
-				return _programIcon;
-			}
-		}
-
+	{		
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
 		IProgram _jackd;
@@ -62,7 +48,7 @@ namespace MonoMultiJack.Controllers
 		public MainController ()
 		{
 			_mainWindow = new MainWindow ();
-			_mainWindow.IconPath = _programIcon;
+			_mainWindow.IconPath = Icons.ProgramIcon;
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
 			IConnectionManagerFactory factory =
@@ -99,14 +85,18 @@ namespace MonoMultiJack.Controllers
 		}
 
 		public void Start ()
-		{	
+		{
 			WindowConfiguration windowConfiguration;
-			TryLoadJackdConfiguration (out _jackdConfiguration);
-			if (TryLoadAppConfigurations (out _appConfigurations)) {
-				UpdateApps (_appConfigurations);
-			}			
 			if (TryLoadWindowConfiguration (out windowConfiguration)) {
 				_mainWindow.WindowConfiguration = windowConfiguration;
+			}
+			if (!TryLoadJackdConfiguration (out _jackdConfiguration)) {
+				ConfigureJackd ();
+			}
+			if (TryLoadAppConfigurations (out _appConfigurations)) {
+				UpdateApps (_appConfigurations);
+			} else {
+				ConfigureApps ();
 			}
 
 			_mainWindow.Show ();
@@ -182,7 +172,7 @@ namespace MonoMultiJack.Controllers
 		{
 			try {
 				windowConfig = PersistantConfiguration.LoadWindowSize ();
-				if (windowConfig.Width != 0 && windowConfig.Height != 0) {
+				if (Math.Abs (windowConfig.Width) > 1 && Math.Abs (windowConfig.Height) > 1) {
 					return true;
 				}
 			} catch (Exception e) {
@@ -249,6 +239,11 @@ namespace MonoMultiJack.Controllers
 
 		void MainWindow_ShowConfigureJackd (object sender, EventArgs e)
 		{
+			ConfigureJackd ();
+		}
+
+		void ConfigureJackd ()
+		{
 			JackdConfigController jackdConfigController = new JackdConfigController (_jackdConfiguration);
 			jackdConfigController.UpdateJackd += Controller_UpdateJackd;
 			jackdConfigController.AllWidgetsAreClosed += Controller_WidgetsAreClosed;
@@ -256,6 +251,11 @@ namespace MonoMultiJack.Controllers
 		}
 
 		void MainWindow_ShowConfigureApps (object sender, EventArgs e)
+		{
+			ConfigureApps ();
+		}
+
+		private void ConfigureApps ()
 		{
 			AppConfigController appConfigController = new AppConfigController (_appConfigurations);
 			appConfigController.UpdateApps += Controller_UpdateApps;
@@ -280,7 +280,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 	
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
-			AboutWindow.IconPath = ProgramIconPath;
+			AboutWindow.IconPath = Icons.ProgramIcon;
 			AboutWindow.Show ();
 			AboutWindow.Closing += Window_Closing;
 		}
@@ -336,15 +336,9 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 		void UpdateRunningStatus ()
 		{
 			_mainWindow.JackdIsRunning = _jackd.IsRunning;
-			if (_jackd.IsRunning) {
+			if (_startWidgetControllers.Any (startWidgetController => startWidgetController.IsRunning)) {
 				_mainWindow.AppsAreRunning = true;
 				return;
-			}
-			foreach (AppStartController startWidgetController in _startWidgetControllers) {
-				if (startWidgetController.IsRunning) {
-					_mainWindow.AppsAreRunning = true;
-					return;
-				}
 			}
 			_mainWindow.AppsAreRunning = false;
 		}

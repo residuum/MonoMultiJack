@@ -24,9 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.IO;
 using System.Linq;
 using MonoMultiJack.Widgets;
 using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
@@ -93,7 +95,9 @@ namespace MonoMultiJack.Forms
 		#region IWindow implementation
 		string IWindow.IconPath {
 			set {
-				throw new System.NotImplementedException ();
+				if (File.Exists (value)) {
+					this.Icon = Image.FromFile (value);
+				}
 			}
 		}
 
@@ -122,11 +126,13 @@ namespace MonoMultiJack.Forms
 		void BuildWindow ()
 		{
 			_configTable = new Table ();
+			_configTable.MinWidth = 300;
 			ScrollView scrollView = new ScrollView (_configTable) {
 				ExpandHorizontal = true,
 				ExpandVertical = true,
 				HorizontalScrollPolicy = ScrollPolicy.Never,
-				MinHeight = 300
+				MinHeight = 300,
+				MinWidth = 300
 			};
 			HBox buttonBox = new HBox ();
 			_addButton = new Button (Command.Add.Label) { Image = StockIcons.Add };

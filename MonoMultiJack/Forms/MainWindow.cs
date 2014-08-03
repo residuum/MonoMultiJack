@@ -46,6 +46,8 @@ namespace MonoMultiJack.Forms
 		Label _statusbar;
 		MenuItem _stopAction;
 		MenuItem _stopAllAction;
+		bool _jackdRunning;
+		bool _appsRunning;
 
 		/// <summary>
 		/// Constructor
@@ -98,6 +100,7 @@ namespace MonoMultiJack.Forms
 			_stopAction = CreateMenuItem ("_Stop Jackd", CallStopJackd);
 			yield return _stopAction;
 			_stopAllAction = CreateMenuItem ("Stop _All", CallStopAll);
+			_stopAllAction.Sensitive = false;
 			yield return _stopAllAction;
 			yield return CreateMenuItem ("_Quit", OnQuitActionActivated);
 		}
@@ -163,20 +166,22 @@ namespace MonoMultiJack.Forms
 
 		bool IMainWindow.JackdIsRunning {
 			set {
-				Application.Invoke (() =>
-				{
-					_stopAction.Sensitive = value;
-					_statusbar.Text = value ? JackdStatusRunning : JackdStatusStopped;
-				});
+				_jackdRunning = value;
+				Application.Invoke (UpdateStopButtons);
 			}
+		}
+
+		void UpdateStopButtons ()
+		{
+			_stopAction.Sensitive = _jackdRunning;
+			_statusbar.Text = _jackdRunning ? JackdStatusRunning : JackdStatusStopped;
+			_stopAllAction.Sensitive = _appsRunning || _jackdRunning;
 		}
 
 		bool IMainWindow.AppsAreRunning {
 			set {
-				Application.Invoke (() =>
-				{
-					_stopAllAction.Sensitive = value;
-				});
+				_appsRunning = value;
+				Application.Invoke (UpdateStopButtons);
 			}
 		}
 

@@ -24,7 +24,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.IO;
 using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
@@ -53,9 +55,9 @@ namespace MonoMultiJack.Forms
 
 		string IWindow.IconPath {
 			set {
-//				if (File.Exists (value)) {
-//					this.Icon = Image.FromFile (value);
-//				}
+				if (File.Exists (value)) {
+					this.Icon = Image.FromFile (value);
+				}
 			}
 		}
 
