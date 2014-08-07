@@ -89,4 +89,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\cancel.png" />
+    <EmbeddedResource Include="Icons\connect.png" />
+    <EmbeddedResource Include="Icons\disconnect.png" />
+    <EmbeddedResource Include="Icons\ok.png" />
+    <EmbeddedResource Include="Icons\program.png" />
+  </ItemGroup>
 </Project>

@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using MonoMultiJack.Widgets;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
@@ -32,7 +33,7 @@ namespace MonoMultiJack.Forms
 	{
 		event EventHandler Closing;
 
-		string IconPath { set; }
+		Image Icon { set; }
 
 		bool Sensitive { set; }
 	}

@@ -26,6 +26,7 @@
 using System;
 using MonoMultiJack.ConnectionWrapper;
 using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Widgets
 {
@@ -59,9 +60,9 @@ namespace MonoMultiJack.Widgets
 				_treeView.RowCollapsed += UpdateParent;
 				_treeView.DragDrop += CallConnect;
 				_treeView.DragOver += HandleDragOver;
-				_treeView.SetDragSource (TransferDataType.FromType(typeof(IConnectable)));
 				_treeView.DragStarted += HandleDragStarted;
 				_treeView.DragDropCheck += HandleDragDropCheck;
+				_treeView.SetDragSource (TransferDataType.Text, TransferDataType.FromType(typeof(IConnectable)));
 			}
 
 			void HandleDragDropCheck (object sender, DragCheckEventArgs e)
@@ -81,7 +82,8 @@ namespace MonoMultiJack.Widgets
 
 			void HandleDragStarted (object sender, DragStartedEventArgs e)
 			{
-				e.DragOperation.SetDragImage (StockIcons.Add, (int)StockIcons.Add.Width, (int)StockIcons.Add.Height);
+				Image icon = Icons.Connect;
+				e.DragOperation.SetDragImage (icon, (int)icon.Width, (int)icon.Height);
 				e.DragOperation.AllowedActions = DragDropAction.All;
 				e.DragOperation.Data.AddValue (GetSelected ());
 			}

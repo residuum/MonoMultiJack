@@ -93,17 +93,15 @@ namespace MonoMultiJack.Forms
 		}
 		#endregion
 		#region IWindow implementation
-		string IWindow.IconPath {
+		Image IWindow.Icon {
 			set {
-				if (File.Exists (value)) {
-					this.Icon = Image.FromFile (value);
-				}
+				this.Icon = value;
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				//this.Sensitive = value;
+				this.Sensitive = value;
 			}
 		}
 
@@ -136,8 +134,8 @@ namespace MonoMultiJack.Forms
 			};
 			HBox buttonBox = new HBox ();
 			_addButton = new Button (Command.Add.Label) { Image = StockIcons.Add };
-			_okButton = new Button (Command.Ok.Label);
-			_cancelButton = new Button (Command.Cancel.Label);
+			_okButton = new Button (Command.Ok.Label) { Image = Icons.Ok };
+			_cancelButton = new Button (Command.Cancel.Label) { Image = Icons.Cancel };
 			buttonBox.PackEnd (_addButton);
 			buttonBox.PackEnd (_okButton);
 			buttonBox.PackEnd (_cancelButton);

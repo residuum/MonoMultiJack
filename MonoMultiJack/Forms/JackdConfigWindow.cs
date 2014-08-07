@@ -53,11 +53,9 @@ namespace MonoMultiJack.Forms
 		#region IWindow implementation
 		public event EventHandler Closing;
 
-		string IWindow.IconPath {
+		Image IWindow.Icon {
 			set {
-				if (File.Exists (value)) {
-					this.Icon = Image.FromFile (value);
-				}
+				this.Icon = value;
 			}
 		}
 
@@ -158,8 +156,8 @@ namespace MonoMultiJack.Forms
 
 			this.Content = table;
 
-			this.Buttons.Add (new DialogButton (Command.Ok));
-			this.Buttons.Add (new DialogButton (Command.Cancel));
+			this.Buttons.Add (new DialogButton (Command.Ok) { Image = Icons.Ok });
+			this.Buttons.Add (new DialogButton (Command.Cancel) { Image = Icons.Cancel });
 		}
 
 		TextEntry BuildRow (Table table, int index, string labelText, string placeholder)

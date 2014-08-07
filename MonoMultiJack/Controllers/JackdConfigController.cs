@@ -41,7 +41,7 @@ namespace MonoMultiJack.Controllers
 			_jackdConfigWindow = new JackdConfigWindow ();
 			_jackdConfigWindow.Closing += HandleClosing;
 			_jackdConfigWindow.SaveJackd += HandleSaveJackd;
-			_jackdConfigWindow.IconPath = Icons.ProgramIcon;
+			_jackdConfigWindow.Icon = Icons.Program;
 			_jackdConfigWindow.Show ();
 			_jackdConfigWindow.Path = jackdConfig.Path;
 			_jackdConfigWindow.DriverOptions = jackdConfig.GeneralOptions;

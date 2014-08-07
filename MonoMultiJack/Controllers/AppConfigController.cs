@@ -42,7 +42,7 @@ namespace MonoMultiJack.Controllers
 		{
 			_configurations = appConfigurations;
 			_configWindow = new AppConfigWindow ();
-			_configWindow.IconPath = Icons.ProgramIcon;
+			_configWindow.Icon = Icons.Program;
 			_configWindow.Show ();
 			_configWindow.Closing += Window_Closing;
 			_configWindow.AddApplication += Window_AddApplication;

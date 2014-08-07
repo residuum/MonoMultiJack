@@ -162,11 +162,9 @@ namespace MonoMultiJack.Forms
 			}
 		}
 
-		string IWindow.IconPath {
+		Image IWindow.Icon {
 			set {
-				if (File.Exists (value)) {
-					this.Icon = Image.FromFile (value);
-				}
+				this.Icon = value;
 			}
 		}
 		#endregion

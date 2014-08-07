@@ -64,9 +64,9 @@ namespace MonoMultiJack.Widgets
 			};
 
 			HBox hbox1 = new HBox ();
-			_connectButton = new Button (StockIcons.Add, "Connect");
+			_connectButton = new Button (Icons.Connect, "Connect");
 			hbox1.PackStart (_connectButton);
-			_disconnectButton = new Button (StockIcons.Remove, "Disconnect");
+			_disconnectButton = new Button (Icons.Disconnect, "Disconnect");
 			hbox1.PackStart (_disconnectButton);
 			vbox.PackStart (hbox1); 
             

@@ -26,6 +26,7 @@
 using System;
 using System.IO;
 using Xwt;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
@@ -62,11 +63,9 @@ namespace MonoMultiJack.Forms
 		#region IWindow implementation
 		public event EventHandler Closing;
 
-		string IWindow.IconPath {
+		Image IWindow.Icon {
 			set {
-//				if (File.Exists (value)) {
-//					this.Icon = Image.FromFile (value);
-//				}
+				//this.Icon = value;
 			}
 		}
 

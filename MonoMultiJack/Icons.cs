@@ -25,25 +25,60 @@
 // THE SOFTWARE.
 using System.IO;
 using System.Reflection;
+using Xwt.Drawing;
 
 namespace MonoMultiJack
 {
 	public static class Icons
 	{
-		static readonly string _programIconFile = "monomultijack.png";
-		private static string _programIcon;
+		static Assembly _assembly;
 
-		public static string ProgramIcon {
-			get {
-				if (_programIcon == null) {
-					Assembly executable = Assembly.GetEntryAssembly ();
-					string baseDir = Path.GetDirectoryName (executable.Location);
-					var path = Path.Combine (baseDir, _programIconFile);
-					if (File.Exists (path)) {
-						_programIcon = path;
-					}
+		static Assembly Assembly {
+			get{
+				if (_assembly == null) {
+					_assembly = Assembly.GetExecutingAssembly ();
 				}
-				return _programIcon;
+				return _assembly;
+			}
+		}
+
+		public static Image Program {
+			get {
+				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.program.png")){
+					return Image.FromStream (s);
+				}
+			}
+		}
+
+		public static Image Ok {
+			get {
+				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.ok.png")){
+					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
+				}
+			}
+		}
+
+		public static Image Cancel{
+			get {
+				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.cancel.png")){
+					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
+				}
+			}
+		}
+
+		public static Image Connect {
+			get {
+				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.connect.png")){
+					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
+				}
+			}
+		}
+
+		public static Image Disconnect {
+			get {
+				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.disconnect.png")){
+					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
+				}
 			}
 		}
 	}
