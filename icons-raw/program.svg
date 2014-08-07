@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.5 r10040"
    sodipodi:docname="program.svg"
-   inkscape:export-filename="/home/thomas/dev/mono/MonoMultiJack/icons/program.png"
+   inkscape:export-filename="/home/thomas/dev/mono/MonoMultiJack/MonoMultiJack/Icons/program.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -93,9 +93,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890873"
-     inkscape:cx="0.72843528"
-     inkscape:cy="40.116353"
+     inkscape:zoom="7.7781746"
+     inkscape:cx="16.547269"
+     inkscape:cy="37.369255"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -126,20 +126,14 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.97603685px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutM)"
-       d="m 7,10 47,0"
-       id="path6313"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.9740693px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutM)"
-       d="M 7,24 C 7,24 18.992966,23.825803 23.018172,26.151002 34.372182,32.709753 26.307876,34.256205 43,39 c 3.334616,0.947676 11,1 11,1"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM)"
+       d="m 7,14 c 0,0 1.8196601,0 13,0 5,0 5,15 10,15 5,0 15,0 15,0"
        id="path6315"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cssc" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.97342932px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutM)"
-       d="m 7,54 47,0"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutM)"
+       d="m 7,49 38,0"
        id="path6317"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -158,16 +152,9 @@
        id="rect3003"
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3005"
-       width="2.1818178"
-       height="23.81818"
+       y="4"
        x="56.818184"
-       y="5" />
-    <rect
-       y="35.18182"
-       x="56.818184"
-       height="23.81818"
+       height="55"
        width="2.1818178"
        id="rect3007"
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />

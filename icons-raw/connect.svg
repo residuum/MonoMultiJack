@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.5 r10040"
    sodipodi:docname="connect.svg"
-   inkscape:export-filename="/home/thomas/dev/mono/MonoMultiJack/icons/connect.png"
+   inkscape:export-filename="/home/thomas/dev/mono/MonoMultiJack/MonoMultiJack/Icons/connect.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -136,7 +136,7 @@
        x="55.363636"
        y="3.9090922" />
     <path
-       style="fill:#646464;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-mid:none;marker-end:url(#TriangleOutM);fill-opacity:1;opacity:1"
+       style="fill:#646464;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-mid:none;marker-end:url(#TriangleOutM);fill-opacity:1;opacity:1"
        d="m 9.4545455,32.909091 33.9999995,0"
        id="path3817"
        inkscape:connector-curvature="0" />
