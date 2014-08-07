@@ -56,22 +56,34 @@ namespace MonoMultiJack.Widgets
 				this.Content = _treeView;
 				_treeView.MouseScrolled += UpdateParent;
 				_treeView.RowExpanded += UpdateParent;
-				_treeView.SetDragSource (TransferDataType.Text);
-				_treeView.DragStarted += HandleDragStarted;
+				_treeView.RowCollapsed += UpdateParent;
 				_treeView.DragDrop += CallConnect;
 				_treeView.DragOver += HandleDragOver;
-				_treeView.RowCollapsed += UpdateParent;
+				_treeView.SetDragSource (TransferDataType.FromType(typeof(IConnectable)));
+				_treeView.DragStarted += HandleDragStarted;
+				_treeView.DragDropCheck += HandleDragDropCheck;
+			}
+
+			void HandleDragDropCheck (object sender, DragCheckEventArgs e)
+			{
+				Console.WriteLine (e.DataTypes);
+				
 			}
 
 			void HandleDragOver (object sender, DragOverEventArgs e)
 			{
-				e.AllowedAction = e.Action;
+				if (e.Action == DragDropAction.All) {
+					e.AllowedAction = DragDropAction.Move;
+				} else {
+					e.AllowedAction = e.Action;
+				}
 			}
 
 			void HandleDragStarted (object sender, DragStartedEventArgs e)
 			{
+				e.DragOperation.SetDragImage (StockIcons.Add, (int)StockIcons.Add.Width, (int)StockIcons.Add.Height);
 				e.DragOperation.AllowedActions = DragDropAction.All;
-				
+				e.DragOperation.Data.AddValue (GetSelected ());
 			}
 
 			public event EventHandler ViewChanged;
@@ -85,6 +97,8 @@ namespace MonoMultiJack.Widgets
 
 			void CallConnect (object sender, DragEventArgs e)
 			{
+				Console.WriteLine (sender);
+				IConnectable dragged = (IConnectable)e.Data.GetValue (TransferDataType.FromType (typeof(IConnectable)));
 			}
 
 			void UpdateParent (object sender, EventArgs e)
@@ -253,7 +267,7 @@ namespace MonoMultiJack.Widgets
 			{
 				double startPos = _treeView.VerticalScrollControl.Value * -1;
 				// TODO: Get real row height
-				double rowHeight = 24;
+				double rowHeight = 22;
 				// Start in the middle of line
 				startPos -= rowHeight / 2;
 				TreeNavigator navigator = _treeStore.GetFirstNode ();
