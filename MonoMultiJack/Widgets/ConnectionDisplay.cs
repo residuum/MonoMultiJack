@@ -101,6 +101,8 @@ namespace MonoMultiJack.Widgets
 			_disconnectButton.Clicked += DisconnectButton_Click;
 			_inTreeView.ViewChanged += OnTreeViewRowExpanded;
 			_outTreeView.ViewChanged += OnTreeViewRowExpanded;
+			_inTreeView.Connect += OnInTreeConnect;
+			_outTreeView.Connect += OnOutTreeConnect;
 		}
 
 		public void AddConnectable (IConnectable connectable)
@@ -147,6 +149,31 @@ namespace MonoMultiJack.Widgets
 					Inlet = _inTreeView.GetSelected ()
 				});
 			}
+		}
+
+		void TestAndConnect(ConnectEventArgs e){
+			if (e.Inlet.ConnectionType == e.Outlet.ConnectionType 
+			    && e.Inlet.FlowDirection == FlowDirection.In 
+			    && e.Outlet.FlowDirection == FlowDirection.Out 
+			    && Connect != null) {
+				Connect (this, new ConnectEventArgs {
+					Outlet = e.Outlet,
+					Inlet = e.Inlet
+				});
+			}
+		}
+
+		void OnInTreeConnect (object sender, ConnectEventArgs e)
+		{
+			IConnectable realOutlet = e.Inlet;
+			e.Inlet = e.Outlet;
+			e.Outlet = realOutlet;
+			TestAndConnect (e);
+		}
+
+		void OnOutTreeConnect (object sender, ConnectEventArgs e)
+		{
+			TestAndConnect (e);
 		}
 
 		protected virtual void DisconnectButton_Click (object sender, EventArgs e)

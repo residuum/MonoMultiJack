@@ -31,6 +31,12 @@ namespace MonoMultiJack.ConnectionWrapper
 	{
 		public string Name { get; protected set; }
 
+		public string Identification {
+			get {
+				return string.Format ("{0}/{1}/{2}", ConnectionType, FlowDirection, Id);
+			}
+		}
+
 		public uint Id { get; protected set; }
 
 		public FlowDirection FlowDirection { get; protected set; }
@@ -65,7 +71,7 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public override int GetHashCode ()
 		{
-			return (Id.GetHashCode ()<<4)
+			return (Id.GetHashCode () << 4)
 				^ (((int)FlowDirection).GetHashCode () << 2)
 				^ ((int)ConnectionType).GetHashCode ();
 		}

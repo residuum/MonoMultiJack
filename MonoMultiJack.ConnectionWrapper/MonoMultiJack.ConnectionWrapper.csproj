@@ -48,6 +48,8 @@
     <Compile Include="FlowDirection.cs" />
     <Compile Include="EnumerableHelper.cs" />
     <Compile Include="Connection.cs" />
+    <Compile Include="Identification.cs" />
+    <Compile Include="DummyPort.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

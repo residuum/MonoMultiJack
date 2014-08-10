@@ -27,6 +27,6 @@ namespace MonoMultiJack.Forms
 {
 	public interface IInfoWindow :IWindow
 	{
-		string Message { set;}
+		string Message { set; }
 	}
 }

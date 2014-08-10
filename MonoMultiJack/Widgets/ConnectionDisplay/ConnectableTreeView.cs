@@ -24,7 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
+using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
 using Xwt.Drawing;
 
@@ -50,11 +53,11 @@ namespace MonoMultiJack.Widgets
 				_treeView.MouseScrolled += UpdateParent;
 				_treeView.RowExpanded += UpdateParent;
 				_treeView.RowCollapsed += UpdateParent;
-				_treeView.DragDrop += CallConnect;
+				_treeView.DragDrop += HandleDropped;
 				_treeView.DragOver += HandleDragOver;
 				_treeView.DragStarted += HandleDragStarted;
-				_treeView.DragDropCheck += HandleDragDropCheck;
-				_treeView.SetDragSource (TransferDataType.Text, TransferDataType.FromType (typeof(IConnectable)));
+				_treeView.SetDragSource (TransferDataType.Text);
+				_treeView.SetDragDropTarget (TransferDataType.Text);
 			}
 
 			private void BuildWidget ()
@@ -75,14 +78,9 @@ namespace MonoMultiJack.Widgets
 				Content = _treeView;
 			}
 
-			void HandleDragDropCheck (object sender, DragCheckEventArgs e)
-			{
-				Console.WriteLine (e.DataTypes);
-				
-			}
-
 			void HandleDragOver (object sender, DragOverEventArgs e)
 			{
+				//Identification id = new Identification ((string)e.Data.GetValue (TransferDataType.Text));
 				if (e.Action == DragDropAction.All) {
 					e.AllowedAction = DragDropAction.Move;
 				} else {
@@ -95,10 +93,13 @@ namespace MonoMultiJack.Widgets
 				Image icon = Icons.Connect;
 				e.DragOperation.SetDragImage (icon, (int)icon.Width, (int)icon.Height);
 				e.DragOperation.AllowedActions = DragDropAction.All;
-				e.DragOperation.Data.AddValue (GetSelected ());
+				IConnectable selected = GetSelected ();
+				e.DragOperation.Data.AddValue (selected.Identification);
+				Console.WriteLine (selected.Identification);
 			}
 
 			public event EventHandler ViewChanged;
+			public event ConnectEventHandler Connect;
 
 			void NotifyParent ()
 			{
@@ -107,10 +108,21 @@ namespace MonoMultiJack.Widgets
 				}
 			}
 
-			void CallConnect (object sender, DragEventArgs e)
+			void HandleDropped (object sender, DragEventArgs e)
 			{
-				Console.WriteLine (sender);
-				IConnectable dragged = (IConnectable)e.Data.GetValue (TransferDataType.FromType (typeof(IConnectable)));
+				Identification id = new Identification ((string)e.Data.GetValue (TransferDataType.Text));
+				RowDropPosition pos;
+				TreePosition nodePosition;
+				_treeView.GetDropTargetRow (e.Position.X, e.Position.Y, out pos, out nodePosition);
+				IConnectable droppedOn = GetConnectable (nodePosition);
+				IConnectable connectable = id.GetConnectable ();
+
+				if (Connect != null && droppedOn != null){
+					Connect(this, new ConnectEventArgs {
+						Outlet = droppedOn,
+						Inlet = connectable
+					});
+				}
 			}
 
 			void UpdateParent (object sender, EventArgs e)
@@ -268,11 +280,16 @@ namespace MonoMultiJack.Widgets
 				}
 			}
 
+			IConnectable GetConnectable (TreePosition position)
+			{
+				TreeNavigator navigator = _treeStore.GetNavigatorAt (position);
+				return navigator.GetValue (_dataField);
+			}
+
 			public IConnectable GetSelected ()
 			{
 				TreePosition position = _treeView.SelectedRow;
-				TreeNavigator navigator = _treeStore.GetNavigatorAt (position);
-				return navigator.GetValue (_dataField);
+				return GetConnectable (position);
 			}
 
 			public double GetYPositionOfConnectable (IConnectable connectable)

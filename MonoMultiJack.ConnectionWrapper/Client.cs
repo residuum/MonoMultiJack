@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System.Diagnostics;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
@@ -35,6 +36,12 @@ namespace MonoMultiJack.ConnectionWrapper
 		public FlowDirection FlowDirection { get; private set; }
 
 		public ConnectionType ConnectionType { get; private set; }
+
+		public string Identification {
+			get {
+				return string.Format ("{0}/{1}/{2}", ConnectionType, FlowDirection, string.Join (",", Ports.Select (p => p.Id.ToString ())));
+			}
+		}
 
 		readonly List<Port> _ports = new List<Port> ();
 

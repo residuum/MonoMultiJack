@@ -1,10 +1,10 @@
 //
-// IConnectable.cs
+// Identification.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,48 +23,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public interface IConnectable
+	public class Identification
 	{
-		/// <summary>
-		/// Gets the name.
-		/// </summary>
-		/// <value>
-		/// The name.
-		/// </value>
-		string Name { get; }
+		public IConnectable GetConnectable ()
+		{
+			Client client = new Client ("", _flowDirection, _connectionType);
+			foreach(uint portId in _portIds){
+				client.AddPort (new DummyPort (portId, _connectionType, _flowDirection));
+			}
+			return client;
+		}
 
-		/// <summary>
-		/// Gets the identification.
-		/// </summary>
-		/// <value>The identification.</value>
-		string Identification { get; }
+		ConnectionType _connectionType;
+		
+		FlowDirection _flowDirection;
 
-		/// <summary>
-		/// Gets the ports.
-		/// </summary>
-		/// <value>
-		/// The ports.
-		/// </value>
-		IEnumerable<Port> Ports { get; }
+		IEnumerable<uint> _portIds;
 
-		/// <summary>
-		/// Gets the type of the connection.
-		/// </summary>
-		/// <value>
-		/// The type of the connection.
-		/// </value>
-		ConnectionType ConnectionType { get; }
-
-		/// <summary>
-		/// Gets the flow direction.
-		/// </summary>
-		/// <value>
-		/// The flow direction.
-		/// </value>
-		FlowDirection FlowDirection { get; }
+		public Identification (string connectableId)
+		{
+			string[] parameters = connectableId.Split (new char[] { '/' });
+			if (parameters.Length != 3){
+				throw new ArgumentOutOfRangeException ();
+			}
+			_connectionType = (ConnectionType)Enum.Parse (typeof(ConnectionType), parameters [0]);
+			_flowDirection = (FlowDirection)Enum.Parse (typeof(FlowDirection), parameters [1]);
+			string[] portIds = parameters [2].Split (new char[] { ',' });
+			_portIds = portIds.Select (id => Convert.ToUInt32 (id)).ToList ();
+		}
 	}
 }
+
