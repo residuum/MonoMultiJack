@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using Xwt;
-using Xwt.Drawing;
 
 namespace MonoMultiJack.Widgets
 {
@@ -64,9 +63,9 @@ namespace MonoMultiJack.Widgets
 			_appCommandEntry = BuildRow (table, 1, "Command", "e.g. /usr/bin/ardour3");
 			_appArgumentsEntry = BuildRow (table, 2, "Command Arguments", "optional");
 
-			_removeApp = new Button ("Delete") { Image = StockIcons.Remove };
+			_removeApp = new Button ("Delete") { Image = Icons.Delete };
 			table.Add (_removeApp, 2, 1);
-			table.Margin = new WidgetSpacing(4, 8, 4, 8);
+			table.Margin = new WidgetSpacing (4, 8, 4, 8);
 			Content = table;
 		}
 
@@ -92,18 +91,18 @@ namespace MonoMultiJack.Widgets
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
-			this.Dispose ();
+			Dispose ();
 		}
 		#endregion
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
-			this.Show ();
+			Show ();
 		}
 
 		void IWidget.Hide ()
 		{
-			this.Hide ();
+			Hide ();
 		}
 		#endregion
 		#region IAppConfigWidget implementation

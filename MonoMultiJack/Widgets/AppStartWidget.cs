@@ -40,12 +40,12 @@ namespace MonoMultiJack.Widgets
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
-			this.Show ();
+			Show ();
 		}
 
 		void IWidget.Hide ()
 		{
-			this.Hide ();
+			Hide ();
 		}
 		#endregion
 		#region IAppWidget implementation
@@ -65,13 +65,13 @@ namespace MonoMultiJack.Widgets
 						_startButton.Clicked -= CallStopApplication;
 						_startButton.Clicked -= CallStartApplication;
 						_startButton.Clicked += CallStopApplication;
-						_startButton.Image = StockIcons.Remove;
+						_startButton.Image = Icons.Stop;
 					} else {
 						_startButton.Active = false;
 						_startButton.Clicked -= CallStopApplication;
 						_startButton.Clicked -= CallStartApplication;
 						_startButton.Clicked += CallStartApplication;
-						_startButton.Image = StockIcons.Add;
+						_startButton.Image = Icons.Stop;
 					}
 				}
 				);
@@ -91,7 +91,7 @@ namespace MonoMultiJack.Widgets
 			_startButton = new ToggleButton { WidthRequest = 100 };
 			_startButton.Clicked += CallStartApplication;
 			Add (_startButton, 0, 0);
-			_startButton.Image = StockIcons.Add;
+			_startButton.Image = Icons.Start;
 		}
 
 		/// <summary>

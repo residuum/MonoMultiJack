@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System.IO;
 using System.Reflection;
+using Xwt;
 using Xwt.Drawing;
 
 namespace MonoMultiJack
@@ -34,7 +35,7 @@ namespace MonoMultiJack
 		static Assembly _assembly;
 
 		static Assembly Assembly {
-			get{
+			get {
 				if (_assembly == null) {
 					_assembly = Assembly.GetExecutingAssembly ();
 				}
@@ -43,43 +44,48 @@ namespace MonoMultiJack
 		}
 
 		public static Image Program {
-			get {
-				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.program.png")){
-					return Image.FromStream (s);
-				}
+			get { return LoadImage ("MonoMultiJack.Icons.program.png"); }
+		}
+
+		private static Image LoadImage (string imageNamespace)
+		{
+			using (Stream s = Assembly.GetManifestResourceStream(imageNamespace)) {
+				return Image.FromStream (s);
 			}
 		}
 
 		public static Image Ok {
-			get {
-				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.ok.png")){
-					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
-				}
-			}
+			get { return LoadImage ("MonoMultiJack.Icons.ok.png").WithSize (IconSize.Small); }
 		}
 
-		public static Image Cancel{
-			get {
-				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.cancel.png")){
-					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
-				}
-			}
+		public static Image Cancel {
+			get { return LoadImage ("MonoMultiJack.Icons.cancel.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Connect {
-			get {
-				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.connect.png")){
-					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
-				}
-			}
+			get { return LoadImage ("MonoMultiJack.Icons.connect.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Disconnect {
-			get {
-				using (Stream s = Assembly.GetManifestResourceStream("MonoMultiJack.Icons.disconnect.png")){
-					return Image.FromStream (s).WithSize(Xwt.IconSize.Small);
-				}
-			}
+			get { return LoadImage ("MonoMultiJack.Icons.disconnect.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Start {
+			get { return LoadImage ("MonoMultiJack.Icons.start.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Stop {
+			get { return LoadImage ("MonoMultiJack.Icons.stop.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Delete {
+            //TODO: Create icon
+			get { return LoadImage ("MonoMultiJack.Icons.cancel.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Add {
+            //TODO: Create icon
+			get { return StockIcons.Add.WithSize (IconSize.Small); }
 		}
 	}
 }
