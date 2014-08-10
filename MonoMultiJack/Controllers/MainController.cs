@@ -52,7 +52,7 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
 			IConnectionManagerFactory factory =
-		        DependencyResolver.GetImplementation<IConnectionManagerFactory> ("IConnectionManagerFactoryImplementation");
+				DependencyResolver.GetImplementation<IConnectionManagerFactory> ("IConnectionManagerFactoryImplementation");
 			foreach (IConnectionManager connectionManager in factory.GetConnectionManagers()) { 
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
@@ -266,23 +266,23 @@ namespace MonoMultiJack.Controllers
 		void MainWindow_ShowAbout (object sender, EventArgs e)
 		{
 			//TODO: Move to view.
-			IAboutWindow AboutWindow = new AboutWindow ();
-			AboutWindow.ProgramName = "MonoMultiJack";
-			AboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
-			AboutWindow.Copyright = "(c) Thomas Mayer 2009-2014";
-			AboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio programs.";
-			AboutWindow.Website = "http://ix.residuum.org/";
-			AboutWindow.Authors = new string[] { "Thomas Mayer" };
-			AboutWindow.License = @"Copyright (c) 2009-2014 Thomas Mayer
+			IAboutWindow aboutWindow = new AboutWindow ();
+			aboutWindow.ProgramName = "MonoMultiJack";
+			aboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
+			aboutWindow.Copyright = "(c) Thomas Mayer 2009-2014";
+			aboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio programs.";
+			aboutWindow.Website = "http://ix.residuum.org/";
+			aboutWindow.Authors = new string[] { "Thomas Mayer" };
+			aboutWindow.License = @"Copyright (c) 2009-2014 Thomas Mayer
 	
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ""Software""), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 	
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
-			AboutWindow.Icon = Icons.Program;
-			AboutWindow.Show ();
-			AboutWindow.Closing += Window_Closing;
+			aboutWindow.Icon = Icons.Program;
+			aboutWindow.Show ();
+			aboutWindow.Closing += Window_Closing;
 		}
 
 		void MainWindow_ShowHelp (object sender, EventArgs e)

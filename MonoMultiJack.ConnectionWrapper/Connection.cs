@@ -23,15 +23,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-
 namespace MonoMultiJack.ConnectionWrapper
 {
 	public abstract class Connection : IConnection
 	{
-		public abstract Port OutPort{get;set;}
-		public abstract Port InPort{get;set;}
-		public abstract ConnectionType ConnectionType{get;}
+		public abstract Port OutPort{ get; set; }
+
+		public abstract Port InPort{ get; set; }
+
+		public abstract ConnectionType ConnectionType{ get; }
 
 		public override bool Equals (object obj)
 		{
@@ -54,7 +54,7 @@ namespace MonoMultiJack.ConnectionWrapper
 		public override int GetHashCode ()
 		{
 			return OutPort.GetHashCode () 
-				^ InPort.GetHashCode()
+				^ InPort.GetHashCode ()
 				^ ((int)ConnectionType).GetHashCode ();
 		}
 

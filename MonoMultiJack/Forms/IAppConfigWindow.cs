@@ -30,7 +30,6 @@ namespace MonoMultiJack.Forms
 {
 	public interface IAppConfigWindow : IWindow
 	{
-
 		void AddAppConfigWidget (IAppConfigWidget widget);
 
 		void RemoveAppConfigWidget (IAppConfigWidget widget);

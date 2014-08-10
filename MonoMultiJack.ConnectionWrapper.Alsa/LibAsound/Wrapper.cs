@@ -99,9 +99,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 
 							while (Invoke.snd_seq_query_next_port(_alsaClient, portInfo.Pointer) >= 0) {
 								IEnumerable<AlsaPort> newPorts = CreatePorts (Invoke.snd_seq_port_info_get_addr (portInfo.Pointer));
-								if (newPorts != null) {
-									ports.AddRange (newPorts);
-								}
+								ports.AddRange (newPorts);
 							}				
 						}
 					} 
@@ -169,10 +167,11 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 
 		internal static IEnumerable<AlsaMidiConnection> GetConnections (IEnumerable<AlsaPort> ports)
 		{
-			if ((_alsaClient != IntPtr.Zero || Activate ()) && ports.Any ()) {
+			IEnumerable<AlsaPort> alsaPorts = ports as IList<AlsaPort> ?? ports.ToList ();
+			if ((_alsaClient != IntPtr.Zero || Activate ()) && alsaPorts.Any ()) {
 				List<AlsaMidiConnection> connections = new List<AlsaMidiConnection> ();
-				IEnumerable<AlsaPort> inPorts = ports.Where (p => p.FlowDirection == FlowDirection.In);
-				IEnumerable<AlsaPort> outPorts = ports.Where (p => p.FlowDirection == FlowDirection.Out);
+				IEnumerable<AlsaPort> inPorts = alsaPorts.Where (p => p.FlowDirection == FlowDirection.In).ToList ();
+				IEnumerable<AlsaPort> outPorts = alsaPorts.Where (p => p.FlowDirection == FlowDirection.Out);
 				foreach (AlsaPort port in outPorts) {
 					connections.AddRange (GetConnectionsForPort (port, inPorts));
 				}
@@ -183,7 +182,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 
 		static IEnumerable<AlsaMidiConnection> GetConnectionsForPort (AlsaPort outPort, IEnumerable<AlsaPort> allInPorts)
 		{
-			if (outPort == null || !allInPorts.Any ()) {
+			IEnumerable<AlsaPort> alsaPorts = allInPorts as IList<AlsaPort> ?? allInPorts.ToList ();
+			if (outPort == null || !alsaPorts.Any ()) {
 				yield break;
 			}
 			using (PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ()))
@@ -197,7 +197,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 						continue;
 					}
 					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
-					AlsaPort connectedPort = allInPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
+					AlsaPort connectedPort = alsaPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
 						&& p.AlsaAddress.Port == connectedAddress.Port
 					);
 					if (connectedPort != null) {

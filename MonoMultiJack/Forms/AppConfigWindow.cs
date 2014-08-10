@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.IO;
 using System.Linq;
 using MonoMultiJack.Widgets;
 using Xwt;
@@ -58,7 +57,7 @@ namespace MonoMultiJack.Forms
 
 		void HandleCancelClick (object sender, EventArgs e)
 		{
-			this.Close ();
+			Close ();
 		}
 
 		void HandleOkClick (object o, EventArgs args)
@@ -78,18 +77,18 @@ namespace MonoMultiJack.Forms
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
-			this.Dispose ();
+			Dispose ();
 		}
 		#endregion
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
-			this.Show ();
+			Show ();
 		}
 
 		void IWidget.Hide ()
 		{
-			this.Hide ();
+			Hide ();
 		}
 		#endregion
 		#region IWindow implementation
@@ -123,8 +122,7 @@ namespace MonoMultiJack.Forms
 		#endregion
 		void BuildWindow ()
 		{
-			_configTable = new Table ();
-			_configTable.MinWidth = 300;
+			_configTable = new Table { MinWidth = 300 };
 			ScrollView scrollView = new ScrollView (_configTable) {
 				ExpandHorizontal = true,
 				ExpandVertical = true,
@@ -133,17 +131,20 @@ namespace MonoMultiJack.Forms
 				MinWidth = 300
 			};
 			HBox buttonBox = new HBox ();
-			_addButton = new Button (Command.Add.Label) { Image = StockIcons.Add };
+			_addButton = new Button (Command.Add.Label) { Image = Icons.Add };
 			_okButton = new Button (Command.Ok.Label) { Image = Icons.Ok };
-			_cancelButton = new Button (Command.Cancel.Label) { Image = Icons.Cancel };
-			buttonBox.PackEnd (_addButton);
-			buttonBox.PackEnd (_okButton);
+			_cancelButton = new Button (Command.Cancel.Label) {
+				Image = Icons.Cancel,
+				Style =  ButtonStyle.Flat
+			};
+			buttonBox.PackStart (_addButton);
+			buttonBox.PackStart (_okButton);
 			buttonBox.PackEnd (_cancelButton);
             
 			VBox box = new VBox ();
 			box.PackStart (scrollView, true, true);
 			box.PackEnd (buttonBox);
-			this.Content = box;
+			Content = box;
 		}
 
 		void CallAddNewConfigWidget ()

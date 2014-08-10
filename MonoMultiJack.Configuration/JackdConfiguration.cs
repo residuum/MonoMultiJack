@@ -23,7 +23,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 namespace MonoMultiJack.Configuration
 {
 	/// <summary>
@@ -35,22 +34,22 @@ namespace MonoMultiJack.Configuration
 		/// path to jackd executable
 		/// </summary>
 		public string Path { get; private set; }
-		
+
 		/// <summary>
 		/// General oprions for jackd
 		/// </summary>
 		public string GeneralOptions { get; private set; }
-		
+
 		/// <summary>
 		/// Driver infrastructure for jackd
 		/// </summary>
 		public string Driver { get; private set; }
-		
+
 		/// <summary>
 		/// Options for jackd driver
 		/// </summary>
 		public string DriverOptions { get; private set; }
-		
+
 		/// <summary>
 		/// Constructor
 		/// </summary>

@@ -40,8 +40,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		static IntPtr _jackClient = IntPtr.Zero;
 		static List<JackPort> _portMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
-		static readonly string _clientName = "MonoMultiJack"
-		    + (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
+		static readonly string ClientName = "MonoMultiJack"
+			+ (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
 		static readonly Definitions.JackPortConnectCallback _onPortConnect = OnPortConnect;
 		static readonly Definitions.JackPortRegistrationCallback _onPortRegistration = OnPortRegistration;
 		static readonly Definitions.JackShutdownCallback _onJackShutdown = OnJackShutdown;
@@ -142,7 +142,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		internal static bool ConnectToServer ()
 		{
 			if (_jackClient == IntPtr.Zero) {
-				_jackClient = Invoke.jack_client_open (_clientName, 1, IntPtr.Zero);
+				_jackClient = Invoke.jack_client_open (ClientName, 1, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate ();

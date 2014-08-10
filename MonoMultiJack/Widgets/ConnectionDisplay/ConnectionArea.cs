@@ -61,8 +61,8 @@ namespace MonoMultiJack.Widgets
 					ctx.Save ();
 					ctx.MoveTo (0, outY);
 					ctx.CurveTo (new Point (areaWidth / 4, outY),
-					            new Point (3 * areaWidth / 4, inY),
-					            new Point (areaWidth, inY));
+					             new Point (3 * areaWidth / 4, inY),
+					             new Point (areaWidth, inY));
 					ctx.Restore ();
 					ctx.SetColor (i.GetColor (BackgroundColor));
 					ctx.SetLineWidth (1);

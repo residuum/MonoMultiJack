@@ -23,7 +23,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 namespace MonoMultiJack.Configuration
 {
 	/// <summary>
@@ -35,7 +34,7 @@ namespace MonoMultiJack.Configuration
 		/// name of the application
 		/// </summary>
 		public string Name { get; private set; }
-		
+
 		/// <summary>
 		/// command to launch the application
 		/// </summary>
@@ -52,12 +51,9 @@ namespace MonoMultiJack.Configuration
 		/// <summary>
 		/// constructor
 		/// </summary>
-		/// <param name="newName">
-		/// A <see cref="System.String"/> indicating name of application
-		/// </param>
-		/// <param name="newCommand">
-		/// A <see cref="System.String"/> indicating command to lauch the application
-		/// </param>
+		/// <param name="newName">A <see cref="System.String" /> indicating name of application</param>
+		/// <param name="newCommand">A <see cref="System.String" /> indicating command to lauch the application</param>
+		/// <param name="newArguments">The new arguments.</param>
 		public AppConfiguration (string newName, string newCommand, string newArguments) : this()
 		{
 			Name = newName;

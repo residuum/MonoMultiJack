@@ -34,20 +34,17 @@ namespace MonoMultiJack.Controllers
 {
 	public class AppConfigController : IController
 	{
-		readonly List<AppConfiguration> _configurations;
 		readonly IAppConfigWindow _configWindow;
 		readonly List<IAppConfigWidget> _widgets = new List<IAppConfigWidget> ();
 
-		public AppConfigController (List<AppConfiguration> appConfigurations)
+		public AppConfigController (IEnumerable<AppConfiguration> appConfigurations)
 		{
-			_configurations = appConfigurations;
-			_configWindow = new AppConfigWindow ();
-			_configWindow.Icon = Icons.Program;
+			_configWindow = new AppConfigWindow { Icon = Icons.Program };
 			_configWindow.Show ();
 			_configWindow.Closing += Window_Closing;
 			_configWindow.AddApplication += Window_AddApplication;
 			_configWindow.SaveApplicationConfigs += Window_SaveConfigs;
-			foreach (AppConfiguration config in _configurations) {
+			foreach (AppConfiguration config in appConfigurations) {
 				IAppConfigWidget widget = CreateWidget ();	
 				widget.Name = config.Name;
 				widget.Command = config.Command;

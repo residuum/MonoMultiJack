@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 
@@ -35,26 +36,26 @@ namespace MonoMultiJack.Configuration
 	/// </summary>
 	public static class PersistantConfiguration
 	{
-		static readonly string _applicationFolder = Path.Combine (
+		static readonly string ApplicationFolder = Path.Combine (
 			Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
 			"MonoMultiJack"
 		);
 
 		static string JackdConfigFile {
 			get {
-				return Path.Combine (_applicationFolder, "jack.xml");
+				return Path.Combine (ApplicationFolder, "jack.xml");
 			}
 		}
 
 		static string ApplicationsConfigFile {
 			get {
-				return Path.Combine (_applicationFolder, "applications.xml");
+				return Path.Combine (ApplicationFolder, "applications.xml");
 			}
 		}
 
 		static string WindowSizeFile {
 			get {
-				return Path.Combine (_applicationFolder, "window.xml");
+				return Path.Combine (ApplicationFolder, "window.xml");
 			}
 		}
 
@@ -101,8 +102,8 @@ namespace MonoMultiJack.Configuration
 		/// </param>
 		public static void SaveJackdConfig (JackdConfiguration newJackdConfig)
 		{
-			if (!Directory.Exists (_applicationFolder)) {
-				Directory.CreateDirectory (_applicationFolder);
+			if (!Directory.Exists (ApplicationFolder)) {
+				Directory.CreateDirectory (ApplicationFolder);
 			}
 			if (!File.Exists (JackdConfigFile)) {
 				using (FileStream fs = File.Create(JackdConfigFile)) {
@@ -157,8 +158,8 @@ namespace MonoMultiJack.Configuration
 
 		public static void SaveAppConfiguations (List<AppConfiguration> newAppConfigurations)
 		{
-			if (!Directory.Exists (_applicationFolder)) {
-				Directory.CreateDirectory (_applicationFolder);
+			if (!Directory.Exists (ApplicationFolder)) {
+				Directory.CreateDirectory (ApplicationFolder);
 			}
 			if (!File.Exists (ApplicationsConfigFile)) {
 				using (FileStream fs = File.Create(ApplicationsConfigFile)) {
@@ -226,8 +227,8 @@ namespace MonoMultiJack.Configuration
 		/// </param>
 		public static void SaveWindowSize (WindowConfiguration newWindowConfig)
 		{
-			if (!Directory.Exists (_applicationFolder)) {
-				Directory.CreateDirectory (_applicationFolder);
+			if (!Directory.Exists (ApplicationFolder)) {
+				Directory.CreateDirectory (ApplicationFolder);
 			}
 			if (!File.Exists (WindowSizeFile)) {
 				using (FileStream fs = File.Create(WindowSizeFile)) {
@@ -241,11 +242,11 @@ namespace MonoMultiJack.Configuration
 				writer.WriteStartElement ("window");
 				writer.WriteElementString (
 					"x-position",
-					newWindowConfig.XPosition.ToString ()
+					newWindowConfig.XPosition.ToString (CultureInfo.InvariantCulture)
 				);
 				writer.WriteElementString (
 					"y-position",
-					newWindowConfig.YPosition.ToString ()
+					newWindowConfig.YPosition.ToString (CultureInfo.InvariantCulture)
 				);
 				writer.WriteElementString ("x-size", newWindowConfig.Width.ToString ());
 				writer.WriteElementString ("y-size", newWindowConfig.Height.ToString ());

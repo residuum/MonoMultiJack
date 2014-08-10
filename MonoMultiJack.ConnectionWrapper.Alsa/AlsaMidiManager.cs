@@ -139,7 +139,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		public IEnumerable<IConnection> Connections {
 			get {
 				_connections = Wrapper.GetConnections (_portMapper).ToList ();	
-				return _connections.Cast<IConnection> ();
+				return _connections;
 			}
 		}
 
@@ -151,6 +151,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		#endregion
 		void SendMessage (IEnumerable<IConnectable> connectables, IEnumerable<IConnection> connections, ChangeType changeType)
 		{
+			connectables = connectables as IList<IConnectable> ?? connectables.ToList ();
+			connections = connections as IList<IConnection> ?? connections.ToList ();
 			if (!connectables.Any () && !connections.Any ()) {
 				return;
 			}
@@ -171,15 +173,13 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			out List<T> obsolete) where T : class
 		{
 			added = new List<T> ();
-			obsolete = new List<T> ();
-			foreach (T current in all.Where(e => !mapped.Contains(e))) {
+			IEnumerable<T> updated = all as T[] ?? all.ToArray ();
+			foreach (T current in updated.Where(e => !mapped.Contains(e))) {
 				added.Add (current);
 				mapped.Add (current);
 			}
-			foreach (T old in mapped.Where(e => !all.Contains(e))) {
-				obsolete.Add (old);
-			}
-			return all;
+			obsolete = mapped.Where (e => !updated.Contains (e)).ToList ();
+			return updated;
 		}
 
 		IEnumerable<T> CheckForChanges<T> (
@@ -188,16 +188,14 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			out List<T> added,
 			out List<T> obsolete) where T : class
 		{
-			added = new List<T> ();
-			obsolete = new List<T> ();
-			return UpdateList<T> (current, existing, out added, out obsolete);
+			return UpdateList (current, existing, out added, out obsolete);
 		}
 
 		bool CheckForChanges ()
 		{
 			List<AlsaPort> newPorts;
 			List<AlsaPort> obsoletePorts;
-			_portMapper = CheckForChanges<AlsaPort> (
+			_portMapper = CheckForChanges (
 				_portMapper, 
 				Wrapper.GetPorts (), 
 				out newPorts, 
@@ -207,7 +205,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 			List<AlsaMidiConnection> newConnections;
 			List<AlsaMidiConnection> obsoleteConnections;
-			_connections = CheckForChanges<AlsaMidiConnection> (
+			_connections = CheckForChanges (
 				_connections, 
 				Wrapper.GetConnections (_portMapper).ToList (), 
 				out newConnections, 

@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.IO;
 using Xwt;
 using Xwt.Drawing;
 
@@ -50,12 +49,12 @@ namespace MonoMultiJack.Forms
 		}
 		#endregion
 		#region IWidget implementation
-		void MonoMultiJack.Widgets.IWidget.Show ()
+		void Widgets.IWidget.Show ()
 		{
 			MessageDialog.ShowMessage (_message);
 		}
 
-		void MonoMultiJack.Widgets.IWidget.Hide ()
+		void Widgets.IWidget.Hide ()
 		{
 
 		}
@@ -71,7 +70,7 @@ namespace MonoMultiJack.Forms
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				Sensitive = value;
 			}
 		}
 		#endregion

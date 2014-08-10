@@ -34,12 +34,30 @@ namespace MonoMultiJack.Widgets
 	{
 		class ConnectableTreeView : Widget
 		{
-			readonly TreeView _treeView;
-			readonly TreeStore _treeStore;
-			readonly IDataField<IConnectable> _dataField;
-			readonly IDataField<string> _textField;
+			TreeView _treeView;
+			TreeStore _treeStore;
+			IDataField<IConnectable> _dataField;
+			IDataField<string> _textField;
 
 			public ConnectableTreeView ()
+			{
+				BuildWidget ();
+				BindEvents ();
+			}
+
+			private void BindEvents ()
+			{
+				_treeView.MouseScrolled += UpdateParent;
+				_treeView.RowExpanded += UpdateParent;
+				_treeView.RowCollapsed += UpdateParent;
+				_treeView.DragDrop += CallConnect;
+				_treeView.DragOver += HandleDragOver;
+				_treeView.DragStarted += HandleDragStarted;
+				_treeView.DragDropCheck += HandleDragDropCheck;
+				_treeView.SetDragSource (TransferDataType.Text, TransferDataType.FromType (typeof(IConnectable)));
+			}
+
+			private void BuildWidget ()
 			{
 				_dataField = new DataField<IConnectable> ();
 				_textField = new DataField<string> ();
@@ -54,15 +72,7 @@ namespace MonoMultiJack.Widgets
 				_treeView.ExpandVertical = true;
 				_treeView.ExpandHorizontal = false;
 				_treeView.HeadersVisible = false;
-				this.Content = _treeView;
-				_treeView.MouseScrolled += UpdateParent;
-				_treeView.RowExpanded += UpdateParent;
-				_treeView.RowCollapsed += UpdateParent;
-				_treeView.DragDrop += CallConnect;
-				_treeView.DragOver += HandleDragOver;
-				_treeView.DragStarted += HandleDragStarted;
-				_treeView.DragDropCheck += HandleDragDropCheck;
-				_treeView.SetDragSource (TransferDataType.Text, TransferDataType.FromType(typeof(IConnectable)));
+				Content = _treeView;
 			}
 
 			void HandleDragDropCheck (object sender, DragCheckEventArgs e)

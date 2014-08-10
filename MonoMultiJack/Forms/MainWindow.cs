@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Widgets;
@@ -56,30 +55,30 @@ namespace MonoMultiJack.Forms
 		{
 			BuildMenu ();
 			BuildWindowContent ();
-			this.Closed += OnCloseEvent;
+			Closed += OnCloseEvent;
 		}
 
 		void BuildMenu ()
 		{
-			this.MainMenu = new Menu ();
+			MainMenu = new Menu ();
 			MenuItem file = new MenuItem ("_File");
 			file.SubMenu = new Menu ();
 			foreach (MenuItem menuItem in BuildFileMenu()) {
 				file.SubMenu.Items.Add (menuItem);
 			}
-			this.MainMenu.Items.Add (file);
+			MainMenu.Items.Add (file);
 			MenuItem configuration = new MenuItem ("_Configuration");
 			configuration.SubMenu = new Menu ();
 			foreach (MenuItem menuItem in BuildConfigMenu()) {
 				configuration.SubMenu.Items.Add (menuItem);
 			}
-			this.MainMenu.Items.Add (configuration);
+			MainMenu.Items.Add (configuration);
 			MenuItem help = new MenuItem ("_Help");
 			help.SubMenu = new Menu ();
 			foreach (MenuItem menuItem in BuildHelpMenu()) {
 				help.SubMenu.Items.Add (menuItem);
 			}
-			this.MainMenu.Items.Add (help);
+			MainMenu.Items.Add (help);
 
 		}
 
@@ -96,13 +95,13 @@ namespace MonoMultiJack.Forms
 
 		IEnumerable<MenuItem> BuildFileMenu ()
 		{
-			yield return CreateMenuItem ("(Re)Start _Jackd", CallStartJackd);
-			_stopAction = CreateMenuItem ("_Stop Jackd", CallStopJackd);
+			yield return CreateMenuItem ("(Re)Start _Jackd", CallStartJackd, Icons.Start);
+			_stopAction = CreateMenuItem ("_Stop Jackd", CallStopJackd, Icons.Stop);
 			yield return _stopAction;
-			_stopAllAction = CreateMenuItem ("Stop _All", CallStopAll);
+			_stopAllAction = CreateMenuItem ("Stop _All", CallStopAll, Icons.Stop);
 			_stopAllAction.Sensitive = false;
 			yield return _stopAllAction;
-			yield return CreateMenuItem ("_Quit", OnQuitActionActivated);
+			yield return CreateMenuItem ("_Quit", OnQuitActionActivated, Icons.Delete);
 		}
 
 		static MenuItem CreateMenuItem (string name, EventHandler handler, Image icon = null)
@@ -117,24 +116,24 @@ namespace MonoMultiJack.Forms
 		#region IWidget implementation
 		void IWidget.Show ()
 		{
-			this.Show ();
+			Show ();
 		}
 
 		void IWidget.Hide ()
 		{
-			this.Hide ();
+			Hide ();
 		}
 		#endregion
 		#region IWindow implementation
 		Image IWindow.Icon {
 			set {
-				this.Icon = value;
+				Icon = value;
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				Sensitive = value;
 			}
 		}
 
@@ -211,18 +210,18 @@ namespace MonoMultiJack.Forms
 			mainContent.PackStart (_connectionNotebook, true, true);
 
 			VBox container = new VBox {
-				Margin = new WidgetSpacing(0, 0, 0, 0),
+				Margin = new WidgetSpacing(0),
 			};
 			container.PackStart (mainContent, true, true);
 			_statusbar = new Label {
-				Margin = new WidgetSpacing(0, 0, 0, 0),
+				Margin = new WidgetSpacing(0),
 			};
 			_statusbar.Font = _statusbar.Font.WithScaledSize (0.8);
 			_statusbar.TextAlignment = Alignment.End;
-			this.PaddingBottom = this.PaddingBottom / 2;
+			PaddingBottom = PaddingBottom / 2;
 			container.PackEnd (_statusbar);
 
-			this.Content = container;
+			Content = container;
 
 			((IMainWindow)this).JackdIsRunning = false;
 		}

@@ -60,7 +60,7 @@ namespace MonoMultiJack.Configuration
 		public double Height { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="MonoMultiJack.BusinessLogic.WindowConfiguration"/> struct.
+		/// Initializes a new instance of the <see cref="WindowConfiguration"/> struct.
 		/// </summary>
 		/// <param name='xPosition'>
 		/// X position.

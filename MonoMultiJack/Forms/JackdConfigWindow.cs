@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.IO;
 using Xwt;
 using Xwt.Drawing;
 
@@ -33,21 +32,23 @@ namespace MonoMultiJack.Forms
 	/// <summary>
 	/// Jackd Config Window
 	/// </summary>
-	public class JackdConfigWindow : Dialog, IJackdConfigWindow
+	public class JackdConfigWindow : Window, IJackdConfigWindow
 	{
 		TextEntry _jackdPathEntry;
 		TextEntry _jackdGeneralOptionsEntry;
 		TextEntry _jackdDriverEntry;
 		TextEntry _jackdDriverOptionsEntry;
+		Button _okButton;
+		Button _cancelButton;
 		#region IWidget implementation
 		void Widgets.IWidget.Show ()
 		{
-			this.Show ();
+			Show ();
 		}
 
 		void Widgets.IWidget.Hide ()
 		{
-			this.Hide ();
+			Hide ();
 		}
 		#endregion
 		#region IWindow implementation
@@ -55,13 +56,13 @@ namespace MonoMultiJack.Forms
 
 		Image IWindow.Icon {
 			set {
-				this.Icon = value;
+				Icon = value;
 			}
 		}
 
 		bool IWindow.Sensitive {
 			set {
-				this.Sensitive = value;
+				Sensitive = value;
 			}
 		}
 		#endregion
@@ -111,20 +112,20 @@ namespace MonoMultiJack.Forms
 		{
 			Title = "Configure Jackd";
 			Resizable = false;
-			BuildDialog ();
+			BuildWindow ();
 			BindEvents ();
 		}
 
 		void BindEvents ()
 		{
 			Closed += HandleClose;
-			this.Buttons.GetCommandButton (Command.Ok).Clicked += HandleOkClick;
-			this.Buttons.GetCommandButton (Command.Cancel).Clicked += HandleCancelClick; 
+			_okButton.Clicked += HandleOkClick;
+			_cancelButton.Clicked += HandleCancelClick; 
 		}
 
 		void HandleCancelClick (object sender, EventArgs e)
 		{
-			this.Close ();
+			Close ();
 		}
 
 		void HandleOkClick (object o, EventArgs args)
@@ -145,7 +146,7 @@ namespace MonoMultiJack.Forms
 		/// <summary>
 		/// builds dialog window
 		/// </summary>
-		void BuildDialog ()
+		void BuildWindow ()
 		{
 			Table table = new Table ();
 
@@ -154,10 +155,19 @@ namespace MonoMultiJack.Forms
 			_jackdDriverEntry = BuildRow (table, 2, "Driver Infrastructure", "e.g. alsa");
 			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options", "optional");
 
-			this.Content = table;
+			HBox buttonBox = new HBox ();
+			_okButton = new Button (Command.Ok.Label) { Image = Icons.Ok };
+			_cancelButton = new Button (Command.Cancel.Label) {
+				Image = Icons.Cancel,
+				Style = ButtonStyle.Flat
+			};
+			buttonBox.PackEnd (_cancelButton);
+			buttonBox.PackStart (_okButton);
 
-			this.Buttons.Add (new DialogButton (Command.Ok) { Image = Icons.Ok });
-			this.Buttons.Add (new DialogButton (Command.Cancel) { Image = Icons.Cancel });
+			VBox box = new VBox ();
+			box.PackStart (table);
+			box.PackEnd (buttonBox);
+			Content = box;
 		}
 
 		TextEntry BuildRow (Table table, int index, string labelText, string placeholder)
