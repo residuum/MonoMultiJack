@@ -37,9 +37,9 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public ConnectionType ConnectionType { get; private set; }
 
-		public string Identification {
+		public ConnectableSerialization Serialization {
 			get {
-				return string.Format ("{0}/{1}/{2}", ConnectionType, FlowDirection, string.Join (",", Ports.Select (p => p.Id.ToString ())));
+				return new ConnectableSerialization(ConnectionType, FlowDirection, Ports.Select (p => p.Id));
 			}
 		}
 

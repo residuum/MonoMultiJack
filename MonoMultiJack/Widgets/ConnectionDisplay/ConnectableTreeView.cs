@@ -80,7 +80,17 @@ namespace MonoMultiJack.Widgets
 
 			void HandleDragOver (object sender, DragOverEventArgs e)
 			{
-				//Identification id = new Identification ((string)e.Data.GetValue (TransferDataType.Text));
+				ConnectableSerialization id = new ConnectableSerialization ((string)e.Data.GetValue (TransferDataType.Text));
+				TreeNavigator firstItem = _treeStore.GetFirstNode ();
+				if (firstItem == null) {
+					e.AllowedAction = DragDropAction.None;
+					return;
+				}
+				IConnectable firstClient = firstItem.GetValue (_dataField);
+				if (firstClient.ConnectionType != id.ConnectionType || firstClient.FlowDirection == id.FlowDirection) {					
+					e.AllowedAction = DragDropAction.None;
+					return;
+				}
 				if (e.Action == DragDropAction.All) {
 					e.AllowedAction = DragDropAction.Move;
 				} else {
@@ -93,9 +103,7 @@ namespace MonoMultiJack.Widgets
 				Image icon = Icons.Connect;
 				e.DragOperation.SetDragImage (icon, (int)icon.Width, (int)icon.Height);
 				e.DragOperation.AllowedActions = DragDropAction.All;
-				IConnectable selected = GetSelected ();
-				e.DragOperation.Data.AddValue (selected.Identification);
-				Console.WriteLine (selected.Identification);
+				e.DragOperation.Data.AddValue (GetSelected ().Serialization.ToString ());
 			}
 
 			public event EventHandler ViewChanged;
@@ -110,15 +118,15 @@ namespace MonoMultiJack.Widgets
 
 			void HandleDropped (object sender, DragEventArgs e)
 			{
-				Identification id = new Identification ((string)e.Data.GetValue (TransferDataType.Text));
+				ConnectableSerialization id = new ConnectableSerialization ((string)e.Data.GetValue (TransferDataType.Text));
 				RowDropPosition pos;
 				TreePosition nodePosition;
 				_treeView.GetDropTargetRow (e.Position.X, e.Position.Y, out pos, out nodePosition);
 				IConnectable droppedOn = GetConnectable (nodePosition);
 				IConnectable connectable = id.GetConnectable ();
 
-				if (Connect != null && droppedOn != null){
-					Connect(this, new ConnectEventArgs {
+				if (Connect != null && droppedOn != null) {
+					Connect (this, new ConnectEventArgs {
 						Outlet = droppedOn,
 						Inlet = connectable
 					});

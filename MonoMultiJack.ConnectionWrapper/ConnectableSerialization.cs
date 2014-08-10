@@ -1,5 +1,5 @@
 //
-// Identification.cs
+// ConnectableSerialization.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -29,33 +29,44 @@ using System.Collections.Generic;
 
 namespace MonoMultiJack.ConnectionWrapper
 {
-	public class Identification
+	public class ConnectableSerialization
 	{
 		public IConnectable GetConnectable ()
 		{
-			Client client = new Client ("", _flowDirection, _connectionType);
-			foreach(uint portId in _portIds){
-				client.AddPort (new DummyPort (portId, _connectionType, _flowDirection));
+			Client client = new Client ("", FlowDirection, ConnectionType);
+			foreach (uint portId in _portIds) {
+				client.AddPort (new DummyPort (portId, ConnectionType, FlowDirection));
 			}
 			return client;
 		}
 
-		ConnectionType _connectionType;
-		
-		FlowDirection _flowDirection;
+		public ConnectionType ConnectionType{ get; private set; }
+
+		public FlowDirection FlowDirection{ get; private set; }
 
 		IEnumerable<uint> _portIds;
 
-		public Identification (string connectableId)
+		public ConnectableSerialization (string connectableId)
 		{
 			string[] parameters = connectableId.Split (new char[] { '/' });
-			if (parameters.Length != 3){
+			if (parameters.Length != 3) {
 				throw new ArgumentOutOfRangeException ();
 			}
-			_connectionType = (ConnectionType)Enum.Parse (typeof(ConnectionType), parameters [0]);
-			_flowDirection = (FlowDirection)Enum.Parse (typeof(FlowDirection), parameters [1]);
+			ConnectionType = (ConnectionType)Enum.Parse (typeof(ConnectionType), parameters [0]);
+			FlowDirection = (FlowDirection)Enum.Parse (typeof(FlowDirection), parameters [1]);
 			string[] portIds = parameters [2].Split (new char[] { ',' });
 			_portIds = portIds.Select (id => Convert.ToUInt32 (id)).ToList ();
+		}
+
+		public ConnectableSerialization(ConnectionType connectionType, FlowDirection flowDirection, IEnumerable<uint> portIds){
+			ConnectionType = connectionType;
+			FlowDirection = flowDirection;
+			_portIds = portIds;
+		}
+
+		public override string ToString ()
+		{			
+			return string.Format ("{0}/{1}/{2}", ConnectionType, FlowDirection, string.Join (",", _portIds));
 		}
 	}
 }

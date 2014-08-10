@@ -38,10 +38,10 @@ namespace MonoMultiJack.ConnectionWrapper
 		string Name { get; }
 
 		/// <summary>
-		/// Gets the identification.
+		/// Gets the serialization.
 		/// </summary>
-		/// <value>The identification.</value>
-		string Identification { get; }
+		/// <value>The serialization.</value>
+		ConnectableSerialization Serialization  { get; }
 
 		/// <summary>
 		/// Gets the ports.

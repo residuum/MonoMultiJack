@@ -31,9 +31,9 @@ namespace MonoMultiJack.ConnectionWrapper
 	{
 		public string Name { get; protected set; }
 
-		public string Identification {
+		public ConnectableSerialization Serialization {
 			get {
-				return string.Format ("{0}/{1}/{2}", ConnectionType, FlowDirection, Id);
+				return new ConnectableSerialization (ConnectionType, FlowDirection, new List<uint> { Id });
 			}
 		}
 
@@ -60,8 +60,6 @@ namespace MonoMultiJack.ConnectionWrapper
 		public bool Equals (Port other)
 		{
 			if (other == null)
-				return false;
-			if (GetType () != other.GetType ())
 				return false;
 			
 			return Id == other.Id 

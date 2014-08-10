@@ -151,11 +151,12 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
-		void TestAndConnect(ConnectEventArgs e){
+		void TestAndConnect (ConnectEventArgs e)
+		{
 			if (e.Inlet.ConnectionType == e.Outlet.ConnectionType 
-			    && e.Inlet.FlowDirection == FlowDirection.In 
-			    && e.Outlet.FlowDirection == FlowDirection.Out 
-			    && Connect != null) {
+				&& e.Inlet.FlowDirection == FlowDirection.In 
+				&& e.Outlet.FlowDirection == FlowDirection.Out 
+				&& Connect != null) {
 				Connect (this, new ConnectEventArgs {
 					Outlet = e.Outlet,
 					Inlet = e.Inlet
