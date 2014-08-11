@@ -62,17 +62,17 @@ namespace MonoMultiJack.Forms
 			_website.Font = _website.Font.WithScaledSize (0.8);
 			mainContent.PackStart (_website);
 			HBox buttonRow = new HBox ();
-			Button authors = new Button { Label = "Authors" };
+			Button authors = new Button { Label = "Authors", Image = StockIcons.Information };
 			authors.Clicked += (sender, args) => ShowAuthors ();
 			buttonRow.PackStart (authors);
-			Button license = new Button { Label = "License" };
+            Button license = new Button { Label = "License", Image = StockIcons.Information };
 			license.Clicked += (sender, args) => ShowLicense ();
 			buttonRow.PackStart (license);
-			Button ok = new Button { Label = "Close" };
+            Button ok = new Button { Label = "Close", Image = Icons.Ok };
 			ok.Clicked += (sender, args) => Close ();
-			buttonRow.PackStart (ok);
+			buttonRow.PackEnd (ok);
 			mainContent.PackEnd (buttonRow);
-			this.Content = mainContent;
+			Content = mainContent;
 		}
 
 		void SetProgramName ()
@@ -99,25 +99,25 @@ namespace MonoMultiJack.Forms
 		#region IDisposable implementation
 		void IDisposable.Dispose ()
 		{
-			this.Dispose ();
+			Dispose ();
 		}
 		#endregion
 		#region IWidget implementation
-		void MonoMultiJack.Widgets.IWidget.Show ()
+		void Widgets.IWidget.Show ()
 		{
-			this.Show ();
+			Show ();
 		}
 
-		void MonoMultiJack.Widgets.IWidget.Hide ()
+		void Widgets.IWidget.Hide ()
 		{
-			this.Hide ();
+			Hide ();
 		}
 		#endregion
 		public event EventHandler Closing;
 		#region IAboutWindow implementation
 		string IAboutWindow.ProgramName {
 			set {
-				this.Title = string.Format ("Info about {0}", value);
+				Title = string.Format ("Info about {0}", value);
 				_nameText = value;
 				SetProgramName ();
 			}
@@ -163,7 +163,7 @@ namespace MonoMultiJack.Forms
 
 		Image IWindow.Icon {
 			set {
-				this.Icon = value;
+				Icon = value;
 			}
 		}
 		#endregion

@@ -161,8 +161,8 @@ namespace MonoMultiJack.Forms
 				Image = Icons.Cancel,
 				Style = ButtonStyle.Flat
 			};
-			buttonBox.PackEnd (_cancelButton);
-			buttonBox.PackStart (_okButton);
+			buttonBox.PackStart (_cancelButton);
+			buttonBox.PackEnd (_okButton);
 
 			VBox box = new VBox ();
 			box.PackStart (table);
