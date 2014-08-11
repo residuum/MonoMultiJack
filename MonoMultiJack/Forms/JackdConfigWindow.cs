@@ -156,7 +156,7 @@ namespace MonoMultiJack.Forms
 			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options", "optional");
 
 			HBox buttonBox = new HBox ();
-			_okButton = new Button (Command.Ok.Label) { Image = Icons.Ok };
+			_okButton = new Button (Command.Save.Label) { Image = Icons.Ok };
 			_cancelButton = new Button (Command.Cancel.Label) {
 				Image = Icons.Cancel,
 				Style = ButtonStyle.Flat

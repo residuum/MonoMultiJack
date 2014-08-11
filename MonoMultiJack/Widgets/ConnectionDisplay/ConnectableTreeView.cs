@@ -25,9 +25,9 @@
 // THE SOFTWARE.
 using System;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
 using Xwt.Drawing;
+using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Widgets
 {

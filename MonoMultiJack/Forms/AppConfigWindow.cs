@@ -132,7 +132,7 @@ namespace MonoMultiJack.Forms
 			};
 			HBox buttonBox = new HBox ();
 			_addButton = new Button (Command.Add.Label) { Image = Icons.Add };
-			_okButton = new Button (Command.Ok.Label) { Image = Icons.Ok };
+			_okButton = new Button (Command.Save.Label) { Image = Icons.Ok };
 			_cancelButton = new Button (Command.Cancel.Label) {
 				Image = Icons.Cancel,
 				Style =  ButtonStyle.Flat
