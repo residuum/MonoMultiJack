@@ -71,7 +71,7 @@ namespace MonoMultiJack.Widgets
 						_startButton.Clicked -= CallStopApplication;
 						_startButton.Clicked -= CallStartApplication;
 						_startButton.Clicked += CallStartApplication;
-						_startButton.Image = Icons.Stop;
+						_startButton.Image = Icons.Start;
 					}
 				}
 				);

@@ -117,8 +117,9 @@ namespace MonoMultiJack.OS.Windows
 				return;
 			}
 			if (!_process.CloseMainWindow ()) {
-				return;
+				_process.Kill ();
 			}
+			_process.Close ();
 			_process.Dispose ();
 
 			if (HasExited != null) {
