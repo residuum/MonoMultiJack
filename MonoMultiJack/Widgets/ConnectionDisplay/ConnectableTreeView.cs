@@ -220,17 +220,19 @@ namespace MonoMultiJack.Widgets
 
 			void RemovePort (Port port)
 			{
+				TreeNavigator clientNavigator = FindClientNavigator (port.Client);
 				TreeNavigator navigator = FindClientNavigator (port.Client);
-				navigator.MoveToChild ();
+				if (!navigator.MoveToChild ()) {
+					return;
+				}
 				do {
 					if (port.Equals (navigator.GetValue (_dataField))) {
 						navigator.Remove ();
 						break;
 					}
 				} while (navigator.MoveNext());
-				navigator.MoveToParent ();
-				if (!navigator.MoveToChild ()) {
-					navigator.Remove ();
+				if (!clientNavigator.MoveToChild ()) {
+					clientNavigator.Remove ();
 				}
 			}
 

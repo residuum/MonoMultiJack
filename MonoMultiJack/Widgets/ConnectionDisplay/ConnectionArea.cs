@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
@@ -55,18 +56,24 @@ namespace MonoMultiJack.Widgets
 				List<IConnection> connections = new List<IConnection> (_connections ?? Enumerable.Empty<IConnection> ());
 				for (int i = 0; i < connections.Count; i++) {
 					IConnection conn = connections [i];
-					double outY = _outTreeView.GetYPositionOfConnectable (conn.OutPort);
-					double inY = _inTreeView.GetYPositionOfConnectable (conn.InPort);
-					double areaWidth = this.Bounds.Width;
-					ctx.Save ();
-					ctx.MoveTo (0, outY);
-					ctx.CurveTo (new Point (areaWidth / 4, outY),
-					             new Point (3 * areaWidth / 4, inY),
-					             new Point (areaWidth, inY));
-					ctx.Restore ();
-					ctx.SetColor (i.GetColor (BackgroundColor));
-					ctx.SetLineWidth (1);
-					ctx.Stroke ();
+					try {
+						double outY = _outTreeView.GetYPositionOfConnectable (conn.OutPort);
+						double inY = _inTreeView.GetYPositionOfConnectable (conn.InPort);
+						double areaWidth = this.Bounds.Width;
+						ctx.Save ();
+						ctx.MoveTo (0, outY);
+						ctx.CurveTo (new Point (areaWidth / 4, outY),
+						             new Point (3 * areaWidth / 4, inY),
+						             new Point (areaWidth, inY));
+						ctx.Restore ();
+						ctx.SetColor (i.GetColor (BackgroundColor));
+						ctx.SetLineWidth (1);
+						ctx.Stroke ();
+					} catch (Exception ex) {
+						#if DEBUG
+						Console.WriteLine (ex.Message);
+						#endif
+					}
 				}
 				base.OnDraw (ctx, dirtyRect);
 			}
