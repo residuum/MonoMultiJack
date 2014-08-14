@@ -151,7 +151,7 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
-		void TestAndConnect (ConnectEventArgs e)
+		void ConnectFromDragAndDrop (ConnectEventArgs e)
 		{
 			if (e.Inlet.ConnectionType == e.Outlet.ConnectionType 
 				&& e.Inlet.FlowDirection == FlowDirection.In 
@@ -169,21 +169,34 @@ namespace MonoMultiJack.Widgets
 			IConnectable realOutlet = e.Inlet;
 			e.Inlet = e.Outlet;
 			e.Outlet = realOutlet;
-			TestAndConnect (e);
+			ConnectFromDragAndDrop (e);
 		}
 
 		void OnOutTreeConnect (object sender, ConnectEventArgs e)
 		{
-			TestAndConnect (e);
+			ConnectFromDragAndDrop (e);
 		}
 
 		protected virtual void DisconnectButton_Click (object sender, EventArgs e)
 		{
 			if (Disconnect != null) {
-				Disconnect (this, new ConnectEventArgs {
-					Outlet = _outTreeView.GetSelected (),
-					Inlet = _inTreeView.GetSelected ()
-				});
+				int notSelected = 0;
+				IConnectable outlet = _outTreeView.GetSelected ();
+				if (outlet == null) {
+					outlet = _outTreeView.GetAll ();
+					notSelected += 1;
+				}
+				IConnectable inlet = _inTreeView.GetSelected ();
+				if (inlet == null) {
+					inlet = _inTreeView.GetAll ();
+					notSelected += 1;
+				}
+				if (notSelected < 2) {
+					Disconnect (this, new ConnectEventArgs {
+						Outlet = outlet,
+						Inlet = inlet
+					});
+				}
 			}
 		}
 

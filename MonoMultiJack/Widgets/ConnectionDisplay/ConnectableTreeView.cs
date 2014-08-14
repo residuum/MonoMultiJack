@@ -297,7 +297,25 @@ namespace MonoMultiJack.Widgets
 			public IConnectable GetSelected ()
 			{
 				TreePosition position = _treeView.SelectedRow;
+				if (position == null) {
+					return null;
+				}
 				return GetConnectable (position);
+			}
+
+			public IConnectable GetAll ()
+			{
+				TreeNavigator navigator = _treeStore.GetFirstNode ();
+				Client firstClient = (Client)navigator.GetValue (_dataField);
+				Client dummy = new Client ("", firstClient.FlowDirection, firstClient.ConnectionType);
+				do {
+					navigator.MoveToChild ();
+					do {
+						dummy.AddPort((Port) navigator.GetValue(_dataField));
+					} while (navigator.MoveNext());
+					navigator.MoveToParent();
+				} while(navigator.MoveNext ());
+				return dummy;
 			}
 
 			public double GetYPositionOfConnectable (IConnectable connectable)
