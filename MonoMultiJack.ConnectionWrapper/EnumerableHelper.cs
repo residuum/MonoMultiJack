@@ -55,5 +55,16 @@ namespace MonoMultiJack.ConnectionWrapper
 				yield return new KeyValuePair<Port, Port> (outPorts [i], inPorts [i]);
 			}
 		}
+
+		public static IEnumerable<KeyValuePair<Port, Port>> PairAll (IConnectable outlet, IConnectable inlet)
+		{		
+			List<Port> outPorts = outlet.Ports.ToList ();
+			List<Port> inPorts = inlet.Ports.ToList ();
+			foreach (Port outPort in outPorts) {
+				foreach (Port inPort in inPorts) {
+					yield return new KeyValuePair<Port, Port> (outPort, inPort);
+				}
+			}
+		}
 	}
 }

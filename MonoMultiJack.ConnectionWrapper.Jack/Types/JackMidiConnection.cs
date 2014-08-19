@@ -27,41 +27,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
 	public class JackMidiConnection : Connection
 	{
-		Port _outPort;
-		Port _inPort;
-		
-	#region IConnection implementation
-		public override Port OutPort {
-			get {
-				if (_inPort != null) {
-					return _outPort;
-				} 
-				return null;
-			}
-			set {
-				if (value.ConnectionType == ConnectionType && value.FlowDirection == FlowDirection.Out) {
-					_outPort = value;					
-				}
-			}
-		}
-
-		public override Port InPort {
-			get {
-				if (_outPort != null) {
-					return _inPort;
-				}
-				return null;
-			}
-			set {
-				if (value.ConnectionType == ConnectionType && value.FlowDirection == FlowDirection.In) {
-					_inPort = value;
-				}
-			}
-		}
-		
 		public override ConnectionType ConnectionType {
 			get { return ConnectionType.JackMidi; }
 		}
-	#endregion
 	}
 }

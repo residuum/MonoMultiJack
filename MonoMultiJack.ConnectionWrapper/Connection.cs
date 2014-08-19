@@ -27,9 +27,36 @@ namespace MonoMultiJack.ConnectionWrapper
 {
 	public abstract class Connection : IConnection
 	{
-		public abstract Port OutPort{ get; set; }
+		Port _outPort;
+		Port _inPort;
 
-		public abstract Port InPort{ get; set; }
+		public Port OutPort {
+			get {
+				if (_inPort != null) {
+					return _outPort;
+				} 
+				return null;
+			}
+			set {
+				if (value.ConnectionType == ConnectionType && value.FlowDirection == FlowDirection.Out) {
+					_outPort = value;					
+				}
+			}
+		}
+
+		public Port InPort {
+			get {
+				if (_outPort != null) {
+					return _inPort;
+				}
+				return null;
+			}
+			set {
+				if (value.ConnectionType == ConnectionType && value.FlowDirection == FlowDirection.In) {
+					_inPort = value;
+				}
+			}
+		}
 
 		public abstract ConnectionType ConnectionType{ get; }
 
@@ -53,8 +80,8 @@ namespace MonoMultiJack.ConnectionWrapper
 
 		public override int GetHashCode ()
 		{
-			return OutPort.GetHashCode () 
-				^ InPort.GetHashCode ()
+			return (OutPort.GetHashCode () << 4)
+				^ (InPort.GetHashCode () << 2)
 				^ ((int)ConnectionType).GetHashCode ();
 		}
 

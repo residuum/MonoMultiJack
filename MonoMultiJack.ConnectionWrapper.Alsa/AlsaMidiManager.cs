@@ -83,10 +83,8 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 
 		public void Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			foreach (Port outPort in outlet.Ports) {
-				foreach (Port inPort in inlet.Ports) {
-					DisconnectPort (outPort, inPort);
-				}
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairAll(outlet, inlet)) {
+				DisconnectPort (portPair.Key, portPair.Value);
 			}
 		}
 

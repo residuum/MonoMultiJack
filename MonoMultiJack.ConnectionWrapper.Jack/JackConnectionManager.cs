@@ -64,9 +64,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasExited;
 
-		public virtual ConnectionType ConnectionType {
-			get { return ConnectionType.Undefined;}
-		}
+		public abstract ConnectionType ConnectionType { get; }
 
 		public bool IsActive {
 			get { return Wrapper.IsActive; }
@@ -103,10 +101,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 
 		public void Disconnect (IConnectable outlet, IConnectable inlet)
 		{
-			foreach (Port outPort in outlet.Ports) {
-				foreach (Port inPort in inlet.Ports) {
-					Wrapper.Disconnect (outPort, inPort);
-				}
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairAll(outlet, inlet)) {
+				Wrapper.Disconnect (portPair.Key, portPair.Value);
 			}
 		}
 
@@ -116,11 +112,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 
-		public virtual string Name {
-			get {
-				return "Jack";
-			}
-		}
+		public abstract string Name { get; }
 		#endregion
 		bool ConnectToServer ()
 		{
