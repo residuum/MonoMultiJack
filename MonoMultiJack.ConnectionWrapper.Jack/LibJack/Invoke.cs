@@ -79,6 +79,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 
 		[DllImport(Definitions.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int jack_set_port_connect_callback (IntPtr jack_client_t, Definitions.JackPortConnectCallback connect_callback, IntPtr args);
+        
+        [DllImport(Definitions.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int jack_set_xrun_callback (IntPtr jack_client_t, Definitions.JackXRunCallback function, IntPtr args);
+
+        [DllImport(Definitions.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
+        public static extern float jack_get_xrun_delayed_usecs (IntPtr jack_client_t);
 
 		[DllImport(Definitions.JACK_LIB_NAME, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void jack_on_shutdown (IntPtr jack_client_t, Definitions.JackShutdownCallback function, IntPtr args);

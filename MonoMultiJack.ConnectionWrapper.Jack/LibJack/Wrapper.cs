@@ -45,8 +45,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		static readonly Definitions.JackPortConnectCallback _onPortConnect = OnPortConnect;
 		static readonly Definitions.JackPortRegistrationCallback _onPortRegistration = OnPortRegistration;
 		static readonly Definitions.JackShutdownCallback _onJackShutdown = OnJackShutdown;
+	    static readonly Definitions.JackXRunCallback _onJackXrun = OnJackRun;
 
-		static void OnPortRegistration (uint port, int register, IntPtr args)
+	    static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
 			ConnectionType connectionType = ConnectionType.Undefined;
@@ -136,13 +137,22 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 			}
 		}
 
+        static void OnJackRun (IntPtr args)
+        {
+            float xrunDelay = Invoke.jack_get_xrun_delayed_usecs (_jackClient);
+            if (xrunDelay > 0) {
+                Console.WriteLine ("Xrun occurred: {0:0.###} ms", xrunDelay);
+            }
+        }
+
 		internal static event ConnectionEventHandler PortOrConnectionHasChanged;
 		internal static event ConnectionEventHandler JackHasShutdown;
 
 		internal static bool ConnectToServer ()
 		{
 			if (_jackClient == IntPtr.Zero) {
-				_jackClient = Invoke.jack_client_open (ClientName, 1, IntPtr.Zero);
+                _jackClient = Invoke.jack_client_open (ClientName, 1, IntPtr.Zero);
+                Invoke.jack_set_xrun_callback (_jackClient, _onJackXrun, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate ();
