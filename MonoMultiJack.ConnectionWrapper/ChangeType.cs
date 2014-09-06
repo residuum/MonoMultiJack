@@ -30,6 +30,8 @@ namespace MonoMultiJack.ConnectionWrapper
 		Undefined,
 		New,
 		Deleted,
-		Content
+		Content,
+		BackendExited,
+		Information
 	}
 }

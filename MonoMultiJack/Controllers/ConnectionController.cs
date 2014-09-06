@@ -47,7 +47,7 @@ namespace MonoMultiJack.Controllers
 			_connectionManager = connectionManager;
 			_connectionWidget = new ConnectionDisplay (connectionManager.Name);
 
-			_connectionManager.BackendHasExited += ConnectionManager_BackendHasExited;
+			_connectionManager.BackendHasChanged += ConnectionManager_BackendHasChanged;
 			_connectionManager.ConnectionHasChanged += ConnectionManager_ConnectionHasChanged;
 			IEnumerable<IConnectable> clients = _connectionManager.Clients;
 			if (clients != null) {
@@ -70,9 +70,16 @@ namespace MonoMultiJack.Controllers
 			_connectionManager.Disconnect (args.Outlet, args.Inlet);
 		}
 
-		void ConnectionManager_BackendHasExited (object sender, ConnectionEventArgs args)
+		void ConnectionManager_BackendHasChanged (object sender, ConnectionEventArgs args)
 		{
-			_connectionWidget.Clear ();
+			switch (args.ChangeType) {
+			case ChangeType.BackendExited:
+				_connectionWidget.Clear ();
+				break;
+			default:
+				Console.WriteLine (args.Message);
+				break;
+			}
 		}
 
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)

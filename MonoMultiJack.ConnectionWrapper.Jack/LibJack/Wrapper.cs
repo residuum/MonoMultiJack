@@ -45,9 +45,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		static readonly Definitions.JackPortConnectCallback _onPortConnect = OnPortConnect;
 		static readonly Definitions.JackPortRegistrationCallback _onPortRegistration = OnPortRegistration;
 		static readonly Definitions.JackShutdownCallback _onJackShutdown = OnJackShutdown;
-	    static readonly Definitions.JackXRunCallback _onJackXrun = OnJackRun;
+		static readonly Definitions.JackXRunCallback _onJackXrun = OnJackRun;
 
-	    static void OnPortRegistration (uint port, int register, IntPtr args)
+		static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
 			ConnectionType connectionType = ConnectionType.Undefined;
@@ -132,27 +132,35 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		{
 			_jackClient = IntPtr.Zero;
 			_portMapper.Clear ();
-			if (JackHasShutdown != null) {
-				JackHasShutdown (null, new ConnectionEventArgs ());
+			if (BackendHasChanged != null) {
+				BackendHasChanged (null, new ConnectionEventArgs {
+					Message = string.Format ("Backend has exited"),
+					ChangeType = ChangeType.BackendExited
+				});
 			}
 		}
 
-        static void OnJackRun (IntPtr args)
-        {
-            float xrunDelay = Invoke.jack_get_xrun_delayed_usecs (_jackClient);
-            if (xrunDelay > 0) {
-                Console.WriteLine ("Xrun occurred: {0:0.###} ms", xrunDelay);
-            }
-        }
+		static void OnJackRun (IntPtr args)
+		{
+			float xrunDelay = Invoke.jack_get_xrun_delayed_usecs (_jackClient);
+			if (xrunDelay > 0) {
+				if (BackendHasChanged != null) {
+					BackendHasChanged (null, new ConnectionEventArgs {
+						Message = string.Format ("Xrun occurred: {0:0.###} ms", xrunDelay),
+						ChangeType = ChangeType.Information
+					});
+				}
+			}
+		}
 
 		internal static event ConnectionEventHandler PortOrConnectionHasChanged;
-		internal static event ConnectionEventHandler JackHasShutdown;
+		internal static event ConnectionEventHandler BackendHasChanged;
 
 		internal static bool ConnectToServer ()
 		{
 			if (_jackClient == IntPtr.Zero) {
-                _jackClient = Invoke.jack_client_open (ClientName, 1, IntPtr.Zero);
-                Invoke.jack_set_xrun_callback (_jackClient, _onJackXrun, IntPtr.Zero);
+				_jackClient = Invoke.jack_client_open (ClientName, 1, IntPtr.Zero);
+				Invoke.jack_set_xrun_callback (_jackClient, _onJackXrun, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate ();

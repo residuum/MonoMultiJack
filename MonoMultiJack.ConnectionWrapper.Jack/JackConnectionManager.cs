@@ -37,7 +37,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		protected JackConnectionManager ()
 		{
 			Wrapper.PortOrConnectionHasChanged += OnLibJackWrapperHasChanged;
-			Wrapper.JackHasShutdown += OnJackShutdown;
+			Wrapper.BackendHasChanged += OnJackChanged;
 		}
 
 		~JackConnectionManager ()
@@ -55,14 +55,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		{
 			if (isDisposing) {
 				Wrapper.PortOrConnectionHasChanged -= OnLibJackWrapperHasChanged;
-				Wrapper.JackHasShutdown -= OnJackShutdown;
+				Wrapper.BackendHasChanged -= OnJackChanged;
 			}
 
 			Wrapper.Close ();
 		}
 		#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
-		public event ConnectionEventHandler BackendHasExited;
+		public event ConnectionEventHandler BackendHasChanged;
 
 		public abstract ConnectionType ConnectionType { get; }
 
@@ -141,12 +141,14 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 			}
 		}
 
-		void OnJackShutdown (object sender, ConnectionEventArgs args)
+		void OnJackChanged (object sender, ConnectionEventArgs args)
 		{
-			if (BackendHasExited != null) {
-				BackendHasExited (this, args);
+			if (BackendHasChanged != null) {
+				BackendHasChanged (this, args);
 			}
-			Application.TimeoutInvoke (2000, ConnectToServer);
+			if (args.ChangeType == ChangeType.BackendExited) {
+				Application.TimeoutInvoke (2000, ConnectToServer);
+			}
 		}
 	}
 }

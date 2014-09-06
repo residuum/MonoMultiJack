@@ -45,7 +45,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
         public delegate void JackShutdownCallback (IntPtr args);
-        
+
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 	    public delegate void JackXRunCallback (IntPtr args);
 	}

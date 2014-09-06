@@ -24,16 +24,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+
 namespace MonoMultiJack.ConnectionWrapper.Jack.Types
 {
 	internal class JackPort : Port
 	{			
 		public IntPtr JackPortPointer { get; private set; }
-			
+
 		public string JackPortName { get; private set; }
 
 		public string ClientName { get; private set; }
-		
+
 		public JackPort (string jackPortName, IntPtr jackPortPtr, FlowDirection portType, ConnectionType connectionType, uint portId)
 		{				
 			JackPortName = jackPortName;

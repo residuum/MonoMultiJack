@@ -61,7 +61,7 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 		}
 		#region IConnectionManager implementation
 		public event ConnectionEventHandler ConnectionHasChanged;
-		public event ConnectionEventHandler BackendHasExited;
+		public event ConnectionEventHandler BackendHasChanged;
 
 		public void Connect (IConnectable outlet, IConnectable inlet)
 		{

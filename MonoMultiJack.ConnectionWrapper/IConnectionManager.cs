@@ -29,12 +29,11 @@ using System.Collections.Generic;
 namespace MonoMultiJack.ConnectionWrapper
 {
 	public delegate void ConnectionEventHandler (object sender,ConnectionEventArgs e);
-		
 	public interface IConnectionManager : IDisposable
 	{		
 		event ConnectionEventHandler ConnectionHasChanged;
-		event ConnectionEventHandler BackendHasExited;
-		
+		event ConnectionEventHandler BackendHasChanged;
+
 		ConnectionType ConnectionType { get; }
 
 		bool IsActive { get; }
@@ -48,6 +47,5 @@ namespace MonoMultiJack.ConnectionWrapper
 		void Disconnect (IConnectable outlet, IConnectable inlet);
 
 		string Name { get; }
-		
 	}
 }
