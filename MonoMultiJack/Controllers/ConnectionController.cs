@@ -76,10 +76,8 @@ namespace MonoMultiJack.Controllers
 			case ChangeType.BackendExited:
 				_connectionWidget.Clear ();
 				break;
-			default:
-				Console.WriteLine (args.Message);
-				break;
 			}
+			_connectionWidget.AddMessage (args.Message);
 		}
 
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)

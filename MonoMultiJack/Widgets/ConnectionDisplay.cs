@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
@@ -43,6 +44,7 @@ namespace MonoMultiJack.Widgets
 		Button _disconnectButton;
 		ConnectionArea _connectionArea;
 		DateTime _lastLineUpdate = DateTime.Now;
+		RichTextView _messageDisplay;
 
 		public new void Dispose ()
 		{
@@ -63,13 +65,12 @@ namespace MonoMultiJack.Widgets
 				ExpandHorizontal = true
 			};
 
-			HBox hbox1 = new HBox ();
+			HBox buttonBox = new HBox ();
 			_connectButton = new Button (Icons.Connect, "Connect");
-			hbox1.PackStart (_connectButton);
+			buttonBox.PackStart (_connectButton);
 			_disconnectButton = new Button (Icons.Disconnect, "Disconnect");
-			hbox1.PackStart (_disconnectButton);
-			vbox.PackStart (hbox1); 
-            
+			buttonBox.PackStart (_disconnectButton);
+			vbox.PackStart (buttonBox);            
             
 			_inTreeView = new ConnectableTreeView ();
 			_outTreeView = new ConnectableTreeView ();
@@ -80,15 +81,19 @@ namespace MonoMultiJack.Widgets
 				ExpandVertical = true,
 				ExpandHorizontal = true
 			};
-			HBox hbox2 = new HBox {
+			HBox connectionBox = new HBox {
 				ExpandVertical = true,
 				ExpandHorizontal = true
 			};
-			hbox2.PackStart (_outTreeView, false, false);
-			hbox2.PackStart (_connectionArea, true, true);
-			hbox2.PackStart (_inTreeView, false, false);
+			connectionBox.PackStart (_outTreeView, false, false);
+			connectionBox.PackStart (_connectionArea, true, true);
+			connectionBox.PackStart (_inTreeView, false, false);
+			vbox.PackStart (connectionBox, true, true);
 
-			vbox.PackEnd (hbox2, true, true);
+			_messageDisplay = new RichTextView ();
+			_messageDisplay.Hide ();
+			vbox.PackEnd (_messageDisplay);
+
 			Content = vbox;
 			ExpandHorizontal = true;
 			ExpandVertical = true;
@@ -130,6 +135,16 @@ namespace MonoMultiJack.Widgets
 			} else if (connectable.FlowDirection == FlowDirection.Out) {
 				_outTreeView.UpdateConnectable (connectable);
 			}
+		}
+
+		public void AddMessage (string message)
+		{
+			_messageDisplay.LoadText (message, Xwt.Formats.TextFormat.Plain);
+			_messageDisplay.Show ();
+			Application.TimeoutInvoke (2000, () => {
+				_messageDisplay.Hide ();
+				return false;
+			});
 		}
 
 		/// <summary>

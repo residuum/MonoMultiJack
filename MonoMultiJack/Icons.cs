@@ -1,4 +1,4 @@
-﻿// 
+// 
 // Icons.cs
 //  
 // Author:

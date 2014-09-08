@@ -43,6 +43,8 @@ namespace MonoMultiJack.Widgets
 
 		void RemoveConnection (IConnection connection);
 
+		void AddMessage (string message);
+
 		event ConnectEventHandler Connect;
 		event ConnectEventHandler Disconnect;
 
