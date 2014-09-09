@@ -139,8 +139,10 @@ namespace MonoMultiJack.Widgets
 
 		public void AddMessage (string message)
 		{
-			_messageDisplay.LoadText (message, Xwt.Formats.TextFormat.Plain);
-			_messageDisplay.Show ();
+			Application.Invoke (() => {
+				_messageDisplay.LoadText (message, Xwt.Formats.TextFormat.Plain);
+				_messageDisplay.Show ();
+			});
 			Application.TimeoutInvoke (2000, () => {
 				_messageDisplay.Hide ();
 				return false;
