@@ -45,6 +45,7 @@ namespace MonoMultiJack.Widgets
 		ConnectionArea _connectionArea;
 		DateTime _lastLineUpdate = DateTime.Now;
 		RichTextView _messageDisplay;
+		readonly MessageCollection _messages = new MessageCollection ();
 
 		public new void Dispose ()
 		{
@@ -97,7 +98,6 @@ namespace MonoMultiJack.Widgets
 			Content = vbox;
 			ExpandHorizontal = true;
 			ExpandVertical = true;
-
 		}
 
 		void BindEvents ()
@@ -139,13 +139,19 @@ namespace MonoMultiJack.Widgets
 
 		public void AddMessage (string message)
 		{
-			Application.Invoke (() => {
-				_messageDisplay.LoadText (message, Xwt.Formats.TextFormat.Plain);
-				_messageDisplay.Show ();
+			Application.Invoke(() => {
+				_messages.AddMessage (message);
+				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Plain);
+				_messageDisplay.Show();
 			});
-			Application.TimeoutInvoke (2000, () => {
-				_messageDisplay.Hide ();
-				return false;
+			Application.TimeoutInvoke(100, () => {
+				string output = _messages.GetMessages ();
+				if (string.IsNullOrEmpty (output)) {
+					_messageDisplay.Hide ();
+					return false;
+				}
+				_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Plain);
+				return true;
 			});
 		}
 

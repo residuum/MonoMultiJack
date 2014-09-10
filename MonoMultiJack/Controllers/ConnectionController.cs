@@ -111,6 +111,7 @@ namespace MonoMultiJack.Controllers
 					}
 				}
 			}
+			_connectionWidget.AddMessage (args.Message);
 		}
 
 		~ConnectionController ()

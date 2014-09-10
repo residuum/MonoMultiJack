@@ -43,6 +43,7 @@
     <Compile Include="Widgets\ConnectionDisplay.cs" />
     <Compile Include="Forms\IMainWindow.cs" />
     <Compile Include="Forms\IWindow.cs" />
+    <Compile Include="Widgets\ConnectionDisplay\MessageCollection.cs" />
     <Compile Include="Widgets\IWidget.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Widgets\AppStartWidget.cs" />
@@ -89,9 +90,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Icons\cancel.png" />
     <EmbeddedResource Include="Icons\connect.png" />
