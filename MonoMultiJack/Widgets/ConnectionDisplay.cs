@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
@@ -73,7 +72,7 @@ namespace MonoMultiJack.Widgets
 			_disconnectButton = new Button (Icons.Disconnect, "Disconnect");
 			buttonBox.PackStart (_disconnectButton);
 			vbox.PackStart (buttonBox);            
-            
+			
 			_inTreeView = new ConnectableTreeView ();
 			_outTreeView = new ConnectableTreeView ();
 
@@ -93,10 +92,11 @@ namespace MonoMultiJack.Widgets
 			vbox.PackStart (connectionBox, true, true);
 
 			_messageDisplay = new RichTextView ();
-			_messageContainer = new ScrollView (_messageDisplay);
-			_messageContainer.HorizontalScrollPolicy = ScrollPolicy.Never;
-			_messageContainer.VerticalScrollPolicy = ScrollPolicy.Automatic;
-			_messageContainer.HeightRequest = 40;
+			_messageContainer = new ScrollView (_messageDisplay) {
+				HorizontalScrollPolicy = ScrollPolicy.Never,
+				VerticalScrollPolicy = ScrollPolicy.Automatic,
+				HeightRequest = 40
+			};
 			_messageContainer.Hide ();
 			vbox.PackEnd (_messageContainer);
 
@@ -146,8 +146,9 @@ namespace MonoMultiJack.Widgets
 		{
 			Application.Invoke (() => {
 				_messages.AddMessage (message);
-				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Plain);
+				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Markdown);
 				_messageContainer.Show ();
+				_messageContainer.VerticalScrollControl.Value = 0;
 			});
 			Application.TimeoutInvoke (100, () => {
 				string output = _messages.GetMessages ();
@@ -155,7 +156,7 @@ namespace MonoMultiJack.Widgets
 					_messageContainer.Hide ();
 					return false;
 				}
-				_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Plain);
+				_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Markdown);
 				return true;
 			});
 		}
@@ -261,7 +262,7 @@ namespace MonoMultiJack.Widgets
 		public void AddConnection (IConnection connection)
 		{			
 			_connections.Add (connection);
-            
+			
 			Application.Invoke (UpdateConnectionLines);
 		}
 

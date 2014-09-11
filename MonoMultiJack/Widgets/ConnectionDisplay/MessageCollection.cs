@@ -1,4 +1,30 @@
-﻿using System;
+﻿// 
+// MessageCollection.cs
+//  
+// Author:
+//       Thomas Mayer <thomas@residuum.org>
+// 
+// Copyright (c) 2009-2014 Thomas Mayer
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+using System;
 using System.Collections.Generic;
 
 namespace MonoMultiJack.Widgets
@@ -7,13 +33,16 @@ namespace MonoMultiJack.Widgets
 	{
 		private class MessageCollection
 		{
-			readonly Dictionary<DateTime, string> _messages = new Dictionary<DateTime, string> ();
+			readonly List<Message> _messages = new List<Message>();
 			static readonly TimeSpan MessageTimeout = TimeSpan.FromSeconds (10);
 
 			public void AddMessage (string message)
 			{
 				lock (_messages) {
-					_messages.Add (DateTime.Now.Add (MessageTimeout), message);
+					_messages.Add (new Message {
+						Created = DateTime.Now, 
+						Content = message
+					});
 				}
 			}
 
@@ -21,22 +50,22 @@ namespace MonoMultiJack.Widgets
 			{
 				List<string> outputMessages = new List<string> ();
 				lock (_messages) {
-					List<DateTime> oldTimes = new List<DateTime> ();
-					foreach (var message in _messages) {
-						if (message.Key > DateTime.Now) {
-							string data;
-							if (_messages.TryGetValue (message.Key, out data)) {
-								outputMessages.Add (data);
-							}
+					for (int i = _messages.Count - 1; i >= 0; i--) {
+						Message message = _messages[i];
+						if (message.Created.Add (MessageTimeout) < DateTime.Now) {
+							_messages.RemoveAt (i);
 						} else {
-							oldTimes.Add (message.Key);
+							outputMessages.Add (string.Format ("**{0}**: {1}", message.Created.ToLongTimeString (), message.Content));
 						}
 					}
-					foreach (var dateTime in oldTimes) {
-						_messages.Remove (dateTime);
-					}
 				}
-				return string.Join (Environment.NewLine, outputMessages);
+				return " " + string.Join ("  \n", outputMessages);
+			}
+
+			private class Message
+			{
+				public DateTime Created { get; set; }
+				public string Content { get; set; }
 			}
 		}
 	}
