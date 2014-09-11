@@ -8,16 +8,16 @@ namespace MonoMultiJack.Widgets
 		private class MessageCollection
 		{
 			readonly Dictionary<DateTime, string> _messages = new Dictionary<DateTime, string> ();
-			static readonly TimeSpan MessageTimeout = TimeSpan.FromSeconds (3);
+			static readonly TimeSpan MessageTimeout = TimeSpan.FromSeconds (10);
 
-			public void AddMessage(string message)
+			public void AddMessage (string message)
 			{
 				lock (_messages) {
-					_messages.Add(DateTime.Now.Add (MessageTimeout), message);
+					_messages.Add (DateTime.Now.Add (MessageTimeout), message);
 				}
 			}
 
-			public string GetMessages()
+			public string GetMessages ()
 			{
 				List<string> outputMessages = new List<string> ();
 				lock (_messages) {

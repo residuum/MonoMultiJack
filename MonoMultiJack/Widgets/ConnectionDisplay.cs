@@ -45,6 +45,7 @@ namespace MonoMultiJack.Widgets
 		ConnectionArea _connectionArea;
 		DateTime _lastLineUpdate = DateTime.Now;
 		RichTextView _messageDisplay;
+		ScrollView _messageContainer;
 		readonly MessageCollection _messages = new MessageCollection ();
 
 		public new void Dispose ()
@@ -92,8 +93,12 @@ namespace MonoMultiJack.Widgets
 			vbox.PackStart (connectionBox, true, true);
 
 			_messageDisplay = new RichTextView ();
-			_messageDisplay.Hide ();
-			vbox.PackEnd (_messageDisplay);
+			_messageContainer = new ScrollView (_messageDisplay);
+			_messageContainer.HorizontalScrollPolicy = ScrollPolicy.Never;
+			_messageContainer.VerticalScrollPolicy = ScrollPolicy.Automatic;
+			_messageContainer.HeightRequest = 40;
+			_messageContainer.Hide ();
+			vbox.PackEnd (_messageContainer);
 
 			Content = vbox;
 			ExpandHorizontal = true;
@@ -139,15 +144,15 @@ namespace MonoMultiJack.Widgets
 
 		public void AddMessage (string message)
 		{
-			Application.Invoke(() => {
+			Application.Invoke (() => {
 				_messages.AddMessage (message);
 				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Plain);
-				_messageDisplay.Show();
+				_messageContainer.Show ();
 			});
-			Application.TimeoutInvoke(100, () => {
+			Application.TimeoutInvoke (100, () => {
 				string output = _messages.GetMessages ();
 				if (string.IsNullOrEmpty (output)) {
-					_messageDisplay.Hide ();
+					_messageContainer.Hide ();
 					return false;
 				}
 				_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Plain);
@@ -155,15 +160,6 @@ namespace MonoMultiJack.Widgets
 			});
 		}
 
-		/// <summary>
-		/// Handles the click event on the ConnectButton
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="e">
-		/// A <see cref="System.EventArgs"/>
-		/// </param>
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
 			if (Connect != null) {
@@ -223,9 +219,6 @@ namespace MonoMultiJack.Widgets
 			}
 		}
 
-		/// <summary>
-		/// Updates the connection lines
-		/// </summary>
 		void UpdateConnectionLines ()
 		{
 			DateTime now = DateTime.Now;
