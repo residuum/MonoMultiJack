@@ -80,7 +80,7 @@ namespace MonoMultiJack
 
 		public static Image Delete {
             //TODO: Create icon
-			get { return LoadImage ("MonoMultiJack.Icons.cancel.png").WithSize (IconSize.Small); }
+			get { return StockIcons.Remove.WithSize (IconSize.Small); }
 		}
 
 		public static Image Add {
