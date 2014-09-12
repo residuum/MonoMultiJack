@@ -160,7 +160,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		{
 			if (_jackClient == IntPtr.Zero) {
 				_jackClient = Invoke.jack_client_open (ClientName, 1, IntPtr.Zero);
-				Invoke.jack_set_xrun_callback (_jackClient, _onJackXrun, IntPtr.Zero);
 			}
 			if (_jackClient != IntPtr.Zero) {
 				return Activate ();
@@ -183,6 +182,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 		/// </summary>
 		static bool Activate ()
 		{
+			Invoke.jack_set_xrun_callback (_jackClient, _onJackXrun, IntPtr.Zero);
 			Invoke.jack_set_port_connect_callback (_jackClient, _onPortConnect, IntPtr.Zero);
 			Invoke.jack_set_port_registration_callback (_jackClient, _onPortRegistration, IntPtr.Zero);
 			Invoke.jack_on_shutdown (_jackClient, _onJackShutdown, IntPtr.Zero);
