@@ -79,13 +79,11 @@ namespace MonoMultiJack
 		}
 
 		public static Image Delete {
-            //TODO: Create icon
-			get { return StockIcons.Remove.WithSize (IconSize.Small); }
+			get { return LoadImage ("MonoMultiJack.Icons.remove.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Add {
-            //TODO: Create icon
-			get { return StockIcons.Add.WithSize (IconSize.Small); }
+			get { return LoadImage ("MonoMultiJack.Icons.add.png").WithSize (IconSize.Small); }
 		}
 	}
 }
