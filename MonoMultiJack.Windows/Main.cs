@@ -26,6 +26,8 @@
 using System;
 using MonoMultiJack.Controllers;
 using Xwt;
+using MonoMultiJack.OS;
+using MonoMultiJack.OS.Windows;
 
 namespace MonoMultiJack
 {
@@ -44,6 +46,7 @@ namespace MonoMultiJack
 		public static void Main (string[] args)
 		{
 			Application.Initialize ();
+			IStartupParameters parameters = new StartupParameters (args);
 			MainController mainController = new MainController ();
 			mainController.Start ();
 			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;

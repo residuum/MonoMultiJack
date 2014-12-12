@@ -38,6 +38,8 @@ namespace MonoMultiJack.OS
 		string LogFile { get;}
 
 		string ConfigDirectory { get; }
+
+		string GetHelpText ();
 	}
 }
 

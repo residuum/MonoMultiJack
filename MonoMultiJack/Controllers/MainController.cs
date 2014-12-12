@@ -302,20 +302,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 		{
 			IHelpWindow helpWindow = new HelpWindow ();
 			helpWindow.ProgramName = "MonoMultiJack";
-			helpWindow.HelpContent = @"**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.
-
-**Startup Parameters**
-
-*-h*, *--help*: Show this help on startup.
-
-*-j*, *--jack*: Launches Jackd on startup.
-
-*-f*, *--fullscreen*: Starts in fullscreen mode.
-
-*-c <dir>*, *--config <dir>*: Loads configuration from the specified directory.
-
-*-l <file>*, *--log <file>*: Logs messages and debugging information to the specified file.
-";
+			helpWindow.HelpContent = _parameters.GetHelpText ();
 			helpWindow.Icon = Icons.Program;
 			helpWindow.Show ();
 			helpWindow.Closing += Window_Closing;

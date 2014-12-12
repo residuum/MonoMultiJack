@@ -24,40 +24,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.IO;
 
-namespace MonoMultiJack.OS.Linux
+namespace MonoMultiJack.OS.Windows
 {
-	public class StartupParameters: IStartupParameters
+	public class StartupParameters : IStartupParameters
 	{
 		public StartupParameters (string[] startupArgs)
 		{
 			for (int i = 0; i < startupArgs.Length; i++) {
 				string argument = startupArgs [i];
 				switch (argument) {
-				case "-h":
-				case "--help":
+				case "/h":
+				case "/?":
 					ShowHelp = true;
 					break;
-				case "-j":
-				case "--jack":
+				case "/j":
 					StartWithJackd = true;
 					break;
-				case "-f":
-				case "--fullscreen":
+				case "/f":
 					StartWithFullScreen = true;
 					break;
-				case "-l":
-				case "--log":
-					LogFile = GetStringParameter (startupArgs, ref i);
-					break;
-				case "-c":
-				case "--config":
-					ConfigDirectory = GetStringParameter (startupArgs, ref i);
-					if (ConfigDirectory.StartsWith ("~")) {
-						ConfigDirectory = Environment.GetFolderPath (Environment.SpecialFolder.UserProfile) + ConfigDirectory.Substring (1);
+				default:
+					if (argument.StartsWith ("/l=")) {
+						LogFile = GetStringParameter (argument);
+					} else if (argument.StartsWith ("/c=")) {
+						ConfigDirectory = GetStringParameter (argument);
 					}
-					break;
 				}
 			}
 			if (string.IsNullOrEmpty (ConfigDirectory)) { 
@@ -68,12 +60,9 @@ namespace MonoMultiJack.OS.Linux
 				"MonoMultiJack");
 		}
 
-		static string GetStringParameter (string[] startupArgs, ref int currentPosition)
+		static string GetStringParameter (string argument)
 		{
-			if (currentPosition < startupArgs.Length - 1) {
-				return startupArgs [++currentPosition];
-			}
-			return null;
+			return argument.Substring (3);
 		}
 		#region IStartupParameters implementation
 		public bool ShowHelp { get; private set; }
@@ -95,15 +84,15 @@ namespace MonoMultiJack.OS.Linux
 
 **Startup Parameters**
 
-*-h*, *--help*: Show this help on startup.
+*/h*, */*?*/*: Show this help on startup.
 
-*-j*, *--jack*: Launches Jackd on startup.
+*/j*: Launches Jackd on startup.
 
-*-f*, *--fullscreen*: Starts in fullscreen mode.
+*/f*: Starts in fullscreen mode.
 
-*-c <dir>*, *--config <dir>*: Loads configuration from the specified directory.
+*/c=<dir>*: Loads configuration from the specified directory.
 
-*-l <file>*, *--log <file>*: Logs messages and debugging information to the specified file.
+*/l=<file>*: Logs messages and debugging information to the specified file.
 ";
 	}
 }
