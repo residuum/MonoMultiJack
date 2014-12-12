@@ -86,7 +86,7 @@ namespace MonoMultiJack.OS.Windows
 
 **Startup Parameters**
 
-*/h*, */*?*/*: Show this help on startup.
+*/h*, */?*: Show this help on startup.
 
 */j*: Launches Jackd on startup.
 
