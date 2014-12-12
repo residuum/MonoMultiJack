@@ -47,7 +47,7 @@ namespace MonoMultiJack
 		{
 			Application.Initialize ();
 			IStartupParameters parameters = new StartupParameters (args);
-			MainController mainController = new MainController ();
+			MainController mainController = new MainController (parameters);
 			mainController.Start ();
 			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
 			Application.Run ();

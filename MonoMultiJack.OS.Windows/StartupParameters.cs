@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.IO;
 
 namespace MonoMultiJack.OS.Windows
 {
@@ -50,9 +51,10 @@ namespace MonoMultiJack.OS.Windows
 					} else if (argument.StartsWith ("/c=")) {
 						ConfigDirectory = GetStringParameter (argument);
 					}
+					break;
 				}
 			}
-			if (string.IsNullOrEmpty (ConfigDirectory)) { 
+			if (!string.IsNullOrEmpty (ConfigDirectory)) { 
 				return;
 			}				
 			ConfigDirectory = Path.Combine (

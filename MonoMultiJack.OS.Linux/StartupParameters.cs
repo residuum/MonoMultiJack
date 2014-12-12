@@ -60,7 +60,7 @@ namespace MonoMultiJack.OS.Linux
 					break;
 				}
 			}
-			if (string.IsNullOrEmpty (ConfigDirectory)) { 
+			if (!string.IsNullOrEmpty (ConfigDirectory)) { 
 				return;
 			}				
 			ConfigDirectory = Path.Combine (

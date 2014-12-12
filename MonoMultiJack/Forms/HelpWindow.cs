@@ -31,13 +31,13 @@ namespace MonoMultiJack.Forms
 {
 	public class HelpWindow : Window, IHelpWindow
 	{
-		RichTextView _messageDisplay;
+		readonly RichTextView _messageDisplay;
 
 		public HelpWindow ()
 		{
 			VBox mainContent = new VBox ();			
-			_messageDisplay = new RichTextView ();
-			mainContent.PackStart (_messageDisplay);
+			_messageDisplay = new RichTextView { WidthRequest = 400, HeightRequest = 300 };
+		    mainContent.PackStart (_messageDisplay);
 			HBox buttonRow = new HBox ();
 			Button ok = new Button { Label = "Close", Image = Icons.Ok };
 			ok.Clicked += (sender, args) => Close ();
