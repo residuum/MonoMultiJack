@@ -72,6 +72,8 @@ namespace MonoMultiJack.Forms
 		/// </value>
 		bool AppsAreRunning { set; }
 
+		bool Fullscreen { get; set;}
+
 		/// <summary>
 		/// Controller should start Jackd.
 		/// </summary>

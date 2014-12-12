@@ -36,7 +36,7 @@ namespace MonoMultiJack.Configuration
 	/// </summary>
 	public static class PersistantConfiguration
 	{
-		static readonly string ApplicationFolder = Path.Combine (
+		static string ApplicationFolder = Path.Combine (
 			Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
 			"MonoMultiJack"
 		);
@@ -57,6 +57,11 @@ namespace MonoMultiJack.Configuration
 			get {
 				return Path.Combine (ApplicationFolder, "window.xml");
 			}
+		}
+
+		public static void SetConfigDirectory (string configDirectory)
+		{
+			ApplicationFolder = configDirectory;
 		}
 
 		/// <summary>

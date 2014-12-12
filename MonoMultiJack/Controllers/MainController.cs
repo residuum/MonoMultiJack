@@ -44,8 +44,9 @@ namespace MonoMultiJack.Controllers
 		readonly IMainWindow _mainWindow;
 		List<AppStartController> _startWidgetControllers = new List<AppStartController> ();
 		readonly List<ConnectionController> _connectionControllers;
+		readonly IStartupParameters _parameters;
 
-		public MainController ()
+		public MainController (IStartupParameters parameters)
 		{
 			_mainWindow = new MainWindow ();
 			_mainWindow.Icon = Icons.Program;
@@ -57,6 +58,8 @@ namespace MonoMultiJack.Controllers
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
+			_parameters = parameters;
+			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
 		}
 
 		~MainController ()
@@ -112,7 +115,14 @@ namespace MonoMultiJack.Controllers
 
 			_mainWindow.Show ();
 
+			if (_parameters.StartWithFullScreen) {
+				_mainWindow.Fullscreen = true;
+			}
+
 			InitJackd (_jackdConfiguration);
+			if (_parameters.StartWithJackd) {
+				_jackd.Start ();
+			}
 		}
 
 		bool TryLoadJackdConfiguration (out JackdConfiguration jackdConfig)
@@ -292,8 +302,10 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 
 		void MainWindow_QuitApplication (object sender, EventArgs e)
 		{
-			WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
-			PersistantConfiguration.SaveWindowSize (newWindowConfig);
+			if (!_mainWindow.Fullscreen){
+				WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
+				PersistantConfiguration.SaveWindowSize (newWindowConfig);
+			}
 			StopJackd ();
 			if (AllWidgetsAreClosed != null) {
 				AllWidgetsAreClosed (this, new EventArgs ());

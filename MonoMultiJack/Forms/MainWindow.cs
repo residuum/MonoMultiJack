@@ -181,6 +181,14 @@ namespace MonoMultiJack.Forms
 				Application.Invoke (UpdateStopButtons);
 			}
 		}
+		bool IMainWindow.Fullscreen {
+			get {
+				return FullScreen;
+			}
+			set {
+				FullScreen = true;
+			}
+		}
 
 		public event EventHandler StartJackd;
 		public event EventHandler StopJackd;
