@@ -69,6 +69,8 @@
     <Compile Include="Widgets\ConnectionDisplay\ConnectionArea.cs" />
     <Compile Include="Forms\InfoWindow.cs" />
     <Compile Include="Icons.cs" />
+    <Compile Include="Forms\IHelpWindow.cs" />
+    <Compile Include="Forms\HelpWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

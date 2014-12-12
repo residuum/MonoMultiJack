@@ -123,6 +123,9 @@ namespace MonoMultiJack.Controllers
 			if (_parameters.StartWithJackd) {
 				_jackd.Start ();
 			}
+			if (_parameters.ShowHelp) {
+				ShowHelp ();
+			}
 		}
 
 		bool TryLoadJackdConfiguration (out JackdConfiguration jackdConfig)
@@ -295,14 +298,37 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			aboutWindow.Closing += Window_Closing;
 		}
 
+		void ShowHelp ()
+		{
+			IHelpWindow helpWindow = new HelpWindow ();
+			helpWindow.ProgramName = "MonoMultiJack";
+			helpWindow.HelpContent = @"**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.
+
+**Startup Parameters**
+
+*-h*, *--help*: Show this help on startup.
+
+*-j*, *--jack*: Launches Jackd on startup.
+
+*-f*, *--fullscreen*: Starts in fullscreen mode.
+
+*-c <dir>*, *--config <dir>*: Loads configuration from the specified directory.
+
+*-l <file>*, *--log <file>*: Logs messages and debugging information to the specified file.
+";
+			helpWindow.Icon = Icons.Program;
+			helpWindow.Show ();
+			helpWindow.Closing += Window_Closing;
+		}
+
 		void MainWindow_ShowHelp (object sender, EventArgs e)
 		{
-			throw new NotImplementedException ();
+			ShowHelp ();
 		}
 
 		void MainWindow_QuitApplication (object sender, EventArgs e)
 		{
-			if (!_mainWindow.Fullscreen){
+			if (!_mainWindow.Fullscreen) {
 				WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
 				PersistantConfiguration.SaveWindowSize (newWindowConfig);
 			}

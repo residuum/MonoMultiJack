@@ -84,6 +84,7 @@ namespace MonoMultiJack.Forms
 
 		IEnumerable<MenuItem> BuildHelpMenu ()
 		{
+			yield return CreateMenuItem ("_Help", CallShowHelp, StockIcons.Question);
 			yield return CreateMenuItem ("_About", CallShowAbout, StockIcons.Information);
 		}
 
@@ -181,6 +182,7 @@ namespace MonoMultiJack.Forms
 				Application.Invoke (UpdateStopButtons);
 			}
 		}
+
 		bool IMainWindow.Fullscreen {
 			get {
 				return FullScreen;
@@ -360,7 +362,13 @@ namespace MonoMultiJack.Forms
 			if (ShowAbout != null) {
 				ShowAbout (this, new EventArgs ());
 			}
+		}
 
+		protected virtual void CallShowHelp (object sender, EventArgs e)
+		{
+			if (ShowHelp != null) {
+				ShowHelp (this, new EventArgs ());
+			}
 		}
 
 		/// <summary>
