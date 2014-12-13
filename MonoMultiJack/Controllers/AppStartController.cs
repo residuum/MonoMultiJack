@@ -37,7 +37,7 @@ namespace MonoMultiJack.Controllers
 
 		public AppStartController (AppConfiguration appConfiguration)
 		{
-			_application = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[] { appConfiguration });
+			_application = DependencyResolver.GetImplementation<IProgram> ("IProgram", new object[] { appConfiguration });
 			_appWidget = new AppStartWidget ();
 			_appWidget.SetApp (appConfiguration.Name, appConfiguration.Command);
 			_appWidget.StartApplication += AppWidget_StartApplication;

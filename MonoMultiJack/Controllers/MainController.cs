@@ -46,19 +46,19 @@ namespace MonoMultiJack.Controllers
 		readonly List<ConnectionController> _connectionControllers;
 		readonly IStartupParameters _parameters;
 
-		public MainController (IStartupParameters parameters)
+		public MainController (string[] args)
 		{
 			_mainWindow = new MainWindow ();
 			_mainWindow.Icon = Icons.Program;
 			_mainWindow.Hide ();
 			_connectionControllers = new List<ConnectionController> ();
 			IConnectionManagerFactory factory =
-				DependencyResolver.GetImplementation<IConnectionManagerFactory> ("IConnectionManagerFactoryImplementation");
+				DependencyResolver.GetImplementation<IConnectionManagerFactory> ("IConnectionManagerFactory");
 			foreach (IConnectionManager connectionManager in factory.GetConnectionManagers()) { 
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
-			_parameters = parameters;
+			_parameters = DependencyResolver.GetImplementation < IStartupParameters> ("IStartupParameters", new object[] { args });
 			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
 		}
 
@@ -205,7 +205,7 @@ namespace MonoMultiJack.Controllers
 				_jackd.HasExited -= Jackd_HasExited;
 				_jackd.Dispose ();
 			}
-			_jackd = DependencyResolver.GetImplementation<IProgram> ("IProgramImplementation", new object[] { jackdConfig });
+			_jackd = DependencyResolver.GetImplementation<IProgram> ("IProgram", new object[] { jackdConfig });
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}
