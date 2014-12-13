@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{48716E31-9E50-469A-8EA4-3F722C79D7B8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AssemblyName>MonoMultiJack.Windows</AssemblyName>
+    <AssemblyName>MonoMultiJack</AssemblyName>
     <RootNamespace>MonoMultiJack</RootNamespace>
     <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>
@@ -70,10 +70,6 @@
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>MonoMultiJack.OS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonoMultiJack\MonoMultiJack.csproj">
-      <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
-      <Name>MonoMultiJack</Name>
-    </ProjectReference>
     <ProjectReference Include="..\xwt\Xwt.WPF\Xwt.WPF.csproj">
       <Project>{C93D746E-1586-4D4F-B411-BF5A966E6A08}</Project>
       <Name>Xwt.WPF</Name>
@@ -81,6 +77,10 @@
     <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj">
+      <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
+      <Name>MonoMultiJack.Mvc</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

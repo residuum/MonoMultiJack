@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D43459F9-41B8-467F-965E-8783BD10FC04}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>MonoMultiJack</AssemblyName>
+    <AssemblyName>MonoMultiJack.Mvc</AssemblyName>
     <RootNamespace>MonoMultiJack</RootNamespace>
     <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>

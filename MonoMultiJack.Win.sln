@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack", "MonoMultiJack\MonoMultiJack.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper", "MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper.Jack", "MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj", "{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.WPF", "xwt\Xwt.WPF\Xwt.WPF.csproj", "{C93D746E-1586-4D4F-B411-BF5A966E6A08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows", "MonoMultiJack.Windows\MonoMultiJack.Windows.csproj", "{48716E31-9E50-469A-8EA4-3F722C79D7B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Mvc", "MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

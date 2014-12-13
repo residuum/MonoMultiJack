@@ -68,9 +68,9 @@
       <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
       <Name>Xwt.Gtk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonoMultiJack\MonoMultiJack.csproj">
+    <ProjectReference Include="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj">
       <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
-      <Name>MonoMultiJack</Name>
+      <Name>MonoMultiJack.Mvc</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
