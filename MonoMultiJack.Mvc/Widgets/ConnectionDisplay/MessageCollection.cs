@@ -59,7 +59,7 @@ namespace MonoMultiJack.Widgets
 						}
 					}
 				}
-				return " " + string.Join ("  \n", outputMessages);
+				return string.Join ("  \n", outputMessages);
 			}
 
 			private class Message
