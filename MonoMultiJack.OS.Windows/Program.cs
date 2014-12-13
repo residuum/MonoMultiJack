@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using MonoMultiJack.Configuration;
 
-namespace MonoMultiJack.OS.Windows
+namespace MonoMultiJack.OS
 {
 	public class Program : IProgram
 	{

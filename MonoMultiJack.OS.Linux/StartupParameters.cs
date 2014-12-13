@@ -26,7 +26,7 @@
 using System;
 using System.IO;
 
-namespace MonoMultiJack.OS.Linux
+namespace MonoMultiJack.OS
 {
 	public class StartupParameters: IStartupParameters
 	{

@@ -8,7 +8,7 @@
     <ProjectGuid>{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonoMultiJack.OS.Windows</RootNamespace>
+    <RootNamespace>MonoMultiJack.OS</RootNamespace>
     <AssemblyName>MonoMultiJack.OS.Windows</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ReleaseVersion>0.4.0</ReleaseVersion>

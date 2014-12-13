@@ -28,7 +28,7 @@ using MonoMultiJack.ConnectionWrapper.Alsa;
 using MonoMultiJack.ConnectionWrapper.Jack;
 using System.Collections.Generic;
 
-namespace MonoMultiJack.OS.Linux
+namespace MonoMultiJack.OS
 {
 	/// <summary>
 	/// Connection manager factory.

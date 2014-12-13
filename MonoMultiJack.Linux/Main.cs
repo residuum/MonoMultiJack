@@ -26,8 +26,6 @@
 using System;
 using MonoMultiJack.Controllers;
 using Xwt;
-using MonoMultiJack.OS.Linux;
-using MonoMultiJack.OS;
 
 namespace MonoMultiJack
 {

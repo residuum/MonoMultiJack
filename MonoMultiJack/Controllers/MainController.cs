@@ -58,7 +58,7 @@ namespace MonoMultiJack.Controllers
 				_connectionControllers.Add (new ConnectionController (connectionManager));
 			}
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
-			_parameters = DependencyResolver.GetImplementation < IStartupParameters> ("IStartupParameters", new object[] { args });
+			_parameters = DependencyResolver.GetImplementation<IStartupParameters> ("IStartupParameters", new object[] { args });
 			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
 		}
 

@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.ConnectionWrapper.Jack;
 
-namespace MonoMultiJack.OS.Windows
+namespace MonoMultiJack.OS
 {
 	public class ConnectionManagerFactory : IConnectionManagerFactory
 	{

@@ -30,7 +30,7 @@ using System.Text;
 using Xwt;
 using MonoMultiJack.Configuration;
 
-namespace MonoMultiJack.OS.Linux
+namespace MonoMultiJack.OS
 {
 	/// <summary>
 	/// Class for management of external programs.
