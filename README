@@ -4,6 +4,32 @@ MonoMultJack (MMJ) aims to be an application for musicians, who regularly
 have to deal with multiple programs to start and create and maintain
 audio connections via jackd.
 
+
+Building:
+---------
+You will need an installed version of jackd.
+
+Windows:
+--------
+Execute Windows-build.bat
+Fix any errors by installing missing libraries
+You will get a self-contained zip file with all dll and MonoMultiJack.exe
+Run MonoMultiJack.exe.
+
+
+Linux:
+------
+Run 
+$ bash Linux-build.sh
+
+To build it with Gtk3 libraries:
+$ bash Linux-build.sh Gtk3
+
+You will get a tar.bz2 file with all dll and MonoMultiJack.exe
+Running the extracted program:
+$ exec mono "./MonoMultiJack.exe"
+
+
 MMJ is written in C# using the Mono framework and is licensed with an
 MIT (or as the FSF calls it X11) style license, meaning more or less:
 Do as thou wilst (with the software) shall be whole of the law.
