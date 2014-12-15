@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MonoMultiJack.OS</RootNamespace>
     <AssemblyName>MonoMultiJack.OS.Linux</AssemblyName>
-    <ReleaseVersion>0.4.0</ReleaseVersion>
+    <ReleaseVersion>0.5.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,10 +63,6 @@
     <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj">
-      <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
-      <Name>Xwt.Gtk</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj">
       <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
