@@ -46,6 +46,7 @@ namespace MonoMultiJack.Widgets
 		RichTextView _messageDisplay;
 		ScrollView _messageContainer;
 		readonly MessageCollection _messages = new MessageCollection ();
+		IDisposable _timeout;
 
 		public new void Dispose ()
 		{
@@ -150,7 +151,10 @@ namespace MonoMultiJack.Widgets
 				_messageContainer.Show ();
 				_messageContainer.VerticalScrollControl.Value = 0;
 			});
-			Application.TimeoutInvoke (100, () => {
+			if (_timeout != null) {
+				_timeout.Dispose ();
+			}
+			_timeout = Application.TimeoutInvoke (100, () => {
 				string output = _messages.GetMessages ();
 				if (string.IsNullOrEmpty (output)) {
 					_messageContainer.Hide ();
