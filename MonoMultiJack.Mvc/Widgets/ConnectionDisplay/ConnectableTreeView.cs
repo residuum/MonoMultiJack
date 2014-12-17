@@ -39,14 +39,14 @@ namespace MonoMultiJack.Widgets
 			TreeStore _treeStore;
 			IDataField<IConnectable> _dataField;
 			IDataField<string> _textField;
+			bool _eventsBound;
 
 			public ConnectableTreeView ()
 			{
 				BuildWidget ();
-				BindEvents ();
 			}
 
-			private void BindEvents ()
+			void BindEvents ()
 			{
 				_treeView.RowExpanded += UpdateParent;
 				_treeView.RowCollapsed += UpdateParent;
@@ -56,9 +56,10 @@ namespace MonoMultiJack.Widgets
 				_treeView.DragStarted += HandleDragStarted;
 				_treeView.SetDragSource (TransferDataType.Text);
 				_treeView.SetDragDropTarget (TransferDataType.Text);
+				_eventsBound = true;
 			}
 
-			private void BuildWidget ()
+			void BuildWidget ()
 			{
 				_dataField = new DataField<IConnectable> ();
 				_textField = new DataField<string> ();
@@ -138,6 +139,9 @@ namespace MonoMultiJack.Widgets
 
 			public void AddConnectable (IConnectable connectable)
 			{
+				if (!_eventsBound) {
+					BindEvents ();
+				}
 				Application.Invoke (() => {
 					Client client = connectable as Client;
 					Port port = connectable as Port;
