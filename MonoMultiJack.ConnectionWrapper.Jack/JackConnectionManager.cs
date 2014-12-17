@@ -117,12 +117,13 @@ namespace MonoMultiJack.ConnectionWrapper.Jack
 		bool ConnectToServer ()
 		{
 			if (Wrapper.ConnectToServer ()) {
-				ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
-				eventArgs.Connectables = Clients;
-				eventArgs.Connections = Connections;
-				eventArgs.ChangeType = ChangeType.New;
-				eventArgs.Message = "Connection to Jackd established";
-				eventArgs.MessageType = MessageType.Info;
+				ConnectionEventArgs eventArgs = new ConnectionEventArgs {
+					Connectables = Clients,
+					Connections = Connections,
+					ChangeType = ChangeType.New,
+					Message = "Connection to Jackd established",
+					MessageType = MessageType.Info
+				};
 				if (ConnectionHasChanged != null) {
 					ConnectionHasChanged (this, eventArgs);
 				}

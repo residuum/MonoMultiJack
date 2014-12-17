@@ -154,13 +154,44 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa
 			if (!connectables.Any () && !connections.Any ()) {
 				return;
 			}
+			string message = BuildMessage (connectables, connections, changeType);
 			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs {
 				ChangeType = changeType,
 				Connectables = connectables.ToList(),
-				Connections = connections.ToList()
+				Connections = connections.ToList(),
+				Message = message,
+				MessageType = MessageType.Change
 			};
 			if (ConnectionHasChanged != null) {
 				ConnectionHasChanged (this, oldEventArgs);
+			}
+		}
+
+		string BuildMessage (IEnumerable<IConnectable> connectables, IEnumerable<IConnection> connections, ChangeType changeType)
+		{
+			switch (changeType) {
+			case ChangeType.New:
+				if (connectables.Any ()) {
+					if (connections.Any ()) {
+						return "New ports and connections registered.";
+					} else {
+						return "New ports registered.";
+					}
+				} else {
+					return "New connections established.";
+				}
+			case ChangeType.Deleted:
+				if (connectables.Any ()) {
+					if (connections.Any ()) {
+						return "Ports and connections unregistered.";
+					} else {
+						return "Ports unregistered.";
+					}
+				} else {
+					return "Connections deleted.";
+				}
+			default:
+				throw new ArgumentOutOfRangeException ("changeType");
 			}
 		}
 

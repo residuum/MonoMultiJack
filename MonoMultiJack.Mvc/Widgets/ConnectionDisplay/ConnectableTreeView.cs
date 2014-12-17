@@ -315,9 +315,9 @@ namespace MonoMultiJack.Widgets
 				do {
 					navigator.MoveToChild ();
 					do {
-						dummy.AddPort((Port) navigator.GetValue(_dataField));
+						dummy.AddPort ((Port)navigator.GetValue (_dataField));
 					} while (navigator.MoveNext());
-					navigator.MoveToParent();
+					navigator.MoveToParent ();
 				} while(navigator.MoveNext ());
 				return dummy;
 			}

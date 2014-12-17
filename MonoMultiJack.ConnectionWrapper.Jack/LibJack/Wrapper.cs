@@ -49,7 +49,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 
 		static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
-			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
+			ConnectionEventArgs eventArgs = new ConnectionEventArgs {
+				MessageType = MessageType.Change
+			};
 			ConnectionType connectionType = ConnectionType.Undefined;
 			if (register > 0) {
 				JackPort newPort = GetJackPortData (port);
@@ -91,7 +93,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 				newConn = new JackMidiConnection ();
 				break;
 			}
-			Debug.Assert (newConn != null, "new connection is null");
+			Debug.Assert (newConn != null, "New connection is null");
 			newConn.OutPort = outPort;
 			newConn.InPort = inPort;
 			return newConn;
@@ -99,7 +101,9 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 
 		static void OnPortConnect (uint a, uint b, int connect, IntPtr args)
 		{
-			ConnectionEventArgs eventArgs = new ConnectionEventArgs ();
+			ConnectionEventArgs eventArgs = new ConnectionEventArgs {
+				MessageType = MessageType.Change
+			};
 			JackPort outPort = _portMapper.First (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, a));
 			JackPort inPort = _portMapper.First (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, b));
 			if (connect != 0) {
@@ -110,7 +114,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 				eventArgs.Connections = connections;					
 				eventArgs.ConnectionType = newConn.ConnectionType;
 				eventArgs.ChangeType = ChangeType.New;
-				eventArgs.Message = "New Connection established";
+				eventArgs.Message = "New connection established";
 			} else {
 				IEnumerable<IConnection> oldConn = _connections.Where (conn => conn.InPort == inPort
 					&& conn.OutPort == outPort
@@ -122,7 +126,6 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 			.ToList ();
 				eventArgs.Message = "Connection deleted";
 			}
-			eventArgs.MessageType = MessageType.Info;
 			if (PortOrConnectionHasChanged != null) {
 				PortOrConnectionHasChanged (null, eventArgs);
 			}
@@ -135,7 +138,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 			if (BackendHasChanged != null) {
 				BackendHasChanged (null, new ConnectionEventArgs {
 					Message = string.Format ("Backend has exited"),
-					ChangeType = ChangeType.BackendExited
+					MessageType = MessageType.Change
 				});
 			}
 		}
@@ -147,7 +150,8 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 				if (BackendHasChanged != null) {
 					BackendHasChanged (null, new ConnectionEventArgs {
 						Message = string.Format ("Xrun occurred: {0:0.###} ms", xrunDelay),
-						ChangeType = ChangeType.Information
+						ChangeType = ChangeType.Information,
+						MessageType = MessageType.Info
 					});
 				}
 			}
@@ -291,10 +295,12 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 				if (current.Name != existing.Name) { 					
 					existing.Client.ReplacePort (existing, current);
 					if (PortOrConnectionHasChanged != null) {
-						ConnectionEventArgs args = new ConnectionEventArgs ();
-						args.ConnectionType = current.ConnectionType;
-						args.Connectables = new List<IConnectable> { current };
-						args.ChangeType = ChangeType.Content;
+						ConnectionEventArgs args = new ConnectionEventArgs {
+							ConnectionType = current.ConnectionType,
+							Connectables = new List<IConnectable> { current },
+							ChangeType = ChangeType.Content,
+							MessageType = MessageType.Change
+						};
 						PortOrConnectionHasChanged (null, args);
 					}
 					yield return current;

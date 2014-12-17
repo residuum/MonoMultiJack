@@ -37,7 +37,7 @@ namespace MonoMultiJack.ConnectionWrapper
 		/// The message for the event.
 		/// </summary>
 		public string Message { get; set; }
-		
+
 		/// <summary>
 		/// Gets or sets the connectables.
 		/// </summary>
@@ -45,26 +45,25 @@ namespace MonoMultiJack.ConnectionWrapper
 		/// The connectables.
 		/// </value>
 		public IEnumerable<IConnectable> Connectables { get; set; }
-		
+
 		/// <summary>
 		/// The affected ConnectionType
 		/// </summary>
 		public ConnectionType ConnectionType { get; set; }
-		
+
 		/// <summary>
 		/// The Type of message
 		/// </summary>
 		public MessageType MessageType { get; set; }
-		
+
 		/// <summary>
 		/// The connections affected by the event.
 		/// </summary>
 		public IEnumerable<IConnection> Connections { get; set; }
-		
+
 		/// <summary>
 		/// The type of change of the ports or connections.
 		/// </summary>
 		public ChangeType ChangeType { get; set; }
-		
 	}
 }

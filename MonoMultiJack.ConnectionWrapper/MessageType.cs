@@ -29,6 +29,7 @@ namespace MonoMultiJack.ConnectionWrapper
 	{
 		Undefined,
 		Debug,
+		Change,
 		Info,
 		Warning,
 		Error
