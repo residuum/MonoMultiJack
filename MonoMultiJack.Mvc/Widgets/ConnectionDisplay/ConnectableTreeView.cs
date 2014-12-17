@@ -48,9 +48,9 @@ namespace MonoMultiJack.Widgets
 
 			private void BindEvents ()
 			{
-				_treeView.MouseScrolled += UpdateParent;
 				_treeView.RowExpanded += UpdateParent;
 				_treeView.RowCollapsed += UpdateParent;
+				_treeView.VerticalScrollControl.ValueChanged += UpdateParent;
 				_treeView.DragDrop += HandleDropped;
 				_treeView.DragOver += HandleDragOver;
 				_treeView.DragStarted += HandleDragStarted;
