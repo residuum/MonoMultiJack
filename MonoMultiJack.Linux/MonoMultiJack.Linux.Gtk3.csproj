@@ -21,6 +21,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.Gtk3.config app.config" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -29,6 +34,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.Gtk3.config app.config" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -39,7 +49,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="MonoMultiJack.Linux.Gtk3.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.Configuration\MonoMultiJack.Configuration.csproj">
@@ -58,21 +71,21 @@
       <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
       <Name>MonoMultiJack.ConnectionWrapper.Jack</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj">
-      <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
-      <Name>MonoMultiJack.OS.Linux</Name>
+    <ProjectReference Include="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj">
+      <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
+      <Name>MonoMultiJack.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonoMultiJack.OS\MonoMultiJack.OS.csproj">
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>MonoMultiJack.OS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj">
+      <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
+      <Name>MonoMultiJack.OS.Linux</Name>
+    </ProjectReference>
     <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj">
-      <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
-      <Name>MonoMultiJack.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\xwt\Xwt.Gtk\Xwt.Gtk3.csproj">
       <Project>{3B25FD1F-CEBA-4450-8893-DC330FDB56A7}</Project>
