@@ -49,14 +49,11 @@ namespace MonoMultiJack.OS
 					break;
 				case "-l":
 				case "--log":
-					LogFile = GetStringParameter (startupArgs, ref i);
+					LogFile = GetStringParameter (startupArgs, true, ref i);
 					break;
 				case "-c":
 				case "--config":
-					ConfigDirectory = GetStringParameter (startupArgs, ref i);
-					if (ConfigDirectory.StartsWith ("~")) {
-						ConfigDirectory = Environment.GetFolderPath (Environment.SpecialFolder.UserProfile) + ConfigDirectory.Substring (1);
-					}
+					ConfigDirectory = GetStringParameter (startupArgs, true, ref i);
 					break;
 				}
 			}
@@ -68,10 +65,14 @@ namespace MonoMultiJack.OS
 				"MonoMultiJack");
 		}
 
-		static string GetStringParameter (string[] startupArgs, ref int currentPosition)
+		static string GetStringParameter (string[] startupArgs, bool isPathParameter, ref int currentPosition)
 		{
 			if (currentPosition < startupArgs.Length - 1) {
-				return startupArgs [++currentPosition];
+				string configString = startupArgs [++currentPosition];
+				if (!isPathParameter || !configString.StartsWith("~")){
+					return configString;
+				}
+				return Environment.GetFolderPath (Environment.SpecialFolder.UserProfile) + configString.Substring (1);
 			}
 			return null;
 		}
