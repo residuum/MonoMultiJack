@@ -33,6 +33,7 @@ using System.Reflection;
 using System.IO;
 using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.ConnectionWrapper;
+using Xwt.Drawing;
 
 namespace MonoMultiJack.Controllers
 {
@@ -137,13 +138,13 @@ namespace MonoMultiJack.Controllers
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Jackd configuration File is corrupt.");
+				ShowInfoMessage ("Jackd configuration File is corrupt.", Icons.Warning);
 				jackdConfig = new JackdConfiguration ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Jackd is not configured.");
+				ShowInfoMessage ("Jackd is not configured.", Icons.Info);
 				jackdConfig = new JackdConfiguration ();
 			}
 			return false;
@@ -169,13 +170,13 @@ namespace MonoMultiJack.Controllers
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Application configuration File is corrupt.");
+				ShowInfoMessage ("Application configuration File is corrupt.", Icons.Warning);
 				appConfigs = new List<AppConfiguration> ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Applications are not configured.");
+				ShowInfoMessage ("Applications are not configured.", Icons.Info);
 				appConfigs = new List<AppConfiguration> ();
 			}
 			return false;
@@ -293,7 +294,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 	
 THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
-			aboutWindow.Icon = Icons.Program;
+			aboutWindow.Icon = Icons.Info;
 			aboutWindow.Show ();
 			aboutWindow.Closing += Window_Closing;
 		}
@@ -303,7 +304,7 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			IHelpWindow helpWindow = new HelpWindow ();
 			helpWindow.ProgramName = "MonoMultiJack";
 			helpWindow.HelpContent = _parameters.GetHelpText ();
-			helpWindow.Icon = Icons.Program;
+			helpWindow.Icon = Icons.Help;
 			helpWindow.Show ();
 			helpWindow.Closing += Window_Closing;
 		}
@@ -373,11 +374,12 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			UpdateRunningStatus ();
 		}
 
-		void ShowInfoMessage (string message)
+		void ShowInfoMessage (string message, Image icon)
 		{
 			IInfoWindow messageWindow = new InfoWindow ();
 			messageWindow.Message = message;
 			messageWindow.Closing += Window_Closing;
+			messageWindow.Icon = icon;
 			messageWindow.Show ();
 		}
 

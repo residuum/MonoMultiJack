@@ -85,5 +85,17 @@ namespace MonoMultiJack
 		public static Image Add {
 			get { return LoadImage ("MonoMultiJack.Icons.add.png").WithSize (IconSize.Small); }
 		}
+
+		public static Image Help {
+			get { return LoadImage ("MonoMultiJack.Icons.help.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Info {
+			get { return LoadImage ("MonoMultiJack.Icons.info.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Warning {
+			get { return LoadImage ("MonoMultiJack.Icons.warning.png").WithSize (IconSize.Small); }
+		}
 	}
 }

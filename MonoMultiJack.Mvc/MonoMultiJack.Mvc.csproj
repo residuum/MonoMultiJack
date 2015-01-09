@@ -103,5 +103,8 @@
     <EmbeddedResource Include="Icons\remove.png" />
     <EmbeddedResource Include="Icons\start.png" />
     <EmbeddedResource Include="Icons\stop.png" />
+    <EmbeddedResource Include="Icons\warning.png" />
+    <EmbeddedResource Include="Icons\info.png" />
+    <EmbeddedResource Include="Icons\help.png" />
   </ItemGroup>
 </Project>

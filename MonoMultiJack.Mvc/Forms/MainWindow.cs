@@ -84,8 +84,8 @@ namespace MonoMultiJack.Forms
 
 		IEnumerable<MenuItem> BuildHelpMenu ()
 		{
-			yield return CreateMenuItem ("_Help", CallShowHelp, StockIcons.Question);
-			yield return CreateMenuItem ("_About", CallShowAbout, StockIcons.Information);
+			yield return CreateMenuItem ("_Help", CallShowHelp, Icons.Help);
+			yield return CreateMenuItem ("_About", CallShowAbout, Icons.Info);
 		}
 
 		IEnumerable<MenuItem> BuildConfigMenu ()

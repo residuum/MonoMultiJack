@@ -64,7 +64,7 @@ namespace MonoMultiJack.Forms
 
 		Image IWindow.Icon {
 			set {
-				//this.Icon = value;
+				Icon = value;
 			}
 		}
 
