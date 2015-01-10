@@ -62,13 +62,16 @@ namespace MonoMultiJack.Forms
 			_website.Font = _website.Font.WithScaledSize (0.8);
 			mainContent.PackStart (_website);
 			HBox buttonRow = new HBox ();
-			Button authors = new Button { Label = "Authors", Image = StockIcons.Information };
+			Button authors = new Button { Label = "Authors", Image = Icons.Info };
 			authors.Clicked += (sender, args) => ShowAuthors ();
 			buttonRow.PackStart (authors);
-            Button license = new Button { Label = "License", Image = StockIcons.Information };
+			Button license = new Button {
+				Label = "License",
+				Image = Icons.Info
+			};
 			license.Clicked += (sender, args) => ShowLicense ();
 			buttonRow.PackStart (license);
-            Button ok = new Button { Label = "Close", Image = Icons.Ok };
+			Button ok = new Button { Label = "Close", Image = Icons.Ok };
 			ok.Clicked += (sender, args) => Close ();
 			buttonRow.PackEnd (ok);
 			mainContent.PackEnd (buttonRow);
@@ -82,12 +85,12 @@ namespace MonoMultiJack.Forms
 
 		void ShowLicense ()
 		{
-			MessageDialog.ShowMessage (_license);
+			Dialog.ShowInfoMessage (_license);
 		}
 
 		void ShowAuthors ()
 		{
-			MessageDialog.ShowMessage (_authors);
+			Dialog.ShowInfoMessage (_authors);
 		}
 
 		void HandleClose (object sender, EventArgs e)

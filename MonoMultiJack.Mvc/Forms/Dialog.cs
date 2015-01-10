@@ -1,10 +1,10 @@
 //
-// InfoWindow.cs
+// MessageDialog.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2015 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,57 +25,19 @@
 // THE SOFTWARE.
 using System;
 using Xwt;
-using Xwt.Drawing;
 
 namespace MonoMultiJack.Forms
 {
-	public class InfoWindow : Dialog,IInfoWindow
+	public static class Dialog
 	{
-		string _message;
-
-		public InfoWindow ()
+		public static void ShowErrorMessage (string message)
 		{
+			MessageDialog.ShowError (message);
 		}
 
-		void HandleClose (object sender, EventArgs e)
+		public static void ShowInfoMessage (string message)
 		{
-			if (Closing != null) {
-				Closing (this, new EventArgs ());
-			}
+			MessageDialog.ShowMessage (message);
 		}
-		#region IDisposable implementation
-		void IDisposable.Dispose ()
-		{
-		}
-		#endregion
-		#region IWidget implementation
-		void Widgets.IWidget.Show ()
-		{
-			MessageDialog.ShowMessage (_message);
-		}
-
-		void Widgets.IWidget.Hide ()
-		{
-
-		}
-		#endregion
-		#region IWindow implementation
-		public event EventHandler Closing;
-
-		Image IWindow.Icon {
-			set {
-				Icon = value;
-			}
-		}
-
-		bool IWindow.Sensitive {
-			set {
-				Sensitive = value;
-			}
-		}
-		#endregion
-		#region IInfoMessage implementation
-		string IInfoWindow.Message { set { _message = value; } }
-		#endregion
 	}
 }

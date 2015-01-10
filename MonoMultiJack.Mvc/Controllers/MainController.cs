@@ -33,7 +33,6 @@ using System.Reflection;
 using System.IO;
 using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.ConnectionWrapper;
-using Xwt.Drawing;
 
 namespace MonoMultiJack.Controllers
 {
@@ -138,13 +137,13 @@ namespace MonoMultiJack.Controllers
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Jackd configuration File is corrupt.", Icons.Warning);
+				ShowErrorMessage ("Jackd configuration file is corrupt.");
 				jackdConfig = new JackdConfiguration ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Jackd is not configured.", Icons.Info);
+				ShowInfoMessage ("Jackd is not configured.");
 				jackdConfig = new JackdConfiguration ();
 			}
 			return false;
@@ -170,13 +169,13 @@ namespace MonoMultiJack.Controllers
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Application configuration File is corrupt.", Icons.Warning);
+				ShowErrorMessage ("Application configuration file is corrupt.");
 				appConfigs = new List<AppConfiguration> ();
 			} catch (FileNotFoundException e) {
 				#if DEBUG
 				Console.WriteLine (e.Message);
 				#endif
-				ShowInfoMessage ("Applications are not configured.", Icons.Info);
+				ShowInfoMessage ("Applications are not configured.");
 				appConfigs = new List<AppConfiguration> ();
 			}
 			return false;
@@ -374,13 +373,13 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			UpdateRunningStatus ();
 		}
 
-		void ShowInfoMessage (string message, Image icon)
+		void ShowErrorMessage(string message){			
+			Dialog.ShowErrorMessage(message);
+		}
+
+		void ShowInfoMessage (string message)
 		{
-			IInfoWindow messageWindow = new InfoWindow ();
-			messageWindow.Message = message;
-			messageWindow.Closing += Window_Closing;
-			messageWindow.Icon = icon;
-			messageWindow.Show ();
+			Dialog.ShowInfoMessage(message);
 		}
 
 		public event EventHandler AllWidgetsAreClosed;
