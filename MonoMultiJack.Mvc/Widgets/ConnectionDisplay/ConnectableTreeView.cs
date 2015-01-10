@@ -324,23 +324,20 @@ namespace MonoMultiJack.Widgets
 
 			public double GetYPositionOfConnectable (IConnectable connectable)
 			{
-				double startPos = _treeView.VerticalScrollControl.Value * -1;
-				// TODO: Get real row height
-				double rowHeight = 22;
-				// Start in the middle of line
-				startPos -= rowHeight / 2;
-				TreeNavigator navigator = _treeStore.GetFirstNode ();
-				double clientHeight = 0;
-				do {
-					startPos += clientHeight;
-				} while (!IsInClient(navigator, connectable, rowHeight, out clientHeight));
-				startPos += clientHeight;
-				return startPos;
+				var navigator = FindNavigator (connectable);
+				TreePosition position =	navigator.CurrentPosition;
+				return _treeView.GetRowBounds (position, true).Center.Y;
 			}
 
-			bool IsInClient (TreeNavigator navigator, IConnectable connectable, double rowHeight, out double clientHeight)
+			TreeNavigator FindNavigator (IConnectable connectable)
 			{
-				clientHeight = rowHeight;
+				TreeNavigator navigator = _treeStore.GetFirstNode ();
+				while (!IsInClient (navigator, connectable));
+				return navigator;
+			}
+
+			bool IsInClient (TreeNavigator navigator, IConnectable connectable)
+			{
 				IConnectable value = navigator.GetValue (_dataField);
 				if (connectable.Equals (value)) {
 					return true;
@@ -350,7 +347,7 @@ namespace MonoMultiJack.Widgets
 					return false;
 				}
 				do {
-					if (IsPort (navigator, connectable, rowHeight, isClientExpanded, ref clientHeight)) {
+					if (IsPort (navigator, connectable)) {
 						return true;
 					}
 				} while (navigator.MoveNext());
@@ -358,12 +355,9 @@ namespace MonoMultiJack.Widgets
 				return !navigator.MoveNext ();
 			}
 
-			bool IsPort (TreeNavigator navigator, IConnectable connectable, double rowHeight, bool isClientExpanded, ref double clientHeight)
+			bool IsPort (TreeNavigator navigator, IConnectable connectable)
 			{
 				IConnectable value = navigator.GetValue (_dataField);
-				if (isClientExpanded) {
-					clientHeight += rowHeight;
-				}
 				return connectable.Equals (value);
 			}
 
