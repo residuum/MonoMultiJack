@@ -28,6 +28,7 @@ using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 using Xwt.Drawing;
 using MonoMultiJack.Controllers.EventArguments;
+using System.Diagnostics;
 
 namespace MonoMultiJack.Widgets
 {
@@ -325,40 +326,46 @@ namespace MonoMultiJack.Widgets
 			public double GetYPositionOfConnectable (IConnectable connectable)
 			{
 				var navigator = FindNavigator (connectable);
-				TreePosition position =	navigator.CurrentPosition;
+				Debug.Assert (navigator != null);
+				TreePosition position = navigator.CurrentPosition;
 				return _treeView.GetRowBounds (position, true).Center.Y;
 			}
 
 			TreeNavigator FindNavigator (IConnectable connectable)
 			{
-				TreeNavigator navigator = _treeStore.GetFirstNode ();
-				while (!IsInClient (navigator, connectable));
+				return FindNavigator<IConnectable> (_treeStore, connectable, _dataField);
+			}
+
+			static TreeNavigator FindNavigator<T> (TreeStore treeStore, T compare, IDataField<T> dataField)
+			{
+				if (compare == null) {
+					return null;
+				}
+				TreeNavigator navigator = treeStore.GetFirstNode ();
+				while (!IsNavigator<T>(navigator, compare, dataField)) {
+					if (!navigator.MoveNext ()) {
+						return null;
+					}
+				}
 				return navigator;
 			}
 
-			bool IsInClient (TreeNavigator navigator, IConnectable connectable)
+			static bool IsNavigator<T> (TreeNavigator navigator, T compare, IDataField<T> dataField)
 			{
-				IConnectable value = navigator.GetValue (_dataField);
-				if (connectable.Equals (value)) {
+				T value = navigator.GetValue (dataField);
+				if (compare.Equals (value)) {
 					return true;
 				}
-				bool isClientExpanded = _treeView.IsRowExpanded (navigator.CurrentPosition);
 				if (!navigator.MoveToChild ()) {
 					return false;
 				}
 				do {
-					if (IsPort (navigator, connectable)) {
+					if (IsNavigator<T> (navigator, compare, dataField)) {
 						return true;
 					}
-				} while (navigator.MoveNext());
+				} while(navigator.MoveNext());
 				navigator.MoveToParent ();
-				return !navigator.MoveNext ();
-			}
-
-			bool IsPort (TreeNavigator navigator, IConnectable connectable)
-			{
-				IConnectable value = navigator.GetValue (_dataField);
-				return connectable.Equals (value);
+				return false;
 			}
 
 			public void Clear ()
