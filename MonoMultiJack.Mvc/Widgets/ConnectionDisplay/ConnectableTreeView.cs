@@ -24,11 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 using Xwt.Drawing;
 using MonoMultiJack.Controllers.EventArguments;
-using System.Diagnostics;
 
 namespace MonoMultiJack.Widgets
 {
@@ -325,47 +325,9 @@ namespace MonoMultiJack.Widgets
 
 			public double GetYPositionOfConnectable (IConnectable connectable)
 			{
-				var navigator = FindNavigator (connectable);
-				Debug.Assert (navigator != null);
+				var navigator = _treeStore.FindNavigators<IConnectable> (connectable, _dataField).Single ();
 				TreePosition position = navigator.CurrentPosition;
 				return _treeView.GetRowBounds (position, true).Center.Y;
-			}
-
-			TreeNavigator FindNavigator (IConnectable connectable)
-			{
-				return FindNavigator<IConnectable> (_treeStore, connectable, _dataField);
-			}
-
-			static TreeNavigator FindNavigator<T> (TreeStore treeStore, T compare, IDataField<T> dataField)
-			{
-				if (compare == null) {
-					return null;
-				}
-				TreeNavigator navigator = treeStore.GetFirstNode ();
-				while (!IsNavigator<T>(navigator, compare, dataField)) {
-					if (!navigator.MoveNext ()) {
-						return null;
-					}
-				}
-				return navigator;
-			}
-
-			static bool IsNavigator<T> (TreeNavigator navigator, T compare, IDataField<T> dataField)
-			{
-				T value = navigator.GetValue (dataField);
-				if (compare.Equals (value)) {
-					return true;
-				}
-				if (!navigator.MoveToChild ()) {
-					return false;
-				}
-				do {
-					if (IsNavigator<T> (navigator, compare, dataField)) {
-						return true;
-					}
-				} while(navigator.MoveNext());
-				navigator.MoveToParent ();
-				return false;
 			}
 
 			public void Clear ()
