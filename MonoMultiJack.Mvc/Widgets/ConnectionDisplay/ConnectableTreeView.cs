@@ -194,6 +194,9 @@ namespace MonoMultiJack.Widgets
 				navigator.MoveToParent ();
 				if (!alreadyAdded) {
 					navigator.AddChild ().SetValue (_dataField, port).SetValue (_textField, port.Name);
+					navigator.MoveToParent ();
+					_treeView.ExpandRow (navigator.CurrentPosition, false);
+					return navigator;
 				}
 				navigator.MoveToParent ();
 				return navigator;
