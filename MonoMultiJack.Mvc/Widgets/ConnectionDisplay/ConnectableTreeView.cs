@@ -154,7 +154,7 @@ namespace MonoMultiJack.Widgets
 						}
 					}
 					if (port != null) {
-						TreeNavigator navigator = FindClientNavigator (port.Client);
+						TreeNavigator navigator = FindNavigator (port.Client);
 						if (navigator != null) {
 							AddPort (navigator, port);
 						}
@@ -218,15 +218,15 @@ namespace MonoMultiJack.Widgets
 
 			void RemoveClient (Client client)
 			{
-				TreeNavigator navigator = FindClientNavigator (client);
+				TreeNavigator navigator = FindNavigator (client);
 				navigator.RemoveChildren ();
 				navigator.Remove ();
 			}
 
 			void RemovePort (Port port)
 			{
-				TreeNavigator clientNavigator = FindClientNavigator (port.Client);
-				TreeNavigator navigator = FindClientNavigator (port.Client);
+				TreeNavigator clientNavigator = FindNavigator (port.Client);
+				TreeNavigator navigator = FindNavigator (port.Client);
 				if (!navigator.MoveToChild ()) {
 					return;
 				}
@@ -241,31 +241,9 @@ namespace MonoMultiJack.Widgets
 				}
 			}
 
-			TreeNavigator FindClientNavigator (Client client)
-			{
-				TreeNavigator navigator = _treeStore.GetFirstNode ();
-				do {
-					if (client.Equals (navigator.GetValue (_dataField))) {
-						return navigator;
-					}
-				} while (navigator.MoveNext());
-				return null;
-			}
-
-			TreeNavigator FindPortNavigator (Port port)
-			{
-				TreeNavigator navigator = FindClientNavigator (port.Client);
-				if (navigator == null) {
-					return null;
-				}
-				if (navigator.MoveToChild ()) {
-					do {
-						if (port.Equals (navigator.GetValue (_dataField))) {
-							return navigator;
-						}
-					} while (navigator.MoveNext());
-				}
-				return null;
+			TreeNavigator FindNavigator (IConnectable connectable)
+			{			   
+				return _treeStore.FindNavigators (connectable, _dataField).FirstOrDefault ();
 			}
 
 			public void UpdateConnectable (IConnectable connectable)
@@ -275,11 +253,11 @@ namespace MonoMultiJack.Widgets
 					Client client = connectable as Client;
 					Port port = connectable as Port;
 					if (client != null) {
-						TreeNavigator navigator = FindClientNavigator (client);
+						TreeNavigator navigator = FindNavigator (client);
 						UpdateTreeStoreValues (navigator, connectable);
 					}
 					if (port != null) {
-						TreeNavigator navigator = FindPortNavigator (port);
+						TreeNavigator navigator = FindNavigator (port);
 						UpdateTreeStoreValues (navigator, connectable);
 					}
 				});
@@ -325,7 +303,7 @@ namespace MonoMultiJack.Widgets
 
 			public double GetYPositionOfConnectable (IConnectable connectable)
 			{
-				var navigator = _treeStore.FindNavigators<IConnectable> (connectable, _dataField).Single ();
+				TreeNavigator navigator = FindNavigator (connectable);
 				TreePosition position = navigator.CurrentPosition;
 				return _treeView.GetRowBounds (position, true).Center.Y;
 			}
