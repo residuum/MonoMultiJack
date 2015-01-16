@@ -138,6 +138,7 @@ namespace MonoMultiJack.ConnectionWrapper.Jack.LibJack
 			if (BackendHasChanged != null) {
 				BackendHasChanged (null, new ConnectionEventArgs {
 					Message = string.Format ("Backend has exited"),
+					ChangeType = ChangeType.BackendExited,
 					MessageType = MessageType.Change
 				});
 			}

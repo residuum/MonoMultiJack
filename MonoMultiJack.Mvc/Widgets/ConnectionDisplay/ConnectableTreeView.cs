@@ -173,12 +173,14 @@ namespace MonoMultiJack.Widgets
 
 			void AddPort (Port port)
 			{
-				TreeNavigator clientNavigator = FindNavigator (port.Client);
-				TreeNavigator childNavigator = FindNavigator (port);
-				if (childNavigator != null) {
+				TreeNavigator navigator = FindNavigator (port);
+				if (navigator != null) {
 					return;
 				}
-				clientNavigator.AddChild ().SetValues (0, _dataField, port, _textField, port.Name);
+				navigator = FindNavigator (port.Client);
+				navigator.AddChild ().SetValues (0, _dataField, port, _textField, port.Name);
+				navigator.MoveToParent ();
+				_treeView.ExpandRow (navigator.CurrentPosition, false);
 			}
 
 			public void RemoveConnectable (IConnectable connectable)
