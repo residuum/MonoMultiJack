@@ -147,57 +147,38 @@ namespace MonoMultiJack.Widgets
 					Client client = connectable as Client;
 					Port port = connectable as Port;
 					if (client != null) {
-						TreeNavigator navigator = _treeStore.GetFirstNode ();
-						navigator = AddClient (navigator, client);
+						AddClient (client);
 						foreach (Port clientPort in client.Ports) {
-							navigator = AddPort (navigator, clientPort);
+							AddPort (clientPort);
 						}
 					}
 					if (port != null) {
 						TreeNavigator navigator = FindNavigator (port.Client);
 						if (navigator != null) {
-							AddPort (navigator, port);
+							AddPort (port);
 						}
 					}
 					NotifyParent ();
 				});
 			}
 
-			TreeNavigator AddClient (TreeNavigator navigator, Client client)
+			void AddClient (Client client)
 			{
-				bool alreadyAdded = false;
-				do {
-					if (navigator.CurrentPosition != null) {
-						if (client.Equals (navigator.GetValue (_dataField))) {
-							alreadyAdded = true;
-							break;
-						}
-					}
-				} while (navigator.CurrentPosition != null && navigator.MoveNext());
-				if (!alreadyAdded) {
-					navigator = _treeStore.AddNode ().SetValue (_dataField, client).SetValue (_textField, client.Name);
+				TreeNavigator navigator = FindNavigator (client);
+				if (navigator != null) {
+					return;
 				}
-				return navigator;
+				_treeStore.AddNode ().SetValues (0, _dataField, client, _textField, client.Name);
 			}
 
-			TreeNavigator AddPort (TreeNavigator navigator, Port port)
+			void AddPort (Port port)
 			{
-				navigator.MoveToChild ();
-				bool alreadyAdded = false;
-				do {
-					if (navigator.CurrentPosition != null) {
-						if (port.Equals (navigator.GetValue (_dataField))) {
-							alreadyAdded = true;
-							break;
-						}
-					}
-				} while (navigator.CurrentPosition != null && navigator.MoveNext());
-				navigator.MoveToParent ();
-				if (!alreadyAdded) {
-					navigator.AddChild ().SetValue (_dataField, port).SetValue (_textField, port.Name);
+				TreeNavigator clientNavigator = FindNavigator (port.Client);
+				TreeNavigator childNavigator = FindNavigator (port);
+				if (childNavigator != null) {
+					return;
 				}
-				navigator.MoveToParent ();
-				return navigator;
+				clientNavigator.AddChild ().SetValues (0, _dataField, port, _textField, port.Name);
 			}
 
 			public void RemoveConnectable (IConnectable connectable)
@@ -226,24 +207,20 @@ namespace MonoMultiJack.Widgets
 			void RemovePort (Port port)
 			{
 				TreeNavigator clientNavigator = FindNavigator (port.Client);
-				TreeNavigator navigator = FindNavigator (port.Client);
-				if (!navigator.MoveToChild ()) {
-					return;
-				}
-				do {
-					if (port.Equals (navigator.GetValue (_dataField))) {
-						navigator.Remove ();
-						break;
-					}
-				} while (navigator.MoveNext());
+				TreeNavigator navigator = FindNavigator (port);
+				navigator.Remove ();
 				if (!clientNavigator.MoveToChild ()) {
 					clientNavigator.Remove ();
 				}
 			}
 
 			TreeNavigator FindNavigator (IConnectable connectable)
-			{			   
-				return _treeStore.FindNavigators (connectable, _dataField).FirstOrDefault ();
+			{
+				try {
+					return _treeStore.FindNavigators (connectable, _dataField).FirstOrDefault ();
+				} catch (NullReferenceException) {
+					return null;
+				}
 			}
 
 			public void UpdateConnectable (IConnectable connectable)
@@ -266,8 +243,7 @@ namespace MonoMultiJack.Widgets
 			void UpdateTreeStoreValues (TreeNavigator navigator, IConnectable connectable)
 			{
 				if (navigator != null) {
-					navigator.SetValue (_dataField, connectable);
-					navigator.SetValue (_textField, connectable.Name);
+					navigator.SetValues (0, _dataField, connectable, _textField, connectable.Name);
 				}
 			}
 
