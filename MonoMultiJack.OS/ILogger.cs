@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using MonoMultiJack.ConnectionWrapper;
 
 namespace MonoMultiJack.OS
 {
@@ -31,7 +32,11 @@ namespace MonoMultiJack.OS
 	{
 		void LogException(Exception ex);
 
-		void LogMessage(string message, Severity severity);
+		void LogMessage(string message, LogLevel level);
+
+		void LogConnectionWrapper(ConnectionEventArgs args);
+
+		void SetLogFile(string logFile);
 	}
 }
 

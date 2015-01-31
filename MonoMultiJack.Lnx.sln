@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Gtk", "xwt\Xwt.Gtk\Xwt.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Mvc", "MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.mono2", "NLog\src\NLog\NLog.mono2.csproj", "{E7AB20BF-6920-442A-B876-CC05BC5CEC79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{D975B294-7420-433F-B5A8-A7B230584877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D975B294-7420-433F-B5A8-A7B230584877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D975B294-7420-433F-B5A8-A7B230584877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7AB20BF-6920-442A-B876-CC05BC5CEC79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7AB20BF-6920-442A-B876-CC05BC5CEC79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7AB20BF-6920-442A-B876-CC05BC5CEC79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7AB20BF-6920-442A-B876-CC05BC5CEC79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MonoMultiJack.Linux\MonoMultiJack.Linux.csproj

@@ -27,51 +27,74 @@ using System;
 using NLog.Config;
 using NLog.Targets;
 using NLog;
+using MonoMultiJack.ConnectionWrapper;
 
 namespace MonoMultiJack.OS
 {
 	public class Logger : ILogger
 	{
-		readonly string _logfile;
+		NLog.Logger _logger;
 
-		public Logger (string logFile)
+		public Logger ()
 		{
-			_logfile = logFile;
-			if (string.IsNullOrEmpty (logFile)) {
-				return;
-			}
-			InitLogging (logFile);
 		}
 		#region ILogger implementation
-		void ILogger.LogException (Exception ex)
+		void ILogger.LogConnectionWrapper (ConnectionEventArgs args)
 		{
-			if (string.IsNullOrEmpty (_logfile)) {
-				return;
-			}
-			throw new NotImplementedException ();
+			((ILogger)this).LogMessage (string.Format ("({0}, {1}), {2}", args.MessageType, args.ChangeType, args.Message), LogLevel.Info);
 		}
 
-		void ILogger.LogMessage (string message, Severity severity)
+		void ILogger.SetLogFile (string logFile)
 		{
-			if (string.IsNullOrEmpty (_logfile)) {
+			if (string.IsNullOrEmpty (logFile)) {
+				LogManager.DisableLogging ();
+				_logger = null;
 				return;
 			}
-			throw new NotImplementedException ();
+			_logger = GetLogger (logFile);
+		}
+
+		void ILogger.LogException (Exception ex)
+		{
+			((ILogger)this).LogMessage (ex.Message, LogLevel.Error);
+		}
+
+		void ILogger.LogMessage (string message, LogLevel level)
+		{
+#if DEBUG
+			Console.WriteLine ("{0:yyyy-MM-dd HH:mm:ss.fff} {1} {2}", DateTime.Now, level, message);
+#else
+			if (level <= LogLevel.Debug){
+				return;
+			}
+#endif
+			if (_logger == null) {
+				return;
+			}
+			switch (level) {
+			case LogLevel.Debug:
+				_logger.Debug (message);
+				break;
+			case LogLevel.Info:
+				_logger.Info (message);
+				break;
+			case LogLevel.Error:
+				_logger.Error (message);
+				break;
+			}
 		}
 		#endregion
-		void InitLogging (string logfile)
+		NLog.Logger GetLogger (string logFile)
 		{
 			LoggingConfiguration config = new LoggingConfiguration ();
 			FileTarget target = new FileTarget ();
-			target.FileName = logfile;
-			target.Layout = "${date:format=HH\\\\:MM\\\\:ss} ${message}";
-			config.AddTarget (target);
-#if DEBUG
-			config.LoggingRules.Add (new LoggingRule ("*", LogLevel.Debug, target));
-#else
-			config.LoggingRules.Add (new LoggingRule ("*", LogLevel.Info, target));
-#endif
+			config.AddTarget ("file", target);
+			target.FileName = logFile;
+			target.Layout = "{date:format=yyyy-MM-dd HH\\:mm\\:ss.fff}\t{logger}\t{message}";
+			LoggingRule rule = new LoggingRule ("*", NLog.LogLevel.Debug, target);
+			config.LoggingRules.Add (rule);
 			LogManager.Configuration = config;
+			return LogManager.GetLogger ("MonoMultiJack");
 		}
 	}
 }

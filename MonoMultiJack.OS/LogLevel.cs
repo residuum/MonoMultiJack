@@ -27,13 +27,12 @@ using System;
 
 namespace MonoMultiJack.OS
 {
-	public enum Severity
+	public enum LogLevel
 	{
-		Undefined,
-		Debug,
-		Info,
-		Error,
-		Exception
+		Undefined = 0,
+		Debug = 1,
+		Info = 2,
+		Error = 3
 	}
 }
 
