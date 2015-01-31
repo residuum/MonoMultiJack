@@ -96,7 +96,9 @@ namespace MonoMultiJack.Widgets
 			_messageContainer = new ScrollView (_messageDisplay) {
 				HorizontalScrollPolicy = ScrollPolicy.Never,
 				VerticalScrollPolicy = ScrollPolicy.Automatic,
-				HeightRequest = 40
+				HeightRequest = 40,
+				BorderVisible = true,
+				Margin = 2
 			};
 			_messageContainer.Hide ();
 			vbox.PackEnd (_messageContainer);

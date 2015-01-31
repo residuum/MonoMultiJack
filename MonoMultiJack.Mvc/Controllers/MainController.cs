@@ -45,6 +45,7 @@ namespace MonoMultiJack.Controllers
 		List<AppStartController> _startWidgetControllers = new List<AppStartController> ();
 		readonly List<ConnectionController> _connectionControllers;
 		readonly IStartupParameters _parameters;
+		readonly ILogger _logger;
 
 		public MainController (string[] args)
 		{
@@ -60,6 +61,7 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
 			_parameters = DependencyResolver.GetImplementation<IStartupParameters> ("IStartupParameters", new object[] { args });
 			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
+			_logger = DependencyResolver.GetImplementation<ILogger> ("ILogger", new object[] { _parameters.LogFile });
 		}
 
 		~MainController ()
