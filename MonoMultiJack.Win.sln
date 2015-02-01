@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Mvc", "MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.netfx40", "NLog\src\NLog\NLog.netfx40.csproj", "{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{95BED56E-4297-4668-B75B-A9DF6F522EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95BED56E-4297-4668-B75B-A9DF6F522EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95BED56E-4297-4668-B75B-A9DF6F522EB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
