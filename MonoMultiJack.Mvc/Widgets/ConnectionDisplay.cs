@@ -170,20 +170,29 @@ namespace MonoMultiJack.Widgets
 
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
+			IConnectable outlet = _outTreeView.GetSelected ();
+			IConnectable inlet = _inTreeView.GetSelected ();
+			if (outlet == null || inlet == null) {
+				AddMessage ("Select ports or clients on both sides");
+				return;
+			}
 			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
-					Outlet = _outTreeView.GetSelected (),
-					Inlet = _inTreeView.GetSelected ()
+					Outlet = outlet,
+					Inlet = inlet
 				});
 			}
 		}
 
 		void ConnectFromDragAndDrop (ConnectEventArgs e)
 		{
-			if (e.Inlet.ConnectionType == e.Outlet.ConnectionType 
-				&& e.Inlet.FlowDirection == FlowDirection.In 
-				&& e.Outlet.FlowDirection == FlowDirection.Out 
-				&& Connect != null) {
+			if (e.Inlet.ConnectionType != e.Outlet.ConnectionType
+				|| e.Inlet.FlowDirection != FlowDirection.In
+				|| e.Outlet.FlowDirection != FlowDirection.Out) {
+				AddMessage ("Cannot connect these ports or clients");
+				return;
+			}
+			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
 					Outlet = e.Outlet,
 					Inlet = e.Inlet
@@ -218,12 +227,14 @@ namespace MonoMultiJack.Widgets
 					inlet = _inTreeView.GetAll ();
 					notSelected += 1;
 				}
-				if (notSelected < 2) {
-					Disconnect (this, new ConnectEventArgs {
-						Outlet = outlet,
-						Inlet = inlet
-					});
+				if (notSelected == 2) {
+					AddMessage ("No port or client selected");
+					return;
 				}
+				Disconnect (this, new ConnectEventArgs {
+					Outlet = outlet,
+					Inlet = inlet
+				});
 			}
 		}
 
