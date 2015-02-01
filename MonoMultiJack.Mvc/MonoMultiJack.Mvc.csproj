@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D43459F9-41B8-467F-965E-8783BD10FC04}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -42,7 +42,6 @@
     <Compile Include="Widgets\ConnectionDisplay.cs" />
     <Compile Include="Forms\IMainWindow.cs" />
     <Compile Include="Forms\IWindow.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\MessageCollection.cs" />
     <Compile Include="Widgets\IWidget.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Widgets\AppStartWidget.cs" />
@@ -62,15 +61,16 @@
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\Colors.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\ConnectableTreeView.cs" />
-    <Compile Include="Widgets\ConnectionDisplay\ConnectionArea.cs" />
     <Compile Include="Icons.cs" />
     <Compile Include="Forms\IHelpWindow.cs" />
     <Compile Include="Forms\HelpWindow.cs" />
     <Compile Include="Forms\Dialog.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\DependencyResolver.cs" />
+    <Compile Include="Widgets\Colors.cs" />
+    <Compile Include="Widgets\ConnectionDisplay.ConnectableTreeView.cs" />
+    <Compile Include="Widgets\ConnectionDisplay.ConnectionArea.cs" />
+    <Compile Include="Widgets\ConnectionDisplay.MessageCollection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
