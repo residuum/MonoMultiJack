@@ -26,8 +26,9 @@
 using System;
 using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
+using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Widgets
 {
@@ -96,7 +97,9 @@ namespace MonoMultiJack.Widgets
 			_messageContainer = new ScrollView (_messageDisplay) {
 				HorizontalScrollPolicy = ScrollPolicy.Never,
 				VerticalScrollPolicy = ScrollPolicy.Automatic,
-				HeightRequest = 40
+				HeightRequest = 40,
+				BorderVisible = true,
+				Margin = 2
 			};
 			_messageContainer.Hide ();
 			vbox.PackEnd (_messageContainer);
@@ -236,9 +239,7 @@ namespace MonoMultiJack.Widgets
 				_connectionArea.QueueDraw ();
 				_lastLineUpdate = now;
 			} catch (Exception ex) {
-#if DEBUG
-				Console.WriteLine (ex.Message);
-#endif
+				Logger.LogException (ex);
 			}
 		}
 

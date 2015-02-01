@@ -24,11 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoMultiJack.Configuration;
 using System.Collections.Generic;
+using MonoMultiJack.Configuration;
+using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.Forms;
 using MonoMultiJack.Widgets;
-using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Controllers
 {

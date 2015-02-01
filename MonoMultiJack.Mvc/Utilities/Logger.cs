@@ -1,10 +1,10 @@
 //
-// PointerConversions.cs
+// Logger.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2015 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,34 +24,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Runtime.InteropServices;
+using MonoMultiJack.OS;
+using MonoMultiJack.ConnectionWrapper;
 
-namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
+namespace MonoMultiJack.Utilities
 {
-	internal static class PointerConversions
+	static class Logger
 	{
-		public static SndSeqAddr PtrToSndSeqAddr (this IntPtr ptr)
+		static ILogger _logging;
+
+		static ILogger GetLogging ()
 		{
-			try {
-				return (SndSeqAddr)Marshal.PtrToStructure (
-					ptr,
-					typeof(SndSeqAddr)
-				);
-			} catch {
-				return new SndSeqAddr ();
-			}
+			return _logging ?? (_logging = DependencyResolver.GetImplementation<ILogger> ("ILogger"));
 		}
 
-		public static IntPtr SndSeqAddrToPtr (this SndSeqAddr addr)
+		public static void LogException (Exception ex)
 		{
-			IntPtr ptr = typeof(SndSeqAddr).Malloc ();
-			Marshal.StructureToPtr (addr, ptr, false);
-			return ptr;
+			GetLogging ().LogException (ex);
 		}
 
-		static IntPtr Malloc (this Type type)
+		public static void SetLogFile (string file)
 		{
-			return Marshal.AllocHGlobal (Marshal.SizeOf (type));
+			GetLogging ().SetLogFile (file);
+		}
+
+		public static void LogMessage (string message, LogLevel level)
+		{
+			GetLogging ().LogMessage (message, level);
+		}
+
+		public static void LogMessage (ConnectionEventArgs args)
+		{
+			GetLogging ().LogConnectionWrapper (args);
 		}
 	}
 }
+

@@ -30,7 +30,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace MonoMultiJack.Controllers
+namespace MonoMultiJack.Utilities
 {
 	static class DependencyResolver
 	{

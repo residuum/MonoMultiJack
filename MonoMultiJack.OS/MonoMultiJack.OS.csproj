@@ -38,6 +38,8 @@
     <Compile Include="ProgramEventHandler.cs" />
     <Compile Include="IConnectionManagerFactory.cs" />
     <Compile Include="IStartupParameters.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="LogLevel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

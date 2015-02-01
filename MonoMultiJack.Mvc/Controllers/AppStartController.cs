@@ -24,9 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoMultiJack.Widgets;
-using MonoMultiJack.OS;
 using MonoMultiJack.Configuration;
+using MonoMultiJack.OS;
+using MonoMultiJack.Utilities;
+using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Controllers
 {
@@ -34,6 +35,7 @@ namespace MonoMultiJack.Controllers
 	{
 		readonly IProgram _application;
 		readonly IAppStartWidget _appWidget;
+		readonly string _appName;
 
 		public AppStartController (AppConfiguration appConfiguration)
 		{
@@ -44,6 +46,7 @@ namespace MonoMultiJack.Controllers
 			_appWidget.StopApplication += AppWidget_StopApplication;
 			_application.HasExited += Application_HasExited;
 			_application.HasStarted += Application_HasStarted;
+			_appName = appConfiguration.Name;
 		}
 
 		public IAppStartWidget Widget {
@@ -74,16 +77,19 @@ namespace MonoMultiJack.Controllers
 
 		void AppWidget_StartApplication (object sender, EventArgs e)
 		{
+			Logger.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Debug);
 			_application.Start ();
 		}
 
 		void AppWidget_StopApplication (object sender, EventArgs e)
 		{
+			Logger.LogMessage (string.Format ("Stopping {0}", _appName), LogLevel.Debug);
 			_application.Stop ();
 		}
 
 		void Application_HasExited (object sender, EventArgs e)
 		{
+			Logger.LogMessage (string.Format ("{0} has stopped", _appName), LogLevel.Info);
 			_appWidget.IsRunning = false;
 			if (ApplicationStatusHasChanged != null) {
 				ApplicationStatusHasChanged (this, new EventArgs ());
@@ -92,6 +98,7 @@ namespace MonoMultiJack.Controllers
 
 		void Application_HasStarted (object sender, EventArgs e)
 		{
+			Logger.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Info);
 			_appWidget.IsRunning = true;
 			if (ApplicationStatusHasChanged != null) {
 				ApplicationStatusHasChanged (this, new EventArgs ());

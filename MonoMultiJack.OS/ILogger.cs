@@ -1,10 +1,10 @@
 //
-// PointerConversions.cs
+// ILogger.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,34 +24,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Runtime.InteropServices;
+using MonoMultiJack.ConnectionWrapper;
 
-namespace MonoMultiJack.ConnectionWrapper.Alsa.Types
+namespace MonoMultiJack.OS
 {
-	internal static class PointerConversions
+	public interface ILogger
 	{
-		public static SndSeqAddr PtrToSndSeqAddr (this IntPtr ptr)
-		{
-			try {
-				return (SndSeqAddr)Marshal.PtrToStructure (
-					ptr,
-					typeof(SndSeqAddr)
-				);
-			} catch {
-				return new SndSeqAddr ();
-			}
-		}
+		void LogException(Exception ex);
 
-		public static IntPtr SndSeqAddrToPtr (this SndSeqAddr addr)
-		{
-			IntPtr ptr = typeof(SndSeqAddr).Malloc ();
-			Marshal.StructureToPtr (addr, ptr, false);
-			return ptr;
-		}
+		void LogMessage(string message, LogLevel level);
 
-		static IntPtr Malloc (this Type type)
-		{
-			return Marshal.AllocHGlobal (Marshal.SizeOf (type));
-		}
+		void LogConnectionWrapper(ConnectionEventArgs args);
+
+		void SetLogFile(string logFile);
 	}
 }
+
