@@ -26,8 +26,9 @@
 using System;
 using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
+using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Widgets
 {
@@ -96,7 +97,9 @@ namespace MonoMultiJack.Widgets
 			_messageContainer = new ScrollView (_messageDisplay) {
 				HorizontalScrollPolicy = ScrollPolicy.Never,
 				VerticalScrollPolicy = ScrollPolicy.Automatic,
-				HeightRequest = 40
+				HeightRequest = 40,
+				BorderVisible = true,
+				Margin = 2
 			};
 			_messageContainer.Hide ();
 			vbox.PackEnd (_messageContainer);
@@ -167,20 +170,29 @@ namespace MonoMultiJack.Widgets
 
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
+			IConnectable outlet = _outTreeView.GetSelected ();
+			IConnectable inlet = _inTreeView.GetSelected ();
+			if (outlet == null || inlet == null) {
+				AddMessage ("Select ports or clients on both sides");
+				return;
+			}
 			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
-					Outlet = _outTreeView.GetSelected (),
-					Inlet = _inTreeView.GetSelected ()
+					Outlet = outlet,
+					Inlet = inlet
 				});
 			}
 		}
 
 		void ConnectFromDragAndDrop (ConnectEventArgs e)
 		{
-			if (e.Inlet.ConnectionType == e.Outlet.ConnectionType 
-				&& e.Inlet.FlowDirection == FlowDirection.In 
-				&& e.Outlet.FlowDirection == FlowDirection.Out 
-				&& Connect != null) {
+			if (e.Inlet.ConnectionType != e.Outlet.ConnectionType
+				|| e.Inlet.FlowDirection != FlowDirection.In
+				|| e.Outlet.FlowDirection != FlowDirection.Out) {
+				AddMessage ("Cannot connect these ports or clients");
+				return;
+			}
+			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
 					Outlet = e.Outlet,
 					Inlet = e.Inlet
@@ -215,12 +227,14 @@ namespace MonoMultiJack.Widgets
 					inlet = _inTreeView.GetAll ();
 					notSelected += 1;
 				}
-				if (notSelected < 2) {
-					Disconnect (this, new ConnectEventArgs {
-						Outlet = outlet,
-						Inlet = inlet
-					});
+				if (notSelected == 2) {
+					AddMessage ("No port or client selected");
+					return;
 				}
+				Disconnect (this, new ConnectEventArgs {
+					Outlet = outlet,
+					Inlet = inlet
+				});
 			}
 		}
 
@@ -236,9 +250,7 @@ namespace MonoMultiJack.Widgets
 				_connectionArea.QueueDraw ();
 				_lastLineUpdate = now;
 			} catch (Exception ex) {
-#if DEBUG
-				Console.WriteLine (ex.Message);
-#endif
+				Logger.LogException (ex);
 			}
 		}
 

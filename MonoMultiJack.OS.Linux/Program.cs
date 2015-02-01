@@ -145,9 +145,6 @@ namespace MonoMultiJack.OS
 			try {				
 				File.WriteAllText (_startScriptFile, bashScript.ToString ());				                  
 			} catch (Exception ex) {
-				#if DEBUG
-				Console.WriteLine (ex.Message);
-				#endif
 				new IOException ("Unable to write to temporary file.", ex);
 			}
 		}
@@ -170,9 +167,6 @@ namespace MonoMultiJack.OS
 			try {				
 				File.WriteAllText (_testingScriptFile, bashScript.ToString ());				                  
 			} catch (Exception ex) {
-				#if DEBUG
-				Console.WriteLine (ex.Message);
-				#endif
 				new IOException ("Unable to write to temporary file.", ex);
 			}
 		}

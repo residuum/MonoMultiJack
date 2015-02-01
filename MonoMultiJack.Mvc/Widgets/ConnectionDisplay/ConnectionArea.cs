@@ -29,6 +29,7 @@ using System.Linq;
 using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 using Xwt.Drawing;
+using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Widgets
 {
@@ -70,9 +71,7 @@ namespace MonoMultiJack.Widgets
 						ctx.SetLineWidth (1);
 						ctx.Stroke ();
 					} catch (Exception ex) {
-						#if DEBUG
-						Console.WriteLine (ex.Message);
-						#endif
+						Logger.LogException (ex);
 					}
 				}
 				base.OnDraw (ctx, dirtyRect);

@@ -73,7 +73,6 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 				Invoke.snd_seq_set_client_name (_alsaClient, "MonoMultiJack");
 				return true;
 			}
-			Console.WriteLine ("Alsa Activation error: " + Invoke.snd_strerror (activation).PtrToString ());
 			return false;
 		}
 
@@ -239,15 +238,9 @@ namespace MonoMultiJack.ConnectionWrapper.Alsa.LibAsound
 					int subs = disconnect
                         ? Invoke.snd_seq_unsubscribe_port (_alsaClient, subscriberInfo.Pointer)
                         : Invoke.snd_seq_subscribe_port (_alsaClient, subscriberInfo.Pointer);
-					if (subs != 0) {
-						Console.WriteLine ("Alsa connection error: " + subs + " code: " + Invoke.snd_strerror (subs).PtrToString ());
-					}
 					return subs == 0;
 				}
-			} catch (Exception e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
+			} catch {
 				return false;
 			}
 		}

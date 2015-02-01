@@ -44,6 +44,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="StartupParameters.cs" />
+    <Compile Include="Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoMultiJack.Configuration\MonoMultiJack.Configuration.csproj">
@@ -61,6 +62,10 @@
     <ProjectReference Include="..\MonoMultiJack.OS\MonoMultiJack.OS.csproj">
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>MonoMultiJack.OS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NLog\src\NLog\NLog.netfx35.csproj">
+      <Project>{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}</Project>
+      <Name>NLog.netfx35</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
