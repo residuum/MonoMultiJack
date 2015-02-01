@@ -25,8 +25,8 @@
 // THE SOFTWARE.
 using System;
 using MonoMultiJack.Configuration;
-using MonoMultiJack.Forms;
 using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Forms;
 
 namespace MonoMultiJack.Controllers
 {

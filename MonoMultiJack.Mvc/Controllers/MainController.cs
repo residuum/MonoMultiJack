@@ -24,15 +24,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Linq;
-using MonoMultiJack.Forms;
-using MonoMultiJack.Configuration;
 using System.Collections.Generic;
-using MonoMultiJack.OS;
-using System.Reflection;
 using System.IO;
-using MonoMultiJack.Controllers.EventArguments;
+using System.Linq;
+using System.Reflection;
+using MonoMultiJack.Configuration;
 using MonoMultiJack.ConnectionWrapper;
+using MonoMultiJack.OS;
+using MonoMultiJack.Forms;
+using MonoMultiJack.Utilities;
+using MonoMultiJack.Controllers.EventArguments;
 
 namespace MonoMultiJack.Controllers
 {
@@ -45,7 +46,6 @@ namespace MonoMultiJack.Controllers
 		List<AppStartController> _startWidgetControllers = new List<AppStartController> ();
 		readonly List<ConnectionController> _connectionControllers;
 		readonly IStartupParameters _parameters;
-		readonly ILogger _logger;
 
 		public MainController (string[] args)
 		{
@@ -61,7 +61,7 @@ namespace MonoMultiJack.Controllers
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
 			_parameters = DependencyResolver.GetImplementation<IStartupParameters> ("IStartupParameters", new object[] { args });
 			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
-			_logger = DependencyResolver.GetImplementation<ILogger> ("ILogger", new object[] { _parameters.LogFile });
+			Logger.SetLogFile (_parameters.LogFile);
 		}
 
 		~MainController ()
@@ -135,16 +135,12 @@ namespace MonoMultiJack.Controllers
 			try {
 				jackdConfig = PersistantConfiguration.LoadJackdConfiguration ();
 				return true;
-			} catch (System.Xml.XmlException e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
+			} catch (System.Xml.XmlException ex) {
+				Logger.LogException (ex);
 				ShowInfoMessage ("Jackd configuration File is corrupt.");
 				jackdConfig = new JackdConfiguration ();
-			} catch (FileNotFoundException e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
+			} catch (FileNotFoundException ex) {
+				Logger.LogException (ex);
 				ShowInfoMessage ("Jackd is not configured.");
 				jackdConfig = new JackdConfiguration ();
 			}
@@ -167,16 +163,12 @@ namespace MonoMultiJack.Controllers
 			try {
 				appConfigs = PersistantConfiguration.LoadAppConfigurations ();
 				return true;
-			} catch (System.Xml.XmlException e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
+			} catch (System.Xml.XmlException ex) {				
+				Logger.LogException (ex);
 				ShowInfoMessage ("Application configuration File is corrupt.");
 				appConfigs = new List<AppConfiguration> ();
-			} catch (FileNotFoundException e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
+			} catch (FileNotFoundException ex) {				
+				Logger.LogException (ex);
 				ShowInfoMessage ("Applications are not configured.");
 				appConfigs = new List<AppConfiguration> ();
 			}
@@ -190,10 +182,8 @@ namespace MonoMultiJack.Controllers
 				if (Math.Abs (windowConfig.Width) > 1 && Math.Abs (windowConfig.Height) > 1) {
 					return true;
 				}
-			} catch (Exception e) {
-				#if DEBUG
-				Console.WriteLine (e.Message);
-				#endif
+			} catch (Exception ex) {				
+				Logger.LogException (ex);
 			}
 			windowConfig = new WindowConfiguration (0, 0, 0, 0);
 			return false;
@@ -214,17 +204,20 @@ namespace MonoMultiJack.Controllers
 		#region Model events
 		void Jackd_HasStarted (object sender, EventArgs e)
 		{
+			Logger.LogMessage ("Jackd started", LogLevel.Info);
 			UpdateRunningStatus ();
 		}
 
 		void Jackd_HasExited (object sender, EventArgs e)
 		{
+			Logger.LogMessage ("Jackd exited", LogLevel.Info);
 			UpdateRunningStatus ();
 		}
 		#endregion
 		#region IMainWindow events
 		void MainWindow_StartJackd (object sender, EventArgs e)
 		{
+			Logger.LogMessage ("Starting jackd", LogLevel.Debug);
 			if (_jackd.IsRunning) {
 				_jackd.Stop ();
 			}
@@ -233,11 +226,13 @@ namespace MonoMultiJack.Controllers
 
 		void MainWindow_StopJackd (object sender, EventArgs e)
 		{
+			Logger.LogMessage ("Stopping jackd", LogLevel.Debug);
 			StopJackd ();
 		}
 
 		void MainWindow_StopAll (object sender, EventArgs e)
 		{
+			Logger.LogMessage ("Stopping all apps and jackd", LogLevel.Debug);
 			StopJackd ();
 			foreach (AppStartController startWidgetController in _startWidgetControllers) {
 				startWidgetController.StopApplication ();

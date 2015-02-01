@@ -26,8 +26,9 @@
 using System;
 using System.Collections.Generic;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Controllers.EventArguments;
 using Xwt;
+using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Widgets
 {
@@ -238,9 +239,7 @@ namespace MonoMultiJack.Widgets
 				_connectionArea.QueueDraw ();
 				_lastLineUpdate = now;
 			} catch (Exception ex) {
-#if DEBUG
-				Console.WriteLine (ex.Message);
-#endif
+				Logger.LogException (ex);
 			}
 		}
 

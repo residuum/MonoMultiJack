@@ -90,7 +90,7 @@ namespace MonoMultiJack.OS
 			FileTarget target = new FileTarget ();
 			config.AddTarget ("file", target);
 			target.FileName = logFile;
-			target.Layout = "{date:format=yyyy-MM-dd HH\\:mm\\:ss.fff}\t{logger}\t{message}";
+			target.Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff}\t${level}\t${message}";
 			LoggingRule rule = new LoggingRule ("*", NLog.LogLevel.Debug, target);
 			config.LoggingRules.Add (rule);
 			LogManager.Configuration = config;

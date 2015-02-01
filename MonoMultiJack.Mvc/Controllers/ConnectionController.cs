@@ -25,9 +25,11 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using MonoMultiJack.Utilities;
 using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.Widgets;
 using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Widgets;
+using MonoMultiJack.OS;
 
 namespace MonoMultiJack.Controllers
 {
@@ -62,16 +64,19 @@ namespace MonoMultiJack.Controllers
 
 		void Widget_Connect (object sender, ConnectEventArgs args)
 		{
+			Logger.LogMessage ("Connecting", LogLevel.Debug);
 			_connectionManager.Connect (args.Outlet, args.Inlet);
 		}
 
 		void Widget_Disconnect (object sender, ConnectEventArgs args)
 		{
+			Logger.LogMessage ("Disconnecting", LogLevel.Debug);
 			_connectionManager.Disconnect (args.Outlet, args.Inlet);
 		}
 
 		void ConnectionManager_BackendHasChanged (object sender, ConnectionEventArgs args)
 		{
+			Logger.LogMessage (args);
 			switch (args.ChangeType) {
 			case ChangeType.BackendExited:
 				_connectionWidget.Clear ();
@@ -82,6 +87,7 @@ namespace MonoMultiJack.Controllers
 
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)
 		{
+			Logger.LogMessage (args);
 			if (args.ChangeType == ChangeType.New) {
 				if (args.Connectables != null) {
 					foreach (IConnectable connectable in args.Connectables) {

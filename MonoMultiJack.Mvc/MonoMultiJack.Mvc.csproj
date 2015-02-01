@@ -35,7 +35,6 @@
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\DependencyResolver.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Forms\MainWindow.cs" />
     <Compile Include="Forms\JackdConfigWindow.cs" />
@@ -71,6 +70,8 @@
     <Compile Include="Icons.cs" />
     <Compile Include="Forms\IHelpWindow.cs" />
     <Compile Include="Forms\HelpWindow.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\DependencyResolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -103,5 +104,8 @@
     <EmbeddedResource Include="Icons\remove.png" />
     <EmbeddedResource Include="Icons\start.png" />
     <EmbeddedResource Include="Icons\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\" />
   </ItemGroup>
 </Project>
