@@ -63,9 +63,9 @@
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>MonoMultiJack.OS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NLog\src\NLog\NLog.netfx40.csproj">
-      <Project>{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}</Project>
-      <Name>NLog.netfx40</Name>
+    <ProjectReference Include="..\NLog\src\NLog\NLog.netfx35.csproj">
+      <Project>{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}</Project>
+      <Name>NLog.netfx35</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
