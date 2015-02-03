@@ -1,6 +1,6 @@
 [submodule "xwt"]
 	path = xwt
-	url = https://github.com/mono/xwt.git
+	url = https://github.com/residuum/xwt.git
 [submodule "NLog"]
 	path = NLog
 	url = https://github.com/NLog/NLog.git
