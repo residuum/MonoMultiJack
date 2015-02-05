@@ -26,8 +26,9 @@
 using System;
 using Xwt;
 using Xwt.Drawing;
+using MonoMultiJack.Utilities;
 
-namespace MonoMultiJack.Forms
+namespace MonoMultiJack.Windows
 {
 	/// <summary>
 	/// Jackd Config Window
@@ -151,6 +152,7 @@ namespace MonoMultiJack.Forms
 			Table table = new Table ();
 
 			_jackdPathEntry = BuildRow (table, 0, "Jackd Startup Path", "e.g. /usr/bin/jackd");
+			_jackdPathEntry.FileSelector ();
 			_jackdGeneralOptionsEntry = BuildRow (table, 1, "General Options", "optional");
 			_jackdDriverEntry = BuildRow (table, 2, "Driver Infrastructure", "e.g. alsa");
 			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options", "optional");

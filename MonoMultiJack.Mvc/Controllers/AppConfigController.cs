@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Controllers.EventArguments;
-using MonoMultiJack.Forms;
+using MonoMultiJack.Windows;
 using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Controllers

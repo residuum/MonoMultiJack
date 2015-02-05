@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt;
+using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Widgets
 {
@@ -61,6 +62,7 @@ namespace MonoMultiJack.Widgets
 
 			_appNameEntry = BuildRow (table, 0, "Name", "e.g. Ardour");
 			_appCommandEntry = BuildRow (table, 1, "Command", "e.g. /usr/bin/ardour3");
+			_appCommandEntry.FileSelector ();
 			_appArgumentsEntry = BuildRow (table, 2, "Command Arguments", "optional");
 
 			_removeApp = new Button ("Delete") { Image = Icons.Delete };

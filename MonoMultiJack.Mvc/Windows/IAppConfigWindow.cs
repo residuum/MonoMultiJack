@@ -1,5 +1,5 @@
 //
-// IWindow.cs
+// IAppConfigWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -25,16 +25,16 @@
 // THE SOFTWARE.
 using System;
 using MonoMultiJack.Widgets;
-using Xwt.Drawing;
 
-namespace MonoMultiJack.Forms
+namespace MonoMultiJack.Windows
 {
-	public interface IWindow : IWidget
+	public interface IAppConfigWindow : IWindow
 	{
-		event EventHandler Closing;
+		void AddAppConfigWidget (IAppConfigWidget widget);
 
-		Image Icon { set; }
+		void RemoveAppConfigWidget (IAppConfigWidget widget);
 
-		bool Sensitive { set; }
+		event EventHandler SaveApplicationConfigs;
+		event EventHandler AddApplication;
 	}
 }

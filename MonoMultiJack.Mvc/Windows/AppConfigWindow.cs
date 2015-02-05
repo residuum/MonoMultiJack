@@ -29,7 +29,7 @@ using MonoMultiJack.Widgets;
 using Xwt;
 using Xwt.Drawing;
 
-namespace MonoMultiJack.Forms
+namespace MonoMultiJack.Windows
 {
 	public class AppConfigWindow : Window, IAppConfigWindow
 	{

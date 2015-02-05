@@ -36,41 +36,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Forms\MainWindow.cs" />
-    <Compile Include="Forms\JackdConfigWindow.cs" />
     <Compile Include="Widgets\AppConfigWidget.cs" />
     <Compile Include="Widgets\ConnectionDisplay.cs" />
-    <Compile Include="Forms\IMainWindow.cs" />
-    <Compile Include="Forms\IWindow.cs" />
     <Compile Include="Widgets\IWidget.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Widgets\AppStartWidget.cs" />
     <Compile Include="Widgets\IAppStartWidget.cs" />
-    <Compile Include="Forms\IAboutWindow.cs" />
-    <Compile Include="Forms\AboutWindow.cs" />
     <Compile Include="Widgets\IAppConfigWidget.cs" />
-    <Compile Include="Forms\IJackdConfigWindow.cs" />
-    <Compile Include="Forms\IAppConfigWindow.cs" />
     <Compile Include="Controllers\AppStartController.cs" />
     <Compile Include="Controllers\JackdConfigController.cs" />
     <Compile Include="Controllers\AppConfigController.cs" />
     <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Forms\AppConfigWindow.cs" />
     <Compile Include="Widgets\IConnectionWidget.cs" />
     <Compile Include="Controllers\ConnectionController.cs" />
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
     <Compile Include="Icons.cs" />
-    <Compile Include="Forms\IHelpWindow.cs" />
-    <Compile Include="Forms\HelpWindow.cs" />
-    <Compile Include="Forms\Dialog.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\DependencyResolver.cs" />
     <Compile Include="Widgets\Colors.cs" />
     <Compile Include="Widgets\ConnectionDisplay.ConnectableTreeView.cs" />
     <Compile Include="Widgets\ConnectionDisplay.ConnectionArea.cs" />
     <Compile Include="Widgets\ConnectionDisplay.MessageCollection.cs" />
+    <Compile Include="Utilities\WidgetExtensions.cs" />
+    <Compile Include="Windows\MainWindow.cs" />
+    <Compile Include="Windows\JackdConfigWindow.cs" />
+    <Compile Include="Windows\IMainWindow.cs" />
+    <Compile Include="Windows\IWindow.cs" />
+    <Compile Include="Windows\IAboutWindow.cs" />
+    <Compile Include="Windows\AboutWindow.cs" />
+    <Compile Include="Windows\IJackdConfigWindow.cs" />
+    <Compile Include="Windows\IAppConfigWindow.cs" />
+    <Compile Include="Windows\AppConfigWindow.cs" />
+    <Compile Include="Windows\IHelpWindow.cs" />
+    <Compile Include="Windows\HelpWindow.cs" />
+    <Compile Include="Windows\Dialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

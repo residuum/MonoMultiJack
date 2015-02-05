@@ -1,10 +1,10 @@
 //
-// IJackdConfigWindow.cs
+// WidgetExtensions.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2015 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +24,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.IO;
+using Xwt;
 
-namespace MonoMultiJack.Forms
+namespace MonoMultiJack.Utilities
 {
-	public interface IJackdConfigWindow : IWindow
-	{		
-		string Path { get; set; }
+	static class WidgetExtensions
+	{
+		public static void FileSelector (this TextEntry entry)
+		{
+			entry.GotFocus += ShowFileDialog;
+		}
 
-		string GeneralOptions { get; set; }
-
-		string Driver { get; set; }
-
-		string DriverOptions { get; set; }
-
-		event EventHandler SaveJackd;
+		private static void ShowFileDialog (object sender, EventArgs eventArgs)
+		{
+			TextEntry entry = sender as TextEntry;
+			if (entry == null) {
+				return;
+			}
+			string filePath = entry.Text;
+			string directory = Environment.GetFolderPath (Environment.SpecialFolder.ProgramFiles);
+			string fileName = "";
+			if (!string.IsNullOrEmpty (filePath)) {
+				FileInfo info = new FileInfo (filePath);
+				directory = info.DirectoryName;
+				fileName = info.Name;
+			}
+			FileDialog dialog = new OpenFileDialog {
+				CurrentFolder = directory,
+				InitialFileName = fileName
+			};
+			if (dialog.Run ()) {
+				entry.Text = Path.Combine (dialog.CurrentFolder, dialog.FileName);
+			}
+		}
 	}
 }

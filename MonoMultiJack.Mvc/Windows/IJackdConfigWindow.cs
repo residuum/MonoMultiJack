@@ -1,5 +1,5 @@
 //
-// IAboutWindow.cs
+// IJackdConfigWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,22 +23,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace MonoMultiJack.Forms
+using System;
+
+namespace MonoMultiJack.Windows
 {
-	public interface IAboutWindow : IWindow
+	public interface IJackdConfigWindow : IWindow
 	{		
-		string ProgramName { set; }
+		string Path { get; set; }
 
-		string Copyright { set; }
+		string GeneralOptions { get; set; }
 
-		string Comments { set; }
+		string Driver { get; set; }
 
-		string Version { set; }
+		string DriverOptions { get; set; }
 
-		string Website { set; }
-
-		string[] Authors { set; }
-
-		string License { set; }
+		event EventHandler SaveJackd;
 	}
 }

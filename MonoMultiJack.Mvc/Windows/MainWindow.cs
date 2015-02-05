@@ -31,7 +31,7 @@ using MonoMultiJack.Widgets;
 using Xwt;
 using Xwt.Drawing;
 
-namespace MonoMultiJack.Forms
+namespace MonoMultiJack.Windows
 {
 	/// <summary>
 	/// Main Window 

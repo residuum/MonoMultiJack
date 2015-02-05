@@ -28,7 +28,7 @@ using Xwt;
 using Xwt.Drawing;
 using Xwt.Formats;
 
-namespace MonoMultiJack.Forms
+namespace MonoMultiJack.Windows
 {
 	public static class Dialog
 	{
