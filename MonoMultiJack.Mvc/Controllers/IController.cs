@@ -29,6 +29,6 @@ namespace MonoMultiJack.Controllers
 {
 	public interface IController : IDisposable
 	{
-		event EventHandler AllWidgetsAreClosed;
+		
 	}
 }

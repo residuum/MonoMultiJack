@@ -135,7 +135,5 @@ namespace MonoMultiJack.Controllers
 		{
 			_connectionWidget.Dispose ();
 		}
-
-		public event EventHandler AllWidgetsAreClosed;
 	}
 }
