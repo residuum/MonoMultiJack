@@ -25,9 +25,10 @@
 // THE SOFTWARE.
 using System;
 using System.Linq;
-using MonoMultiJack.Widgets;
 using Xwt;
 using Xwt.Drawing;
+using MonoMultiJack.Utilities;
+using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Windows
 {

@@ -27,6 +27,7 @@ using System;
 using Xwt;
 using Xwt.Drawing;
 using Xwt.Formats;
+using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Windows
 {
@@ -34,46 +35,12 @@ namespace MonoMultiJack.Windows
 	{
 		public static void ShowErrorMessage (string message)
 		{
-			//MessageDialog.ShowError (message);
-			DisplayMessage (message, Icons.Warning);
+			MessageDialog.ShowError (message);
 		}
 
 		public static void ShowInfoMessage (string message)
 		{
-			//MessageDialog.ShowMessage (message);
-			DisplayMessage (message, Icons.Info);
-		}
-
-		static void DisplayMessage(string message, Image icon){
-			Window window = new Window ();
-			window.Icon = icon;
-			VBox box = new VBox ();
-			box.PackStart (BuildMessage (message, icon));
-			HBox buttonBox = new HBox();
-			Button button = new Button{Label = "OK"};
-			button.Clicked += (sender, e) => {
-				window.Close();
-				window.Dispose();
-			};
-			buttonBox.PackEnd (button);
-			box.PackStart (buttonBox);
-			window.Content = box;
-			window.ShowInTaskbar = false;
-			window.Show ();
-			window.Present ();
-		}
-
-		static Widget BuildMessage(string message, Image icon){
-			HBox messageBox = new HBox ();
-			ImageView iconView = new ImageView (icon.WithSize (IconSize.Medium));
-			iconView.VerticalPlacement = WidgetPlacement.Start;
-			messageBox.PackStart(iconView);
-			RichTextView textView = new RichTextView ();
-			textView.LoadText (message, TextFormat.Markdown);
-			textView.MinWidth = 200;
-			textView.WidthRequest = 400;
-			messageBox.PackStart (textView);
-			return messageBox;
+			MessageDialog.ShowMessage (message);
 		}
 	}
 }

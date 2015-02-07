@@ -52,7 +52,6 @@
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
-    <Compile Include="Icons.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\DependencyResolver.cs" />
     <Compile Include="Widgets\Colors.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Windows\IHelpWindow.cs" />
     <Compile Include="Windows\HelpWindow.cs" />
     <Compile Include="Windows\Dialog.cs" />
+    <Compile Include="Utilities\Icons.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

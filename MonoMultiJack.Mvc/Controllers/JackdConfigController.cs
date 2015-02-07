@@ -26,6 +26,7 @@
 using System;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Utilities;
 using MonoMultiJack.Windows;
 
 namespace MonoMultiJack.Controllers

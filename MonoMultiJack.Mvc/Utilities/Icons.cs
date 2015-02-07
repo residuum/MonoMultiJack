@@ -27,10 +27,11 @@ using System.IO;
 using System.Reflection;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Backends;
 
-namespace MonoMultiJack
+namespace MonoMultiJack.Utilities
 {
-	public static class Icons
+	public class Icons : IIconSet
 	{
 		static Assembly _assembly;
 
@@ -42,7 +43,32 @@ namespace MonoMultiJack
 				return _assembly;
 			}
 		}
-
+		#region IIconSet implementation
+		Image IIconSet.GetStockIcon (string iconId)
+		{
+			switch (iconId) {
+			case StockIconId.Add:
+				return LoadAdd ();
+			case StockIconId.Information:
+				return LoadInfo ();
+			case StockIconId.Question:
+				return LoadHelp ();
+			case StockIconId.Remove:
+				return LoadDelete ();
+			case StockIconId.Warning:
+				return LoadWarning ();
+			case StockIconId.Error:
+			case StockIconId.OrientationLandscape:
+			case StockIconId.OrientationPortrait:
+			case StockIconId.Zoom100:
+			case StockIconId.ZoomFit:
+			case StockIconId.ZoomIn:
+			case StockIconId.ZoomOut:
+				return null;
+			}
+			return null;
+		}
+		#endregion
 		public static Image Program {
 			get { return LoadImage ("MonoMultiJack.Icons.program.png"); }
 		}
@@ -54,12 +80,47 @@ namespace MonoMultiJack
 			}
 		}
 
+		static Image LoadOk ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.ok.png");
+		}
+
+		static Image LoadCancel ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.cancel.png");
+		}
+
+		static Image LoadAdd ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.add.png");
+		}
+
+		static Image LoadHelp ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.help.png");
+		}
+
+		static Image LoadInfo ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.info.png");
+		}
+
+		static Image LoadWarning ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.warning.png");
+		}
+
+		static Image LoadDelete ()
+		{
+			return LoadImage ("MonoMultiJack.Icons.remove.png");
+		}
+
 		public static Image Ok {
-			get { return LoadImage ("MonoMultiJack.Icons.ok.png").WithSize (IconSize.Small); }
+			get { return LoadOk ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Cancel {
-			get { return LoadImage ("MonoMultiJack.Icons.cancel.png").WithSize (IconSize.Small); }
+			get { return LoadCancel ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Connect {
@@ -79,23 +140,23 @@ namespace MonoMultiJack
 		}
 
 		public static Image Delete {
-			get { return LoadImage ("MonoMultiJack.Icons.remove.png").WithSize (IconSize.Small); }
+			get { return LoadDelete ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Add {
-			get { return LoadImage ("MonoMultiJack.Icons.add.png").WithSize (IconSize.Small); }
+			get { return LoadAdd ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Help {
-			get { return LoadImage ("MonoMultiJack.Icons.help.png").WithSize (IconSize.Small); }
+			get { return LoadHelp ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Info {
-			get { return LoadImage ("MonoMultiJack.Icons.info.png").WithSize (IconSize.Small); }
+			get { return LoadInfo ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Warning {
-			get { return LoadImage ("MonoMultiJack.Icons.warning.png").WithSize (IconSize.Small); }
+			get { return LoadWarning ().WithSize (IconSize.Small); }
 		}
 	}
 }

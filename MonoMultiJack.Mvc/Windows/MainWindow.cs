@@ -27,9 +27,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonoMultiJack.Configuration;
-using MonoMultiJack.Widgets;
 using Xwt;
 using Xwt.Drawing;
+using MonoMultiJack.Utilities;
+using MonoMultiJack.Widgets;
 
 namespace MonoMultiJack.Windows
 {
@@ -53,6 +54,7 @@ namespace MonoMultiJack.Windows
 		/// </summary>
 		public MainWindow ()
 		{
+			StockIcons.IconSet = new Icons ();
 			BuildMenu ();
 			BuildWindowContent ();
 			Closed += OnCloseEvent;
