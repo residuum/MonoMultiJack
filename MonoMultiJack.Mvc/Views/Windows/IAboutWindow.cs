@@ -1,5 +1,5 @@
 //
-// IAppConfigWidget.cs
+// IAboutWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,18 +23,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Windows
 {
-	public interface IAppConfigWidget : IWidget
-	{
-		string Name { get; set; }
+	public interface IAboutWindow : IWindow
+	{		
+		string ProgramName { set; }
 
-		string Command { get; set; }
+		string Copyright { set; }
 
-		string Arguments { get; set; }
+		string Comments { set; }
 
-		event EventHandler RemoveApplication;
+		string Version { set; }
+
+		string Website { set; }
+
+		string[] Authors { set; }
+
+		string License { set; }
 	}
 }

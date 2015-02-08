@@ -1,5 +1,5 @@
 //
-// IJackdConfigWindow.cs
+// IWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,19 +24,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using MonoMultiJack.Views.Widgets;
+using Xwt.Drawing;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
-	public interface IJackdConfigWindow : IWindow
-	{		
-		string Path { get; set; }
+	public interface IWindow : IWidget
+	{
+		event EventHandler Closing;
 
-		string GeneralOptions { get; set; }
+		Image Icon { set; }
 
-		string Driver { get; set; }
-
-		string DriverOptions { get; set; }
-
-		event EventHandler SaveJackd;
+		bool Sensitive { set; }
 	}
 }

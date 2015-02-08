@@ -1,5 +1,5 @@
 //
-// IWidget.cs
+// IConnectionWidget.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,14 +23,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
+using MonoMultiJack.ConnectionWrapper;
+using MonoMultiJack.Controllers.EventArguments;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Widgets
 {
-	public interface IWidget : IDisposable
+	public delegate void ConnectEventHandler (object sender,ConnectEventArgs e);
+	public interface IConnectionWidget :IWidget
 	{
-		void Show ();
+		void Clear ();
 
-		void Hide ();
+		void AddConnectable (IConnectable connectable);
+
+		void RemoveConnectable (IConnectable connectable);
+
+		void UpdateConnectable (IConnectable connectable);
+
+		void AddConnection (IConnection connection);
+
+		void RemoveConnection (IConnection connection);
+
+		void AddMessage (string message);
+
+		event ConnectEventHandler Connect;
+		event ConnectEventHandler Disconnect;
+
+		string ConnectionManagerName { get; }
 	}
 }

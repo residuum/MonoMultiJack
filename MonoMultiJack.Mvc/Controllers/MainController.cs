@@ -31,9 +31,10 @@ using System.Reflection;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.OS;
-using MonoMultiJack.Windows;
-using MonoMultiJack.Utilities;
 using MonoMultiJack.Controllers.EventArguments;
+using MonoMultiJack.Utilities;
+using MonoMultiJack.Views;
+using MonoMultiJack.Views.Windows;
 
 namespace MonoMultiJack.Controllers
 {

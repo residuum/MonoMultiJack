@@ -1,10 +1,10 @@
 //
-// IWindow.cs
+// IHelpWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,17 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoMultiJack.Widgets;
-using Xwt.Drawing;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
-	public interface IWindow : IWidget
+	public interface IHelpWindow: IWindow
 	{
-		event EventHandler Closing;
-
-		Image Icon { set; }
-
-		bool Sensitive { set; }
+		string ProgramName { set;}
+		string HelpContent { set;}
 	}
 }
+

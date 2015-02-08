@@ -27,7 +27,7 @@ using System;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.OS;
 using MonoMultiJack.Utilities;
-using MonoMultiJack.Widgets;
+using MonoMultiJack.Views.Widgets;
 
 namespace MonoMultiJack.Controllers
 {

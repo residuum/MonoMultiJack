@@ -1,5 +1,5 @@
 //
-// IAppStartWidget.cs
+// IWidget.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -25,15 +25,12 @@
 // THE SOFTWARE.
 using System;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Widgets
 {
-	public interface IAppStartWidget : IWidget
+	public interface IWidget : IDisposable
 	{
-		void SetApp (string name, string commandName);
+		void Show ();
 
-		bool IsRunning{ set; }
-
-		event EventHandler StartApplication;
-		event EventHandler StopApplication;
+		void Hide ();
 	}
 }

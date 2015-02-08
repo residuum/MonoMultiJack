@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using MonoMultiJack.Utilities;
 using MonoMultiJack.ConnectionWrapper;
 using MonoMultiJack.Controllers.EventArguments;
-using MonoMultiJack.Widgets;
+using MonoMultiJack.Views.Widgets;
 using MonoMultiJack.OS;
 
 namespace MonoMultiJack.Controllers

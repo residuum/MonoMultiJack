@@ -29,7 +29,7 @@ using Xwt;
 using Xwt.Drawing;
 using Xwt.Backends;
 
-namespace MonoMultiJack.Utilities
+namespace MonoMultiJack.Views
 {
 	public class Icons : IIconSet
 	{
@@ -70,7 +70,7 @@ namespace MonoMultiJack.Utilities
 		}
 		#endregion
 		public static Image Program {
-			get { return LoadImage ("MonoMultiJack.Icons.program.png"); }
+			get { return LoadImage ("MonoMultiJack.Views.Icons.program.png"); }
 		}
 
 		private static Image LoadImage (string imageNamespace)
@@ -82,37 +82,37 @@ namespace MonoMultiJack.Utilities
 
 		static Image LoadOk ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.ok.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.ok.png");
 		}
 
 		static Image LoadCancel ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.cancel.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.cancel.png");
 		}
 
 		static Image LoadAdd ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.add.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.add.png");
 		}
 
 		static Image LoadHelp ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.help.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.help.png");
 		}
 
 		static Image LoadInfo ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.info.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.info.png");
 		}
 
 		static Image LoadWarning ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.warning.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.warning.png");
 		}
 
 		static Image LoadDelete ()
 		{
-			return LoadImage ("MonoMultiJack.Icons.remove.png");
+			return LoadImage ("MonoMultiJack.Views.Icons.remove.png");
 		}
 
 		public static Image Ok {
@@ -124,19 +124,19 @@ namespace MonoMultiJack.Utilities
 		}
 
 		public static Image Connect {
-			get { return LoadImage ("MonoMultiJack.Icons.connect.png").WithSize (IconSize.Small); }
+			get { return LoadImage ("MonoMultiJack.Views.Icons.connect.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Disconnect {
-			get { return LoadImage ("MonoMultiJack.Icons.disconnect.png").WithSize (IconSize.Small); }
+			get { return LoadImage ("MonoMultiJack.Views.Icons.disconnect.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Start {
-			get { return LoadImage ("MonoMultiJack.Icons.start.png").WithSize (IconSize.Small); }
+			get { return LoadImage ("MonoMultiJack.Views.Icons.start.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Stop {
-			get { return LoadImage ("MonoMultiJack.Icons.stop.png").WithSize (IconSize.Small); }
+			get { return LoadImage ("MonoMultiJack.Views.Icons.stop.png").WithSize (IconSize.Small); }
 		}
 
 		public static Image Delete {

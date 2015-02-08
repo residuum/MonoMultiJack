@@ -27,7 +27,7 @@ using System;
 using Xwt;
 using MonoMultiJack.Utilities;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Widgets
 {
 	/// <summary>
 	/// Widget for configuring an application for use with jackd

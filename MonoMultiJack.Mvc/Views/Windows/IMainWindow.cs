@@ -26,9 +26,9 @@
 using System;
 using System.Collections.Generic;
 using MonoMultiJack.Configuration;
-using MonoMultiJack.Widgets;
+using MonoMultiJack.Views.Widgets;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
 	public interface IMainWindow : IWindow
 	{
@@ -57,7 +57,7 @@ namespace MonoMultiJack.Windows
 		WindowConfiguration WindowConfiguration { get; set; }
 
 		/// <summary>
-		/// Sets a value indicating whether this <see cref="MonoMultiJack.Windows.IMainWindow"/> jackd is active.
+		/// Sets a value indicating whether this <see cref="MonoMultiJack.Views.Windows.IMainWindow"/> jackd is active.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if jackd is active; otherwise, <c>false</c>.
@@ -65,7 +65,7 @@ namespace MonoMultiJack.Windows
 		bool JackdIsRunning { set; }
 
 		/// <summary>
-		/// Sets a value indicating whether this <see cref="MonoMultiJack.Windows.IMainWindow"/> apps are running.
+		/// Sets a value indicating whether this <see cref="MonoMultiJack.Views.Windows.IMainWindow"/> apps are running.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if apps are running; otherwise, <c>false</c>.

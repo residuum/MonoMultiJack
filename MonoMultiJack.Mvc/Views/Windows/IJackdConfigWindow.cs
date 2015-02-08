@@ -1,10 +1,10 @@
 //
-// MessageDialog.cs
+// IJackdConfigWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2015 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Xwt;
-using Xwt.Drawing;
-using Xwt.Formats;
-using MonoMultiJack.Utilities;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
-	public static class Dialog
-	{
-		public static void ShowErrorMessage (string message)
-		{
-			MessageDialog.ShowError (message);
-		}
+	public interface IJackdConfigWindow : IWindow
+	{		
+		string Path { get; set; }
 
-		public static void ShowInfoMessage (string message)
-		{
-			MessageDialog.ShowMessage (message);
-		}
+		string GeneralOptions { get; set; }
+
+		string Driver { get; set; }
+
+		string DriverOptions { get; set; }
+
+		event EventHandler SaveJackd;
 	}
 }

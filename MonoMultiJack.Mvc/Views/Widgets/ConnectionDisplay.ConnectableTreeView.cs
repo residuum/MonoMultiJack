@@ -31,7 +31,7 @@ using Xwt.Drawing;
 using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.Utilities;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Widgets
 {
 	public partial class ConnectionDisplay
 	{

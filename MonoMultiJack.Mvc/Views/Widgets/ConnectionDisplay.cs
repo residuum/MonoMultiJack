@@ -30,7 +30,7 @@ using Xwt;
 using MonoMultiJack.Controllers.EventArguments;
 using MonoMultiJack.Utilities;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Widgets
 {
 	/// <summary>
 	/// Widget for displaying and managing connections.

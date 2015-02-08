@@ -1,10 +1,10 @@
 //
-// IHelpWindow.cs
+// IAppConfigWindow.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2014 Thomas Mayer
+// Copyright (c) 2009-2014 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using MonoMultiJack.Views.Widgets;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
-	public interface IHelpWindow: IWindow
+	public interface IAppConfigWindow : IWindow
 	{
-		string ProgramName { set;}
-		string HelpContent { set;}
+		void AddAppConfigWidget (IAppConfigWidget widget);
+
+		void RemoveAppConfigWidget (IAppConfigWidget widget);
+
+		event EventHandler SaveApplicationConfigs;
+		event EventHandler AddApplication;
 	}
 }
-

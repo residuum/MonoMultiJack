@@ -30,9 +30,9 @@ using MonoMultiJack.Configuration;
 using Xwt;
 using Xwt.Drawing;
 using MonoMultiJack.Utilities;
-using MonoMultiJack.Widgets;
+using MonoMultiJack.Views.Widgets;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
 	/// <summary>
 	/// Main Window 

@@ -1,5 +1,5 @@
 //
-// IAppConfigWindow.cs
+// IAppConfigWidget.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -24,17 +24,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using MonoMultiJack.Widgets;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Widgets
 {
-	public interface IAppConfigWindow : IWindow
+	public interface IAppConfigWidget : IWidget
 	{
-		void AddAppConfigWidget (IAppConfigWidget widget);
+		string Name { get; set; }
 
-		void RemoveAppConfigWidget (IAppConfigWidget widget);
+		string Command { get; set; }
 
-		event EventHandler SaveApplicationConfigs;
-		event EventHandler AddApplication;
+		string Arguments { get; set; }
+
+		event EventHandler RemoveApplication;
 	}
 }

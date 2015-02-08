@@ -28,7 +28,7 @@ using Xwt;
 using Xwt.Drawing;
 using MonoMultiJack.Utilities;
 
-namespace MonoMultiJack.Windows
+namespace MonoMultiJack.Views.Windows
 {
 	public class HelpWindow : Window, IHelpWindow
 	{

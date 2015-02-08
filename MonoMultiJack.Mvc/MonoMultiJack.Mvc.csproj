@@ -36,42 +36,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Widgets\AppConfigWidget.cs" />
-    <Compile Include="Widgets\ConnectionDisplay.cs" />
-    <Compile Include="Widgets\IWidget.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Widgets\AppStartWidget.cs" />
-    <Compile Include="Widgets\IAppStartWidget.cs" />
-    <Compile Include="Widgets\IAppConfigWidget.cs" />
     <Compile Include="Controllers\AppStartController.cs" />
     <Compile Include="Controllers\JackdConfigController.cs" />
     <Compile Include="Controllers\AppConfigController.cs" />
     <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Widgets\IConnectionWidget.cs" />
     <Compile Include="Controllers\ConnectionController.cs" />
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\DependencyResolver.cs" />
-    <Compile Include="Widgets\Colors.cs" />
-    <Compile Include="Widgets\ConnectionDisplay.ConnectableTreeView.cs" />
-    <Compile Include="Widgets\ConnectionDisplay.ConnectionArea.cs" />
-    <Compile Include="Widgets\ConnectionDisplay.MessageCollection.cs" />
-    <Compile Include="Utilities\WidgetExtensions.cs" />
-    <Compile Include="Windows\MainWindow.cs" />
-    <Compile Include="Windows\JackdConfigWindow.cs" />
-    <Compile Include="Windows\IMainWindow.cs" />
-    <Compile Include="Windows\IWindow.cs" />
-    <Compile Include="Windows\IAboutWindow.cs" />
-    <Compile Include="Windows\AboutWindow.cs" />
-    <Compile Include="Windows\IJackdConfigWindow.cs" />
-    <Compile Include="Windows\IAppConfigWindow.cs" />
-    <Compile Include="Windows\AppConfigWindow.cs" />
-    <Compile Include="Windows\IHelpWindow.cs" />
-    <Compile Include="Windows\HelpWindow.cs" />
-    <Compile Include="Windows\Dialog.cs" />
-    <Compile Include="Utilities\Icons.cs" />
+    <Compile Include="Views\Windows\AboutWindow.cs" />
+    <Compile Include="Views\Windows\AppConfigWindow.cs" />
+    <Compile Include="Views\Windows\Dialog.cs" />
+    <Compile Include="Views\Windows\HelpWindow.cs" />
+    <Compile Include="Views\Windows\IAboutWindow.cs" />
+    <Compile Include="Views\Windows\IAppConfigWindow.cs" />
+    <Compile Include="Views\Windows\IHelpWindow.cs" />
+    <Compile Include="Views\Windows\IJackdConfigWindow.cs" />
+    <Compile Include="Views\Windows\IMainWindow.cs" />
+    <Compile Include="Views\Windows\IWindow.cs" />
+    <Compile Include="Views\Windows\JackdConfigWindow.cs" />
+    <Compile Include="Views\Windows\MainWindow.cs" />
+    <Compile Include="Views\Widgets\AppConfigWidget.cs" />
+    <Compile Include="Views\Widgets\AppStartWidget.cs" />
+    <Compile Include="Views\Widgets\Colors.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.ConnectableTreeView.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.ConnectionArea.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.MessageCollection.cs" />
+    <Compile Include="Views\Widgets\IAppConfigWidget.cs" />
+    <Compile Include="Views\Widgets\IAppStartWidget.cs" />
+    <Compile Include="Views\Widgets\IConnectionWidget.cs" />
+    <Compile Include="Views\Widgets\IWidget.cs" />
+    <Compile Include="Views\WidgetExtensions.cs" />
+    <Compile Include="Views\Icons.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -95,20 +95,21 @@
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Icons\add.png" />
-    <EmbeddedResource Include="Icons\cancel.png" />
-    <EmbeddedResource Include="Icons\connect.png" />
-    <EmbeddedResource Include="Icons\disconnect.png" />
-    <EmbeddedResource Include="Icons\ok.png" />
-    <EmbeddedResource Include="Icons\program.png" />
-    <EmbeddedResource Include="Icons\remove.png" />
-    <EmbeddedResource Include="Icons\start.png" />
-    <EmbeddedResource Include="Icons\stop.png" />
-    <EmbeddedResource Include="Icons\warning.png" />
-    <EmbeddedResource Include="Icons\info.png" />
-    <EmbeddedResource Include="Icons\help.png" />
+    <EmbeddedResource Include="Views\Icons\add.png" />
+    <EmbeddedResource Include="Views\Icons\cancel.png" />
+    <EmbeddedResource Include="Views\Icons\connect.png" />
+    <EmbeddedResource Include="Views\Icons\disconnect.png" />
+    <EmbeddedResource Include="Views\Icons\help.png" />
+    <EmbeddedResource Include="Views\Icons\info.png" />
+    <EmbeddedResource Include="Views\Icons\ok.png" />
+    <EmbeddedResource Include="Views\Icons\program.png" />
+    <EmbeddedResource Include="Views\Icons\remove.png" />
+    <EmbeddedResource Include="Views\Icons\start.png" />
+    <EmbeddedResource Include="Views\Icons\stop.png" />
+    <EmbeddedResource Include="Views\Icons\warning.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\" />
+    <Folder Include="Views\" />
   </ItemGroup>
 </Project>

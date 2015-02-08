@@ -1,10 +1,10 @@
 //
-// IAboutWindow.cs
+// MessageDialog.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2015 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,24 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace MonoMultiJack.Windows
+using System;
+using Xwt;
+using Xwt.Drawing;
+using Xwt.Formats;
+using MonoMultiJack.Utilities;
+
+namespace MonoMultiJack.Views.Windows
 {
-	public interface IAboutWindow : IWindow
-	{		
-		string ProgramName { set; }
+	public static class Dialog
+	{
+		public static void ShowErrorMessage (string message)
+		{
+			MessageDialog.ShowError (message);
+		}
 
-		string Copyright { set; }
-
-		string Comments { set; }
-
-		string Version { set; }
-
-		string Website { set; }
-
-		string[] Authors { set; }
-
-		string License { set; }
+		public static void ShowInfoMessage (string message)
+		{
+			MessageDialog.ShowMessage (message);
+		}
 	}
 }

@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using Xwt.Drawing;
 
-namespace MonoMultiJack.Widgets
+namespace MonoMultiJack.Views.Widgets
 {
 	static class Colors
 	{
