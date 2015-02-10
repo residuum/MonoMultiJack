@@ -11,8 +11,7 @@ if [ "$1" == "Gtk3" ]; then
 	cp -f MonoMultiJack.Linux/MonoMultiJack.Linux.Gtk3.config MonoMultiJack.Linux/app.config
 fi
 
-git submodule init
-git submodule update
+git submodule update --init --recursive
 
 ${XBUILD} ${SOLUTION} /p:Configuration=Release /t:Clean
 ${XBUILD} ${OTHER} /p:Configuration=Release /t:Clean
