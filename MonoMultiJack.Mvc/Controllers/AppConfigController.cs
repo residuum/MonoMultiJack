@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using MonoMultiJack.Configuration;
 using MonoMultiJack.Controllers.EventArguments;
-using MonoMultiJack.Utilities;
 using MonoMultiJack.Views;
 using MonoMultiJack.Views.Widgets;
 using MonoMultiJack.Views.Windows;

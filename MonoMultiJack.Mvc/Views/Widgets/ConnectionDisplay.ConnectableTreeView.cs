@@ -29,7 +29,6 @@ using MonoMultiJack.ConnectionWrapper;
 using Xwt;
 using Xwt.Drawing;
 using MonoMultiJack.Controllers.EventArguments;
-using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Views.Widgets
 {

@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using Xwt;
-using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Views.Widgets
 {

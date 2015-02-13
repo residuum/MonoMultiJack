@@ -26,7 +26,6 @@
 using System;
 using Xwt;
 using Xwt.Drawing;
-using MonoMultiJack.Utilities;
 
 namespace MonoMultiJack.Views.Windows
 {

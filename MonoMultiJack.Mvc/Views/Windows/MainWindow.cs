@@ -29,7 +29,6 @@ using System.Linq;
 using MonoMultiJack.Configuration;
 using Xwt;
 using Xwt.Drawing;
-using MonoMultiJack.Utilities;
 using MonoMultiJack.Views.Widgets;
 
 namespace MonoMultiJack.Views.Windows
