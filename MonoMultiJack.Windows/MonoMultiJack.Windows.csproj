@@ -32,8 +32,10 @@
   <PropertyGroup>
     <StartupObject>MonoMultiJack.MainClass</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>monomultijack.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System" />
@@ -83,5 +85,7 @@
       <Name>MonoMultiJack.Mvc</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="monomultijack.ico" />
+  </ItemGroup>
 </Project>
