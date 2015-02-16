@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E1C953E7-CDDF-4D5F-8DF2-EDF3F924BD2E}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package name="MonoMultiJack.Linux.Autotools">
+          <Builder TargetDirectory=".." DefaultConfiguration="Release" ctype="TarballDeployTarget">
+            <ChildEntries>
+              <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper.Alsa\MonoMultiJack.ConnectionWrapper.Alsa.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.Configuration\MonoMultiJack.Configuration.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.OS\MonoMultiJack.OS.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj" />
+              <SolutionItemReference path="..\xwt\Xwt\Xwt.csproj" />
+              <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj" />
+              <SolutionItemReference path="..\NLog\src\NLog\NLog.monodevelop.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\MonoMultiJack.Lnx.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+    <ReleaseVersion>0.5.0</ReleaseVersion>
+  </PropertyGroup>
+</Project>
