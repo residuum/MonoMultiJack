@@ -4,13 +4,12 @@
     <ItemType>PackagingProject</ItemType>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E1C953E7-CDDF-4D5F-8DF2-EDF3F924BD2E}</ProjectGuid>
+    <ProjectGuid>{E14C4642-6194-45C0-86DB-23057E2921AF}</ProjectGuid>
     <Packages>
       <Packages>
-        <Package name="MonoMultiJack.Linux.Autotools">
+        <Package name="MonoMultiJack.Linux.Gtk3.Autotools">
           <Builder TargetDirectory=".." DefaultConfiguration="Release" ctype="TarballDeployTarget">
             <ChildEntries>
-              <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper.Alsa\MonoMultiJack.ConnectionWrapper.Alsa.csproj" />
@@ -18,15 +17,16 @@
               <SolutionItemReference path="..\MonoMultiJack.OS\MonoMultiJack.OS.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj" />
               <SolutionItemReference path="..\xwt\Xwt\Xwt.csproj" />
-              <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk3.csproj" />
+              <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk3.csproj" />
               <SolutionItemReference path="..\NLog\src\NLog\NLog.monodevelop.csproj" />
             </ChildEntries>
-            <RootEntry path="..\MonoMultiJack.Lnx.sln" id=":root:" />
+            <RootEntry path="..\MonoMultiJack.Lnx.Gtk3.sln" id=":root:" />
           </Builder>
         </Package>
-        <Package name="MonoMultiJack.Linux.Binaries">
-          <Builder targetFile="..\MonoMultiJack.tar.bz2" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
+        <Package name="MonoMultiJack.Linux.Gtk3.Binaries">
+          <Builder targetFile="..\MonoMultiJack.Gtk3.tar.bz2" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
             <ChildEntries>
               <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj" />
@@ -35,16 +35,15 @@
               <SolutionItemReference path="..\MonoMultiJack.OS\MonoMultiJack.OS.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.OS.Linux\MonoMultiJack.OS.Linux.csproj" />
               <SolutionItemReference path="..\xwt\Xwt\Xwt.csproj" />
-              <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.csproj" />
-              <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj" />
               <SolutionItemReference path="..\MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj" />
+              <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk3.csproj" />
+              <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk3.csproj" />
               <SolutionItemReference path="..\NLog\src\NLog\NLog.monodevelop.csproj" />
             </ChildEntries>
-            <RootEntry path="..\MonoMultiJack.Lnx.sln" id=":root:" />
+            <RootEntry path="..\MonoMultiJack.Lnx.Gtk3.sln" id=":root:" />
           </Builder>
         </Package>
       </Packages>
     </Packages>
-    <ReleaseVersion>0.5.0</ReleaseVersion>
   </PropertyGroup>
 </Project>
