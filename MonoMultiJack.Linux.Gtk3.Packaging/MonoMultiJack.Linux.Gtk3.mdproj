@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ItemType>PackagingProject</ItemType>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E14C4642-6194-45C0-86DB-23057E2921AF}</ProjectGuid>
     <Packages>
@@ -45,5 +45,6 @@
         </Package>
       </Packages>
     </Packages>
+    <ReleaseVersion>0.6.0</ReleaseVersion>
   </PropertyGroup>
 </Project>

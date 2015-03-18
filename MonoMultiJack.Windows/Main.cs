@@ -27,7 +27,7 @@ using System;
 using MonoMultiJack.Controllers;
 using Xwt;
 
-namespace MonoMultiJack
+namespace Mmj
 {
 	/// <summary>
 	/// startup class

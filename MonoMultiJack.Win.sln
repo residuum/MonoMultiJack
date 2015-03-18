@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper", "MonoMultiJack.ConnectionWrapper\MonoMultiJack.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper", "Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.ConnectionWrapper.Jack", "MonoMultiJack.ConnectionWrapper.Jack\MonoMultiJack.ConnectionWrapper.Jack.csproj", "{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper.Jack", "Mmj.ConnectionWrapper.Jack\Mmj.ConnectionWrapper.Jack.csproj", "{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Configuration", "MonoMultiJack.Configuration\MonoMultiJack.Configuration.csproj", "{95BED56E-4297-4668-B75B-A9DF6F522EB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Configuration", "Mmj.Configuration\Mmj.Configuration.csproj", "{95BED56E-4297-4668-B75B-A9DF6F522EB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.OS", "MonoMultiJack.OS\MonoMultiJack.OS.csproj", "{D975B294-7420-433F-B5A8-A7B230584877}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.OS", "Mmj.OS\Mmj.OS.csproj", "{D975B294-7420-433F-B5A8-A7B230584877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.OS.Windows", "MonoMultiJack.OS.Windows\MonoMultiJack.OS.Windows.csproj", "{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.OS.Windows", "Mmj.OS.Windows\Mmj.OS.Windows.csproj", "{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt", "xwt\Xwt\Xwt.csproj", "{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.WPF", "xwt\Xwt.WPF\Xwt.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows", "MonoMultiJack.Windows\MonoMultiJack.Windows.csproj", "{48716E31-9E50-469A-8EA4-3F722C79D7B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Mvc", "MonoMultiJack.Mvc\MonoMultiJack.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvc", "Mmj.Mvc\Mmj.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.netfx35", "NLog\src\NLog\NLog.netfx35.csproj", "{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}"
 EndProject

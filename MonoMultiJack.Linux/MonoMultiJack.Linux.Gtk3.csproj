@@ -3,14 +3,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C491EA5A-D734-4ACC-A30F-8D63B47F7167}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MonoMultiJack</RootNamespace>
+    <RootNamespace>Mmj</RootNamespace>
     <AssemblyName>MonoMultiJack</AssemblyName>
-    <ReleaseVersion>0.5.0</ReleaseVersion>
-    <StartupObject>MonoMultiJack.MainClass</StartupObject>
+    <ReleaseVersion>0.6.0</ReleaseVersion>
+    <StartupObject>Mmj.MainClass</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

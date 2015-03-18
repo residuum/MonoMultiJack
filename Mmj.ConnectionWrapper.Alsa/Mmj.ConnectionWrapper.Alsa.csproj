@@ -3,13 +3,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A8E040E6-F02C-40B3-A14A-D629B562BD9B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Mmj.ConnectionWrapper.Alsa</RootNamespace>
     <AssemblyName>Mmj.ConnectionWrapper.Alsa</AssemblyName>
-    <ReleaseVersion>0.5.0</ReleaseVersion>
+    <ReleaseVersion>0.6.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
