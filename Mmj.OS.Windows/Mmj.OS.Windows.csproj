@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mmj.OS</RootNamespace>
+    <AssemblyName>Mmj.OS.Windows</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ReleaseVersion>0.5.0</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConnectionManagerFactory.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="StartupParameters.cs" />
+    <Compile Include="Logger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
+      <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
+      <Name>Mmj.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.ConnectionWrapper.Jack\Mmj.ConnectionWrapper.Jack.csproj">
+      <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
+      <Name>Mmj.ConnectionWrapper.Jack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
+      <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
+      <Name>Mmj.ConnectionWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.OS\Mmj.OS.csproj">
+      <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
+      <Name>Mmj.OS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NLog\src\NLog\NLog.netfx35.csproj">
+      <Project>{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}</Project>
+      <Name>NLog.netfx35</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

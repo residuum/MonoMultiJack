@@ -1,10 +1,10 @@
 // 
-// Main.cs
+// AppConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,40 +23,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Mmj.Controllers;
-using Xwt;
-
-namespace Mmj
+namespace Mmj.Configuration
 {
 	/// <summary>
-	/// startup class
+	/// Configuration of an application
 	/// </summary>
-	class MainClass
+	public struct AppConfiguration
 	{
 		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
+		/// name of the application
 		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
-		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
+		public string Name { get; private set; }
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
+		/// <summary>
+		/// command to launch the application
+		/// </summary>
+		public string Command { get; private set; }
+
+		/// <summary>
+		/// Gets the arguments.
+		/// </summary>
+		/// <value>
+		/// The arguments.
+		/// </value>
+		public string Arguments { get; private set; }
+
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="newName">A <see cref="System.String" /> indicating name of application</param>
+		/// <param name="newCommand">A <see cref="System.String" /> indicating command to lauch the application</param>
+		/// <param name="newArguments">The new arguments.</param>
+		public AppConfiguration (string newName, string newCommand, string newArguments) : this()
 		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
+			Name = newName;
+			Command = newCommand;
+			Arguments = newArguments;
 		}
 	}
 }

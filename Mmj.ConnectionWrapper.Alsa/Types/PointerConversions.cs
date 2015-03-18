@@ -1,21 +1,21 @@
-// 
-// Main.cs
-//  
+//
+// PointerConversions.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2014 Thomas Mayer
-// 
+//
+// Copyright (c) 2009-2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,39 +24,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Runtime.InteropServices;
 
-namespace Mmj
+namespace Mmj.ConnectionWrapper.Alsa.Types
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	internal static class PointerConversions
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
+		public static SndSeqAddr PtrToSndSeqAddr (this IntPtr ptr)
 		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
+			try {
+				return (SndSeqAddr)Marshal.PtrToStructure (
+					ptr,
+					typeof(SndSeqAddr)
+				);
+			} catch {
+				return new SndSeqAddr ();
+			}
 		}
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
+		public static IntPtr SndSeqAddrToPtr (this SndSeqAddr addr)
 		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
+			IntPtr ptr = typeof(SndSeqAddr).Malloc ();
+			Marshal.StructureToPtr (addr, ptr, false);
+			return ptr;
+		}
+
+		static IntPtr Malloc (this Type type)
+		{
+			return Marshal.AllocHGlobal (Marshal.SizeOf (type));
 		}
 	}
 }

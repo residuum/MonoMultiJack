@@ -1,21 +1,21 @@
-// 
-// Main.cs
-//  
+//
+// MarshallingHelper.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2014 Thomas Mayer
-// 
+//
+// Copyright (c) 2009-2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,39 +24,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Runtime.InteropServices;
 
-namespace Mmj
+namespace Mmj.ConnectionWrapper
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	public static class MarshallingHelper
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
+		public static string PtrToString (this IntPtr p)
 		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
+			if (p == IntPtr.Zero) {
+				return null;
+			}
+			return Marshal.PtrToStringAnsi (p);
 		}
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
+		public static string[] PtrToStringArray (this IntPtr stringArray)
 		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
+			if (stringArray == IntPtr.Zero) {
+				return new string[] { };
+			} 
+ 
+			ushort arrayCount = stringArray.CountStrings ();
+			return stringArray.PtrToStringArray (arrayCount);
+		}
+
+		static ushort CountStrings (this IntPtr stringArray)
+		{
+			ushort count = 0;
+			while (Marshal.ReadIntPtr (stringArray, count*IntPtr.Size) != IntPtr.Zero) {
+				++count;
 			}
+			return count;
+		}
+
+		static string[] PtrToStringArray (this IntPtr stringArray, ushort count)
+		{
+			if (stringArray == IntPtr.Zero) {
+				return new string[count];
+			} 
+ 
+			string[] members = new string[count];
+			for (int i = 0; i < count; ++i) {
+				IntPtr s = Marshal.ReadIntPtr (stringArray, i * IntPtr.Size);
+				members [i] = PtrToString (s);
+			} 
+			return members;
 		}
 	}
 }

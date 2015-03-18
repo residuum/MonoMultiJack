@@ -1,5 +1,5 @@
-// 
-// Main.cs
+﻿// 
+// MessageCollection.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,39 +23,49 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Collections.Generic;
 
-namespace Mmj
+namespace Mmj.Views.Widgets
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	partial class ConnectionDisplay
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
+		private class MessageCollection
 		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
+			readonly List<Message> _messages = new List<Message>();
+			static readonly TimeSpan MessageTimeout = TimeSpan.FromSeconds (10);
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
+			public void AddMessage (string message)
+			{
+				lock (_messages) {
+					_messages.Add (new Message {
+						Created = DateTime.Now, 
+						Content = message
+					});
+				}
+			}
+
+			public string GetMessages ()
+			{
+				List<string> outputMessages = new List<string> ();
+				lock (_messages) {
+					for (int i = _messages.Count - 1; i >= 0; i--) {
+						Message message = _messages[i];
+						if (message.Created.Add (MessageTimeout) < DateTime.Now) {
+							_messages.RemoveAt (i);
+						} else {
+							outputMessages.Add (string.Format ("**{0}**: {1}", message.Created.ToLongTimeString (), message.Content));
+						}
+					}
+				}
+				return string.Join ("  \n", outputMessages);
+			}
+
+			private class Message
+			{
+				public DateTime Created { get; set; }
+				public string Content { get; set; }
 			}
 		}
 	}

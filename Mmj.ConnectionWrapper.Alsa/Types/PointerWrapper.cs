@@ -1,21 +1,21 @@
-// 
-// Main.cs
-//  
+//
+// PointerWrapper.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2014 Thomas Mayer
-// 
+//
+// Copyright (c) 2009-2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,38 +24,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Runtime.InteropServices;
 
-namespace Mmj
+namespace Mmj.ConnectionWrapper.Alsa.Types
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	public class PointerWrapper : IDisposable
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
+		public IntPtr Pointer { get; private set; }
+
+		public PointerWrapper (int pointerSize)
 		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
+			Pointer = Marshal.AllocHGlobal (pointerSize);
 		}
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
+		public PointerWrapper (IntPtr ptr)
 		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
+			Pointer = ptr;
+		}
+
+		~PointerWrapper ()
+		{
+			Dispose (false);
+		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		protected virtual void Dispose (bool disposing)
+		{			
+			if (Pointer != IntPtr.Zero) {
+				Marshal.FreeHGlobal (Pointer);
 			}
 		}
 	}

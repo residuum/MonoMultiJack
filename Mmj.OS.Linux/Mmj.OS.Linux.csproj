@@ -3,62 +3,44 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C491EA5A-D734-4ACC-A30F-8D63B47F7167}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>MonoMultiJack</RootNamespace>
-    <AssemblyName>MonoMultiJack</AssemblyName>
+    <ProjectGuid>{0FF07842-6E86-40F0-998B-D376D50B83A3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Mmj.OS</RootNamespace>
+    <AssemblyName>Mmj.OS.Linux</AssemblyName>
     <ReleaseVersion>0.5.0</ReleaseVersion>
-    <StartupObject>MonoMultiJack.MainClass</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.Gtk3.config app.config" workingdir="${ProjectDir}" />
-      </CustomCommands>
-    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.Gtk3.config app.config" workingdir="${ProjectDir}" />
-      </CustomCommands>
-    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ConnectionManagerFactory.cs" />
+    <Compile Include="StartupParameters.cs" />
+    <Compile Include="Logger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="app.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="MonoMultiJack.Linux.Gtk3.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
-      <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
-      <Name>Mmj.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>Mmj.ConnectionWrapper</Name>
@@ -71,25 +53,21 @@
       <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
       <Name>Mmj.ConnectionWrapper.Jack</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mmj.Mvc\Mmj.Mvc.csproj">
-      <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
-      <Name>Mmj.Mvc</Name>
+    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
+      <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
+      <Name>Mmj.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mmj.OS\Mmj.OS.csproj">
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>Mmj.OS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mmj.OS.Linux\Mmj.OS.Linux.csproj">
-      <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
-      <Name>Mmj.OS.Linux</Name>
-    </ProjectReference>
     <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\xwt\Xwt.Gtk\Xwt.Gtk3.csproj">
-      <Project>{3B25FD1F-CEBA-4450-8893-DC330FDB56A7}</Project>
-      <Name>Xwt.Gtk3</Name>
+    <ProjectReference Include="..\NLog\src\NLog\NLog.monodevelop.csproj">
+      <Project>{E7AB20BF-6920-442A-B876-CC05BC5CEC79}</Project>
+      <Name>NLog.monodevelop</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

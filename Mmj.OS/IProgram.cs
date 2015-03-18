@@ -1,21 +1,21 @@
-// 
-// Main.cs
-//  
+//
+// IProgram.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2014 Thomas Mayer
-// 
+//
+// Copyright (c) 2009-2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,39 +24,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
 
-namespace Mmj
+namespace Mmj.OS
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	public interface IProgram : IDisposable
 	{
 		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
+		/// Signals the exit of program.
 		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
-		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
+		event ProgramEventHandler HasExited;
+		
+		/// <summary>
+		/// Signals the start of program
+		/// </summary>
+		event ProgramEventHandler HasStarted;
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
-		}
+		/// <summary>
+		/// Gets a value indicating whether this instance is running.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if this instance is running; otherwise, <c>false</c>.
+		/// </value>
+		bool IsRunning{ get; }
+
+		/// <summary>
+		/// Stop this instance.
+		/// </summary>
+		void Stop ();
+
+		/// <summary>
+		/// Start this instance.
+		/// </summary>
+		void Start ();
 	}
 }

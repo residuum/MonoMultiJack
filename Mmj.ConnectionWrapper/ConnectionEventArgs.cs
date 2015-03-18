@@ -1,10 +1,10 @@
 // 
-// Main.cs
+// ConnectionEventHandler.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,39 +24,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Collections.Generic;
 
-namespace Mmj
+namespace Mmj.ConnectionWrapper
 {
 	/// <summary>
-	/// startup class
+	/// Event arguments for connection management.
 	/// </summary>
-	class MainClass
+	public class ConnectionEventArgs : EventArgs
 	{
 		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
+		/// The message for the event.
 		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
-		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
+		public string Message { get; set; }
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
-		}
+		/// <summary>
+		/// Gets or sets the connectables.
+		/// </summary>
+		/// <value>
+		/// The connectables.
+		/// </value>
+		public IEnumerable<IConnectable> Connectables { get; set; }
+
+		/// <summary>
+		/// The affected ConnectionType
+		/// </summary>
+		public ConnectionType ConnectionType { get; set; }
+
+		/// <summary>
+		/// The Type of message
+		/// </summary>
+		public MessageType MessageType { get; set; }
+
+		/// <summary>
+		/// The connections affected by the event.
+		/// </summary>
+		public IEnumerable<IConnection> Connections { get; set; }
+
+		/// <summary>
+		/// The type of change of the ports or connections.
+		/// </summary>
+		public ChangeType ChangeType { get; set; }
 	}
 }

@@ -1,10 +1,10 @@
 // 
-// Main.cs
+// JackdAudioConnection.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,40 +23,12 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Mmj.Controllers;
-using Xwt;
-
-namespace Mmj
+namespace Mmj.ConnectionWrapper.Jack.Types
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	public class JackMidiConnection : Connection
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
-		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
-
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
+		public override ConnectionType ConnectionType {
+			get { return ConnectionType.JackMidi; }
 		}
 	}
 }

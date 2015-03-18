@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Mmj.ConnectionWrapper</RootNamespace>
+    <AssemblyName>Mmj.ConnectionWrapper</AssemblyName>
+    <ReleaseVersion>0.5.0</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ChangeType.cs" />
+    <Compile Include="ConnectionEventArgs.cs" />
+    <Compile Include="ConnectionType.cs" />
+    <Compile Include="IConnection.cs" />
+    <Compile Include="IConnectionManager.cs" />
+    <Compile Include="MessageType.cs" />
+    <Compile Include="Port.cs" />
+    <Compile Include="MarshallingHelper.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="IConnectable.cs" />
+    <Compile Include="FlowDirection.cs" />
+    <Compile Include="EnumerableHelper.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="DummyPort.cs" />
+    <Compile Include="ConnectableSerialization.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,10 +1,10 @@
 // 
-// Main.cs
+// LibAsoundWrapper.Definitions.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,40 +23,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Mmj.Controllers;
-using Xwt;
-
-namespace Mmj
+namespace Mmj.ConnectionWrapper.Alsa.LibAsound
 {
-	/// <summary>
-	/// startup class
-	/// </summary>
-	class MainClass
+	internal static class Definitions
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
-		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
-
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
-		}
+		public const string ASOUND_LIB_NAME = "libasound";
+		public const int SND_SEQ_NONBLOCK = 1;
+		public const int SND_SEQ_OPEN_DUPLEX = 3;
+		public const int SND_SEQ_PORT_CAP_NO_EXPORT = (1 << 7);
+		public const int SND_SEQ_PORT_CAP_READ = (1 << 0);
+		public const int SND_SEQ_PORT_CAP_WRITE = (1 << 1);
+		const int SND_SEQ_PORT_CAP_DUPLEX = (1 << 4);
+		public const int SND_SEQ_USER_CLIENT = 1;
+		public const int SND_SEQ_PORT_SYSTEM_TIMER = 0;
+		public const int SND_SEQ_PORT_SYSTEM_ANNOUNCE = 1;
+		public const int SND_SEQ_QUERY_SUBS_READ = 0;
 	}
 }

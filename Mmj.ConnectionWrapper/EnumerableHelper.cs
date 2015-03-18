@@ -1,21 +1,21 @@
-// 
-// Main.cs
-//  
+//
+// EnumerableHelper.cs
+//
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
-// 
-// Copyright (c) 2009-2014 Thomas Mayer
-// 
+//
+// Copyright (c) 2009-2013 Thomas Mayer
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,38 +24,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Mmj
+namespace Mmj.ConnectionWrapper
 {
 	/// <summary>
-	/// startup class
+	/// Enumerable helper.
 	/// </summary>
-	class MainClass
+	public static class EnumerableHelper
 	{
 		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
+		/// Pairs the ports.
 		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
+		/// <returns>
+		/// The ports.
+		/// </returns>
+		/// <param name='outlet'>
+		/// Outlet.
 		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
+		/// <param name='inlet'>
+		/// Inlet.
+		/// </param>
+		public static IEnumerable<KeyValuePair<Port, Port>> PairPorts (IConnectable outlet, IConnectable inlet)
 		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
+			List<Port> outPorts = outlet.Ports.ToList ();
+			List<Port> inPorts = inlet.Ports.ToList ();
+			int portCount = Math.Min (outPorts.Count, inPorts.Count);
+			for (int i = 0; i <portCount; i++) {
+				yield return new KeyValuePair<Port, Port> (outPorts [i], inPorts [i]);
+			}
 		}
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
+		public static IEnumerable<KeyValuePair<Port, Port>> PairAll (IConnectable outlet, IConnectable inlet)
+		{		
+			List<Port> outPorts = outlet.Ports.ToList ();
+			List<Port> inPorts = inlet.Ports.ToList ();
+			foreach (Port outPort in outPorts) {
+				foreach (Port inPort in inPorts) {
+					yield return new KeyValuePair<Port, Port> (outPort, inPort);
+				}
 			}
 		}
 	}

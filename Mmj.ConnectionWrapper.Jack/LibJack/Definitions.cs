@@ -1,10 +1,10 @@
 // 
-// Main.cs
+// LibJackWrapper.Definitions.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,39 +24,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
-using Xwt;
+using System.Runtime.InteropServices;
 
-namespace Mmj
+namespace Mmj.ConnectionWrapper.Jack.LibJack
 {
 	/// <summary>
-	/// startup class
+	/// Wrapper class for libjack. This file contains definitions for private classes, enums and constants.
 	/// </summary>
-	class MainClass
+	internal static class Definitions
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		[STAThread]
-		public static void Main (string[] args)
-		{
-			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
-			Application.Run ();
-		}
+		public const string JACK_LIB_NAME = "libjack";
+		public const string JACK_DEFAULT_AUDIO_TYPE = "32 bit float mono audio";
+		public const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";
 
-		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
-		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
-				Application.Exit ();
-			}
-		}
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+        public delegate void JackPortRegistrationCallback (uint port,int register,IntPtr args);
+
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+        public delegate void JackPortConnectCallback (uint a,uint b,int connect,IntPtr args);
+
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+        public delegate void JackShutdownCallback (IntPtr args);
+
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	    public delegate void JackXRunCallback (IntPtr args);
 	}
 }

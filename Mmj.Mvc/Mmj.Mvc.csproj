@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D43459F9-41B8-467F-965E-8783BD10FC04}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>MonoMultiJack.Mvc</AssemblyName>
+    <RootNamespace>MonoMultiJack</RootNamespace>
+    <ReleaseVersion>0.5.0</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System" />
+    <Reference Include="System.Management" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\AppStartController.cs" />
+    <Compile Include="Controllers\JackdConfigController.cs" />
+    <Compile Include="Controllers\AppConfigController.cs" />
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\ConnectionController.cs" />
+    <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
+    <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
+    <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\DependencyResolver.cs" />
+    <Compile Include="Views\Windows\AboutWindow.cs" />
+    <Compile Include="Views\Windows\AppConfigWindow.cs" />
+    <Compile Include="Views\Windows\Dialog.cs" />
+    <Compile Include="Views\Windows\HelpWindow.cs" />
+    <Compile Include="Views\Windows\IAboutWindow.cs" />
+    <Compile Include="Views\Windows\IAppConfigWindow.cs" />
+    <Compile Include="Views\Windows\IHelpWindow.cs" />
+    <Compile Include="Views\Windows\IJackdConfigWindow.cs" />
+    <Compile Include="Views\Windows\IMainWindow.cs" />
+    <Compile Include="Views\Windows\IWindow.cs" />
+    <Compile Include="Views\Windows\JackdConfigWindow.cs" />
+    <Compile Include="Views\Windows\MainWindow.cs" />
+    <Compile Include="Views\Widgets\AppConfigWidget.cs" />
+    <Compile Include="Views\Widgets\AppStartWidget.cs" />
+    <Compile Include="Views\Widgets\Colors.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.ConnectableTreeView.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.ConnectionArea.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.cs" />
+    <Compile Include="Views\Widgets\ConnectionDisplay.MessageCollection.cs" />
+    <Compile Include="Views\Widgets\IAppConfigWidget.cs" />
+    <Compile Include="Views\Widgets\IAppStartWidget.cs" />
+    <Compile Include="Views\Widgets\IConnectionWidget.cs" />
+    <Compile Include="Views\Widgets\IWidget.cs" />
+    <Compile Include="Views\WidgetExtensions.cs" />
+    <Compile Include="Views\Icons.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
+      <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
+      <Name>Mmj.ConnectionWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
+      <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
+      <Name>Mmj.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.OS\Mmj.OS.csproj">
+      <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
+      <Name>Mmj.OS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Icons\add.png" />
+    <EmbeddedResource Include="Views\Icons\cancel.png" />
+    <EmbeddedResource Include="Views\Icons\connect.png" />
+    <EmbeddedResource Include="Views\Icons\disconnect.png" />
+    <EmbeddedResource Include="Views\Icons\help.png" />
+    <EmbeddedResource Include="Views\Icons\info.png" />
+    <EmbeddedResource Include="Views\Icons\ok.png" />
+    <EmbeddedResource Include="Views\Icons\program.png" />
+    <EmbeddedResource Include="Views\Icons\remove.png" />
+    <EmbeddedResource Include="Views\Icons\start.png" />
+    <EmbeddedResource Include="Views\Icons\stop.png" />
+    <EmbeddedResource Include="Views\Icons\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+</Project>
