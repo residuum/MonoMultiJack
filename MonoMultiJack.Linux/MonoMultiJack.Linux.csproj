@@ -92,4 +92,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Deployment.LinuxDeployData scriptName="monomultijack" />
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
