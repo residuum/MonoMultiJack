@@ -24,10 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System.Collections.Generic;
-using MonoMultiJack.ConnectionWrapper;
-using MonoMultiJack.ConnectionWrapper.Jack;
+using Mmj.ConnectionWrapper;
+using Mmj.ConnectionWrapper.Jack;
 
-namespace MonoMultiJack.OS
+namespace Mmj.OS
 {
 	public class ConnectionManagerFactory : IConnectionManagerFactory
 	{

@@ -8,8 +8,8 @@
     <ProjectGuid>{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonoMultiJack.Windows.Installer</RootNamespace>
-    <AssemblyName>MonoMultiJack.Windows.Installer</AssemblyName>
+    <RootNamespace>Mmj.Windows.Installer</RootNamespace>
+    <AssemblyName>Mmj.Windows.Installer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

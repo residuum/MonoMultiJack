@@ -27,9 +27,9 @@ using System;
 using NLog.Config;
 using NLog.Targets;
 using NLog;
-using MonoMultiJack.ConnectionWrapper;
+using Mmj.ConnectionWrapper;
 
-namespace MonoMultiJack.OS
+namespace Mmj.OS
 {
 	public class Logger : ILogger
 	{

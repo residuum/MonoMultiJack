@@ -1,4 +1,4 @@
-﻿namespace MonoMultiJack.Windows.Installer
+﻿namespace Mmj.Windows.Installer
 {
     partial class InstallChecks
     {

@@ -27,9 +27,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using MonoMultiJack.Configuration;
+using Mmj.Configuration;
 
-namespace MonoMultiJack.OS
+namespace Mmj.OS
 {
 	public class Program : IProgram
 	{

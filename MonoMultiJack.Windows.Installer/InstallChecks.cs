@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace MonoMultiJack.Windows.Installer
+namespace Mmj.Windows.Installer
 {
 	[RunInstaller (true)]
 	public partial class InstallChecks : System.Configuration.Install.Installer
