@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D43459F9-41B8-467F-965E-8783BD10FC04}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>MonoMultiJack.Mvc</AssemblyName>
-    <RootNamespace>MonoMultiJack</RootNamespace>
+    <AssemblyName>Mmj.Mvc</AssemblyName>
+    <RootNamespace>Mmj</RootNamespace>
     <ReleaseVersion>0.6.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -108,8 +108,5 @@
     <EmbeddedResource Include="Views\Icons\stop.png" />
     <EmbeddedResource Include="Views\Icons\warning.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
