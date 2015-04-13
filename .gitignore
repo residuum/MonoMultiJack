@@ -170,3 +170,8 @@ $RECYCLE.BIN/
 
 # app.config is copied depending on GTK version
 MonoMultiJack.Linux/app.config
+
+# packages
+*.zip
+*.tar.gz
+*.tar.bz2
