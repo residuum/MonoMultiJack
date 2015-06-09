@@ -84,17 +84,18 @@ namespace Mmj.OS
 		#endregion
 		static readonly string _helpText = @"**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.
 
-**Startup Parameters**
-
-*/h*, */?*: Show this help on startup.
-
-*/j*: Launches Jackd on startup.
-
-*/f*: Starts in fullscreen mode.
-
-*/c=<dir>*: Loads configuration from the specified directory.
-
+**Startup Parameters**  
+*/h*, */?*: Show this help on startup.  
+*/j*: Launches Jackd on startup.  
+*/f*: Starts in fullscreen mode.  
+*/c=<dir>*: Loads configuration from the specified directory.  
 */l=<file>*: Logs messages and debugging information to the specified file.
+
+**Keyboard Shortcuts**  
+*F1*: Show this help.  
+*Alt+F4*, *Ctrl+Q*: Quits the program and closes all started applications.  
+*Ctrl+C*: Connects the selected inlets / outlets and or clients.  
+*Ctrl+D*: Disconnects the selected inlets / outlets and or clients.  
 ";
 	}
 }
