@@ -57,6 +57,18 @@ namespace Mmj.Views.Windows
 			BuildMenu ();
 			BuildWindowContent ();
 			Closed += OnCloseEvent;
+			Content.KeyPressed += OnKeyEvent;
+		}
+
+		void OnKeyEvent (object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.F1 && e.Modifiers == ModifierKeys.None) {
+				CallShowHelp (this, new EventArgs ());
+			}
+			if ((e.Key == Key.F4 && e.Modifiers == ModifierKeys.Alt)
+				|| (e.Key == Key.q && e.Modifiers == ModifierKeys.Control)) {
+				CallQuitApplication ();
+			}
 		}
 
 		void BuildMenu ()

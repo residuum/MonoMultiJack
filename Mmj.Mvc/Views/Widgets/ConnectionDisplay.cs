@@ -117,6 +117,20 @@ namespace Mmj.Views.Widgets
 			_outTreeView.ViewChanged += OnTreeViewRowExpanded;
 			_inTreeView.Connect += OnInTreeConnect;
 			_outTreeView.Connect += OnOutTreeConnect;
+			KeyPressed += OnKeyEvent;
+		}
+
+
+		void OnKeyEvent(object sender, KeyEventArgs e)
+		{
+			if (e.Modifiers == ModifierKeys.Control) {
+				if (e.Key == Key.c) {
+					CallConnect ();
+				}
+				if (e.Key == Key.d) {
+					CallDisconnect ();
+				}
+			}
 		}
 
 		public void AddConnectable (IConnectable connectable)
@@ -170,6 +184,11 @@ namespace Mmj.Views.Widgets
 
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
+			CallConnect();
+		}
+
+		private void CallConnect ()
+		{
 			IConnectable outlet = _outTreeView.GetSelected ();
 			IConnectable inlet = _inTreeView.GetSelected ();
 			if (outlet == null || inlet == null) {
@@ -214,6 +233,11 @@ namespace Mmj.Views.Widgets
 		}
 
 		protected virtual void DisconnectButton_Click (object sender, EventArgs e)
+		{
+			CallDisconnect();
+		}
+
+		private void CallDisconnect ()
 		{
 			if (Disconnect != null) {
 				int notSelected = 0;
