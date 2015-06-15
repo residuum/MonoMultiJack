@@ -175,3 +175,6 @@ MonoMultiJack.Linux/app.config
 *.zip
 *.tar.gz
 *.tar.bz2
+
+# coverity
+cov-int/**

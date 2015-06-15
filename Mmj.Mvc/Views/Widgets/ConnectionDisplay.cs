@@ -120,7 +120,6 @@ namespace Mmj.Views.Widgets
 			KeyPressed += OnKeyEvent;
 		}
 
-
 		void OnKeyEvent(object sender, KeyEventArgs e)
 		{
 			if (e.Modifiers == ModifierKeys.Control) {
