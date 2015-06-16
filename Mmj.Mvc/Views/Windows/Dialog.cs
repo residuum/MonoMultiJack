@@ -1,5 +1,5 @@
 //
-// MessageDialog.cs
+// Dialog.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
