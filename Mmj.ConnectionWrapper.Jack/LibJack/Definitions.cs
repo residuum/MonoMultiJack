@@ -1,5 +1,5 @@
 // 
-// LibJackWrapper.Definitions.cs
+// Definitions.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -38,15 +38,15 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 		public const string JACK_DEFAULT_MIDI_TYPE = "8 bit raw midi";
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-        public delegate void JackPortRegistrationCallback (uint port,int register,IntPtr args);
+		public delegate void JackPortRegistrationCallback (uint port,int register,IntPtr args);
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-        public delegate void JackPortConnectCallback (uint a,uint b,int connect,IntPtr args);
+		public delegate void JackPortConnectCallback (uint a,uint b,int connect,IntPtr args);
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-        public delegate void JackShutdownCallback (IntPtr args);
+		public delegate void JackShutdownCallback (IntPtr args);
 
 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
-	    public delegate void JackXRunCallback (IntPtr args);
+		public delegate void JackXRunCallback (IntPtr args);
 	}
 }
