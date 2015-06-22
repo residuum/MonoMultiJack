@@ -24,11 +24,11 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.config app.config" workingdir="${ProjectDir}" />
+        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${SolutionDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -37,6 +37,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.config app.config" workingdir="${ProjectDir}" />
+        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${SolutionDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
