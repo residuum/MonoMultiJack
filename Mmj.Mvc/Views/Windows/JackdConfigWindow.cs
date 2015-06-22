@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using Mmj.OS;
 using Xwt;
 using Xwt.Drawing;
 
@@ -40,7 +41,9 @@ namespace Mmj.Views.Windows
 		TextEntry _jackdDriverOptionsEntry;
 		Button _okButton;
 		Button _cancelButton;
+
 		#region IWidget implementation
+
 		void Widgets.IWidget.Show ()
 		{
 			Show ();
@@ -50,8 +53,11 @@ namespace Mmj.Views.Windows
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		#region IWindow implementation
+
 		public event EventHandler Closing;
 
 		Image IWindow.Icon {
@@ -65,8 +71,11 @@ namespace Mmj.Views.Windows
 				Sensitive = value;
 			}
 		}
+
 		#endregion
+
 		#region IJackdConfigWindow implementation
+
 		string IJackdConfigWindow.Path {
 			get {
 				return _jackdPathEntry.Text.Trim ();
@@ -104,13 +113,15 @@ namespace Mmj.Views.Windows
 		}
 
 		public event EventHandler SaveJackd;
+
 		#endregion
+
 		/// <summary>
 		/// constructor
 		/// </summary>
 		public JackdConfigWindow ()
 		{
-			Title = "Configure Jackd";
+			Title = I18N._ ("Configure Jackd");
 			Resizable = false;
 			BuildWindow ();
 			BindEvents ();
@@ -150,11 +161,11 @@ namespace Mmj.Views.Windows
 		{
 			Table table = new Table ();
 
-			_jackdPathEntry = BuildRow (table, 0, "Jackd Startup Path", "e.g. /usr/bin/jackd");
+			_jackdPathEntry = BuildRow (table, 0, I18N._ ("Jackd Startup Path"), I18N._ ("e.g. /usr/bin/jackd"));
 			_jackdPathEntry.FileSelector ();
-			_jackdGeneralOptionsEntry = BuildRow (table, 1, "General Options", "optional");
-			_jackdDriverEntry = BuildRow (table, 2, "Driver Infrastructure", "e.g. alsa");
-			_jackdDriverOptionsEntry = BuildRow (table, 3, "Driver Options", "optional");
+			_jackdGeneralOptionsEntry = BuildRow (table, 1, I18N._ ("General Options"), I18N._ ("optional"));
+			_jackdDriverEntry = BuildRow (table, 2, I18N._ ("Driver Infrastructure"), I18N._ ("e.g. alsa"));
+			_jackdDriverOptionsEntry = BuildRow (table, 3, I18N._ ("Driver Options"), I18N._ ("optional"));
 
 			HBox buttonBox = new HBox ();
 			_okButton = new Button (Command.Save.Label) { Image = Icons.Ok };

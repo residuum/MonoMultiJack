@@ -43,7 +43,9 @@ namespace Mmj.Views
 				return _assembly;
 			}
 		}
+
 		#region IIconSet implementation
+
 		Image IIconSet.GetStockIcon (string iconId)
 		{
 			switch (iconId) {
@@ -68,14 +70,16 @@ namespace Mmj.Views
 			}
 			return null;
 		}
+
 		#endregion
+
 		public static Image Program {
 			get { return LoadImage ("Mmj.Views.Icons.program.png"); }
 		}
 
 		private static Image LoadImage (string imageNamespace)
 		{
-			using (Stream s = Assembly.GetManifestResourceStream(imageNamespace)) {
+			using (Stream s = Assembly.GetManifestResourceStream (imageNamespace)) {
 				return Image.FromStream (s);
 			}
 		}

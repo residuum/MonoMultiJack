@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mmj.Configuration;
+using Mmj.OS;
 using Xwt;
 using Xwt.Drawing;
 using Mmj.Views.Widgets;
@@ -38,8 +39,8 @@ namespace Mmj.Views.Windows
 	/// </summary>
 	public class MainWindow : Window, IMainWindow
 	{
-		readonly string JackdStatusRunning = "Jackd is running.";
-		readonly string JackdStatusStopped = "Jackd is stopped.";
+		readonly string JackdStatusRunning = I18N._ ("Jackd is running.");
+		readonly string JackdStatusStopped = I18N._ ("Jackd is stopped.");
 		VBox _appButtonBox;
 		Notebook _connectionNotebook;
 		Label _statusbar;
@@ -66,7 +67,7 @@ namespace Mmj.Views.Windows
 				CallShowHelp (this, new EventArgs ());
 			}
 			if ((e.Key == Key.F4 && e.Modifiers == ModifierKeys.Alt)
-				|| (e.Key == Key.q && e.Modifiers == ModifierKeys.Control)) {
+			    || (e.Key == Key.q && e.Modifiers == ModifierKeys.Control)) {
 				CallQuitApplication ();
 			}
 		}
@@ -74,19 +75,19 @@ namespace Mmj.Views.Windows
 		void BuildMenu ()
 		{
 			MainMenu = new Menu ();
-			MenuItem file = new MenuItem ("_File");
+			MenuItem file = new MenuItem (I18N._ ("_File"));
 			file.SubMenu = new Menu ();
 			foreach (MenuItem menuItem in BuildFileMenu()) {
 				file.SubMenu.Items.Add (menuItem);
 			}
 			MainMenu.Items.Add (file);
-			MenuItem configuration = new MenuItem ("_Configuration");
+			MenuItem configuration = new MenuItem (I18N._ ("_Configuration"));
 			configuration.SubMenu = new Menu ();
 			foreach (MenuItem menuItem in BuildConfigMenu()) {
 				configuration.SubMenu.Items.Add (menuItem);
 			}
 			MainMenu.Items.Add (configuration);
-			MenuItem help = new MenuItem ("_Help");
+			MenuItem help = new MenuItem (I18N._ ("_Help"));
 			help.SubMenu = new Menu ();
 			foreach (MenuItem menuItem in BuildHelpMenu()) {
 				help.SubMenu.Items.Add (menuItem);
@@ -97,25 +98,25 @@ namespace Mmj.Views.Windows
 
 		IEnumerable<MenuItem> BuildHelpMenu ()
 		{
-			yield return CreateMenuItem ("_Help", CallShowHelp, Icons.Help);
-			yield return CreateMenuItem ("_About", CallShowAbout, Icons.Info);
+			yield return CreateMenuItem (I18N._ ("_Help"), CallShowHelp, Icons.Help);
+			yield return CreateMenuItem (I18N._ ("_About"), CallShowAbout, Icons.Info);
 		}
 
 		IEnumerable<MenuItem> BuildConfigMenu ()
 		{
-			yield return CreateMenuItem ("Configure _Jackd", CallShowConfigureJackd);
-			yield return CreateMenuItem ("Add / Remove _Applications", CallShowConfigureApps);
+			yield return CreateMenuItem (I18N._ ("Configure _Jackd"), CallShowConfigureJackd);
+			yield return CreateMenuItem (I18N._ ("Add / Remove _Applications"), CallShowConfigureApps);
 		}
 
 		IEnumerable<MenuItem> BuildFileMenu ()
 		{
-			yield return CreateMenuItem ("(Re)Start _Jackd", CallStartJackd, Icons.Start);
-			_stopAction = CreateMenuItem ("_Stop Jackd", CallStopJackd, Icons.Stop);
+			yield return CreateMenuItem (I18N._ ("(Re)Start _Jackd"), CallStartJackd, Icons.Start);
+			_stopAction = CreateMenuItem (I18N._ ("_Stop Jackd"), CallStopJackd, Icons.Stop);
 			yield return _stopAction;
-			_stopAllAction = CreateMenuItem ("Stop _All", CallStopAll, Icons.Stop);
+			_stopAllAction = CreateMenuItem (I18N._ ("Stop _All"), CallStopAll, Icons.Stop);
 			_stopAllAction.Sensitive = false;
 			yield return _stopAllAction;
-			yield return CreateMenuItem ("_Quit", OnQuitActionActivated, Icons.Delete);
+			yield return CreateMenuItem (I18N._ ("_Quit"), OnQuitActionActivated, Icons.Delete);
 		}
 
 		static MenuItem CreateMenuItem (string name, EventHandler handler, Image icon = null)
@@ -127,7 +128,9 @@ namespace Mmj.Views.Windows
 			menuItem.Clicked += handler;
 			return menuItem;
 		}
+
 		#region IWidget implementation
+
 		void IWidget.Show ()
 		{
 			Show ();
@@ -137,8 +140,11 @@ namespace Mmj.Views.Windows
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		#region IWindow implementation
+
 		Image IWindow.Icon {
 			set {
 				Icon = value;
@@ -152,8 +158,11 @@ namespace Mmj.Views.Windows
 		}
 
 		public event EventHandler Closing;
+
 		#endregion
+
 		#region IMainWindow implementation
+
 		IEnumerable<IAppStartWidget> IMainWindow.AppStartWidgets {
 			set {
 				UpdateAppWidgets (value);
@@ -213,7 +222,9 @@ namespace Mmj.Views.Windows
 		public event EventHandler ShowAbout;
 		public event EventHandler ShowHelp;
 		public event EventHandler QuitApplication;
+
 		#endregion
+
 		/// <summary>
 		/// builds window content
 		/// </summary>
@@ -233,11 +244,11 @@ namespace Mmj.Views.Windows
 			mainContent.PackStart (_connectionNotebook, true, true);
 
 			VBox container = new VBox {
-				Margin = new WidgetSpacing(0),
+				Margin = new WidgetSpacing (0),
 			};
 			container.PackStart (mainContent, true, true);
 			_statusbar = new Label {
-				Margin = new WidgetSpacing(0),
+				Margin = new WidgetSpacing (0),
 			};
 			_statusbar.Font = _statusbar.Font.WithScaledSize (0.8);
 			_statusbar.TextAlignment = Alignment.End;
@@ -255,8 +266,7 @@ namespace Mmj.Views.Windows
 		/// <param name="appWidgets">The app widgets.</param>
 		void UpdateAppWidgets (IEnumerable<IAppStartWidget> appWidgets)
 		{
-			Application.Invoke (() =>
-			{
+			Application.Invoke (() => {
 				foreach (IAppStartWidget appWidget in _appButtonBox.Children.OfType<IAppStartWidget>()) {
 					appWidget.Dispose ();
 				}

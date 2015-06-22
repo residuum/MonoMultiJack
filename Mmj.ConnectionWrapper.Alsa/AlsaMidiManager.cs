@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using Xwt;
 using Mmj.ConnectionWrapper.Alsa.LibAsound;
 using Mmj.ConnectionWrapper.Alsa.Types;
+using Mmj.OS;
 
 namespace Mmj.ConnectionWrapper.Alsa
 {
@@ -59,7 +60,9 @@ namespace Mmj.ConnectionWrapper.Alsa
 		{
 			Wrapper.DeActivate ();
 		}
+
 		#region IConnectionManager implementation
+
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasChanged;
 
@@ -74,8 +77,8 @@ namespace Mmj.ConnectionWrapper.Alsa
 		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
-			if (alsaOutPort == null || alsaInPort == null 
-				|| outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
+			if (alsaOutPort == null || alsaInPort == null
+			    || outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
 				return;
 			}
 			Wrapper.Connect (alsaOutPort, alsaInPort);
@@ -92,9 +95,9 @@ namespace Mmj.ConnectionWrapper.Alsa
 		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
-			if (alsaOutPort == null || alsaInPort == null 
-				|| outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
-				|| inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
+			if (alsaOutPort == null || alsaInPort == null
+			    || outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
+			    || inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
 				return;
 			}
 			Wrapper.Disconnect (alsaOutPort, alsaInPort);
@@ -143,10 +146,12 @@ namespace Mmj.ConnectionWrapper.Alsa
 
 		public string Name {
 			get {
-				return "Alsa MIDI";
+				return I18N._ ("Alsa MIDI");
 			}
 		}
+
 		#endregion
+
 		void SendMessage (IEnumerable<IConnectable> connectables, IEnumerable<IConnection> connections, ChangeType changeType)
 		{
 			connectables = connectables as IList<IConnectable> ?? connectables.ToList ();
@@ -157,8 +162,8 @@ namespace Mmj.ConnectionWrapper.Alsa
 			string message = BuildMessage (connectables, connections, changeType);
 			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs {
 				ChangeType = changeType,
-				Connectables = connectables.ToList(),
-				Connections = connections.ToList(),
+				Connectables = connectables.ToList (),
+				Connections = connections.ToList (),
 				Message = message,
 				MessageType = MessageType.Change
 			};
@@ -173,22 +178,22 @@ namespace Mmj.ConnectionWrapper.Alsa
 			case ChangeType.New:
 				if (connectables.Any ()) {
 					if (connections.Any ()) {
-						return "New ports and connections registered.";
+						return I18N._ ("New ports and connections registered.");
 					} else {
-						return "New ports registered.";
+						return I18N._ ("New ports registered.");
 					}
 				} else {
-					return "New connections established.";
+					return I18N._ ("New connections established.");
 				}
 			case ChangeType.Deleted:
 				if (connectables.Any ()) {
 					if (connections.Any ()) {
-						return "Ports and connections unregistered.";
+						return I18N._ ("Ports and connections unregistered.");
 					} else {
-						return "Ports unregistered.";
+						return I18N._ ("Ports unregistered.");
 					}
 				} else {
-					return "Connections deleted.";
+					return I18N._ ("Connections deleted.");
 				}
 			default:
 				throw new ArgumentOutOfRangeException ("changeType");

@@ -69,14 +69,16 @@ namespace Mmj.OS
 		{
 			if (currentPosition < startupArgs.Length - 1) {
 				string configString = startupArgs [++currentPosition];
-				if (!isPathParameter || !configString.StartsWith("~")){
+				if (!isPathParameter || !configString.StartsWith ("~")) {
 					return configString;
 				}
 				return Environment.GetFolderPath (Environment.SpecialFolder.UserProfile) + configString.Substring (1);
 			}
 			return null;
 		}
+
 		#region IStartupParameters implementation
+
 		public bool ShowHelp { get; private set; }
 
 		public bool StartWithJackd { get; private set; }
@@ -89,23 +91,26 @@ namespace Mmj.OS
 
 		public string GetHelpText ()
 		{
-			return _helpText;
+			return HelpText;
 		}
+
 		#endregion
-		static readonly string _helpText = @"**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.
 
-**Startup Parameters**  
-*-h*, *--help*: Show this help on startup.  
-*-j*, *--jack*: Launches Jackd on startup.  
-*-f*, *--fullscreen*: Starts in fullscreen mode.  
-*-c <dir>*, *--config <dir>*: Loads configuration from the specified directory.  
-*-l <file>*, *--log <file>*: Logs messages and debugging information to the specified file.  
+		static readonly string HelpText = I18N._ ("**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.") + @"
 
-**Keyboard Shortcuts**  
-*F1*: Show this help.  
-*Alt+F4*, *Ctrl+Q*: Quits the program and closes all started applications.  
-*Ctrl+C*: Connects the selected inlets / outlets and or clients.  
-*Ctrl+D*: Disconnects the selected inlets / outlets and or clients.  
+
+**" + I18N._ ("Startup Parameters") + @"**  
+*-h*, *--help*: " + I18N._ ("Show this help on startup.") + @"  
+*-j*, *--jack*: " + I18N._ ("Launches Jackd on startup.") + @"  
+*-f*, *--fullscreen*: " + I18N._ ("Starts in fullscreen mode.") + @"  
+*-c <dir>*, *--config <dir>*: " + I18N._ ("Loads configuration from the specified directory.") + @"  
+*-l <file>*, *--log <file>*: " + I18N._ ("Logs messages and debugging information to the specified file.") + @"  
+
+**" + I18N._ ("Keyboard Shortcuts") + @"**  
+*F1*: " + I18N._ ("Show this help.") + @"  
+*Alt+F4*, *Ctrl+Q*: " + I18N._ ("Quits the program and closes all started applications.") + @"  
+*Ctrl+C*: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
+*Ctrl+D*: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
 ";
 	}
 }

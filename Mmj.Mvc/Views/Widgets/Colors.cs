@@ -66,8 +66,8 @@ namespace Mmj.Views.Widgets
 		static Color FromBackground (this Color baseColor, Color bg)
 		{
 			return new Color ((baseColor.Red - bg.Red).Wrap (),
-			                   (baseColor.Blue - bg.Blue).Wrap (),
-			                   (baseColor.Green - bg.Green).Wrap ());
+				(baseColor.Blue - bg.Blue).Wrap (),
+				(baseColor.Green - bg.Green).Wrap ());
 		}
 
 		static double Wrap (this double value)

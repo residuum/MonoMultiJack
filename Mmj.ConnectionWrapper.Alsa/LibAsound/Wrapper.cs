@@ -64,11 +64,11 @@ namespace Mmj.ConnectionWrapper.Alsa.LibAsound
 		internal static bool Activate ()
 		{
 			int activation = Invoke.snd_seq_open (
-				out _alsaClient,
-				"default",
-				Definitions.SND_SEQ_OPEN_DUPLEX,
-				Definitions.SND_SEQ_NONBLOCK
-			);
+				                 out _alsaClient,
+				                 "default",
+				                 Definitions.SND_SEQ_OPEN_DUPLEX,
+				                 Definitions.SND_SEQ_NONBLOCK
+			                 );
 			if (activation == 0) {
 				Invoke.snd_seq_set_client_name (_alsaClient, "MonoMultiJack");
 				return true;
@@ -88,15 +88,15 @@ namespace Mmj.ConnectionWrapper.Alsa.LibAsound
 			if (_alsaClient != IntPtr.Zero || Activate ()) {
 				List<AlsaPort> ports = new List<AlsaPort> ();
 				try {
-					using (PointerWrapper clientInfo = new PointerWrapper(GetClientInfoSize ()))
-					using (PointerWrapper portInfo = new PointerWrapper(GetPortInfoSize ())) {
+					using (PointerWrapper clientInfo = new PointerWrapper (GetClientInfoSize ()))
+					using (PointerWrapper portInfo = new PointerWrapper (GetPortInfoSize ())) {
 						Invoke.snd_seq_client_info_set_client (clientInfo.Pointer, -1);
-						while (Invoke.snd_seq_query_next_client(_alsaClient, clientInfo.Pointer) >= 0) {
+						while (Invoke.snd_seq_query_next_client (_alsaClient, clientInfo.Pointer) >= 0) {
 							int clientId = Invoke.snd_seq_client_info_get_client (clientInfo.Pointer);
 							Invoke.snd_seq_port_info_set_client (portInfo.Pointer, clientId);
 							Invoke.snd_seq_port_info_set_port (portInfo.Pointer, -1);
 
-							while (Invoke.snd_seq_query_next_port(_alsaClient, portInfo.Pointer) >= 0) {
+							while (Invoke.snd_seq_query_next_port (_alsaClient, portInfo.Pointer) >= 0) {
 								IEnumerable<AlsaPort> newPorts = CreatePorts (Invoke.snd_seq_port_info_get_addr (portInfo.Pointer));
 								ports.AddRange (newPorts);
 							}				
@@ -113,8 +113,8 @@ namespace Mmj.ConnectionWrapper.Alsa.LibAsound
 
 		static IEnumerable<AlsaPort> CreatePorts (IntPtr portAddressPtr)
 		{
-			using (PointerWrapper clientInfo = new PointerWrapper(GetClientInfoSize ()))
-			using (PointerWrapper portInfo = new PointerWrapper(GetPortInfoSize ())) {
+			using (PointerWrapper clientInfo = new PointerWrapper (GetClientInfoSize ()))
+			using (PointerWrapper portInfo = new PointerWrapper (GetPortInfoSize ())) {
 				SndSeqAddr portAddress = portAddressPtr.PtrToSndSeqAddr ();
 				Invoke.snd_seq_client_info_set_client (clientInfo.Pointer, portAddress.Client);
 				Invoke.snd_seq_get_any_client_info (_alsaClient, portAddress.Client, clientInfo.Pointer);
@@ -126,8 +126,8 @@ namespace Mmj.ConnectionWrapper.Alsa.LibAsound
 				GetPortData (portInfo, clientInfo, portAddress, out clientName, out portName, out portCaps, out portType);
 
 				if ((portCaps & Definitions.SND_SEQ_PORT_CAP_NO_EXPORT) == Definitions.SND_SEQ_PORT_CAP_NO_EXPORT
-					|| ((Invoke.snd_seq_client_info_get_type (clientInfo.Pointer) != Definitions.SND_SEQ_USER_CLIENT)
-					&& ((portType == Definitions.SND_SEQ_PORT_SYSTEM_TIMER) || portType == Definitions.SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
+				    || ((Invoke.snd_seq_client_info_get_type (clientInfo.Pointer) != Definitions.SND_SEQ_USER_CLIENT)
+				    && ((portType == Definitions.SND_SEQ_PORT_SYSTEM_TIMER) || portType == Definitions.SND_SEQ_PORT_SYSTEM_ANNOUNCE))) {
 					yield break;
 				}
 
@@ -186,19 +186,19 @@ namespace Mmj.ConnectionWrapper.Alsa.LibAsound
 				yield break;
 			}
 			using (PointerWrapper subscriberInfo = new PointerWrapper (GetSubscriberInfoSize ()))
-			using (PointerWrapper alsaAddress = new PointerWrapper (outPort.AlsaAddress.SndSeqAddrToPtr())) {
+			using (PointerWrapper alsaAddress = new PointerWrapper (outPort.AlsaAddress.SndSeqAddrToPtr ())) {
 				Invoke.snd_seq_query_subscribe_set_index (subscriberInfo.Pointer, 0);
 				Invoke.snd_seq_query_subscribe_set_root (subscriberInfo.Pointer, alsaAddress.Pointer);
 				Invoke.snd_seq_query_subscribe_set_type (subscriberInfo.Pointer, Definitions.SND_SEQ_QUERY_SUBS_READ);
-				while (Invoke.snd_seq_query_port_subscribers(_alsaClient, subscriberInfo.Pointer) >= 0) {
+				while (Invoke.snd_seq_query_port_subscribers (_alsaClient, subscriberInfo.Pointer) >= 0) {
 					IntPtr connectedAddressPtr = Invoke.snd_seq_query_subscribe_get_addr (subscriberInfo.Pointer);
 					if (connectedAddressPtr == IntPtr.Zero) {
 						continue;
 					}
 					SndSeqAddr connectedAddress = connectedAddressPtr.PtrToSndSeqAddr ();
-					AlsaPort connectedPort = alsaPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client 
-						&& p.AlsaAddress.Port == connectedAddress.Port
-					);
+					AlsaPort connectedPort = alsaPorts.FirstOrDefault (p => p.AlsaAddress.Client == connectedAddress.Client
+					                         && p.AlsaAddress.Port == connectedAddress.Port
+					                         );
 					if (connectedPort != null) {
 						yield return new AlsaMidiConnection {
 							OutPort = outPort,

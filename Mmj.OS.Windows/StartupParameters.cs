@@ -35,38 +35,38 @@ namespace Mmj.OS
 			for (int i = 0; i < startupArgs.Length; i++) {
 				string argument = startupArgs [i];
 				switch (argument) {
-				case "/h":
-				case "/?":
-					ShowHelp = true;
-					break;
-				case "/j":
-					StartWithJackd = true;
-					break;
-				case "/f":
-					StartWithFullScreen = true;
-					break;
-				default:
-					if (argument.StartsWith ("/l=")) {
-						LogFile = GetStringParameter (argument);
-					} else if (argument.StartsWith ("/c=")) {
-						ConfigDirectory = GetStringParameter (argument);
-					}
-					break;
+					case "/h":
+					case "/?":
+						ShowHelp = true;
+						break;
+					case "/j":
+						StartWithJackd = true;
+						break;
+					case "/f":
+						StartWithFullScreen = true;
+						break;
+					default:
+						if (argument.StartsWith ("/l=")) {
+							LogFile = GetStringParameter (argument);
+						} else if (argument.StartsWith ("/c=")) {
+							ConfigDirectory = GetStringParameter (argument);
+						}
+						break;
 				}
 			}
 			if (!string.IsNullOrEmpty (ConfigDirectory)) { 
 				return;
 			}				
 			ConfigDirectory = Path.Combine (
-				Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
-				"MonoMultiJack");
+					Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData),
+					"MonoMultiJack");
 		}
 
 		static string GetStringParameter (string argument)
 		{
 			return argument.Substring (3);
 		}
-		#region IStartupParameters implementation
+#region IStartupParameters implementation
 		public bool ShowHelp { get; private set; }
 
 		public bool StartWithJackd { get; private set; }
@@ -79,23 +79,23 @@ namespace Mmj.OS
 
 		public string GetHelpText ()
 		{
-			return _helpText;
+			return HelpText;
 		}
-		#endregion
-		static readonly string _helpText = @"**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.
+#endregion
+		static readonly string HelpText = I18N._ ("**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.") + @"
 
-**Startup Parameters**  
-*/h*, */?*: Show this help on startup.  
-*/j*: Launches Jackd on startup.  
-*/f*: Starts in fullscreen mode.  
-*/c=<dir>*: Loads configuration from the specified directory.  
-*/l=<file>*: Logs messages and debugging information to the specified file.
+			**" + I18N._ ("Startup Parameters") + @"**  
+			*/h*, */?*: " + I18N._ ("Show this help on startup.") + @"  
+			*/j*: " + I18N._ ("Launches Jackd on startup.") + @"  
+			*/f*: " + I18N._ ("Starts in fullscreen mode.") + @"  
+			*/c=<dir>*: " + I18N._ ("Loads configuration from the specified directory.") + @"  
+			*/l=<file>*: " + I18N._ ("Logs messages and debugging information to the specified file.") + @"
 
-**Keyboard Shortcuts**  
-*F1*: Show this help.  
-*Alt+F4*, *Ctrl+Q*: Quits the program and closes all started applications.  
-*Ctrl+C*: Connects the selected inlets / outlets and or clients.  
-*Ctrl+D*: Disconnects the selected inlets / outlets and or clients.  
-";
+			**" + I18N._ ("Keyboard Shortcuts") + @"**  
+			*F1*: " + I18N._ ("Show this help.") + @"  
+			*Alt+F4*, *Ctrl+Q*: " + I18N._ ("Quits the program and closes all started applications.") + @"  
+			*Ctrl+C*: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
+			*Ctrl+D*: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
+			";
 	}
 }

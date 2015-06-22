@@ -35,7 +35,7 @@ namespace Mmj.OS
 
 		bool StartWithFullScreen { get; }
 
-		string LogFile { get;}
+		string LogFile { get; }
 
 		string ConfigDirectory { get; }
 
