@@ -31,6 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.0.1\lib\net40\NLog.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -65,9 +68,8 @@
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NLog\src\NLog\NLog.monodevelop.csproj">
-      <Project>{E7AB20BF-6920-442A-B876-CC05BC5CEC79}</Project>
-      <Name>NLog.monodevelop</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
