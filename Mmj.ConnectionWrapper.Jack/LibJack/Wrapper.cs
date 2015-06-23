@@ -36,12 +36,12 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 	/// Wrapper class for libjack. This file contains the main logic.
 	/// </summary>
 	internal static class Wrapper
-	{		
+	{
 		static IntPtr _jackClient = IntPtr.Zero;
 		static List<JackPort> _portMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
 		static readonly string ClientName = "MonoMultiJack"
-			+ (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
+		                                    + (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
 		static readonly Definitions.JackPortConnectCallback _onPortConnect = OnPortConnect;
 		static readonly Definitions.JackPortRegistrationCallback _onPortRegistration = OnPortRegistration;
 		static readonly Definitions.JackShutdownCallback _onJackShutdown = OnJackShutdown;
@@ -55,6 +55,9 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			ConnectionType connectionType = ConnectionType.Undefined;
 			if (register > 0) {
 				JackPort newPort = GetJackPortData (port);
+				if (newPort == null) {
+					return;
+				}
 				_portMapper.Add (newPort);
 				eventArgs.Message = "New port registered.";
 				connectionType = newPort.ConnectionType;
@@ -66,14 +69,15 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				eventArgs.Connectables = clients;
 			} else {
 				JackPort oldPort = _portMapper.FirstOrDefault (map => map.Id == port);
-				if (oldPort != null) {
-					List<Port> ports = new List<Port> ();
-					ports.Add (oldPort);
-					eventArgs.Connectables = ports;
-					eventArgs.ChangeType = ChangeType.Deleted;						
-					connectionType = oldPort.ConnectionType;
-					_portMapper.Remove (oldPort);
+				if (oldPort = null) {
+					return;
 				}
+				List<Port> ports = new List<Port> ();
+				ports.Add (oldPort);
+				eventArgs.Connectables = ports;
+				eventArgs.ChangeType = ChangeType.Deleted;						
+				connectionType = oldPort.ConnectionType;
+				_portMapper.Remove (oldPort);
 				eventArgs.Message = "Port unregistered.";
 			}
 			eventArgs.ConnectionType = connectionType;
@@ -117,8 +121,8 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				eventArgs.Message = "New connection established";
 			} else {
 				IEnumerable<IConnection> oldConn = _connections.Where (conn => conn.InPort == inPort
-					&& conn.OutPort == outPort
-				);
+				                                   && conn.OutPort == outPort
+				                                   );
 				eventArgs.Connections = oldConn.ToList ();
 				eventArgs.ChangeType = ChangeType.Deleted;					
 				eventArgs.ConnectionType = inPort.ConnectionType;
@@ -267,9 +271,9 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 
 		internal static bool Connect (Port outputPort, Port inputPort)
 		{
-			if (outputPort.FlowDirection != FlowDirection.Out 
-				|| inputPort.FlowDirection != FlowDirection.In 
-				|| outputPort.ConnectionType != inputPort.ConnectionType) {
+			if (outputPort.FlowDirection != FlowDirection.Out
+			    || inputPort.FlowDirection != FlowDirection.In
+			    || outputPort.ConnectionType != inputPort.ConnectionType) {
 				return false;
 			}
 			_portMapper = UpdatePortList (_portMapper).ToList ();
@@ -293,6 +297,9 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 		{
 			foreach (JackPort existing in existingPorts) {
 				JackPort current = GetJackPortData (existing.Id);
+				if (current == null) {
+					continue;
+				}
 				if (current.Name != existing.Name) { 					
 					existing.Client.ReplacePort (existing, current);
 					if (PortOrConnectionHasChanged != null) {

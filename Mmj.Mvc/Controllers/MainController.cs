@@ -39,7 +39,7 @@ using Mmj.Views.Windows;
 namespace Mmj.Controllers
 {
 	public class MainController :IController
-	{		
+	{
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
 		IProgram _jackd;
@@ -202,7 +202,9 @@ namespace Mmj.Controllers
 			_jackd.HasStarted += Jackd_HasStarted;
 			_jackd.HasExited += Jackd_HasExited;
 		}
+
 		#region Model events
+
 		void Jackd_HasStarted (object sender, EventArgs e)
 		{
 			Logger.LogMessage ("Jackd started", LogLevel.Info);
@@ -214,8 +216,11 @@ namespace Mmj.Controllers
 			Logger.LogMessage ("Jackd exited", LogLevel.Info);
 			UpdateRunningStatus ();
 		}
+
 		#endregion
+
 		#region IMainWindow events
+
 		void MainWindow_StartJackd (object sender, EventArgs e)
 		{
 			Logger.LogMessage ("Starting jackd", LogLevel.Debug);
@@ -322,7 +327,9 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 				AllWidgetsAreClosed (this, new EventArgs ());
 			}
 		}
+
 		#endregion
+
 		void Window_Closing (object sender, EventArgs e)
 		{
 			IWindow window = sender as IWindow;
@@ -371,13 +378,14 @@ THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMP
 			UpdateRunningStatus ();
 		}
 
-		void ShowErrorMessage(string message){			
-			Dialog.ShowErrorMessage(message);
+		void ShowErrorMessage (string message)
+		{			
+			Dialog.ShowErrorMessage (message);
 		}
 
 		void ShowInfoMessage (string message)
 		{
-			Dialog.ShowInfoMessage(message);
+			Dialog.ShowInfoMessage (message);
 		}
 
 		public event EventHandler AllWidgetsAreClosed;
