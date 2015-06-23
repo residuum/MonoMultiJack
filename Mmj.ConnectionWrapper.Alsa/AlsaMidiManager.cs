@@ -37,11 +37,13 @@ namespace Mmj.ConnectionWrapper.Alsa
 		List<AlsaPort> _portMapper = new List<AlsaPort> ();
 		List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
 
+		IDisposable _timeout;
+
 		public AlsaMidiManager ()
 		{
 			Wrapper.Activate ();
 			
-			Application.TimeoutInvoke (2000, CheckForChanges);
+			_timeout = Application.TimeoutInvoke (2000, CheckForChanges);
 		}
 
 		~AlsaMidiManager ()
@@ -57,9 +59,14 @@ namespace Mmj.ConnectionWrapper.Alsa
 
 		protected virtual void Dispose (bool isDisposing)
 		{
+			if (_timeout != null) {
+				_timeout.Dispose ();
+			}
 			Wrapper.DeActivate ();
 		}
+
 		#region IConnectionManager implementation
+
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasChanged;
 
@@ -74,8 +81,8 @@ namespace Mmj.ConnectionWrapper.Alsa
 		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
-			if (alsaOutPort == null || alsaInPort == null 
-				|| outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
+			if (alsaOutPort == null || alsaInPort == null
+			    || outPort.FlowDirection != FlowDirection.Out || inPort.FlowDirection != FlowDirection.In) {
 				return;
 			}
 			Wrapper.Connect (alsaOutPort, alsaInPort);
@@ -92,9 +99,9 @@ namespace Mmj.ConnectionWrapper.Alsa
 		{
 			AlsaPort alsaOutPort = _portMapper.FirstOrDefault (p => p == outPort);
 			AlsaPort alsaInPort = _portMapper.FirstOrDefault (p => p == inPort);
-			if (alsaOutPort == null || alsaInPort == null 
-				|| outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
-				|| inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
+			if (alsaOutPort == null || alsaInPort == null
+			    || outPort.FlowDirection != FlowDirection.Out || outPort.ConnectionType != ConnectionType
+			    || inPort.FlowDirection != FlowDirection.In || inPort.ConnectionType != ConnectionType) {
 				return;
 			}
 			Wrapper.Disconnect (alsaOutPort, alsaInPort);
@@ -146,7 +153,9 @@ namespace Mmj.ConnectionWrapper.Alsa
 				return "Alsa MIDI";
 			}
 		}
+
 		#endregion
+
 		void SendMessage (IEnumerable<IConnectable> connectables, IEnumerable<IConnection> connections, ChangeType changeType)
 		{
 			connectables = connectables as IList<IConnectable> ?? connectables.ToList ();
@@ -157,8 +166,8 @@ namespace Mmj.ConnectionWrapper.Alsa
 			string message = BuildMessage (connectables, connections, changeType);
 			ConnectionEventArgs oldEventArgs = new ConnectionEventArgs {
 				ChangeType = changeType,
-				Connectables = connectables.ToList(),
-				Connections = connections.ToList(),
+				Connectables = connectables.ToList (),
+				Connections = connections.ToList (),
 				Message = message,
 				MessageType = MessageType.Change
 			};

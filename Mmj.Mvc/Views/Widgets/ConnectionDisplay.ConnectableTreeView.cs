@@ -80,7 +80,11 @@ namespace Mmj.Views.Widgets
 
 			void HandleDragOver (object sender, DragOverEventArgs e)
 			{
-				ConnectableSerialization id = new ConnectableSerialization ((string)e.Data.GetValue (TransferDataType.Text));
+				string serialized = (string)e.Data.GetValue (TransferDataType.Text);
+				if (string.IsNullOrEmpty (serialized)) {
+					return;
+				}
+				ConnectableSerialization id = new ConnectableSerialization (serialized);
 				TreeNavigator firstItem = _treeStore.GetFirstNode ();
 				if (firstItem == null) {
 					e.AllowedAction = DragDropAction.None;
@@ -103,7 +107,11 @@ namespace Mmj.Views.Widgets
 				Image icon = Icons.Connect;
 				e.DragOperation.SetDragImage (icon, (int)icon.Width, (int)icon.Height);
 				e.DragOperation.AllowedActions = DragDropAction.All;
-				e.DragOperation.Data.AddValue (GetSelected ().Serialization.ToString ());
+				IConnectable connectable = GetSelected ();
+				if (connectable == null) {
+					return;
+				}
+				e.DragOperation.Data.AddValue (connectable.Serialization.ToString ());
 			}
 
 			public event EventHandler ViewChanged;
@@ -118,7 +126,11 @@ namespace Mmj.Views.Widgets
 
 			void HandleDropped (object sender, DragEventArgs e)
 			{
-				ConnectableSerialization id = new ConnectableSerialization ((string)e.Data.GetValue (TransferDataType.Text));
+				string serialized = (string)e.Data.GetValue (TransferDataType.Text);
+				if (string.IsNullOrEmpty (serialized)) {
+					return;
+				}
+				ConnectableSerialization id = new ConnectableSerialization (serialized);
 				RowDropPosition pos;
 				TreePosition nodePosition;
 				_treeView.GetDropTargetRow (e.Position.X, e.Position.Y, out pos, out nodePosition);
@@ -185,8 +197,7 @@ namespace Mmj.Views.Widgets
 
 			public void RemoveConnectable (IConnectable connectable)
 			{
-				Application.Invoke (() =>
-				{
+				Application.Invoke (() => {
 					Client client = connectable as Client;
 					Port port = connectable as Port;
 					if (client != null) {
@@ -227,8 +238,7 @@ namespace Mmj.Views.Widgets
 
 			public void UpdateConnectable (IConnectable connectable)
 			{
-				Application.Invoke (() =>
-				{
+				Application.Invoke (() => {
 					Client client = connectable as Client;
 					Port port = connectable as Port;
 					if (client != null) {
@@ -273,7 +283,7 @@ namespace Mmj.Views.Widgets
 					navigator.MoveToChild ();
 					do {
 						dummy.AddPort ((Port)navigator.GetValue (_dataField));
-					} while (navigator.MoveNext());
+					} while (navigator.MoveNext ());
 					navigator.MoveToParent ();
 				} while(navigator.MoveNext ());
 				return dummy;
