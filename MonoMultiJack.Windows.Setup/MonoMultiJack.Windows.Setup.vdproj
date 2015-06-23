@@ -88,23 +88,23 @@
         "Entry"
         {
         "MsmKey" = "8:_44F0C39827727904EFFE309DC62F7A9C"
+        "OwnerKey" = "8:_A2328759B0BE88DB1390F536DA7126F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44F0C39827727904EFFE309DC62F7A9C"
+        "OwnerKey" = "8:_A2C738EC19324E849D1EA4D9200A3A64"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44F0C39827727904EFFE309DC62F7A9C"
         "OwnerKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_44F0C39827727904EFFE309DC62F7A9C"
-        "OwnerKey" = "8:_A2328759B0BE88DB1390F536DA7126F3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_44F0C39827727904EFFE309DC62F7A9C"
-        "OwnerKey" = "8:_A2C738EC19324E849D1EA4D9200A3A64"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_5A200BB3AE42B3A6CC1637027E6879C1"
         "OwnerKey" = "8:_A2C738EC19324E849D1EA4D9200A3A64"
         "MsmSig" = "8:_UNDEFINED"
@@ -118,7 +118,7 @@
         "Entry"
         {
         "MsmKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
-        "OwnerKey" = "8:_A2328759B0BE88DB1390F536DA7126F3"
+        "OwnerKey" = "8:_5A200BB3AE42B3A6CC1637027E6879C1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -131,6 +131,18 @@
         {
         "MsmKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
         "OwnerKey" = "8:_32B62BC05E11A803CEBDA346506778DE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
+        "OwnerKey" = "8:_A2328759B0BE88DB1390F536DA7126F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_66C1457E52C44E2FB2D24F1B60F4D50D"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -160,6 +172,18 @@
         "Entry"
         {
         "MsmKey" = "8:_D303BABD5C79E6CC69BDE453B42E127D"
+        "OwnerKey" = "8:_A2C738EC19324E849D1EA4D9200A3A64"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E1A14B9E2D0E13F99F174BBBC7A73731"
+        "OwnerKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E1A14B9E2D0E13F99F174BBBC7A73731"
         "OwnerKey" = "8:_A2C738EC19324E849D1EA4D9200A3A64"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -208,12 +232,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_5A200BB3AE42B3A6CC1637027E6879C1"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -221,6 +239,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_399395F718AFB093817C71E6C70232F5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_64E668A5F1D8FA4AEE7C9647495162A2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E1A14B9E2D0E13F99F174BBBC7A73731"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -451,7 +481,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Mmj.Configuration, Version=0.3.0.27220, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Mmj.Configuration, Version=0.3.0.29409, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_3F754A064793513D4C12F064EB403206"
@@ -482,7 +512,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Mmj.ConnectionWrapper, Version=0.6.0.27219, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Mmj.ConnectionWrapper, Version=0.6.0.29409, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_44F0C39827727904EFFE309DC62F7A9C"
@@ -513,7 +543,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Mmj.ConnectionWrapper.Jack, Version=0.6.0.27220, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Mmj.ConnectionWrapper.Jack, Version=0.6.0.29411, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5A200BB3AE42B3A6CC1637027E6879C1"
@@ -544,7 +574,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Mmj.OS, Version=0.6.0.27220, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Mmj.OS, Version=0.6.0.29410, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_64E668A5F1D8FA4AEE7C9647495162A2"
@@ -571,6 +601,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66C1457E52C44E2FB2D24F1B60F4D50D"
+            {
+            "SourcePath" = "8:..\\MonoMultiJack.Windows\\bin\\Release\\locale\\de\\LC_MESSAGES\\MonoMultiJack.mo"
+            "TargetName" = "8:MonoMultiJack.mo"
+            "Tag" = "8:"
+            "Folder" = "8:_20B5E2BF4B6B4C3D884971B8D7027EF2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8CCE17DD29B14D8D8377BBF0A970684F"
             {
             "SourcePath" = "8:License.rtf"
@@ -595,7 +645,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Mmj.Mvc, Version=0.3.0.27221, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Mmj.Mvc, Version=0.3.0.29411, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_A2328759B0BE88DB1390F536DA7126F3"
@@ -653,6 +703,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1A14B9E2D0E13F99F174BBBC7A73731"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:NGettext, Version=0.2.2.1, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E1A14B9E2D0E13F99F174BBBC7A73731"
+                    {
+                    "Name" = "8:NGettext.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:NGettext.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_245A41A3D2AF48F9A69F570C708E64BF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0533DF16D934B94824DB6682CB33FE5"
             {
             "SourcePath" = "8:..\\MonoMultiJack.Windows\\monomultijack.ico"
@@ -689,6 +770,39 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_CBDC93557B914C249BE70A3BA29F613F"
+                    {
+                    "Name" = "8:locale"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_03884CE98094469286B4ABCA93740D77"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_D1326380F8394BC496B5F71DA91BDF1F"
+                            {
+                            "Name" = "8:de"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_F68419D61F4D43BC9ACBA7E54091F442"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_20B5E2BF4B6B4C3D884971B8D7027EF2"
+                                    {
+                                    "Name" = "8:LC_MESSAGES"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_5E559B5B78E84423A4FF3B4A567C9C08"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_C6A0FBF2AA3B44879B0B92B1A61BE77C"
@@ -741,7 +855,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MonoMultiJack"
         "ProductCode" = "8:{06E1D111-DAF1-4D91-BAA0-82C67041BEB7}"
-        "PackageCode" = "8:{6D8AB81A-BA63-408B-B40F-55DA6D00C25C}"
+        "PackageCode" = "8:{7B91654A-A9D2-476E-88E3-BAE605AD0672}"
         "UpgradeCode" = "8:{63BCA35C-4EA7-4068-9C1A-0052F693FE10}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1370,7 +1484,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A2C738EC19324E849D1EA4D9200A3A64"
             {
-            "SourcePath" = "8:..\\MonoMultiJack.Windows\\obj\\Debug\\MonoMultiJack.exe"
+            "SourcePath" = "8:..\\MonoMultiJack.Windows\\obj\\Release\\MonoMultiJack.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_245A41A3D2AF48F9A69F570C708E64BF"
@@ -1398,7 +1512,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CDEEB865DCF445149B375F2BDB910509"
             {
-            "SourcePath" = "8:..\\MonoMultiJack.Windows.Installer\\obj\\Debug\\Mmj.Windows.Installer.dll"
+            "SourcePath" = "8:..\\MonoMultiJack.Windows.Installer\\obj\\Release\\Mmj.Windows.Installer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_245A41A3D2AF48F9A69F570C708E64BF"

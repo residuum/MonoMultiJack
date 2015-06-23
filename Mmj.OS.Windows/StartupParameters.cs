@@ -84,18 +84,18 @@ namespace Mmj.OS
 #endregion
 		static readonly string HelpText = I18N._ ("**MonoMultJack (MMJ)** aims to be an application for musicians, who regularly have to deal with multiple programs to start and create and maintain audio connections via Jackd.") + @"
 
-			**" + I18N._ ("Startup Parameters") + @"**  
-			*/h*, */?*: " + I18N._ ("Show this help on startup.") + @"  
-			*/j*: " + I18N._ ("Launches Jackd on startup.") + @"  
-			*/f*: " + I18N._ ("Starts in fullscreen mode.") + @"  
-			*/c=<dir>*: " + I18N._ ("Loads configuration from the specified directory.") + @"  
-			*/l=<file>*: " + I18N._ ("Logs messages and debugging information to the specified file.") + @"
+**" + I18N._ ("Startup Parameters") + @"**  
+*/h*, */?*: " + I18N._ ("Show this help on startup.") + @"  
+*/j*: " + I18N._ ("Launches Jackd on startup.") + @"  
+*/f*: " + I18N._ ("Starts in fullscreen mode.") + @"  
+*/c=<dir>*: " + I18N._ ("Loads configuration from the specified directory.") + @"  
+*/l=<file>*: " + I18N._ ("Logs messages and debugging information to the specified file.") + @"
 
-			**" + I18N._ ("Keyboard Shortcuts") + @"**  
-			*F1*: " + I18N._ ("Show this help.") + @"  
-			*Alt+F4*, *Ctrl+Q*: " + I18N._ ("Quits the program and closes all started applications.") + @"  
-			*Ctrl+C*: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
-			*Ctrl+D*: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
-			";
+**" + I18N._ ("Keyboard Shortcuts") + @"**  
+*F1*: " + I18N._ ("Show this help.") + @"  
+*Alt+F4*, *Ctrl+Q*: " + I18N._ ("Quits the program and closes all started applications.") + @"  
+*Ctrl+C*: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
+*Ctrl+D*: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
+";
 	}
 }

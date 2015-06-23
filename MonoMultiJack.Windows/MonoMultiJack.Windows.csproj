@@ -127,4 +127,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>$(SolutionDir)Windows-pocompile.bat $(TargetDir)</PreBuildEvent>
+  </PropertyGroup>
 </Project>
