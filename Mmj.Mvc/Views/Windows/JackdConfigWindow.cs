@@ -168,8 +168,8 @@ namespace Mmj.Views.Windows
 			_jackdDriverOptionsEntry = BuildRow (table, 3, I18N._ ("Driver Options"), I18N._ ("optional"));
 
 			HBox buttonBox = new HBox ();
-			_okButton = new Button (Command.Save.Label) { Image = Icons.Ok };
-			_cancelButton = new Button (Command.Cancel.Label) {
+			_okButton = new Button (I18N._ ("Save")) { Image = Icons.Ok };
+			_cancelButton = new Button (I18N._ ("Cancel")) {
 				Image = Icons.Cancel,
 				Style = ButtonStyle.Flat
 			};

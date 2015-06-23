@@ -145,9 +145,9 @@ namespace Mmj.Views.Windows
 				MinWidth = 300
 			};
 			HBox buttonBox = new HBox ();
-			_addButton = new Button (Command.Add.Label) { Image = Icons.Add };
-			_okButton = new Button (Command.Save.Label) { Image = Icons.Ok };
-			_cancelButton = new Button (Command.Cancel.Label) {
+			_addButton = new Button (I18N._ ("Add")) { Image = Icons.Add };
+			_okButton = new Button (I18N._ ("Save")) { Image = Icons.Ok };
+			_cancelButton = new Button (I18N._ ("Cancel")) {
 				Image = Icons.Cancel,
 				Style = ButtonStyle.Flat
 			};

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-06-22 23:33+0100\n"
-"PO-Revision-Date: 2015-06-22 23:33+0100\n"
+"POT-Creation-Date: 2015-06-23 22:02+0100\n"
+"PO-Revision-Date: 2015-06-23 22:02+0100\n"
 "Last-Translator: Thomas Mayer <thomas@residuum.org>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -24,31 +24,31 @@ msgstr ""
 "X-Poedit-SearchPath-7: Mmj.OS.Windows\n"
 "X-Poedit-SearchPath-8: MonoMultiJack.Windows.Installer\n"
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:149
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:154
 msgid "Alsa MIDI"
 msgstr "Alsa MIDI"
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:181
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:186
 msgid "New ports and connections registered."
 msgstr "Neue Ports und Verbindungen gefunden."
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:183
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:188
 msgid "New ports registered."
 msgstr "Neue Ports gefunden."
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:186
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:191
 msgid "New connections established."
 msgstr "Neue Verbindungen hergestellt."
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:191
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:196
 msgid "Ports and connections unregistered."
 msgstr "Ports und Verbindungen deregistriert."
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:193
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:198
 msgid "Ports unregistered."
 msgstr "Ports deregistriert."
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:196
+#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:201
 msgid "Connections deleted."
 msgstr "Verbindungen getrennt."
 
@@ -56,7 +56,7 @@ msgstr "Verbindungen getrennt."
 msgid "Jack Audio"
 msgstr "Jack Audio"
 
-#: Mmj.ConnectionWrapper.Jack/JackConnectionManager.cs:129
+#: Mmj.ConnectionWrapper.Jack/JackConnectionManager.cs:134
 msgid "Connection to Jackd established."
 msgstr "Neue Verbindung hergestellt."
 
@@ -64,31 +64,31 @@ msgstr "Neue Verbindung hergestellt."
 msgid "Jack MIDI"
 msgstr "Jack MIDI"
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:60
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:63
 msgid "New port registered."
 msgstr "Neuer Port gefunden."
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:78
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:82
 msgid "Port unregistered."
 msgstr "Port deregistriert."
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:97
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:101
 msgid "New connection is null."
 msgstr "Neue Verbindung ist null."
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:118
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:122
 msgid "New connection established."
 msgstr "Neue Verbindung hergestellt."
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:128
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:132
 msgid "Connection deleted."
 msgstr "Verbindung getrennt."
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:141
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:145
 msgid "Backend has exited"
 msgstr "Backend beendet."
 
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:154
+#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:158
 #, csharp-format
 msgid "Xrun occurred: {0:0.###} ms"
 msgstr "Puffer leer: {0:0.###} ms."
@@ -172,6 +172,20 @@ msgstr "Info über {0}"
 #: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:47
 msgid "Configure Applications"
 msgstr "Einstellungen für Anwendungen"
+
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:148
+msgid "Add"
+msgstr "Neu"
+
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:149
+#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:171
+msgid "Save"
+msgstr "Speichern"
+
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:150
+#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:172
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: Mmj.Mvc/Views/Windows/HelpWindow.cs:83
 #, csharp-format
