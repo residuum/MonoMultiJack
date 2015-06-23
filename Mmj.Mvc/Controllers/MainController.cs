@@ -39,7 +39,7 @@ using Mmj.Views.Windows;
 namespace Mmj.Controllers
 {
 	public class MainController :IController
-	{
+	{		
 		JackdConfiguration _jackdConfiguration;
 		List<AppConfiguration> _appConfigurations;
 		IProgram _jackd;
@@ -285,11 +285,11 @@ namespace Mmj.Controllers
 			IAboutWindow aboutWindow = new AboutWindow ();
 			aboutWindow.ProgramName = "MonoMultiJack";
 			aboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
-			aboutWindow.Copyright = "(c) Thomas Mayer 2009-2014";
-			aboutWindow.Comments = @"MonoMultiJack is a simple tool for controlling Jackd and diverse audio programs.";
+			aboutWindow.Copyright = "(c) Thomas Mayer 2009-2015";
+			aboutWindow.Comments = I18N._(@"MonoMultiJack is a simple tool for controlling Jackd and diverse audio programs.");
 			aboutWindow.Website = "http://ix.residuum.org/";
 			aboutWindow.Authors = new string[] { "Thomas Mayer" };
-			aboutWindow.License = @"Copyright (c) 2009-2014 Thomas Mayer
+			aboutWindow.License = @"Copyright (c) 2009-2015 Thomas Mayer
 	
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ""Software""), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

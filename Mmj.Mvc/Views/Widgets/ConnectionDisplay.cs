@@ -29,6 +29,7 @@ using Mmj.ConnectionWrapper;
 using Xwt;
 using Mmj.Controllers.EventArguments;
 using Mmj.Utilities;
+using Mmj.OS;
 
 namespace Mmj.Views.Widgets
 {
@@ -69,9 +70,9 @@ namespace Mmj.Views.Widgets
 			};
 
 			HBox buttonBox = new HBox ();
-			_connectButton = new Button (Icons.Connect, "Connect");
+			_connectButton = new Button (Icons.Connect, I18N._ ("Connect"));
 			buttonBox.PackStart (_connectButton);
-			_disconnectButton = new Button (Icons.Disconnect, "Disconnect");
+			_disconnectButton = new Button (Icons.Disconnect, I18N._ ("Disconnect"));
 			buttonBox.PackStart (_disconnectButton);
 			vbox.PackStart (buttonBox);            
 			
@@ -120,7 +121,7 @@ namespace Mmj.Views.Widgets
 			KeyPressed += OnKeyEvent;
 		}
 
-		void OnKeyEvent(object sender, KeyEventArgs e)
+		void OnKeyEvent (object sender, KeyEventArgs e)
 		{
 			if (e.Modifiers == ModifierKeys.Control) {
 				if (e.Key == Key.c) {
@@ -183,7 +184,7 @@ namespace Mmj.Views.Widgets
 
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
 		{
-			CallConnect();
+			CallConnect ();
 		}
 
 		private void CallConnect ()
@@ -191,7 +192,7 @@ namespace Mmj.Views.Widgets
 			IConnectable outlet = _outTreeView.GetSelected ();
 			IConnectable inlet = _inTreeView.GetSelected ();
 			if (outlet == null || inlet == null) {
-				AddMessage ("Select ports or clients on both sides");
+				AddMessage (I18N._ ("Select ports or clients on both sides"));
 				return;
 			}
 			if (Connect != null) {
@@ -205,9 +206,9 @@ namespace Mmj.Views.Widgets
 		void ConnectFromDragAndDrop (ConnectEventArgs e)
 		{
 			if (e.Inlet.ConnectionType != e.Outlet.ConnectionType
-				|| e.Inlet.FlowDirection != FlowDirection.In
-				|| e.Outlet.FlowDirection != FlowDirection.Out) {
-				AddMessage ("Cannot connect these ports or clients");
+			    || e.Inlet.FlowDirection != FlowDirection.In
+			    || e.Outlet.FlowDirection != FlowDirection.Out) {
+				AddMessage (I18N._ ("Cannot connect these ports or clients"));
 				return;
 			}
 			if (Connect != null) {
@@ -233,7 +234,7 @@ namespace Mmj.Views.Widgets
 
 		protected virtual void DisconnectButton_Click (object sender, EventArgs e)
 		{
-			CallDisconnect();
+			CallDisconnect ();
 		}
 
 		private void CallDisconnect ()
@@ -251,7 +252,7 @@ namespace Mmj.Views.Widgets
 					notSelected += 1;
 				}
 				if (notSelected == 2) {
-					AddMessage ("No port or client selected");
+					AddMessage (I18N._ ("No port or client selected"));
 					return;
 				}
 				Disconnect (this, new ConnectEventArgs {
@@ -286,7 +287,9 @@ namespace Mmj.Views.Widgets
 		{
 			Application.Invoke (UpdateConnectionLines);
 		}
+
 		#region IConnectionWidget implementation
+
 		public event ConnectEventHandler Connect;
 		public event ConnectEventHandler Disconnect;
 
@@ -313,6 +316,7 @@ namespace Mmj.Views.Widgets
 		}
 
 		public string ConnectionManagerName { get; private set; }
+
 		#endregion
 	}
 }

@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Linq;
+using Mmj.OS;
 using Xwt;
 using Xwt.Drawing;
 using Mmj.Views.Widgets;
@@ -43,7 +44,7 @@ namespace Mmj.Views.Windows
 			BuildWindow ();
 			BindEvents ();
 			
-			Title = "Configure Applications";
+			Title = I18N._ ("Configure Applications");
 			Resizable = true;
 		}
 
@@ -74,13 +75,18 @@ namespace Mmj.Views.Windows
 				Closing (this, new EventArgs ());
 			}
 		}
+
 		#region IDisposable implementation
+
 		void IDisposable.Dispose ()
 		{
 			Dispose ();
 		}
+
 		#endregion
+
 		#region IWidget implementation
+
 		void IWidget.Show ()
 		{
 			Show ();
@@ -90,8 +96,11 @@ namespace Mmj.Views.Windows
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		#region IWindow implementation
+
 		Image IWindow.Icon {
 			set {
 				this.Icon = value;
@@ -105,8 +114,11 @@ namespace Mmj.Views.Windows
 		}
 
 		public event EventHandler Closing;
+
 		#endregion
+
 		#region IAppConfigWindow implementation
+
 		public event EventHandler SaveApplicationConfigs;
 		public event EventHandler AddApplication;
 
@@ -119,7 +131,9 @@ namespace Mmj.Views.Windows
 		{
 			_configTable.Remove ((Widget)widget);
 		}
+
 		#endregion
+
 		void BuildWindow ()
 		{
 			_configTable = new Table { MinWidth = 300 };
@@ -131,11 +145,11 @@ namespace Mmj.Views.Windows
 				MinWidth = 300
 			};
 			HBox buttonBox = new HBox ();
-			_addButton = new Button (Command.Add.Label) { Image = Icons.Add };
-			_okButton = new Button (Command.Save.Label) { Image = Icons.Ok };
-			_cancelButton = new Button (Command.Cancel.Label) {
+			_addButton = new Button (I18N._ ("Add")) { Image = Icons.Add };
+			_okButton = new Button (I18N._ ("Save")) { Image = Icons.Ok };
+			_cancelButton = new Button (I18N._ ("Cancel")) {
 				Image = Icons.Cancel,
-				Style =  ButtonStyle.Flat
+				Style = ButtonStyle.Flat
 			};
 			buttonBox.PackEnd (_okButton);
 			buttonBox.PackEnd (_addButton);

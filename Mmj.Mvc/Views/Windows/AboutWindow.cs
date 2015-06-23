@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using Mmj.OS;
 using Xwt;
 using Xwt.Drawing;
 
@@ -62,16 +63,19 @@ namespace Mmj.Views.Windows
 			_website.Font = _website.Font.WithScaledSize (0.8);
 			mainContent.PackStart (_website);
 			HBox buttonRow = new HBox ();
-			Button authors = new Button { Label = "Authors", Image = Icons.Info };
+			Button authors = new Button {
+				Label = I18N._ ("Authors"),
+				Image = Icons.Info
+			};
 			authors.Clicked += (sender, args) => ShowAuthors ();
 			buttonRow.PackStart (authors);
 			Button license = new Button {
-				Label = "License",
+				Label = I18N._ ("License"),
 				Image = Icons.Info
 			};
 			license.Clicked += (sender, args) => ShowLicense ();
 			buttonRow.PackStart (license);
-			Button ok = new Button { Label = "Close", Image = Icons.Ok };
+			Button ok = new Button { Label = I18N._ ("Close"), Image = Icons.Ok };
 			ok.Clicked += (sender, args) => Close ();
 			buttonRow.PackEnd (ok);
 			mainContent.PackEnd (buttonRow);
@@ -99,13 +103,18 @@ namespace Mmj.Views.Windows
 				Closing (this, new EventArgs ());
 			}
 		}
+
 		#region IDisposable implementation
+
 		void IDisposable.Dispose ()
 		{
 			Dispose ();
 		}
+
 		#endregion
+
 		#region IWidget implementation
+
 		void Widgets.IWidget.Show ()
 		{
 			Show ();
@@ -115,12 +124,16 @@ namespace Mmj.Views.Windows
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		public event EventHandler Closing;
+
 		#region IAboutWindow implementation
+
 		string IAboutWindow.ProgramName {
 			set {
-				Title = string.Format ("Info about {0}", value);
+				Title = string.Format (I18N._ ("Info about {0}", value));
 				_nameText = value;
 				SetProgramName ();
 			}
@@ -169,6 +182,7 @@ namespace Mmj.Views.Windows
 				Icon = value;
 			}
 		}
+
 		#endregion
 	}
 }

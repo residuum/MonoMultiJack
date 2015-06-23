@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using Mmj.OS;
 using Xwt;
 using Xwt.Drawing;
 
@@ -36,23 +37,31 @@ namespace Mmj.Views.Windows
 		public HelpWindow ()
 		{
 			VBox mainContent = new VBox ();			
-			_messageDisplay = new RichTextView { WidthRequest = 400, HeightRequest = 300 };
-		    mainContent.PackStart (_messageDisplay);
+			_messageDisplay = new RichTextView {
+				WidthRequest = 400,
+				HeightRequest = 300
+			};
+			mainContent.PackStart (_messageDisplay);
 			HBox buttonRow = new HBox ();
-			Button ok = new Button { Label = "Close", Image = Icons.Ok };
+			Button ok = new Button { Label = I18N._ ("Close"), Image = Icons.Ok };
 			ok.Clicked += (sender, args) => Close ();
 			buttonRow.PackEnd (ok);
 			mainContent.PackEnd (buttonRow);
 			Content = mainContent;
 			Width = 400;
 		}
+
 		#region IDisposable implementation
+
 		void IDisposable.Dispose ()
 		{
 			Dispose ();
 		}
+
 		#endregion
+
 		#region IWidget implementation
+
 		void Widgets.IWidget.Show ()
 		{
 			Show ();
@@ -62,12 +71,16 @@ namespace Mmj.Views.Windows
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		public event EventHandler Closing;
+
 		#region IHelpWindow implementation
+
 		string IHelpWindow.ProgramName {
 			set {
-				Title = string.Format ("Help for {0}", value);
+				Title = I18N._ ("Help for {0}", value);
 			}
 		}
 
@@ -82,6 +95,7 @@ namespace Mmj.Views.Windows
 				Icon = value;
 			}
 		}
+
 		#endregion
 	}
 }

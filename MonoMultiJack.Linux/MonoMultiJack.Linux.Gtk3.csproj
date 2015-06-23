@@ -24,6 +24,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.Gtk3.config app.config" workingdir="${ProjectDir}" />
+        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${SolutionDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -36,6 +37,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.Gtk3.config app.config" workingdir="${ProjectDir}" />
+        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${SolutionDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>

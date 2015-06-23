@@ -4,6 +4,7 @@
 *.mdb
 *.pidb
 *.userprefs
+*.mo
 
 #from https://github.com/github/gitignore/blob/master/Global/MonoDevelop.gitignore
 #User Specific
@@ -116,7 +117,7 @@ publish/
 
 # NuGet Packages Directory
 ## TODO: If you have NuGet Package Restore enabled, uncomment the next line
-#packages/
+packages/
 
 # Windows Azure Build Output
 csx

@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+
 namespace Mmj.ConnectionWrapper.Jack
 {
 	/// <summary>
@@ -32,11 +33,11 @@ namespace Mmj.ConnectionWrapper.Jack
 	[Serializable]
 	public class JackClientException : Exception
 	{
-		public JackClientException (string message) : base(message)
+		public JackClientException (string message) : base (message)
 		{
 		}
 
-		public JackClientException (string message, Exception innerException) : base(message, innerException)
+		public JackClientException (string message, Exception innerException) : base (message, innerException)
 		{
 		}
 	}

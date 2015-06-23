@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt;
+using Mmj.OS;
 
 namespace Mmj.Views.Widgets
 {
@@ -59,12 +60,12 @@ namespace Mmj.Views.Widgets
 		{
 			Table table = new Table ();
 
-			_appNameEntry = BuildRow (table, 0, "Name", "e.g. Ardour");
-			_appCommandEntry = BuildRow (table, 1, "Command", "e.g. /usr/bin/ardour3");
+			_appNameEntry = BuildRow (table, 0, I18N._ ("Name"), I18N._ ("e.g. Ardour"));
+			_appCommandEntry = BuildRow (table, 1, I18N._ ("Command"), I18N._ ("e.g. /usr/bin/ardour3"));
 			_appCommandEntry.FileSelector ();
-			_appArgumentsEntry = BuildRow (table, 2, "Command Arguments", "optional");
+			_appArgumentsEntry = BuildRow (table, 2, I18N._ ("Command Arguments"), I18N._ ("optional"));
 
-			_removeApp = new Button ("Delete") { Image = Icons.Delete };
+			_removeApp = new Button (I18N._ ("Delete")) { Image = Icons.Delete };
 			table.Add (_removeApp, 2, 1);
 			table.Margin = new WidgetSpacing (4, 8, 4, 8);
 			Content = table;
@@ -89,13 +90,18 @@ namespace Mmj.Views.Widgets
 				RemoveApplication (this, new EventArgs ());
 			}
 		}
+
 		#region IDisposable implementation
+
 		void IDisposable.Dispose ()
 		{
 			Dispose ();
 		}
+
 		#endregion
+
 		#region IWidget implementation
+
 		void IWidget.Show ()
 		{
 			Show ();
@@ -105,8 +111,11 @@ namespace Mmj.Views.Widgets
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		#region IAppConfigWidget implementation
+
 		string IAppConfigWidget.Name {
 			get {
 				return _appNameEntry.Text.Trim ();
@@ -135,6 +144,7 @@ namespace Mmj.Views.Widgets
 		}
 
 		public event EventHandler RemoveApplication;
+
 		#endregion
 	}
 }

@@ -23,18 +23,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using Mmj.OS;
 
 namespace Mmj.ConnectionWrapper.Jack
 {
 	public class JackMidiManager : JackConnectionManager
 	{
 		public override ConnectionType ConnectionType {
-			get { return ConnectionType.JackMidi;}
+			get { return ConnectionType.JackMidi; }
 		}
 
 		public override string Name {
 			get {
-				return "Jack MIDI";
+				return I18N._ ("Jack MIDI");
 			}
 		}
 	}

@@ -74,7 +74,7 @@ namespace Mmj.Configuration
 		/// <param name='ySize'>
 		/// Y size.
 		/// </param>
-		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize) : this()
+		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize) : this ()
 		{
 			XPosition = xPosition;
 			YPosition = yPosition;

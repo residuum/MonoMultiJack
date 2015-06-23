@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using Xwt;
 using Mmj.ConnectionWrapper.Alsa.LibAsound;
 using Mmj.ConnectionWrapper.Alsa.Types;
+using Mmj.OS;
 
 namespace Mmj.ConnectionWrapper.Alsa
 {
@@ -150,7 +151,7 @@ namespace Mmj.ConnectionWrapper.Alsa
 
 		public string Name {
 			get {
-				return "Alsa MIDI";
+				return I18N._ ("Alsa MIDI");
 			}
 		}
 
@@ -182,22 +183,22 @@ namespace Mmj.ConnectionWrapper.Alsa
 			case ChangeType.New:
 				if (connectables.Any ()) {
 					if (connections.Any ()) {
-						return "New ports and connections registered.";
+						return I18N._ ("New ports and connections registered.");
 					} else {
-						return "New ports registered.";
+						return I18N._ ("New ports registered.");
 					}
 				} else {
-					return "New connections established.";
+					return I18N._ ("New connections established.");
 				}
 			case ChangeType.Deleted:
 				if (connectables.Any ()) {
 					if (connections.Any ()) {
-						return "Ports and connections unregistered.";
+						return I18N._ ("Ports and connections unregistered.");
 					} else {
-						return "Ports unregistered.";
+						return I18N._ ("Ports unregistered.");
 					}
 				} else {
-					return "Connections deleted.";
+					return I18N._ ("Connections deleted.");
 				}
 			default:
 				throw new ArgumentOutOfRangeException ("changeType");

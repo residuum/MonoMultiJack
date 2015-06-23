@@ -31,6 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="NGettext">
+      <HintPath>..\packages\NGettext.0.2.2.1\lib\NGettext.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -40,6 +43,7 @@
     <Compile Include="IStartupParameters.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="LogLevel.cs" />
+    <Compile Include="I18N.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -47,5 +51,8 @@
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>Mmj.ConnectionWrapper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

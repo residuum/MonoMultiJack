@@ -37,7 +37,9 @@ namespace Mmj.Views.Widgets
 		{
 			base.Dispose ();
 		}
+
 		#region IWidget implementation
+
 		void IWidget.Show ()
 		{
 			Show ();
@@ -47,8 +49,11 @@ namespace Mmj.Views.Widgets
 		{
 			Hide ();
 		}
+
 		#endregion
+
 		#region IAppWidget implementation
+
 		void IAppStartWidget.SetApp (string name, string commandName)
 		{
 			_startButton.Label = name;
@@ -80,7 +85,9 @@ namespace Mmj.Views.Widgets
 
 		public event EventHandler StartApplication;
 		public event EventHandler StopApplication;
+
 		#endregion
+
 		readonly ToggleButton _startButton;
 
 		/// <summary>
