@@ -38,11 +38,13 @@ namespace Mmj.ConnectionWrapper.Alsa
 		List<AlsaPort> _portMapper = new List<AlsaPort> ();
 		List<AlsaMidiConnection> _connections = new List<AlsaMidiConnection> ();
 
+		IDisposable _timeout;
+
 		public AlsaMidiManager ()
 		{
 			Wrapper.Activate ();
 			
-			Application.TimeoutInvoke (2000, CheckForChanges);
+			_timeout = Application.TimeoutInvoke (2000, CheckForChanges);
 		}
 
 		~AlsaMidiManager ()
@@ -58,6 +60,9 @@ namespace Mmj.ConnectionWrapper.Alsa
 
 		protected virtual void Dispose (bool isDisposing)
 		{
+			if (_timeout != null) {
+				_timeout.Dispose ();
+			}
 			Wrapper.DeActivate ();
 		}
 

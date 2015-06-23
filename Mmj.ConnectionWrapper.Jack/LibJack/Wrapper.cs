@@ -56,6 +56,9 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			ConnectionType connectionType = ConnectionType.Undefined;
 			if (register > 0) {
 				JackPort newPort = GetJackPortData (port);
+				if (newPort == null) {
+					return;
+				}
 				_portMapper.Add (newPort);
 				eventArgs.Message = I18N._ ("New port registered.");
 				connectionType = newPort.ConnectionType;
@@ -67,14 +70,15 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				eventArgs.Connectables = clients;
 			} else {
 				JackPort oldPort = _portMapper.FirstOrDefault (map => map.Id == port);
-				if (oldPort != null) {
-					List<Port> ports = new List<Port> ();
-					ports.Add (oldPort);
-					eventArgs.Connectables = ports;
-					eventArgs.ChangeType = ChangeType.Deleted;						
-					connectionType = oldPort.ConnectionType;
-					_portMapper.Remove (oldPort);
+				if (oldPort == null) {
+					return;
 				}
+				List<Port> ports = new List<Port> ();
+				ports.Add (oldPort);
+				eventArgs.Connectables = ports;
+				eventArgs.ChangeType = ChangeType.Deleted;						
+				connectionType = oldPort.ConnectionType;
+				_portMapper.Remove (oldPort);
 				eventArgs.Message = I18N._ ("Port unregistered.");
 			}
 			eventArgs.ConnectionType = connectionType;
@@ -294,6 +298,9 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 		{
 			foreach (JackPort existing in existingPorts) {
 				JackPort current = GetJackPortData (existing.Id);
+				if (current == null) {
+					continue;
+				}
 				if (current.Name != existing.Name) { 					
 					existing.Client.ReplacePort (existing, current);
 					if (PortOrConnectionHasChanged != null) {

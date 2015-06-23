@@ -35,6 +35,8 @@ namespace Mmj.ConnectionWrapper.Jack
 {
 	public abstract class JackConnectionManager : IConnectionManager
 	{
+		IDisposable _timeout;
+
 		protected JackConnectionManager ()
 		{
 			Wrapper.PortOrConnectionHasChanged += OnLibJackWrapperHasChanged;
@@ -57,6 +59,9 @@ namespace Mmj.ConnectionWrapper.Jack
 			if (isDisposing) {
 				Wrapper.PortOrConnectionHasChanged -= OnLibJackWrapperHasChanged;
 				Wrapper.BackendHasChanged -= OnJackChanged;
+			}
+			if (_timeout != null) {
+				_timeout.Dispose ();
 			}
 
 			Wrapper.Close ();
@@ -88,7 +93,7 @@ namespace Mmj.ConnectionWrapper.Jack
 					}
 					return clients;
 				} else {
-					Application.TimeoutInvoke (2000, ConnectToServer);
+					_timeout = Application.TimeoutInvoke (2000, ConnectToServer);
 					Wrapper.ConnectToServer ();
 					return null;
 				}
@@ -132,6 +137,7 @@ namespace Mmj.ConnectionWrapper.Jack
 				if (ConnectionHasChanged != null) {
 					ConnectionHasChanged (this, eventArgs);
 				}
+				_timeout.Dispose ();
 				return false;
 			} 
 			return true;
@@ -150,7 +156,7 @@ namespace Mmj.ConnectionWrapper.Jack
 				BackendHasChanged (this, args);
 			}
 			if (args.ChangeType == ChangeType.BackendExited) {
-				Application.TimeoutInvoke (2000, ConnectToServer);
+				_timeout = Application.TimeoutInvoke (2000, ConnectToServer);
 			}
 		}
 	}
