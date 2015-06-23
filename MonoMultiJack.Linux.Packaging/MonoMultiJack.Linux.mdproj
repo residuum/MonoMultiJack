@@ -20,7 +20,6 @@
               <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.csproj" />
               <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj" />
               <SolutionItemReference path="..\Mmj.Mvc\Mmj.Mvc.csproj" />
-              <SolutionItemReference path="..\NLog\src\NLog\NLog.monodevelop.csproj" />
             </ChildEntries>
             <RootEntry path="..\MonoMultiJack.Lnx.sln" id=":root:" />
           </Builder>
@@ -38,7 +37,6 @@
               <SolutionItemReference path="..\xwt\Xwt\Xwt.csproj" />
               <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk.csproj" />
               <SolutionItemReference path="..\Mmj.Mvc\Mmj.Mvc.csproj" />
-              <SolutionItemReference path="..\NLog\src\NLog\NLog.monodevelop.csproj" />
             </ChildEntries>
             <RootEntry path="..\MonoMultiJack.Lnx.sln" id=":root:" />
           </Builder>

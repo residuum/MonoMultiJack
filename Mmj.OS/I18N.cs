@@ -32,7 +32,6 @@ namespace Mmj.OS
 	{
 		private static readonly ICatalog _Catalog = new Catalog ("MonoMultiJack", "./locale");
 
-
 		public static string _ (string text)
 		{
 			return _Catalog.GetString (text);
@@ -74,4 +73,3 @@ namespace Mmj.OS
 		}
 	}
 }
-
