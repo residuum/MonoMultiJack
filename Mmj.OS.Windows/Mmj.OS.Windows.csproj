@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.0.1\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,10 +66,9 @@
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>Mmj.OS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NLog\src\NLog\NLog.netfx35.csproj">
-      <Project>{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}</Project>
-      <Name>NLog.netfx35</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

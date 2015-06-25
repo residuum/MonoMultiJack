@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper", "Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper.Jack", "Mmj.ConnectionWrapper.Jack\Mmj.ConnectionWrapper.Jack.csproj", "{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}"
@@ -18,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows", "MonoMultiJack.Windows\MonoMultiJack.Windows.csproj", "{48716E31-9E50-469A-8EA4-3F722C79D7B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvc", "Mmj.Mvc\Mmj.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.netfx35", "NLog\src\NLog\NLog.netfx35.csproj", "{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows.Installer", "MonoMultiJack.Windows.Installer\MonoMultiJack.Windows.Installer.csproj", "{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}"
 EndProject
@@ -125,16 +125,6 @@ Global
 		{D43459F9-41B8-467F-965E-8783BD10FC04}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D43459F9-41B8-467F-965E-8783BD10FC04}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D43459F9-41B8-467F-965E-8783BD10FC04}.Release|x86.ActiveCfg = Release|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C124B63D-1658-4311-9BA8-9C3CFAF9B32E}.Release|x86.ActiveCfg = Release|Any CPU
 		{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -170,17 +160,15 @@ Global
 		$0.StandardHeader = $2
 		$2.Text = @\n${FileName}\n \nAuthor:\n      ${AuthorName} <${AuthorEmail}>\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.
 		$2.IncludeInNewFiles = True
-		$0.TextStylePolicy = $3
+		$0.TextStylePolicy = $38
 		$3.FileWidth = 120
 		$3.TabWidth = 4
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/plain
-		$0.TextStylePolicy = $4
 		$4.TabsToSpaces = False
 		$4.inheritsSet = VisualStudio
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
-		$0.TextStylePolicy = $5
 		$5.TabsToSpaces = False
 		$5.NoTabsAfterNonTabs = True
 		$5.EolMarker = Unix
@@ -193,21 +181,19 @@ Global
 		$6.scope = text/x-csharp
 		$0.NameConventionPolicy = $7
 		$7.Rules = $8
-		$8.NamingRule = $9
+		$8.NamingRule = $33
 		$9.Name = Namespaces
 		$9.AffectedEntity = Namespace
 		$9.VisibilityMask = VisibilityMask
 		$9.NamingStyle = PascalCase
 		$9.IncludeInstanceMembers = True
 		$9.IncludeStaticEntities = True
-		$8.NamingRule = $10
 		$10.Name = Types
 		$10.AffectedEntity = Class, Struct, Enum, Delegate
 		$10.VisibilityMask = VisibilityMask
 		$10.NamingStyle = PascalCase
 		$10.IncludeInstanceMembers = True
 		$10.IncludeStaticEntities = True
-		$8.NamingRule = $11
 		$11.Name = Interfaces
 		$11.RequiredPrefixes = $12
 		$12.String = I
@@ -216,7 +202,6 @@ Global
 		$11.NamingStyle = PascalCase
 		$11.IncludeInstanceMembers = True
 		$11.IncludeStaticEntities = True
-		$8.NamingRule = $13
 		$13.Name = Attributes
 		$13.RequiredSuffixes = $14
 		$14.String = Attribute
@@ -225,7 +210,6 @@ Global
 		$13.NamingStyle = PascalCase
 		$13.IncludeInstanceMembers = True
 		$13.IncludeStaticEntities = True
-		$8.NamingRule = $15
 		$15.Name = Event Arguments
 		$15.RequiredSuffixes = $16
 		$16.String = EventArgs
@@ -234,7 +218,6 @@ Global
 		$15.NamingStyle = PascalCase
 		$15.IncludeInstanceMembers = True
 		$15.IncludeStaticEntities = True
-		$8.NamingRule = $17
 		$17.Name = Exceptions
 		$17.RequiredSuffixes = $18
 		$18.String = Exception
@@ -243,35 +226,30 @@ Global
 		$17.NamingStyle = PascalCase
 		$17.IncludeInstanceMembers = True
 		$17.IncludeStaticEntities = True
-		$8.NamingRule = $19
 		$19.Name = Methods
 		$19.AffectedEntity = Methods
 		$19.VisibilityMask = VisibilityMask
 		$19.NamingStyle = PascalCase
 		$19.IncludeInstanceMembers = True
 		$19.IncludeStaticEntities = True
-		$8.NamingRule = $20
 		$20.Name = Static Readonly Fields
 		$20.AffectedEntity = ReadonlyField
 		$20.VisibilityMask = Internal, Protected, Public
 		$20.NamingStyle = PascalCase
 		$20.IncludeInstanceMembers = False
 		$20.IncludeStaticEntities = True
-		$8.NamingRule = $21
 		$21.Name = Fields (Non Private)
 		$21.AffectedEntity = Field
 		$21.VisibilityMask = Internal, Protected, Public
 		$21.NamingStyle = PascalCase
 		$21.IncludeInstanceMembers = True
 		$21.IncludeStaticEntities = True
-		$8.NamingRule = $22
 		$22.Name = ReadOnly Fields (Non Private)
 		$22.AffectedEntity = ReadonlyField
 		$22.VisibilityMask = Internal, Protected, Public
 		$22.NamingStyle = PascalCase
 		$22.IncludeInstanceMembers = True
 		$22.IncludeStaticEntities = False
-		$8.NamingRule = $23
 		$23.Name = Fields (Private)
 		$23.RequiredPrefixes = $24
 		$24.String = _
@@ -280,14 +258,12 @@ Global
 		$23.NamingStyle = CamelCase
 		$23.IncludeInstanceMembers = True
 		$23.IncludeStaticEntities = False
-		$8.NamingRule = $25
 		$25.Name = Static Fields (Private)
 		$25.AffectedEntity = Field
 		$25.VisibilityMask = Private
 		$25.NamingStyle = CamelCase
 		$25.IncludeInstanceMembers = False
 		$25.IncludeStaticEntities = True
-		$8.NamingRule = $26
 		$26.Name = ReadOnly Fields (Private)
 		$26.RequiredPrefixes = $27
 		$27.String = _
@@ -296,42 +272,36 @@ Global
 		$26.NamingStyle = CamelCase
 		$26.IncludeInstanceMembers = True
 		$26.IncludeStaticEntities = False
-		$8.NamingRule = $28
 		$28.Name = Constant Fields
 		$28.AffectedEntity = ConstantField
 		$28.VisibilityMask = VisibilityMask
 		$28.NamingStyle = PascalCase
 		$28.IncludeInstanceMembers = True
 		$28.IncludeStaticEntities = True
-		$8.NamingRule = $29
 		$29.Name = Properties
 		$29.AffectedEntity = Property
 		$29.VisibilityMask = VisibilityMask
 		$29.NamingStyle = PascalCase
 		$29.IncludeInstanceMembers = True
 		$29.IncludeStaticEntities = True
-		$8.NamingRule = $30
 		$30.Name = Events
 		$30.AffectedEntity = Event
 		$30.VisibilityMask = VisibilityMask
 		$30.NamingStyle = PascalCase
 		$30.IncludeInstanceMembers = True
 		$30.IncludeStaticEntities = True
-		$8.NamingRule = $31
 		$31.Name = Enum Members
 		$31.AffectedEntity = EnumMember
 		$31.VisibilityMask = VisibilityMask
 		$31.NamingStyle = PascalCase
 		$31.IncludeInstanceMembers = True
 		$31.IncludeStaticEntities = True
-		$8.NamingRule = $32
 		$32.Name = Parameters
 		$32.AffectedEntity = Parameter
 		$32.VisibilityMask = VisibilityMask
 		$32.NamingStyle = CamelCase
 		$32.IncludeInstanceMembers = True
 		$32.IncludeStaticEntities = True
-		$8.NamingRule = $33
 		$33.Name = Type Parameters
 		$33.RequiredPrefixes = $34
 		$34.String = T
@@ -340,17 +310,14 @@ Global
 		$33.NamingStyle = PascalCase
 		$33.IncludeInstanceMembers = True
 		$33.IncludeStaticEntities = True
-		$0.XmlFormattingPolicy = $35
+		$0.XmlFormattingPolicy = $37
 		$35.inheritsSet = Mono
 		$35.inheritsScope = application/xml
 		$35.scope = application/xml
-		$0.TextStylePolicy = $36
 		$36.inheritsSet = null
 		$36.scope = application/config+xml
-		$0.XmlFormattingPolicy = $37
 		$37.inheritsSet = null
 		$37.scope = application/config+xml
-		$0.TextStylePolicy = $38
 		$38.inheritsSet = null
 		$38.scope = application/xml
 		version = 0.5.0
