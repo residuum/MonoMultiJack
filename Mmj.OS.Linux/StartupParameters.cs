@@ -100,17 +100,17 @@ namespace Mmj.OS
 
 
 **" + I18N._ ("Startup Parameters") + @"**  
-*-h*, *--help*: " + I18N._ ("Show this help on startup.") + @"  
-*-j*, *--jack*: " + I18N._ ("Launches Jackd on startup.") + @"  
-*-f*, *--fullscreen*: " + I18N._ ("Starts in fullscreen mode.") + @"  
-*-c <dir>*, *--config <dir>*: " + I18N._ ("Loads configuration from the specified directory.") + @"  
-*-l <file>*, *--log <file>*: " + I18N._ ("Logs messages and debugging information to the specified file.") + @"  
+`-h`, `--help`: " + I18N._ ("Show this help on startup.") + @"  
+`-j`, `--jack`: " + I18N._ ("Launches Jackd on startup.") + @"  
+`-f`, `--fullscreen`: " + I18N._ ("Starts in fullscreen mode.") + @"  
+`-c <dir>`, `--config <dir>`: " + I18N._ ("Loads configuration from the specified directory.") + @"  
+`-l <file>`, `--log <file>`: " + I18N._ ("Logs messages and debugging information to the specified file.") + @"  
 
 **" + I18N._ ("Keyboard Shortcuts") + @"**  
-*F1*: " + I18N._ ("Show this help.") + @"  
-*Alt+F4*, *Ctrl+Q*: " + I18N._ ("Quits the program and closes all started applications.") + @"  
-*Ctrl+C*: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
-*Ctrl+D*: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
+`F1`: " + I18N._ ("Show this help.") + @"  
+`Alt+F4`, `Ctrl+Q`: " + I18N._ ("Quits the program and closes all started applications.") + @"  
+`Ctrl+C`: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
+`Ctrl+D`: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
 ";
 	}
 }
