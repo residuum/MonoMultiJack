@@ -36,7 +36,7 @@ namespace Mmj.Views
 			entry.GotFocus += ShowFileDialog;
 		}
 
-		private static void ShowFileDialog (object sender, EventArgs eventArgs)
+		static void ShowFileDialog (object sender, EventArgs eventArgs)
 		{
 			TextEntry entry = sender as TextEntry;
 			if (entry == null) {

@@ -30,7 +30,7 @@ namespace Mmj.OS
 {
 	public static class I18N
 	{
-		private static readonly ICatalog _Catalog = new Catalog ("MonoMultiJack", "./locale");
+		static readonly ICatalog _Catalog = new Catalog ("MonoMultiJack", "./locale");
 
 		public static string _ (string text)
 		{

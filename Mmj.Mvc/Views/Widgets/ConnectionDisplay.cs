@@ -187,7 +187,7 @@ namespace Mmj.Views.Widgets
 			CallConnect ();
 		}
 
-		private void CallConnect ()
+		void CallConnect ()
 		{
 			IConnectable outlet = _outTreeView.GetSelected ();
 			IConnectable inlet = _inTreeView.GetSelected ();
@@ -237,7 +237,7 @@ namespace Mmj.Views.Widgets
 			CallDisconnect ();
 		}
 
-		private void CallDisconnect ()
+		void CallDisconnect ()
 		{
 			if (Disconnect != null) {
 				int notSelected = 0;

@@ -11,10 +11,10 @@ You will need an installed version of jackd.
 
 Windows:
 --------
+You will need Visual Studio 2010 to create an installer
 Execute Windows-build.bat
 Fix any errors by installing missing libraries
-You will get a self-contained zip file with all dll and MonoMultiJack.exe
-Run MonoMultiJack.exe.
+Run MonoMultiJack.Setup.msi or MonoMultiJack-setup.exe to install MonoMultiJack
 
 
 Linux:

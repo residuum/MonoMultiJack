@@ -77,7 +77,7 @@ namespace Mmj.Views
 			get { return LoadImage ("Mmj.Views.Icons.program.png"); }
 		}
 
-		private static Image LoadImage (string imageNamespace)
+		static Image LoadImage (string imageNamespace)
 		{
 			using (Stream s = Assembly.GetManifestResourceStream (imageNamespace)) {
 				return Image.FromStream (s);

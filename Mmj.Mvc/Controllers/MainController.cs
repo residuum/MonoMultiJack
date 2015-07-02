@@ -271,7 +271,7 @@ namespace Mmj.Controllers
 			ConfigureApps ();
 		}
 
-		private void ConfigureApps ()
+		void ConfigureApps ()
 		{
 			AppConfigController appConfigController = new AppConfigController (_appConfigurations);
 			appConfigController.UpdateApps += Controller_UpdateApps;
