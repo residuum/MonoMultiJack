@@ -45,7 +45,7 @@
     <Compile Include="Controllers\EventArguments\UpdateJackdEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\UpdateAppsEventArgs.cs" />
     <Compile Include="Controllers\EventArguments\ConnectEventArgs.cs" />
-    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\DependencyResolver.cs" />
     <Compile Include="Views\Windows\AboutWindow.cs" />
     <Compile Include="Views\Windows\AppConfigWindow.cs" />

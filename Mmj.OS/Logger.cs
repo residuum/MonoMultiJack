@@ -35,9 +35,6 @@ namespace Mmj.OS
 	{
 		NLog.Logger _logger;
 
-		public Logger ()
-		{
-		}
 		#region ILogger implementation
 		void ILogger.LogConnectionWrapper (ConnectionEventArgs args)
 		{
@@ -61,13 +58,13 @@ namespace Mmj.OS
 
 		void ILogger.LogMessage (string message, LogLevel level)
 		{
-#if DEBUG
+			#if DEBUG
 			Console.WriteLine ("{0:yyyy-MM-dd HH:mm:ss.fff} {1} {2}", DateTime.Now, level, message);
-#else
+			#else
 			if (level <= LogLevel.Debug){
 				return;
 			}
-#endif
+			#endif
 			if (_logger == null) {
 				return;
 			}

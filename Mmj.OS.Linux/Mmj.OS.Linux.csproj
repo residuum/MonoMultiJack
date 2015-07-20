@@ -40,7 +40,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="ConnectionManagerFactory.cs" />
     <Compile Include="StartupParameters.cs" />
-    <Compile Include="Logger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -77,19 +77,19 @@ namespace Mmj.Controllers
 
 		void AppWidget_StartApplication (object sender, EventArgs e)
 		{
-			Logger.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Debug);
+			Logging.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Debug);
 			_application.Start ();
 		}
 
 		void AppWidget_StopApplication (object sender, EventArgs e)
 		{
-			Logger.LogMessage (string.Format ("Stopping {0}", _appName), LogLevel.Debug);
+			Logging.LogMessage (string.Format ("Stopping {0}", _appName), LogLevel.Debug);
 			_application.Stop ();
 		}
 
 		void Application_HasExited (object sender, EventArgs e)
 		{
-			Logger.LogMessage (string.Format ("{0} has stopped", _appName), LogLevel.Info);
+			Logging.LogMessage (string.Format ("{0} has stopped", _appName), LogLevel.Info);
 			_appWidget.IsRunning = false;
 			if (ApplicationStatusHasChanged != null) {
 				ApplicationStatusHasChanged (this, new EventArgs ());
@@ -98,7 +98,7 @@ namespace Mmj.Controllers
 
 		void Application_HasStarted (object sender, EventArgs e)
 		{
-			Logger.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Info);
+			Logging.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Info);
 			_appWidget.IsRunning = true;
 			if (ApplicationStatusHasChanged != null) {
 				ApplicationStatusHasChanged (this, new EventArgs ());

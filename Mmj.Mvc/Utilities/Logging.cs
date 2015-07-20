@@ -29,7 +29,7 @@ using Mmj.ConnectionWrapper;
 
 namespace Mmj.Utilities
 {
-	static class Logger
+	static class Logging
 	{
 		static ILogger _logging;
 

@@ -64,19 +64,19 @@ namespace Mmj.Controllers
 
 		void Widget_Connect (object sender, ConnectEventArgs args)
 		{
-			Logger.LogMessage ("Connecting", LogLevel.Debug);
+			Logging.LogMessage ("Connecting", LogLevel.Debug);
 			_connectionManager.Connect (args.Outlet, args.Inlet);
 		}
 
 		void Widget_Disconnect (object sender, ConnectEventArgs args)
 		{
-			Logger.LogMessage ("Disconnecting", LogLevel.Debug);
+			Logging.LogMessage ("Disconnecting", LogLevel.Debug);
 			_connectionManager.Disconnect (args.Outlet, args.Inlet);
 		}
 
 		void ConnectionManager_BackendHasChanged (object sender, ConnectionEventArgs args)
 		{
-			Logger.LogMessage (args);
+			Logging.LogMessage (args);
 			switch (args.ChangeType) {
 			case ChangeType.BackendExited:
 				_connectionWidget.Clear ();
@@ -87,7 +87,7 @@ namespace Mmj.Controllers
 
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)
 		{
-			Logger.LogMessage (args);
+			Logging.LogMessage (args);
 			if (args.ChangeType == ChangeType.New) {
 				if (args.Connectables != null) {
 					foreach (IConnectable connectable in args.Connectables) {

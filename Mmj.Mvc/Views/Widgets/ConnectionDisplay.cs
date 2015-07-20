@@ -274,7 +274,7 @@ namespace Mmj.Views.Widgets
 				_connectionArea.QueueDraw ();
 				_lastLineUpdate = now;
 			} catch (Exception ex) {
-				Logger.LogException (ex);
+				Logging.LogException (ex);
 			}
 		}
 

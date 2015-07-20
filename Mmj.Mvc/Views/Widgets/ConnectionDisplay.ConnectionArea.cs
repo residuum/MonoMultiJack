@@ -71,7 +71,7 @@ namespace Mmj.Views.Widgets
 						ctx.SetLineWidth (1);
 						ctx.Stroke ();
 					} catch (Exception ex) {
-						Logger.LogException (ex);
+						Logging.LogException (ex);
 					}
 				}
 				base.OnDraw (ctx, dirtyRect);

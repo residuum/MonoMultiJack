@@ -62,7 +62,7 @@ namespace Mmj.Controllers
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
 			_parameters = DependencyResolver.GetImplementation<IStartupParameters> ("IStartupParameters", new object[] { args });
 			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
-			Logger.SetLogFile (_parameters.LogFile);
+			Logging.SetLogFile (_parameters.LogFile);
 		}
 
 		~MainController ()
@@ -137,11 +137,11 @@ namespace Mmj.Controllers
 				jackdConfig = PersistantConfiguration.LoadJackdConfiguration ();
 				return true;
 			} catch (System.Xml.XmlException ex) {
-				Logger.LogException (ex);
+				Logging.LogException (ex);
 				ShowInfoMessage ("Jackd configuration file is corrupt.");
 				jackdConfig = new JackdConfiguration ();
 			} catch (FileNotFoundException ex) {
-				Logger.LogException (ex);
+				Logging.LogException (ex);
 				ShowInfoMessage ("Jackd is not configured.");
 				jackdConfig = new JackdConfiguration ();
 			}
@@ -165,11 +165,11 @@ namespace Mmj.Controllers
 				appConfigs = PersistantConfiguration.LoadAppConfigurations ();
 				return true;
 			} catch (System.Xml.XmlException ex) {				
-				Logger.LogException (ex);
+				Logging.LogException (ex);
 				ShowInfoMessage ("Application configuration file is corrupt.");
 				appConfigs = new List<AppConfiguration> ();
 			} catch (FileNotFoundException ex) {				
-				Logger.LogException (ex);
+				Logging.LogException (ex);
 				ShowInfoMessage ("Applications are not configured.");
 				appConfigs = new List<AppConfiguration> ();
 			}
@@ -184,7 +184,7 @@ namespace Mmj.Controllers
 					return true;
 				}
 			} catch (Exception ex) {				
-				Logger.LogException (ex);
+				Logging.LogException (ex);
 			}
 			windowConfig = new WindowConfiguration (0, 0, 0, 0);
 			return false;
@@ -207,13 +207,13 @@ namespace Mmj.Controllers
 
 		void Jackd_HasStarted (object sender, EventArgs e)
 		{
-			Logger.LogMessage ("Jackd started", LogLevel.Info);
+			Logging.LogMessage ("Jackd started", LogLevel.Info);
 			UpdateRunningStatus ();
 		}
 
 		void Jackd_HasExited (object sender, EventArgs e)
 		{
-			Logger.LogMessage ("Jackd exited", LogLevel.Info);
+			Logging.LogMessage ("Jackd exited", LogLevel.Info);
 			UpdateRunningStatus ();
 		}
 
@@ -223,7 +223,7 @@ namespace Mmj.Controllers
 
 		void MainWindow_StartJackd (object sender, EventArgs e)
 		{
-			Logger.LogMessage ("Starting jackd", LogLevel.Debug);
+			Logging.LogMessage ("Starting jackd", LogLevel.Debug);
 			if (_jackd.IsRunning) {
 				_jackd.Stop ();
 			}
@@ -232,13 +232,13 @@ namespace Mmj.Controllers
 
 		void MainWindow_StopJackd (object sender, EventArgs e)
 		{
-			Logger.LogMessage ("Stopping jackd", LogLevel.Debug);
+			Logging.LogMessage ("Stopping jackd", LogLevel.Debug);
 			StopJackd ();
 		}
 
 		void MainWindow_StopAll (object sender, EventArgs e)
 		{
-			Logger.LogMessage ("Stopping all apps and jackd", LogLevel.Debug);
+			Logging.LogMessage ("Stopping all apps and jackd", LogLevel.Debug);
 			StopJackd ();
 			foreach (AppStartController startWidgetController in _startWidgetControllers) {
 				startWidgetController.StopApplication ();

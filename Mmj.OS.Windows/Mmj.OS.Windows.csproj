@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.4.0.1\lib\net40\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,7 +44,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="StartupParameters.cs" />
-    <Compile Include="Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
@@ -66,9 +62,6 @@
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>Mmj.OS</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
