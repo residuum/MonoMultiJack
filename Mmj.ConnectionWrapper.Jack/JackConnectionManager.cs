@@ -29,7 +29,6 @@ using System.Linq;
 using Xwt;
 using Mmj.ConnectionWrapper.Jack.LibJack;
 using Mmj.ConnectionWrapper.Jack.Types;
-using Mmj.OS;
 
 namespace Mmj.ConnectionWrapper.Jack
 {
@@ -131,7 +130,7 @@ namespace Mmj.ConnectionWrapper.Jack
 					Connectables = Clients,
 					Connections = Connections,
 					ChangeType = ChangeType.New,
-					Message = I18N._ ("Connection to Jackd established."),
+					Message = "Connection to Jackd established.",
 					MessageType = MessageType.Info
 				};
 				if (ConnectionHasChanged != null) {

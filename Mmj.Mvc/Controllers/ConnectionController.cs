@@ -47,7 +47,7 @@ namespace Mmj.Controllers
 		public ConnectionController (IConnectionManager connectionManager)
 		{
 			_connectionManager = connectionManager;
-			_connectionWidget = new ConnectionDisplay (connectionManager.Name);
+			_connectionWidget = new ConnectionDisplay (I18N._ (connectionManager.Name));
 
 			_connectionManager.BackendHasChanged += ConnectionManager_BackendHasChanged;
 			_connectionManager.ConnectionHasChanged += ConnectionManager_ConnectionHasChanged;
@@ -82,7 +82,7 @@ namespace Mmj.Controllers
 				_connectionWidget.Clear ();
 				break;
 			}
-			_connectionWidget.AddMessage (args.Message);
+			_connectionWidget.AddMessage (args.Message, args.Params);
 		}
 
 		void ConnectionManager_ConnectionHasChanged (object sender, ConnectionEventArgs args)
@@ -117,7 +117,7 @@ namespace Mmj.Controllers
 					}
 				}
 			}
-			_connectionWidget.AddMessage (args.Message);
+			_connectionWidget.AddMessage (args.Message, args.Params);
 		}
 
 		~ConnectionController ()

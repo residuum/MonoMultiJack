@@ -65,5 +65,11 @@ namespace Mmj.ConnectionWrapper
 		/// The type of change of the ports or connections.
 		/// </summary>
 		public ChangeType ChangeType { get; set; }
+
+		/// <summary>
+		/// Gets or sets the parameters.
+		/// </summary>
+		/// <value>The parameters.</value>
+		public object[] Params { get; set;}
 	}
 }

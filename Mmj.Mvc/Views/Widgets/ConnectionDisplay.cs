@@ -160,10 +160,10 @@ namespace Mmj.Views.Widgets
 			}
 		}
 
-		public void AddMessage (string message)
+		public void AddMessage (string message, object[] parameters = null)
 		{
 			Application.Invoke (() => {
-				_messages.AddMessage (message);
+				_messages.AddMessage (message, parameters);
 				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Markdown);
 				_messageContainer.Show ();
 				_messageContainer.VerticalScrollControl.Value = 0;
@@ -192,7 +192,7 @@ namespace Mmj.Views.Widgets
 			IConnectable outlet = _outTreeView.GetSelected ();
 			IConnectable inlet = _inTreeView.GetSelected ();
 			if (outlet == null || inlet == null) {
-				AddMessage (I18N._ ("Select ports or clients on both sides"));
+				AddMessage ("Select ports or clients on both sides");
 				return;
 			}
 			if (Connect != null) {
@@ -208,7 +208,7 @@ namespace Mmj.Views.Widgets
 			if (e.Inlet.ConnectionType != e.Outlet.ConnectionType
 			    || e.Inlet.FlowDirection != FlowDirection.In
 			    || e.Outlet.FlowDirection != FlowDirection.Out) {
-				AddMessage (I18N._ ("Cannot connect these ports or clients"));
+				AddMessage ("Cannot connect these ports or clients");
 				return;
 			}
 			if (Connect != null) {
@@ -252,7 +252,7 @@ namespace Mmj.Views.Widgets
 					notSelected += 1;
 				}
 				if (notSelected == 2) {
-					AddMessage (I18N._ ("No port or client selected"));
+					AddMessage ("No port or client selected");
 					return;
 				}
 				Disconnect (this, new ConnectEventArgs {

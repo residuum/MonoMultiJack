@@ -43,7 +43,7 @@ namespace Mmj.Views.Widgets
 
 		void RemoveConnection (IConnection connection);
 
-		void AddMessage (string message);
+		void AddMessage (string message, object[] parameters);
 
 		event ConnectEventHandler Connect;
 		event ConnectEventHandler Disconnect;

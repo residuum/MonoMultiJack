@@ -39,6 +39,9 @@ namespace Mmj.OS
 
 		public static string _ (string text, params object[] args)
 		{
+			if (args == null) {
+				return _ (text);
+			}
 			return _Catalog.GetString (text, args);
 		}
 

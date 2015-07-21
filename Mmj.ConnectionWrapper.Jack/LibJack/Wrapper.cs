@@ -29,7 +29,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Mmj.ConnectionWrapper.Jack.Types;
-using Mmj.OS;
 
 namespace Mmj.ConnectionWrapper.Jack.LibJack
 {
@@ -60,7 +59,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 					return;
 				}
 				_portMapper.Add (newPort);
-				eventArgs.Message = I18N._ ("New port registered.");
+				eventArgs.Message = "New port registered.";
 				connectionType = newPort.ConnectionType;
 				eventArgs.ChangeType = ChangeType.New;
 				List<IConnectable> clients = new List<IConnectable> ();
@@ -79,7 +78,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				eventArgs.ChangeType = ChangeType.Deleted;						
 				connectionType = oldPort.ConnectionType;
 				_portMapper.Remove (oldPort);
-				eventArgs.Message = I18N._ ("Port unregistered.");
+				eventArgs.Message = "Port unregistered.";
 			}
 			eventArgs.ConnectionType = connectionType;
 			if (PortOrConnectionHasChanged != null) {
@@ -98,7 +97,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				newConn = new JackMidiConnection ();
 				break;
 			}
-			Debug.Assert (newConn != null, I18N._ ("New connection is null."));
+			Debug.Assert (newConn != null, "New connection is null.");
 			newConn.OutPort = outPort;
 			newConn.InPort = inPort;
 			return newConn;
@@ -119,7 +118,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				eventArgs.Connections = connections;					
 				eventArgs.ConnectionType = newConn.ConnectionType;
 				eventArgs.ChangeType = ChangeType.New;
-				eventArgs.Message = I18N._ ("New connection established.");
+				eventArgs.Message = "New connection established.";
 			} else {
 				IEnumerable<IConnection> oldConn = _connections.Where (conn => conn.InPort == inPort
 				                                   && conn.OutPort == outPort
@@ -129,7 +128,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 				eventArgs.ConnectionType = inPort.ConnectionType;
 				_connections = _connections.Where (conn => conn.InPort != inPort || conn.OutPort != outPort)
 			.ToList ();
-				eventArgs.Message = I18N._ ("Connection deleted.");
+				eventArgs.Message = "Connection deleted.";
 			}
 			if (PortOrConnectionHasChanged != null) {
 				PortOrConnectionHasChanged (null, eventArgs);
@@ -142,7 +141,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			_portMapper.Clear ();
 			if (BackendHasChanged != null) {
 				BackendHasChanged (null, new ConnectionEventArgs {
-					Message = I18N._ ("Backend has exited"),
+					Message = "Backend has exited",
 					ChangeType = ChangeType.BackendExited,
 					MessageType = MessageType.Change
 				});
@@ -155,7 +154,8 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			if (xrunDelay > 0) {
 				if (BackendHasChanged != null) {
 					BackendHasChanged (null, new ConnectionEventArgs {
-						Message = I18N._ ("Xrun occurred: {0:0.###} ms", xrunDelay),
+						Message = "Xrun occurred: {0:0.###} ms",
+						Params = new object[]{xrunDelay},
 						ChangeType = ChangeType.Information,
 						MessageType = MessageType.Info
 					});

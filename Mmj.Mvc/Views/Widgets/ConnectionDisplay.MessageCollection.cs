@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using Mmj.OS;
 
 namespace Mmj.Views.Widgets
 {
@@ -36,12 +37,12 @@ namespace Mmj.Views.Widgets
 			readonly List<Message> _messages = new List<Message> ();
 			static readonly TimeSpan MessageTimeout = TimeSpan.FromSeconds (10);
 
-			public void AddMessage (string message)
+			public void AddMessage (string message, object[] parameters = null)
 			{
 				lock (_messages) {
 					_messages.Add (new Message {
 						Created = DateTime.Now, 
-						Content = message
+						Content = I18N._ (message, parameters)
 					});
 				}
 			}
