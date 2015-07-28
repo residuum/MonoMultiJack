@@ -29,11 +29,11 @@ namespace Mmj.ConnectionWrapper.Jack.Types
 	[Flags]
 	internal enum JackPortFlags
 	{
-		JackPortIsInput = 0x1,
-		JackPortIsOutput = 0x2,
-		JackPortIsPhysical = 0x4,
-		JackPortCanMonitor = 0x8,
-		JackPortIsTerminal = 0x10
+		JackPortIsInput = 1<<0,
+		JackPortIsOutput = 1<<1,
+		JackPortIsPhysical = 1<<2,
+		JackPortCanMonitor = 1<<3,
+		JackPortIsTerminal = 1<<4
 	}
 	
 }

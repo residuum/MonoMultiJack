@@ -24,3 +24,4 @@ using System.Runtime.CompilerServices;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
+[assembly: AssemblyVersionAttribute("0.6.0.*")]
