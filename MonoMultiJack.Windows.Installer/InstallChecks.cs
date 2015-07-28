@@ -2,9 +2,8 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace Mmj.Windows.Installer
 {
@@ -19,8 +18,8 @@ namespace Mmj.Windows.Installer
 		protected override void OnBeforeInstall (IDictionary savedState)
 		{
 			base.OnBeforeInstall (savedState);
-			if (!IsInstalled ("Jack")) {
-				DisplayJackdInfo (@"I could not find Jack on your system. 
+			if (!IsInstalled ("libjack")) {
+				DisplayJackdInfo (@"I could not find Jack on your system or it is not accessible. 
 
 MonoMultiJack is used for managing Jack and software using libjack.
 
@@ -53,34 +52,19 @@ Please download and install: http://jackaudio.org/downloads/");
 			}
 		}
 
-		static bool IsInstalled (string program)
+		[DllImport("kernel32")]
+		static extern bool FreeLibrary (int hLibModule);
+
+		[DllImport("kernel32")]
+		static extern int LoadLibrary (string lpLibFileName);
+
+		bool IsInstalled (string dllName)
 		{
-#if DEBUG
-			return false;
-#endif
-			// search in: CurrentUser
-			RegistryKey key = Registry.CurrentUser.OpenSubKey (@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
-			if (CheckForSubkey (program, key)) return true;
-
-			// search in: LocalMachine_32
-			key = Registry.LocalMachine.OpenSubKey (@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
-
-			if (CheckForSubkey (program, key)) return true;
-
-			// search in: LocalMachine_64
-			key = Registry.LocalMachine.OpenSubKey (@"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
-
-			if (CheckForSubkey (program, key)) return true;
-
-			// NOT FOUND
-			return false;
-		}
-
-		static bool CheckForSubkey (string program, RegistryKey key)
-		{
-			return key.GetSubKeyNames ().Select (key.OpenSubKey)
-			    .Select (subkey => subkey.GetValue ("DisplayName") as string)
-			    .Any (displayName => program.Equals (displayName, StringComparison.OrdinalIgnoreCase));
+			int libId = LoadLibrary (dllName);
+			if (libId > 0) {
+				FreeLibrary(libId);
+			}
+			return (libId > 0);
 		}
 
 		private class WindowWrapper : IWin32Window
