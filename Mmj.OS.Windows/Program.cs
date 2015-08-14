@@ -139,6 +139,7 @@ namespace Mmj.OS
 			};
 			_process.Exited += Process_Exited;
 			if (_process.Start () && HasStarted != null) {
+				_process.PriorityClass = ProcessPriorityClass.RealTime;
 				HasStarted (this, new EventArgs ());
 			}
 		}
