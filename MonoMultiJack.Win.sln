@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper", "Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvc", "Mmj.Mvc\Mmj.Mvc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows.Installer", "MonoMultiJack.Windows.Installer\MonoMultiJack.Windows.Installer.csproj", "{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MonoMultiJack.Windows.Setup", "MonoMultiJack.Windows.Setup\MonoMultiJack.Windows.Setup.vdproj", "{EA8E3E37-8E75-41FE-951A-6393BF58532D}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "MonoMultiJack.Windows.Setup", "MonoMultiJack.Windows.Setup\MonoMultiJack.Windows.Setup.wixproj", "{5E708E1A-DC0D-4A78-B943-978548E555D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,18 +135,16 @@ Global
 		{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ADFDA0CA-9C51-4F3D-9C0C-C939D4986A48}.Release|x86.ActiveCfg = Release|Any CPU
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Debug|Any CPU.ActiveCfg = Debug
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Debug|Any CPU.Build.0 = Debug
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Debug|Mixed Platforms.Build.0 = Debug
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Debug|x86.ActiveCfg = Debug
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Debug|x86.Build.0 = Debug
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Release|Any CPU.ActiveCfg = Release
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Release|Any CPU.Build.0 = Release
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Release|Mixed Platforms.ActiveCfg = Release
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Release|Mixed Platforms.Build.0 = Release
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Release|x86.ActiveCfg = Release
-		{EA8E3E37-8E75-41FE-951A-6393BF58532D}.Release|x86.Build.0 = Release
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Debug|x86.ActiveCfg = Debug|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Debug|x86.Build.0 = Debug|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Release|Any CPU.ActiveCfg = Release|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Release|Mixed Platforms.Build.0 = Release|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Release|x86.ActiveCfg = Release|x86
+		{5E708E1A-DC0D-4A78-B943-978548E555D9}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

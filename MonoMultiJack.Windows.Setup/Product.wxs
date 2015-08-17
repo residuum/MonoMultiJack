@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="MonoMultiJack" Language="1033" Version="0.6.0" Manufacturer="Residuum" UpgradeCode="50873603-bcd3-437f-a32d-e61544e0f600">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    
+    <Media Id="1" Cabinet="Sample.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
+    <Property Id="DiskPrompt" Value="MonoMultiJack" />
+    
+    <Icon Id="icon.ico" SourceFile="program.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+    
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+   
+    <Feature Id="ProductFeature" Title="MonoMultiJack" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="monomultijack.exe" />
+      <ComponentRef Id="monomultijack.exe.config" />
+      <ComponentRef Id="dll_mmj_configuration" />
+      <ComponentRef Id="dll_mmj_connectionwrapper" />
+      <ComponentRef Id="dll_mmj_connectionwrapper_jack" />
+      <ComponentRef Id="dll_mmj_mvc" />
+      <ComponentRef Id="dll_mmj_os" />
+      <ComponentRef Id="dll_mmj_os_windows" />
+      <ComponentRef Id="dll_xwt" />
+      <ComponentRef Id="dll_xwt_wpf" />
+      <ComponentRef Id="dll_nlog" />
+      <ComponentRef Id="dll_ngettext" />
+      <ComponentRef Id="mo_de" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+    
+    <Property Id="WIXUI_INSTALLDIR" Value="dir_monomultijack"/>
+    <UIRef Id="WixUI_InstallDir" />
+  
+  </Product>
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="dir_residuum" Name="Residuum">
+          <Directory Id="dir_monomultijack" Name="MonoMultiJack">
+            <Component Id="monomultijack.exe" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="MonoMultiJack.exe" Source="..\MonoMultiJack.Windows\bin\$(var.Configuration)\MonoMultiJack.exe" KeyPath="yes" />
+            </Component>
+            <Component Id="monomultijack.exe.config" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="MonoMultiJack.exe.config" Source="..\MonoMultiJack.Windows\bin\$(var.Configuration)\MonoMultiJack.exe.config" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_mmj_configuration" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.Configuration.dll" Source="..\Mmj.Configuration\bin\$(var.Configuration)\Mmj.Configuration.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_mmj_connectionwrapper" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.ConnectionWrapper.dll" Source="..\Mmj.ConnectionWrapper\bin\$(var.Configuration)\Mmj.ConnectionWrapper.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_mmj_connectionwrapper_jack" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.ConnectionWrapper.Jack.dll" Source="..\Mmj.ConnectionWrapper.Jack\bin\$(var.Configuration)\Mmj.ConnectionWrapper.Jack.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_mmj_mvc" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.Mvc.dll" Source="..\Mmj.Mvc\bin\$(var.Configuration)\Mmj.Mvc.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_mmj_os" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.OS.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\Mmj.OS.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_mmj_os_windows" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.OS.Windows.dll" Source="..\Mmj.OS.Windows\bin\$(var.Configuration)\Mmj.OS.Windows.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_xwt" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File  DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Xwt.dll" Source="..\xwt\Xwt\bin\$(var.Configuration)\Xwt.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_xwt_wpf" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Xwt.WPF.dll" Source="..\xwt\Xwt.WPF\bin\$(var.Configuration)\Xwt.WPF.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_nlog" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="NLog.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\NLog.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="dll_ngettext" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="NGettext.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\NGettext.dll" KeyPath="yes" />
+            </Component>
+            <Directory Id="dir_locale" Name="locale">
+              <Directory Id="dir_de" Name="de">
+                <Directory Id="dir_de_LC_MESSAGES" Name="LC_MESSAGES">
+                  <Component Id="mo_de" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+                    <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="MonoMultiJack.mo" Source="..\MonoMultiJack.Windows\bin\$(var.Configuration)\locale\de\LC_MESSAGES\MonoMultiJack.mo" KeyPath="yes" />
+                  </Component>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    <Directory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="MonoMultiJack">
+        <Component Id="ApplicationShortcut">
+          <Shortcut Id="ApplicationStartMenuShortcut"
+                    Name="MonoMultiJack"
+                    Description="Start and Manage Jackd and Audio Programs."
+                    Target="[#MonoMultiJack.exe]"
+                    WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+          <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+          <RegistryValue Root="HKCU" Key="Software\Residuum\MonoMultiJack" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
+      </Directory>
+    </Directory>
+    </Directory>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="dir_monomultijack">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+		</ComponentGroup>
+	</Fragment>
+</Wix>
