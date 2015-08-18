@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Linux.Gtk3", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Gtk3", "xwt\Xwt.Gtk\Xwt.Gtk3.csproj", "{3B25FD1F-CEBA-4450-8893-DC330FDB56A7}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoMultiJack.Linux.Gtk3", "MonoMultiJack.Linux.Gtk3.Packaging\MonoMultiJack.Linux.Gtk3.mdproj", "{E14C4642-6194-45C0-86DB-23057E2921AF}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoMultiJack.Linux.Gtk3", "MonoMultiJack.Linux.Packaging\MonoMultiJack.Linux.Gtk3.mdproj", "{E14C4642-6194-45C0-86DB-23057E2921AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

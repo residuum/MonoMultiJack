@@ -24,7 +24,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.config app.config" workingdir="${ProjectDir}" />
-        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${SolutionDir}" />
+        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -37,7 +37,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="cp -f MonoMultiJack.Linux.config app.config" workingdir="${ProjectDir}" />
-        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${SolutionDir}" />
+        <Command type="BeforeBuild" command="bash Linux-pocompile.sh ${ProjectConfigName}" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -92,6 +92,7 @@
     <None Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Linux-pocompile.sh" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
