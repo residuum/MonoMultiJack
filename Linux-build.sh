@@ -18,9 +18,10 @@ ${XBUILD} ${OTHER} /p:Configuration=Release /t:Clean
 
 ${XBUILD} ${SOLUTION} /p:Configuration=Release
 
+cd MonoMultiJack.Linux
 bash Linux-pocompile.sh Release
 
-cd MonoMultiJack.Linux/bin/Release
+cd bin/Release
 tar -cf MonoMultiJack.tar *
 bzip2 MonoMultiJack.tar
 mv MonoMultiJack.tar.bz2 ../../../
