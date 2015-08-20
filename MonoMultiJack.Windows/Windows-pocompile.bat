@@ -1,8 +1,9 @@
 SETLOCAL EnableDelayedExpansion
 
 SET GETTEXT_DIR=\Software\xgettext\bin
-SET OUTPUT_BASE=%1locale\
-FOR %%f IN (%~dp0Mmj.Os\*.po) DO (
+SET OUTPUT_BASE=%1\locale\
+FOR %%f IN (%~dp0..\Mmj.Os\*.po) DO (
+	ECHO %%f
 	for %%T in (%%f) do (
 		FOR /f "tokens=1,2,3 delims=." %%a in ("%%~nxT") DO (
 			SET BASE_FILENAME=%%a

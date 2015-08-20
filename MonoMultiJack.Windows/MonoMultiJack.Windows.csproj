@@ -67,6 +67,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Windows-pocompile.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
@@ -128,6 +129,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)Windows-pocompile.bat $(TargetDir)</PreBuildEvent>
+    <PreBuildEvent>$(ProjectDir)Windows-pocompile.bat $(TargetDir)</PreBuildEvent>
   </PropertyGroup>
 </Project>
