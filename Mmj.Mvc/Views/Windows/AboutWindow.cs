@@ -30,7 +30,7 @@ using Xwt.Drawing;
 
 namespace Mmj.Views.Windows
 {
-	public class AboutWindow : Window, IAboutWindow
+	public partial class AboutWindow : Window, IAboutWindow
 	{
 		string _nameText;
 		string _versionText;
@@ -89,12 +89,17 @@ namespace Mmj.Views.Windows
 
 		void ShowLicense ()
 		{
-			Dialog.ShowInfoMessage (_license);
+			LicenseDialog dialog = new LicenseDialog (_license);
+			this.Sensitive = false;
+			dialog.Show ();
+			dialog.Closed += (sender, e) => {
+				this.Sensitive = true;
+			};
 		}
 
 		void ShowAuthors ()
 		{
-			Dialog.ShowInfoMessage (_authors);
+			this.ShowInfoMessage (_authors);
 		}
 
 		void HandleClose (object sender, EventArgs e)

@@ -72,6 +72,7 @@
     <Compile Include="Views\Widgets\IWidget.cs" />
     <Compile Include="Views\WidgetExtensions.cs" />
     <Compile Include="Views\Icons.cs" />
+    <Compile Include="Views\Windows\AboutWindow.LicenseDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

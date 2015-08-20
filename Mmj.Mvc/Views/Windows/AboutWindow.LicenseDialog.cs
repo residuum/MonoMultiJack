@@ -1,5 +1,5 @@
-//
-// Dialog.cs
+﻿//
+// AboutWindow.LicenseDialog.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,20 +23,48 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 using Xwt;
+using Mmj.OS;
+using Xwt.Formats;
+
 
 namespace Mmj.Views.Windows
 {
-	public static class Dialog
+	public partial class AboutWindow
 	{
-		public static void ShowErrorMessage (this IWindow window, string message)
+		private class LicenseDialog : Window
 		{
-			MessageDialog.ShowError ((Window)window, message);
-		}
+			public LicenseDialog (string license)
+			{
+				BuildWindowContent (license);
+			}
 
-		public static void ShowInfoMessage (this IWindow window, string message)
-		{
-			MessageDialog.ShowMessage ((Window)window, message);
+			private void BuildWindowContent (string license)
+			{
+				double textWidth = 480;
+				double textHeight = 480;
+				VBox mainContent = new VBox ();
+
+				RichTextView textView = new RichTextView ();
+				textView.LoadText (license, TextFormat.Markdown);
+				textView.MinWidth = textWidth;
+				ScrollView scroller = new ScrollView (textView);
+				scroller.HorizontalScrollPolicy = ScrollPolicy.Never;
+				scroller.VerticalScrollPolicy = ScrollPolicy.Automatic;
+				scroller.MinHeight = textHeight;
+				scroller.MinWidth = textWidth + textView.MarginLeft + textView.MarginRight + 20;
+				mainContent.PackStart (scroller);
+
+				HBox buttonRow = new HBox ();
+				Button ok = new Button { Label = I18N._ ("Close"), Image = Icons.Ok };
+				ok.Clicked += (sender, args) => Close ();
+				buttonRow.PackEnd (ok);
+				mainContent.PackEnd (buttonRow);
+
+				Content = mainContent;
+			}
+
 		}
 	}
 }
