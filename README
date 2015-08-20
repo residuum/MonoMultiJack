@@ -14,7 +14,7 @@ Windows:
 You will need Visual Studio 2010 to create an installer
 Execute Windows-build.bat
 Fix any errors by installing missing libraries
-Run MonoMultiJack.Setup.msi or MonoMultiJack-setup.exe to install MonoMultiJack
+Run MonoMultiJack.Setup.msi to install MonoMultiJack
 
 
 Linux:
@@ -28,11 +28,3 @@ $ bash Linux-build.sh Gtk3
 You will get a tar.bz2 file with all dll and MonoMultiJack.exe
 Running the extracted program:
 $ exec mono "./MonoMultiJack.exe"
-
-
-MMJ is written in C# using the Mono framework and is licensed with an
-MIT (or as the FSF calls it X11) style license, meaning more or less:
-Do as thou wilst (with the software) shall be whole of the law.
-
-To compile you will need libjack0, autotools and the mono c# compiler
-installed.
