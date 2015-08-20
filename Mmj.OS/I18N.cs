@@ -23,13 +23,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+using System.IO;
+using System.Reflection;
 using NGettext;
 
 namespace Mmj.OS
 {
 	public static class I18N
 	{
-		static readonly ICatalog Catalog = new Catalog ("MonoMultiJack", "./locale");
+		static readonly ICatalog Catalog = new Catalog ("MonoMultiJack", Path.Combine(Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location), "locale"));
 
 		public static string _ (string text)
 		{
