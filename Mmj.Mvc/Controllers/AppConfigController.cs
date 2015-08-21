@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mmj.Configuration;
 using Mmj.Controllers.EventArguments;
 using Mmj.Views;
@@ -45,11 +46,20 @@ namespace Mmj.Controllers
 			_configWindow.Closing += Window_Closing;
 			_configWindow.AddApplication += Window_AddApplication;
 			_configWindow.SaveApplicationConfigs += Window_SaveConfigs;
+			if (appConfigurations.Any ()) {
+				CreateExistingWidgets (appConfigurations);
+			} else {
+				AddNewApplication ();
+			}
+		}
+
+		private void CreateExistingWidgets(IEnumerable<AppConfiguration> appConfigurations)
+		{
 			foreach (AppConfiguration config in appConfigurations) {
-				IAppConfigWidget widget = CreateWidget ();	
+				IAppConfigWidget widget = CreateWidget ();
 				widget.Name = config.Name;
 				widget.Command = config.Command;
-				widget.Arguments = config.Arguments;			
+				widget.Arguments = config.Arguments;
 				_configWindow.AddAppConfigWidget (widget);
 				_widgets.Add (widget);
 			}
@@ -106,6 +116,11 @@ namespace Mmj.Controllers
 		}
 
 		void Window_AddApplication (object sender, EventArgs e)
+		{
+			AddNewApplication ();
+		}
+
+		private void AddNewApplication()
 		{
 			IAppConfigWidget newWidget = CreateWidget ();
 			_configWindow.AddAppConfigWidget (newWidget);
