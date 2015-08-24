@@ -184,20 +184,20 @@ namespace Mmj.ConnectionWrapper.Alsa
 					if (connections.Any ()) {
 						return "New ports and connections registered.";
 					} else {
-						return "New ports registered.";
+						return connectables.Count () == 1 ? "New port registered." : "New ports registered.";
 					}
 				} else {
-					return "New connections established.";
+					return connections.Count () == 1 ? "New connection established." : "New connections established.";
 				}
 			case ChangeType.Deleted:
 				if (connectables.Any ()) {
 					if (connections.Any ()) {
 						return "Ports and connections unregistered.";
 					} else {
-						return "Ports unregistered.";
+						return connectables.Count () == 1 ? "Port unregistered." : "Ports unregistered.";
 					}
 				} else {
-					return "Connections deleted.";
+					return connections.Count () == 1 ? "Connection deleted." : "Connections deleted.";
 				}
 			default:
 				throw new ArgumentOutOfRangeException ("changeType");
