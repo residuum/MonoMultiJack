@@ -327,6 +327,11 @@ msgstr "Diese Hilfe anzeigen."
 msgid "Quits the program and closes all started applications."
 msgstr "Programm und alle gestarteten Anwendungen schließen."
 
+#: Mmj.OS.Linux/StartupParameters.cs:111
+#: Mmj.OS.Windows/StartupParameters.cs:96
+msgid "Toggle fullscreen."
+msgstr "Vollbildmodus ein- und ausschalten."
+
 #: Mmj.OS.Linux/StartupParameters.cs:112
 #: Mmj.OS.Windows/StartupParameters.cs:97
 msgid "Connects the selected inlets / outlets and or clients."

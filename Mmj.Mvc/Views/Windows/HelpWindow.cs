@@ -36,14 +36,21 @@ namespace Mmj.Views.Windows
 
 		public HelpWindow ()
 		{
-			VBox mainContent = new VBox ();			
+			VBox mainContent = new VBox ();
 			_messageDisplay = new RichTextView {
-				WidthRequest = 400,
-				HeightRequest = 300
+				WidthRequest = 500
 			};
-			mainContent.PackStart (_messageDisplay);
+			ScrollView scroller = new ScrollView (_messageDisplay) {
+				VerticalScrollPolicy = ScrollPolicy.Automatic,
+				HorizontalScrollPolicy = ScrollPolicy.Never,
+				HeightRequest = 500
+			};
+			mainContent.PackStart (scroller);
 			HBox buttonRow = new HBox ();
-			Button ok = new Button { Label = I18N._ ("Close"), Image = Icons.Ok };
+			Button ok = new Button {
+				Label = I18N._ ("Close"),
+				Image = Icons.Ok
+			};
 			ok.Clicked += (sender, args) => Close ();
 			buttonRow.PackEnd (ok);
 			mainContent.PackEnd (buttonRow);

@@ -70,6 +70,9 @@ namespace Mmj.Views.Windows
 			    || (e.Key == Key.q && e.Modifiers == ModifierKeys.Control)) {
 				CallQuitApplication ();
 			}
+			if (e.Key == Key.f && e.Modifiers == ModifierKeys.None) {
+				FullScreen = !FullScreen;
+			}
 		}
 
 		void BuildMenu ()

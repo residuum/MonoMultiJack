@@ -94,6 +94,7 @@ namespace Mmj.OS
 **" + I18N._ ("Keyboard Shortcuts") + @"**  
 `F1`: " + I18N._ ("Show this help.") + @"  
 `Alt+F4`, `Ctrl+Q`: " + I18N._ ("Quits the program and closes all started applications.") + @"  
+`F`: " + I18N._ ("Toggle fullscreen.") + @"  
 `Ctrl+C`: " + I18N._ ("Connects the selected inlets / outlets and or clients.") + @"  
 `Ctrl+D`: " + I18N._ ("Disconnects the selected inlets / outlets and or clients.") + @"  
 ";
