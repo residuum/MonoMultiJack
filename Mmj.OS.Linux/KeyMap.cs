@@ -29,14 +29,14 @@ namespace Mmj.OS
 
 		static Command GetCommand (Key key, ModifierKeys modifiers)
 		{
-			if (key == Key.F1 && modifiers == ModifierKeys.Command) {
+			if (key == Key.F1 && (modifiers == ModifierKeys.Command || modifiers == ModifierKeys.None)) {
 				return Command.Help;
 			}
 			if ((key == Key.F4 && modifiers == ModifierKeys.Alt)
-			             || (key == Key.q && modifiers == ModifierKeys.Control)) {
+			    || (key == Key.q && modifiers == ModifierKeys.Control)) {
 				return Command.Quit;
 			}
-			if (key == Key.f && modifiers == ModifierKeys.Command) {
+			if (key == Key.f && (modifiers == ModifierKeys.Command || modifiers == ModifierKeys.None)) {
 				return Command.Fullscreen;
 			}
 			if ((key == Key.c && modifiers == ModifierKeys.Control)) {
