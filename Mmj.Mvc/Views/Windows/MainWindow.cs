@@ -28,9 +28,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Mmj.Configuration;
 using Mmj.OS;
+using Mmj.Utilities;
 using Xwt;
 using Xwt.Drawing;
 using Mmj.Views.Widgets;
+using Command = Mmj.OS.Command;
 
 namespace Mmj.Views.Windows
 {
@@ -39,8 +41,8 @@ namespace Mmj.Views.Windows
 	/// </summary>
 	public class MainWindow : Window, IMainWindow
 	{
-		readonly string JackdStatusRunning = I18N._ ("Jackd is running.");
-		readonly string JackdStatusStopped = I18N._ ("Jackd is stopped.");
+		readonly string _jackdStatusRunning = I18N._ ("Jackd is running.");
+		readonly string _jackdStatusStopped = I18N._ ("Jackd is stopped.");
 		VBox _appButtonBox;
 		Notebook _connectionNotebook;
 		Label _statusbar;
@@ -48,6 +50,7 @@ namespace Mmj.Views.Windows
 		MenuItem _stopAllAction;
 		bool _jackdRunning;
 		bool _appsRunning;
+		readonly IKeyMap _keyMap = DependencyResolver.GetImplementation<IKeyMap> ("IKeyMap");
 
 		/// <summary>
 		/// Constructor
@@ -58,20 +61,23 @@ namespace Mmj.Views.Windows
 			BuildMenu ();
 			BuildWindowContent ();
 			Closed += OnCloseEvent;
+			_keyMap.SetCommand (Command.Help, CallShowHelp);
+			_keyMap.SetCommand (Command.Quit, CallQuitApplication);
+			_keyMap.SetCommand (Command.Fullscreen, () => {
+				FullScreen = !FullScreen;
+			});
 			Content.KeyPressed += OnKeyEvent;
 		}
 
 		void OnKeyEvent (object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.F1 && e.Modifiers == ModifierKeys.None) {
-				CallShowHelp (this, new EventArgs ());
-			}
-			if ((e.Key == Key.F4 && e.Modifiers == ModifierKeys.Alt)
-			    || (e.Key == Key.q && e.Modifiers == ModifierKeys.Control)) {
-				CallQuitApplication ();
-			}
-			if (e.Key == Key.f && e.Modifiers == ModifierKeys.None) {
-				FullScreen = !FullScreen;
+			_keyMap.ExecuteCommand (e.Key, e.Modifiers);
+		}
+
+		private void CallShowHelp ()
+		{
+			if (ShowHelp != null) {
+				ShowHelp (this, new EventArgs ());
 			}
 		}
 
@@ -80,19 +86,19 @@ namespace Mmj.Views.Windows
 			MainMenu = new Menu ();
 			MenuItem file = new MenuItem (I18N._ ("_File"));
 			file.SubMenu = new Menu ();
-			foreach (MenuItem menuItem in BuildFileMenu()) {
+			foreach (MenuItem menuItem in BuildFileMenu ()) {
 				file.SubMenu.Items.Add (menuItem);
 			}
 			MainMenu.Items.Add (file);
 			MenuItem configuration = new MenuItem (I18N._ ("_Configuration"));
 			configuration.SubMenu = new Menu ();
-			foreach (MenuItem menuItem in BuildConfigMenu()) {
+			foreach (MenuItem menuItem in BuildConfigMenu ()) {
 				configuration.SubMenu.Items.Add (menuItem);
 			}
 			MainMenu.Items.Add (configuration);
 			MenuItem help = new MenuItem (I18N._ ("_Help"));
 			help.SubMenu = new Menu ();
-			foreach (MenuItem menuItem in BuildHelpMenu()) {
+			foreach (MenuItem menuItem in BuildHelpMenu ()) {
 				help.SubMenu.Items.Add (menuItem);
 			}
 			MainMenu.Items.Add (help);
@@ -197,7 +203,7 @@ namespace Mmj.Views.Windows
 		void UpdateStopButtons ()
 		{
 			_stopAction.Sensitive = _jackdRunning;
-			_statusbar.Text = _jackdRunning ? JackdStatusRunning : JackdStatusStopped;
+			_statusbar.Text = _jackdRunning ? _jackdStatusRunning : _jackdStatusStopped;
 			_stopAllAction.Sensitive = _appsRunning || _jackdRunning;
 		}
 
@@ -213,7 +219,7 @@ namespace Mmj.Views.Windows
 				return FullScreen;
 			}
 			set {
-				FullScreen = true;
+				FullScreen = value;
 			}
 		}
 
@@ -270,7 +276,7 @@ namespace Mmj.Views.Windows
 		void UpdateAppWidgets (IEnumerable<IAppStartWidget> appWidgets)
 		{
 			Application.Invoke (() => {
-				foreach (IAppStartWidget appWidget in _appButtonBox.Children.OfType<IAppStartWidget>()) {
+				foreach (IAppStartWidget appWidget in _appButtonBox.Children.OfType<IAppStartWidget> ()) {
 					appWidget.Dispose ();
 				}
 				_appButtonBox.Clear ();
@@ -392,9 +398,7 @@ namespace Mmj.Views.Windows
 
 		protected virtual void CallShowHelp (object sender, EventArgs e)
 		{
-			if (ShowHelp != null) {
-				ShowHelp (this, new EventArgs ());
-			}
+			CallShowHelp ();
 		}
 
 		/// <summary>

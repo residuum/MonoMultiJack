@@ -1,4 +1,4 @@
-﻿//
+//
 // I18N.cs
 //
 // Author:
@@ -32,14 +32,14 @@ namespace Mmj.OS
 {
 	public static class I18N
 	{
-		static readonly ICatalog Catalog = new Catalog ("MonoMultiJack", Path.Combine(Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location), "locale"));
+		static readonly ICatalog Catalog = new Catalog ("MonoMultiJack", Path.Combine (Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location), "locale"));
 
 		public static string _ (string text)
 		{
 			return Catalog.GetString (text);
 		}
 
-		public static string _(string text, params object[] args)
+		public static string _ (string text, params object[] args)
 		{
 			return Catalog.GetString (text, args);
 		}

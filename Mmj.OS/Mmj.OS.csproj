@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="IKeyMap.cs" />
     <Compile Include="IProgram.cs" />
     <Compile Include="ProgramEventHandler.cs" />
     <Compile Include="IConnectionManagerFactory.cs" />
@@ -54,6 +56,10 @@
     <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>Mmj.ConnectionWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

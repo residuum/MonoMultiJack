@@ -30,6 +30,7 @@ using Xwt;
 using Mmj.Controllers.EventArguments;
 using Mmj.Utilities;
 using Mmj.OS;
+using Command = Mmj.OS.Command;
 
 namespace Mmj.Views.Widgets
 {
@@ -49,6 +50,7 @@ namespace Mmj.Views.Widgets
 		ScrollView _messageContainer;
 		readonly MessageCollection _messages = new MessageCollection ();
 		IDisposable _timeout;
+		readonly IKeyMap _keyMap = DependencyResolver.GetImplementation<IKeyMap> ("IKeyMap");
 
 		public new void Dispose ()
 		{
@@ -60,6 +62,8 @@ namespace Mmj.Views.Widgets
 			ConnectionManagerName = connectionManagerName;
 			BuildWidget ();
 			BindEvents ();
+			_keyMap.SetCommand (Command.Connect, CallConnect);
+			_keyMap.SetCommand (Command.Disconnect, CallDisconnect);
 		}
 
 		void BuildWidget ()
@@ -123,14 +127,7 @@ namespace Mmj.Views.Widgets
 
 		void OnKeyEvent (object sender, KeyEventArgs e)
 		{
-			if (e.Modifiers == ModifierKeys.Control) {
-				if (e.Key == Key.c) {
-					CallConnect ();
-				}
-				if (e.Key == Key.d) {
-					CallDisconnect ();
-				}
-			}
+			_keyMap.ExecuteCommand (e.Key, e.Modifiers);
 		}
 
 		public void AddConnectable (IConnectable connectable)
