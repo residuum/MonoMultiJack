@@ -51,15 +51,5 @@ namespace Mmj.Utilities
 		{
 			return GetImplementation<T> (configEntry, null);
 		}
-
-		public static T GetValue<T> (string configEntry) where T : struct, IConvertible
-		{
-			if (!typeof(T).IsEnum) {
-				throw new ArgumentException ("T must be an enumerated type");
-			}
-			string appSetting = ConfigurationManager.AppSettings [configEntry];
-			var values = Enum.GetValues (typeof(T));
-			return values.Cast<T> ().First (v => v.ToString (CultureInfo.InvariantCulture) == appSetting);
-		}
 	}
 }

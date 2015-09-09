@@ -90,6 +90,7 @@ namespace Mmj.Views.Windows
 		void ShowLicense ()
 		{
 			LicenseDialog dialog = new LicenseDialog (_license);
+			dialog.Icon = Icon;
 			this.Sensitive = false;
 			dialog.Show ();
 			dialog.Closed += (sender, e) => {
