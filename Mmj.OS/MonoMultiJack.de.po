@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-06-23 22:02+0100\n"
-"PO-Revision-Date: 2015-08-24 00:37+0200\n"
+"POT-Creation-Date: 2015-09-09 14:03+0200\n"
+"PO-Revision-Date: 2015-09-09 14:46+0200\n"
 "Last-Translator: Thomas Mayer <thomas@residuum.org>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -10,90 +10,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.3\n"
-"X-Poedit-Basepath: .\n"
+"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: I18N._\n"
-"X-Poedit-SearchPath-0: Mmj.Configuration\n"
-"X-Poedit-SearchPath-1: Mmj.ConnectionWrapper\n"
-"X-Poedit-SearchPath-2: Mmj.ConnectionWrapper.Alsa\n"
-"X-Poedit-SearchPath-3: Mmj.ConnectionWrapper.Jack\n"
-"X-Poedit-SearchPath-4: Mmj.Mvc\n"
-"X-Poedit-SearchPath-5: Mmj.OS\n"
-"X-Poedit-SearchPath-6: Mmj.OS.Linux\n"
-"X-Poedit-SearchPath-7: Mmj.OS.Windows\n"
-"X-Poedit-SearchPath-8: MonoMultiJack.Windows.Installer\n"
+"X-Poedit-SearchPath-0: Mmj.ConnectionWrapper\n"
+"X-Poedit-SearchPath-1: Mmj.ConnectionWrapper.Alsa\n"
+"X-Poedit-SearchPath-2: Mmj.ConnectionWrapper.Jack\n"
+"X-Poedit-SearchPath-3: Mmj.Mvc\n"
+"X-Poedit-SearchPath-4: Mmj.OS\n"
+"X-Poedit-SearchPath-5: Mmj.OS.Linux\n"
+"X-Poedit-SearchPath-6: Mmj.OS.Windows\n"
+"X-Poedit-SearchPath-7: MonoMultiJack.Linux\n"
+"X-Poedit-SearchPath-8: MonoMultiJack.Windows\n"
+"X-Poedit-SearchPath-9: MonoMultiJack.Windows.SetupCheck\n"
 
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:154
-msgid "Alsa MIDI"
-msgstr "Alsa MIDI"
-
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:186
-msgid "New ports and connections registered."
-msgstr "Neue Ports und Verbindungen gefunden."
-
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:188
-msgid "New ports registered."
-msgstr "Neue Ports gefunden."
-
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:191
-msgid "New connections established."
-msgstr "Neue Verbindungen hergestellt."
-
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:196
-msgid "Ports and connections unregistered."
-msgstr "Ports und Verbindungen deregistriert."
-
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:198
-msgid "Ports unregistered."
-msgstr "Ports deregistriert."
-
-#: Mmj.ConnectionWrapper.Alsa/AlsaMidiManager.cs:201
-msgid "Connections deleted."
-msgstr "Verbindungen getrennt."
-
-#: Mmj.ConnectionWrapper.Jack/JackAudioManager.cs:38
-msgid "Jack Audio"
-msgstr "Jack Audio"
-
-#: Mmj.ConnectionWrapper.Jack/JackConnectionManager.cs:134
-msgid "Connection to Jackd established."
-msgstr "Verbindung mit Jackd hergestellt."
-
-#: Mmj.ConnectionWrapper.Jack/JackMidiManager.cs:38
-msgid "Jack MIDI"
-msgstr "Jack MIDI"
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:63
-msgid "New port registered."
-msgstr "Neuer Port gefunden."
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:82
-msgid "Port unregistered."
-msgstr "Port deregistriert."
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:101
-msgid "New connection is null."
-msgstr "Neue Verbindung ist null."
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:122
-msgid "New connection established."
-msgstr "Neue Verbindung hergestellt."
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:132
-msgid "Connection deleted."
-msgstr "Verbindung getrennt."
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:145
-msgid "Backend has exited"
-msgstr "Backend beendet."
-
-#: Mmj.ConnectionWrapper.Jack/LibJack/Wrapper.cs:158
-#, csharp-format
-msgid "Xrun occurred: {0:0.###} ms"
-msgstr "Puffer leer: {0:0.###} ms."
-
-#: Mmj.Mvc/Controllers/MainController.cs:284
+#: Mmj.Mvc/Controllers/MainController.cs:289
 msgid ""
 "MonoMultiJack is a simple tool for controlling Jackd and diverse audio "
 "programs."
@@ -131,25 +63,19 @@ msgstr "optional"
 msgid "Delete"
 msgstr "Löschen"
 
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:73
+#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:78
 msgid "Connect"
 msgstr "Verbinden"
 
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:75
+#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:80
 msgid "Disconnect"
 msgstr "Trennen"
 
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:195
-msgid "Select ports or clients on both sides"
-msgstr "Ports oder Clients auf beiden Seiten wählen."
-
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:211
-msgid "Cannot connect these ports or clients"
-msgstr "Die Ports oder Clients können nicht verbunden werden."
-
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:255
-msgid "No port or client selected"
-msgstr "Kein Port oder Client ausgewählt."
+#: Mmj.Mvc/Views/Windows/AboutWindow.LicenseDialog.cs:60
+#: Mmj.Mvc/Views/Windows/AboutWindow.cs:78
+#: Mmj.Mvc/Views/Windows/HelpWindow.cs:51
+msgid "Close"
+msgstr "Schließen"
 
 #: Mmj.Mvc/Views/Windows/AboutWindow.cs:67
 msgid "Authors"
@@ -159,12 +85,7 @@ msgstr "Autoren"
 msgid "License"
 msgstr "Lizenz"
 
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:78
-#: Mmj.Mvc/Views/Windows/HelpWindow.cs:46
-msgid "Close"
-msgstr "Schließen"
-
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:136
+#: Mmj.Mvc/Views/Windows/AboutWindow.cs:141
 #, csharp-format
 msgid "Info about {0}"
 msgstr "Info über {0}"
@@ -187,7 +108,7 @@ msgstr "Speichern"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: Mmj.Mvc/Views/Windows/HelpWindow.cs:83
+#: Mmj.Mvc/Views/Windows/HelpWindow.cs:90
 #, csharp-format
 msgid "Help for {0}"
 msgstr "Hilfe für {0}"
@@ -220,57 +141,56 @@ msgstr "z.B. alsa"
 msgid "Driver Options"
 msgstr "Treiber-Optionen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:42
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:44
 msgid "Jackd is running."
 msgstr "Jackd läuft."
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:43
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:45
 msgid "Jackd is stopped."
 msgstr "Jackd ist angehalten."
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:78
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:87
 msgid "_File"
 msgstr "_Datei"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:84
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:93
 msgid "_Configuration"
 msgstr "_Einstellungen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:90
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:101
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:99
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:110
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:102
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:111
 msgid "_About"
 msgstr "Üb_er"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:107
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:116
 msgid "Configure _Jackd"
 msgstr "_Jackd einstellen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:108
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:117
 msgid "Add / Remove _Applications"
 msgstr "_Anwendungen hinzufügen / entfernen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:113
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:122
 msgid "(Re)Start _Jackd"
 msgstr "_Jackd (neu) starten"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:114
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:123
 msgid "_Stop Jackd"
 msgstr "Jackd _stoppen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:116
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:125
 msgid "Stop _All"
 msgstr "_Alle Programme stoppen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:119
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:128
 msgid "_Quit"
 msgstr "_Beenden"
 
-#: Mmj.OS.Linux/StartupParameters.cs:99
-#: Mmj.OS.Windows/StartupParameters.cs:85
+#: Mmj.OS.Linux/StartupParameters.cs:99 Mmj.OS.Windows/StartupParameters.cs:85
 msgid ""
 "**MonoMultJack (MMJ)** aims to be an application for musicians, who "
 "regularly have to deal with multiple programs to start and create and "
@@ -280,64 +200,123 @@ msgstr ""
 "mehreren Programmen arbeiten müssen, diese starten und Audio-Verbindungen "
 "herstellen und verwalten möchten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:102
-#: Mmj.OS.Windows/StartupParameters.cs:87
+#: Mmj.OS.Linux/StartupParameters.cs:102 Mmj.OS.Windows/StartupParameters.cs:87
 msgid "Startup Parameters"
 msgstr "Start Parameter"
 
-#: Mmj.OS.Linux/StartupParameters.cs:103
-#: Mmj.OS.Windows/StartupParameters.cs:88
+#: Mmj.OS.Linux/StartupParameters.cs:103 Mmj.OS.Windows/StartupParameters.cs:88
 msgid "Show this help on startup."
 msgstr "Diese Hilfe beim Start anzeigen."
 
-#: Mmj.OS.Linux/StartupParameters.cs:104
-#: Mmj.OS.Windows/StartupParameters.cs:89
+#: Mmj.OS.Linux/StartupParameters.cs:104 Mmj.OS.Windows/StartupParameters.cs:89
 msgid "Launches Jackd on startup."
 msgstr "Jackd beim Programmstart mitstarten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:105
-#: Mmj.OS.Windows/StartupParameters.cs:90
+#: Mmj.OS.Linux/StartupParameters.cs:105 Mmj.OS.Windows/StartupParameters.cs:90
 msgid "Starts in fullscreen mode."
 msgstr "Im Vollbildmodus starten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:106
-#: Mmj.OS.Windows/StartupParameters.cs:91
+#: Mmj.OS.Linux/StartupParameters.cs:106 Mmj.OS.Windows/StartupParameters.cs:91
 msgid "Loads configuration from the specified directory."
 msgstr "Einstellungen aus dem angegebenen Verzeichnis laden."
 
-#: Mmj.OS.Linux/StartupParameters.cs:107
-#: Mmj.OS.Windows/StartupParameters.cs:92
+#: Mmj.OS.Linux/StartupParameters.cs:107 Mmj.OS.Windows/StartupParameters.cs:92
 msgid "Logs messages and debugging information to the specified file."
 msgstr ""
 "Nachrichten und Informationen zum Debugging in die angegebene Datei "
 "speichern."
 
-#: Mmj.OS.Linux/StartupParameters.cs:109
-#: Mmj.OS.Windows/StartupParameters.cs:94
+#: Mmj.OS.Linux/StartupParameters.cs:109 Mmj.OS.Windows/StartupParameters.cs:94
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkürzel"
 
-#: Mmj.OS.Linux/StartupParameters.cs:110
-#: Mmj.OS.Windows/StartupParameters.cs:95
+#: Mmj.OS.Linux/StartupParameters.cs:110 Mmj.OS.Windows/StartupParameters.cs:95
 msgid "Show this help."
 msgstr "Diese Hilfe anzeigen."
 
-#: Mmj.OS.Linux/StartupParameters.cs:111
-#: Mmj.OS.Windows/StartupParameters.cs:96
+#: Mmj.OS.Linux/StartupParameters.cs:111 Mmj.OS.Windows/StartupParameters.cs:96
+msgid "Alt"
+msgstr "Alt"
+
+#: Mmj.OS.Linux/StartupParameters.cs:111 Mmj.OS.Linux/StartupParameters.cs:113
+#: Mmj.OS.Linux/StartupParameters.cs:114 Mmj.OS.Windows/StartupParameters.cs:96
+#: Mmj.OS.Windows/StartupParameters.cs:98
+#: Mmj.OS.Windows/StartupParameters.cs:99
+msgid "Ctrl"
+msgstr "Strg"
+
+#: Mmj.OS.Linux/StartupParameters.cs:111 Mmj.OS.Windows/StartupParameters.cs:96
 msgid "Quits the program and closes all started applications."
 msgstr "Programm und alle gestarteten Anwendungen schließen."
 
-#: Mmj.OS.Linux/StartupParameters.cs:111
-#: Mmj.OS.Windows/StartupParameters.cs:96
+#: Mmj.OS.Linux/StartupParameters.cs:112 Mmj.OS.Windows/StartupParameters.cs:97
 msgid "Toggle fullscreen."
 msgstr "Vollbildmodus ein- und ausschalten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:112
-#: Mmj.OS.Windows/StartupParameters.cs:97
+#: Mmj.OS.Linux/StartupParameters.cs:113 Mmj.OS.Windows/StartupParameters.cs:98
 msgid "Connects the selected inlets / outlets and or clients."
 msgstr "Ausgewählte Ein- / Ausgänge bzw. Clients verbinden."
 
-#: Mmj.OS.Linux/StartupParameters.cs:113
-#: Mmj.OS.Windows/StartupParameters.cs:98
+#: Mmj.OS.Linux/StartupParameters.cs:114 Mmj.OS.Windows/StartupParameters.cs:99
 msgid "Disconnects the selected inlets / outlets and or clients."
 msgstr "Ausgewählte Ein- / Ausgänge bzw. Clients trennen."
+
+msgid "Alsa MIDI"
+msgstr "Alsa MIDI"
+
+msgid "New ports and connections registered."
+msgstr "Neue Ports und Verbindungen gefunden."
+
+msgid "New ports registered."
+msgstr "Neue Ports gefunden."
+
+msgid "New connections established."
+msgstr "Neue Verbindungen hergestellt."
+
+msgid "Ports and connections unregistered."
+msgstr "Ports und Verbindungen deregistriert."
+
+msgid "Ports unregistered."
+msgstr "Ports deregistriert."
+
+msgid "Connections deleted."
+msgstr "Verbindungen getrennt."
+
+msgid "Jack Audio"
+msgstr "Jack Audio"
+
+msgid "Connection to Jackd established."
+msgstr "Verbindung mit Jackd hergestellt."
+
+msgid "Jack MIDI"
+msgstr "Jack MIDI"
+
+msgid "New port registered."
+msgstr "Neuer Port gefunden."
+
+msgid "Port unregistered."
+msgstr "Port deregistriert."
+
+msgid "New connection is null."
+msgstr "Neue Verbindung ist null."
+
+msgid "New connection established."
+msgstr "Neue Verbindung hergestellt."
+
+msgid "Connection deleted."
+msgstr "Verbindung getrennt."
+
+msgid "Backend has exited"
+msgstr "Backend beendet."
+
+msgid "Xrun occurred: {0:0.###} ms"
+msgstr "Puffer leer: {0:0.###} ms."
+
+msgid "Select ports or clients on both sides"
+msgstr "Ports oder Clients auf beiden Seiten wählen."
+
+msgid "Cannot connect these ports or clients"
+msgstr "Die Ports oder Clients können nicht verbunden werden."
+
+msgid "No port or client selected"
+msgstr "Kein Port oder Client ausgewählt."
