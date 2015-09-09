@@ -30,6 +30,7 @@ using Mmj.ConnectionWrapper;
 using Mmj.Controllers.EventArguments;
 using Mmj.Views.Widgets;
 using Mmj.OS;
+using System.Linq;
 
 namespace Mmj.Controllers
 {
@@ -65,13 +66,13 @@ namespace Mmj.Controllers
 		void Widget_Connect (object sender, ConnectEventArgs args)
 		{
 			Logging.LogMessage ("Connecting", LogLevel.Debug);
-			_connectionManager.Connect (args.Outlet, args.Inlet);
+			_connectionManager.Connect (args.Outlets, args.Inlets);
 		}
 
 		void Widget_Disconnect (object sender, ConnectEventArgs args)
 		{
 			Logging.LogMessage ("Disconnecting", LogLevel.Debug);
-			_connectionManager.Disconnect (args.Outlet, args.Inlet);
+			_connectionManager.Disconnect (args.Outlets, args.Inlets);
 		}
 
 		void ConnectionManager_BackendHasChanged (object sender, ConnectionEventArgs args)

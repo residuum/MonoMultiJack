@@ -70,7 +70,7 @@ namespace Mmj.ConnectionWrapper.Alsa
 		public event ConnectionEventHandler ConnectionHasChanged;
 		public event ConnectionEventHandler BackendHasChanged;
 
-		public void Connect (IConnectable outlet, IConnectable inlet)
+		public void Connect (IEnumerable<IConnectable> outlet, IEnumerable<IConnectable> inlet)
 		{
 			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
 				ConnectPorts (portPair.Key, portPair.Value);
@@ -88,9 +88,9 @@ namespace Mmj.ConnectionWrapper.Alsa
 			Wrapper.Connect (alsaOutPort, alsaInPort);
 		}
 
-		public void Disconnect (IConnectable outlet, IConnectable inlet)
+		public void Disconnect (IEnumerable<IConnectable> outlets, IEnumerable<IConnectable> inlets)
 		{
-			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairAll(outlet, inlet)) {
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairAll(outlets, inlets)) {
 				DisconnectPort (portPair.Key, portPair.Value);
 			}
 		}

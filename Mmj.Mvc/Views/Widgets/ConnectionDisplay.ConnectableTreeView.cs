@@ -29,6 +29,7 @@ using Mmj.ConnectionWrapper;
 using Xwt;
 using Xwt.Drawing;
 using Mmj.Controllers.EventArguments;
+using System.Collections.Generic;
 
 namespace Mmj.Views.Widgets
 {
@@ -75,6 +76,7 @@ namespace Mmj.Views.Widgets
 				_treeView.ExpandVertical = true;
 				_treeView.ExpandHorizontal = false;
 				_treeView.HeadersVisible = false;
+				_treeView.SelectionMode = SelectionMode.Multiple;
 				Content = _treeView;
 			}
 
@@ -84,7 +86,7 @@ namespace Mmj.Views.Widgets
 				if (string.IsNullOrEmpty (serialized)) {
 					return;
 				}
-				ConnectableSerialization id = new ConnectableSerialization (serialized);
+				ConnectableSerialization id = new ConnectableSerialization (serialized.Split (new char[]{ ';' }).First ());
 				TreeNavigator firstItem = _treeStore.GetFirstNode ();
 				if (firstItem == null) {
 					e.AllowedAction = DragDropAction.None;
@@ -107,11 +109,12 @@ namespace Mmj.Views.Widgets
 				Image icon = Icons.Connect;
 				e.DragOperation.SetDragImage (icon, (int)icon.Width, (int)icon.Height);
 				e.DragOperation.AllowedActions = DragDropAction.All;
-				IConnectable connectable = GetSelected ();
-				if (connectable == null) {
+				IEnumerable<IConnectable> connectables = GetSelected ();
+				if (!connectables.Any ()) {
 					return;
 				}
-				e.DragOperation.Data.AddValue (connectable.Serialization.ToString ());
+				string dragValue = string.Join (";", connectables.Select (c => c.Serialization.ToString ()));
+				e.DragOperation.Data.AddValue (dragValue);
 			}
 
 			public event EventHandler ViewChanged;
@@ -130,17 +133,17 @@ namespace Mmj.Views.Widgets
 				if (string.IsNullOrEmpty (serialized)) {
 					return;
 				}
-				ConnectableSerialization id = new ConnectableSerialization (serialized);
+				IEnumerable<ConnectableSerialization> ids = serialized.Split (new char[]{ ';' }).Select (s => new ConnectableSerialization (s));
 				RowDropPosition pos;
 				TreePosition nodePosition;
 				_treeView.GetDropTargetRow (e.Position.X, e.Position.Y, out pos, out nodePosition);
-				IConnectable droppedOn = GetConnectable (nodePosition);
-				IConnectable connectable = id.GetConnectable ();
+				IEnumerable<IConnectable> droppedOn = new List<IConnectable> { GetConnectable (nodePosition) };
+				IEnumerable<IConnectable> connectables = ids.Select (id => id.GetConnectable ());
 
 				if (Connect != null && droppedOn != null) {
 					Connect (this, new ConnectEventArgs {
-						Outlet = droppedOn,
-						Inlet = connectable
+						Outlets = droppedOn,
+						Inlets = connectables
 					});
 				}
 			}
@@ -265,28 +268,29 @@ namespace Mmj.Views.Widgets
 				return navigator.GetValue (_dataField);
 			}
 
-			public IConnectable GetSelected ()
+			public IEnumerable<IConnectable> GetSelected ()
 			{
-				TreePosition position = _treeView.SelectedRow;
-				if (position == null) {
-					return null;
+				TreePosition[] positions = _treeView.SelectedRows;
+				if (positions == null) {
+					yield break;
 				}
-				return GetConnectable (position);
+				foreach (TreePosition position in positions) {
+					yield return GetConnectable (position);
+				}
 			}
 
-			public IConnectable GetAll ()
+			public IEnumerable<IConnectable> GetAll ()
 			{
 				TreeNavigator navigator = _treeStore.GetFirstNode ();
-				Client firstClient = (Client)navigator.GetValue (_dataField);
-				Client dummy = new Client ("", firstClient.FlowDirection, firstClient.ConnectionType);
 				do {
+					Client client = (Client)navigator.GetValue (_dataField);
 					navigator.MoveToChild ();
 					do {
-						dummy.AddPort ((Port)navigator.GetValue (_dataField));
+						client.AddPort ((Port)navigator.GetValue (_dataField));
 					} while (navigator.MoveNext ());
 					navigator.MoveToParent ();
+					yield return client;
 				} while(navigator.MoveNext ());
-				return dummy;
 			}
 
 			public double GetYPositionOfConnectable (IConnectable connectable)

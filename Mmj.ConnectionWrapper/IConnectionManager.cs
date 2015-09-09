@@ -42,9 +42,9 @@ namespace Mmj.ConnectionWrapper
 
 		IEnumerable<IConnection> Connections { get; }
 
-		void Connect (IConnectable outlet, IConnectable inlet);
+		void Connect (IEnumerable<IConnectable> outlet, IEnumerable<IConnectable> inlet);
 
-		void Disconnect (IConnectable outlet, IConnectable inlet);
+		void Disconnect (IEnumerable<IConnectable> outlets, IEnumerable<IConnectable> inlets);
 
 		string Name { get; }
 	}

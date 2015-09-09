@@ -31,6 +31,7 @@ using Mmj.Controllers.EventArguments;
 using Mmj.Utilities;
 using Mmj.OS;
 using Command = Mmj.OS.Command;
+using System.Linq;
 
 namespace Mmj.Views.Widgets
 {
@@ -186,41 +187,35 @@ namespace Mmj.Views.Widgets
 
 		void CallConnect ()
 		{
-			IConnectable outlet = _outTreeView.GetSelected ();
-			IConnectable inlet = _inTreeView.GetSelected ();
-			if (outlet == null || inlet == null) {
+			IEnumerable<IConnectable> outlets = _outTreeView.GetSelected ();
+			IEnumerable<IConnectable> inlets = _inTreeView.GetSelected ();
+			if (outlets == null || inlets == null) {
 				AddMessage ("Select ports or clients on both sides");
 				return;
 			}
 			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
-					Outlet = outlet,
-					Inlet = inlet
+					Outlets = outlets,
+					Inlets = inlets
 				});
 			}
 		}
 
 		void ConnectFromDragAndDrop (ConnectEventArgs e)
 		{
-			if (e.Inlet.ConnectionType != e.Outlet.ConnectionType
-			    || e.Inlet.FlowDirection != FlowDirection.In
-			    || e.Outlet.FlowDirection != FlowDirection.Out) {
-				AddMessage ("Cannot connect these ports or clients");
-				return;
-			}
 			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
-					Outlet = e.Outlet,
-					Inlet = e.Inlet
+					Outlets = e.Outlets,
+					Inlets = e.Inlets
 				});
 			}
 		}
 
 		void OnInTreeConnect (object sender, ConnectEventArgs e)
 		{
-			IConnectable realOutlet = e.Inlet;
-			e.Inlet = e.Outlet;
-			e.Outlet = realOutlet;
+			IEnumerable<IConnectable> realOutlet = e.Inlets;
+			e.Inlets = e.Outlets;
+			e.Outlets = realOutlet;
 			ConnectFromDragAndDrop (e);
 		}
 
@@ -238,14 +233,14 @@ namespace Mmj.Views.Widgets
 		{
 			if (Disconnect != null) {
 				int notSelected = 0;
-				IConnectable outlet = _outTreeView.GetSelected ();
-				if (outlet == null) {
-					outlet = _outTreeView.GetAll ();
+				IEnumerable<IConnectable> outlets = _outTreeView.GetSelected ();
+				if (!outlets.Any ()) {
+					outlets = _outTreeView.GetAll ();
 					notSelected += 1;
 				}
-				IConnectable inlet = _inTreeView.GetSelected ();
-				if (inlet == null) {
-					inlet = _inTreeView.GetAll ();
+				IEnumerable<IConnectable> inlets = _inTreeView.GetSelected ();
+				if (!inlets.Any ()) {
+					inlets = _inTreeView.GetAll ();
 					notSelected += 1;
 				}
 				if (notSelected == 2) {
@@ -253,8 +248,8 @@ namespace Mmj.Views.Widgets
 					return;
 				}
 				Disconnect (this, new ConnectEventArgs {
-					Outlet = outlet,
-					Inlet = inlet
+					Outlets = outlets,
+					Inlets = inlets
 				});
 			}
 		}

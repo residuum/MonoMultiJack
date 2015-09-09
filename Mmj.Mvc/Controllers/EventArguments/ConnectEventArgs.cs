@@ -25,13 +25,14 @@
 // THE SOFTWARE.
 using System;
 using Mmj.ConnectionWrapper;
+using System.Collections.Generic;
 
 namespace Mmj.Controllers.EventArguments
 {
 	public class ConnectEventArgs : EventArgs
 	{
-		public IConnectable Inlet { get; set; }
+		public IEnumerable<IConnectable> Inlets { get; set; }
 
-		public IConnectable Outlet { get; set; }
+		public IEnumerable<IConnectable> Outlets { get; set; }
 	}
 }

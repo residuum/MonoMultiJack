@@ -99,16 +99,16 @@ namespace Mmj.ConnectionWrapper.Jack
 			}
 		}
 
-		public void Connect (IConnectable outlet, IConnectable inlet)
+		public void Connect (IEnumerable<IConnectable> outlets, IEnumerable<IConnectable> inlets)
 		{
-			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlet, inlet)) {
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairPorts(outlets, inlets)) {
 				Wrapper.Connect (portPair.Key, portPair.Value);
 			}
 		}
 
-		public void Disconnect (IConnectable outlet, IConnectable inlet)
+		public void Disconnect (IEnumerable<IConnectable> outlets, IEnumerable<IConnectable> inlets)
 		{
-			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairAll(outlet, inlet)) {
+			foreach (KeyValuePair<Port, Port> portPair in EnumerableHelper.PairAll(outlets, inlets)) {
 				Wrapper.Disconnect (portPair.Key, portPair.Value);
 			}
 		}

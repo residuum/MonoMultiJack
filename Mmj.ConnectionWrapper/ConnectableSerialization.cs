@@ -58,7 +58,8 @@ namespace Mmj.ConnectionWrapper
 			_portIds = portIds.Select (id => Convert.ToUInt32 (id)).ToList ();
 		}
 
-		public ConnectableSerialization(ConnectionType connectionType, FlowDirection flowDirection, IEnumerable<uint> portIds){
+		public ConnectableSerialization (ConnectionType connectionType, FlowDirection flowDirection, IEnumerable<uint> portIds)
+		{
 			ConnectionType = connectionType;
 			FlowDirection = flowDirection;
 			_portIds = portIds;
