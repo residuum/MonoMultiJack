@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-09-09 14:03+0200\n"
-"PO-Revision-Date: 2015-09-09 14:46+0200\n"
+"POT-Creation-Date: 2015-10-16 00:04+0200\n"
+"PO-Revision-Date: 2015-10-16 00:04+0200\n"
 "Last-Translator: Thomas Mayer <thomas@residuum.org>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.3\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -85,28 +85,32 @@ msgstr "Autoren"
 msgid "License"
 msgstr "Lizenz"
 
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:141
+#: Mmj.Mvc/Views/Windows/AboutWindow.cs:142
 #, csharp-format
 msgid "Info about {0}"
 msgstr "Info über {0}"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:47
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:48
 msgid "Configure Applications"
 msgstr "Einstellungen für Anwendungen"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:148
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:161
 msgid "Add"
 msgstr "Neu"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:149
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:162
 #: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:171
 msgid "Save"
 msgstr "Speichern"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:150
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:163
 #: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:172
 msgid "Cancel"
 msgstr "Abbrechen"
+
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:167
+msgid "Undo"
+msgstr "Rückgängig"
 
 #: Mmj.Mvc/Views/Windows/HelpWindow.cs:90
 #, csharp-format
@@ -190,7 +194,7 @@ msgstr "_Alle Programme stoppen"
 msgid "_Quit"
 msgstr "_Beenden"
 
-#: Mmj.OS.Linux/StartupParameters.cs:99 Mmj.OS.Windows/StartupParameters.cs:85
+#: Mmj.OS.Linux/StartupParameters.cs:99 Mmj.OS.Windows/StartupParameters.cs:89
 msgid ""
 "**MonoMultJack (MMJ)** aims to be an application for musicians, who "
 "regularly have to deal with multiple programs to start and create and "
@@ -200,64 +204,70 @@ msgstr ""
 "mehreren Programmen arbeiten müssen, diese starten und Audio-Verbindungen "
 "herstellen und verwalten möchten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:102 Mmj.OS.Windows/StartupParameters.cs:87
+#: Mmj.OS.Linux/StartupParameters.cs:102 Mmj.OS.Windows/StartupParameters.cs:91
 msgid "Startup Parameters"
 msgstr "Start Parameter"
 
-#: Mmj.OS.Linux/StartupParameters.cs:103 Mmj.OS.Windows/StartupParameters.cs:88
+#: Mmj.OS.Linux/StartupParameters.cs:103 Mmj.OS.Windows/StartupParameters.cs:92
 msgid "Show this help on startup."
 msgstr "Diese Hilfe beim Start anzeigen."
 
-#: Mmj.OS.Linux/StartupParameters.cs:104 Mmj.OS.Windows/StartupParameters.cs:89
+#: Mmj.OS.Linux/StartupParameters.cs:104 Mmj.OS.Windows/StartupParameters.cs:93
 msgid "Launches Jackd on startup."
 msgstr "Jackd beim Programmstart mitstarten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:105 Mmj.OS.Windows/StartupParameters.cs:90
+#: Mmj.OS.Linux/StartupParameters.cs:105 Mmj.OS.Windows/StartupParameters.cs:94
 msgid "Starts in fullscreen mode."
 msgstr "Im Vollbildmodus starten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:106 Mmj.OS.Windows/StartupParameters.cs:91
+#: Mmj.OS.Linux/StartupParameters.cs:106 Mmj.OS.Windows/StartupParameters.cs:95
 msgid "Loads configuration from the specified directory."
 msgstr "Einstellungen aus dem angegebenen Verzeichnis laden."
 
-#: Mmj.OS.Linux/StartupParameters.cs:107 Mmj.OS.Windows/StartupParameters.cs:92
+#: Mmj.OS.Linux/StartupParameters.cs:107 Mmj.OS.Windows/StartupParameters.cs:96
 msgid "Logs messages and debugging information to the specified file."
 msgstr ""
 "Nachrichten und Informationen zum Debugging in die angegebene Datei "
 "speichern."
 
-#: Mmj.OS.Linux/StartupParameters.cs:109 Mmj.OS.Windows/StartupParameters.cs:94
+#: Mmj.OS.Linux/StartupParameters.cs:109 Mmj.OS.Windows/StartupParameters.cs:98
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkürzel"
 
-#: Mmj.OS.Linux/StartupParameters.cs:110 Mmj.OS.Windows/StartupParameters.cs:95
+#: Mmj.OS.Linux/StartupParameters.cs:110 Mmj.OS.Windows/StartupParameters.cs:99
 msgid "Show this help."
 msgstr "Diese Hilfe anzeigen."
 
-#: Mmj.OS.Linux/StartupParameters.cs:111 Mmj.OS.Windows/StartupParameters.cs:96
+#: Mmj.OS.Linux/StartupParameters.cs:111
+#: Mmj.OS.Windows/StartupParameters.cs:100
 msgid "Alt"
 msgstr "Alt"
 
 #: Mmj.OS.Linux/StartupParameters.cs:111 Mmj.OS.Linux/StartupParameters.cs:113
-#: Mmj.OS.Linux/StartupParameters.cs:114 Mmj.OS.Windows/StartupParameters.cs:96
-#: Mmj.OS.Windows/StartupParameters.cs:98
-#: Mmj.OS.Windows/StartupParameters.cs:99
+#: Mmj.OS.Linux/StartupParameters.cs:114
+#: Mmj.OS.Windows/StartupParameters.cs:100
+#: Mmj.OS.Windows/StartupParameters.cs:102
+#: Mmj.OS.Windows/StartupParameters.cs:103
 msgid "Ctrl"
 msgstr "Strg"
 
-#: Mmj.OS.Linux/StartupParameters.cs:111 Mmj.OS.Windows/StartupParameters.cs:96
+#: Mmj.OS.Linux/StartupParameters.cs:111
+#: Mmj.OS.Windows/StartupParameters.cs:100
 msgid "Quits the program and closes all started applications."
 msgstr "Programm und alle gestarteten Anwendungen schließen."
 
-#: Mmj.OS.Linux/StartupParameters.cs:112 Mmj.OS.Windows/StartupParameters.cs:97
+#: Mmj.OS.Linux/StartupParameters.cs:112
+#: Mmj.OS.Windows/StartupParameters.cs:101
 msgid "Toggle fullscreen."
 msgstr "Vollbildmodus ein- und ausschalten."
 
-#: Mmj.OS.Linux/StartupParameters.cs:113 Mmj.OS.Windows/StartupParameters.cs:98
+#: Mmj.OS.Linux/StartupParameters.cs:113
+#: Mmj.OS.Windows/StartupParameters.cs:102
 msgid "Connects the selected inlets / outlets and or clients."
 msgstr "Ausgewählte Ein- / Ausgänge bzw. Clients verbinden."
 
-#: Mmj.OS.Linux/StartupParameters.cs:114 Mmj.OS.Windows/StartupParameters.cs:99
+#: Mmj.OS.Linux/StartupParameters.cs:114
+#: Mmj.OS.Windows/StartupParameters.cs:103
 msgid "Disconnects the selected inlets / outlets and or clients."
 msgstr "Ausgewählte Ein- / Ausgänge bzw. Clients trennen."
 
@@ -320,3 +330,6 @@ msgstr "Die Ports oder Clients können nicht verbunden werden."
 
 msgid "No port or client selected"
 msgstr "Kein Port oder Client ausgewählt."
+
+msgid "Some applications have empty fields for \"Name\" or \"Command\".\n\nPlease correct these errors or remove the application."
+msgstr "Einige Anwendungen haben leere Werte in den Feldern \"Name\" oder \"Befehl\" stehen.\n\nBitte korrigieren Sie diese Fehler oder löschen Sie diese Anwendung."

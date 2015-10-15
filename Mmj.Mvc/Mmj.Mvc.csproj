@@ -108,6 +108,7 @@
     <EmbeddedResource Include="Views\Icons\start.png" />
     <EmbeddedResource Include="Views\Icons\stop.png" />
     <EmbeddedResource Include="Views\Icons\warning.png" />
+    <EmbeddedResource Include="Views\Icons\undo.png" />
   </ItemGroup>
   <ItemGroup />
 </Project>

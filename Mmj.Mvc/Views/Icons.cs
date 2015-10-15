@@ -121,7 +121,7 @@ namespace Mmj.Views
 
 		static Image LoadUndo ()
 		{
-			return LoadImage ("Mmj.Views.Icons.remove.png");
+			return LoadImage ("Mmj.Views.Icons.undo.png");
 		}
 
 		public static Image Ok {
