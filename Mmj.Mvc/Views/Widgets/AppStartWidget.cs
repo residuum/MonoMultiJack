@@ -67,15 +67,15 @@ namespace Mmj.Views.Widgets
 				Application.Invoke (delegate {
 					if (value) {
 						_startButton.Active = true;
-						_startButton.Clicked -= CallStopApplication;
-						_startButton.Clicked -= CallStartApplication;
-						_startButton.Clicked += CallStopApplication;
+						_startButton.Clicked -= CallStop;
+						_startButton.Clicked -= CallStart;
+						_startButton.Clicked += CallStop;
 						_startButton.Image = Icons.Stop;
 					} else {
 						_startButton.Active = false;
-						_startButton.Clicked -= CallStopApplication;
-						_startButton.Clicked -= CallStartApplication;
-						_startButton.Clicked += CallStartApplication;
+						_startButton.Clicked -= CallStop;
+						_startButton.Clicked -= CallStart;
+						_startButton.Clicked += CallStart;
 						_startButton.Image = Icons.Start;
 					}
 				}
@@ -83,8 +83,8 @@ namespace Mmj.Views.Widgets
 			}
 		}
 
-		public event EventHandler StartApplication;
-		public event EventHandler StopApplication;
+		public event EventHandler Start;
+		public event EventHandler Stop;
 
 		#endregion
 
@@ -96,7 +96,7 @@ namespace Mmj.Views.Widgets
 		public AppStartWidget ()
 		{
 			_startButton = new ToggleButton { WidthRequest = 100 };
-			_startButton.Clicked += CallStartApplication;
+			_startButton.Clicked += CallStart;
 			Add (_startButton, 0, 0);
 			_startButton.Image = Icons.Start;
 		}
@@ -104,20 +104,20 @@ namespace Mmj.Views.Widgets
 		/// <summary>
 		/// stops application, if running
 		/// </summary>
-		public void CallStopApplication ()
+		public void CallStop ()
 		{
-			if (StopApplication != null) {
-				StopApplication (this, new EventArgs ());
+			if (Stop != null) {
+				Stop (this, new EventArgs ());
 			}
 		}
 
 		/// <summary>
 		/// starts application, updates action for togglebutton
 		/// </summary>
-		void CallStartApplication ()
+		void CallStart ()
 		{
-			if (StartApplication != null) {
-				StartApplication (this, new EventArgs ());
+			if (Start != null) {
+				Start (this, new EventArgs ());
 			}
 		}
 
@@ -130,9 +130,9 @@ namespace Mmj.Views.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void CallStartApplication (object obj, EventArgs args)
+		void CallStart (object obj, EventArgs args)
 		{
-			CallStartApplication ();
+			CallStart ();
 		}
 
 		/// <summary>
@@ -144,9 +144,9 @@ namespace Mmj.Views.Widgets
 		/// <param name="args">
 		/// A <see cref="EventArgs"/>
 		/// </param>
-		void CallStopApplication (object obj, EventArgs args)
+		void CallStop (object obj, EventArgs args)
 		{
-			CallStopApplication ();
+			CallStop ();
 		}
 	}
 }

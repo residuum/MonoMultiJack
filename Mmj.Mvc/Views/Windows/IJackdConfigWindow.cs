@@ -28,7 +28,7 @@ using System;
 namespace Mmj.Views.Windows
 {
 	public interface IJackdConfigWindow : IWindow
-	{		
+	{
 		string Path { get; set; }
 
 		string GeneralOptions { get; set; }
@@ -37,6 +37,6 @@ namespace Mmj.Views.Windows
 
 		string DriverOptions { get; set; }
 
-		event EventHandler SaveJackd;
+		event EventHandler Save;
 	}
 }

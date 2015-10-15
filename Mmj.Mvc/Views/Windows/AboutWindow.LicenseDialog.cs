@@ -37,10 +37,10 @@ namespace Mmj.Views.Windows
 		{
 			public LicenseDialog (string license)
 			{
-				BuildWindowContent (license);
+				BuildContent (license);
 			}
 
-			private void BuildWindowContent (string license)
+			void BuildContent (string license)
 			{
 				double textWidth = 480;
 				double textHeight = 480;

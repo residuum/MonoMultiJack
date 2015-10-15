@@ -44,7 +44,7 @@ namespace Mmj.ConnectionWrapper
 
 		public FlowDirection FlowDirection{ get; private set; }
 
-		IEnumerable<uint> _portIds;
+		readonly IEnumerable<uint> _portIds;
 
 		public ConnectableSerialization (string connectableId)
 		{

@@ -45,7 +45,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 		static readonly Definitions.JackPortConnectCallback _onPortConnect = OnPortConnect;
 		static readonly Definitions.JackPortRegistrationCallback _onPortRegistration = OnPortRegistration;
 		static readonly Definitions.JackShutdownCallback _onJackShutdown = OnJackShutdown;
-		static readonly Definitions.JackXRunCallback _onJackXrun = OnJackRun;
+		static readonly Definitions.JackXRunCallback _onJackXrun = OnJackXRun;
 
 		static void OnPortRegistration (uint port, int register, IntPtr args)
 		{
@@ -148,14 +148,14 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			}
 		}
 
-		static void OnJackRun (IntPtr args)
+		static void OnJackXRun (IntPtr args)
 		{
 			float xrunDelay = Invoke.jack_get_xrun_delayed_usecs (_jackClient);
 			if (xrunDelay > 0) {
 				if (BackendHasChanged != null) {
 					BackendHasChanged (null, new ConnectionEventArgs {
 						Message = "Xrun occurred: {0:0.###} ms",
-						Params = new object[]{xrunDelay},
+						Params = new object[]{ xrunDelay },
 						ChangeType = ChangeType.Information,
 						MessageType = MessageType.Info
 					});

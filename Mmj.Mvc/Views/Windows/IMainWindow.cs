@@ -57,7 +57,7 @@ namespace Mmj.Views.Windows
 		WindowConfiguration WindowConfiguration { get; set; }
 
 		/// <summary>
-		/// Sets a value indicating whether this <see cref="MonoMultiJack.Views.Windows.IMainWindow"/> jackd is active.
+		/// Sets a value indicating whether this <see cref="Mmj.Views.Windows.IMainWindow"/> jackd is active.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if jackd is active; otherwise, <c>false</c>.
@@ -65,14 +65,14 @@ namespace Mmj.Views.Windows
 		bool JackdIsRunning { set; }
 
 		/// <summary>
-		/// Sets a value indicating whether this <see cref="MonoMultiJack.Views.Windows.IMainWindow"/> apps are running.
+		/// Sets a value indicating whether this <see cref="Mmj.Views.Windows.IMainWindow"/> apps are running.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if apps are running; otherwise, <c>false</c>.
 		/// </value>
 		bool AppsAreRunning { set; }
 
-		bool Fullscreen { get; set;}
+		bool Fullscreen { get; set; }
 
 		/// <summary>
 		/// Controller should start Jackd.
@@ -89,22 +89,22 @@ namespace Mmj.Views.Windows
 		/// <summary>
 		/// Controller should show Jackd configuration.
 		/// </summary>
-		event EventHandler ShowConfigureJackd;
+		event EventHandler ConfigureJackd;
 		/// <summary>
 		/// Controller should show configuration for audio applications.
 		/// </summary>
-		event EventHandler ShowConfigureApps;
+		event EventHandler ConfigureApps;
 		/// <summary>
 		/// Controller should show about.
 		/// </summary>
-		event EventHandler ShowAbout;
+		event EventHandler About;
 		/// <summary>
 		/// Controller should show help.
 		/// </summary>
-		event EventHandler ShowHelp;
+		event EventHandler Help;
 		/// <summary>
 		/// Controller should quit application.
 		/// </summary>
-		event EventHandler QuitApplication;
+		event EventHandler Quit;
 	}
 }

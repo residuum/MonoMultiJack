@@ -41,7 +41,7 @@ namespace Mmj.Controllers
 			_jackdConfig = jackdConfig;
 			_jackdConfigWindow = new JackdConfigWindow ();
 			_jackdConfigWindow.Closing += HandleClosing;
-			_jackdConfigWindow.SaveJackd += HandleSaveJackd;
+			_jackdConfigWindow.Save += HandleSave;
 			_jackdConfigWindow.Icon = Icons.Program;
 			_jackdConfigWindow.Show ();
 			_jackdConfigWindow.Path = jackdConfig.Path;
@@ -66,7 +66,7 @@ namespace Mmj.Controllers
 			_jackdConfigWindow.Dispose ();
 		}
 
-		void HandleSaveJackd (object sender, EventArgs e)
+		void HandleSave (object sender, EventArgs e)
 		{
 			IJackdConfigWindow configWindow = sender as IJackdConfigWindow;
 			if (configWindow != null && UpdateJackd != null) {

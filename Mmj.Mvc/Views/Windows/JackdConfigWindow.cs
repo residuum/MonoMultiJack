@@ -112,7 +112,7 @@ namespace Mmj.Views.Windows
 			}
 		}
 
-		public event EventHandler SaveJackd;
+		public event EventHandler Save;
 
 		#endregion
 
@@ -123,26 +123,26 @@ namespace Mmj.Views.Windows
 		{
 			Title = I18N._ ("Configure Jackd");
 			Resizable = false;
-			BuildWindow ();
+			BuildContent ();
 			BindEvents ();
 		}
 
 		void BindEvents ()
 		{
 			Closed += HandleClose;
-			_okButton.Clicked += HandleOkClick;
-			_cancelButton.Clicked += HandleCancelClick; 
+			_okButton.Clicked += HandleOk;
+			_cancelButton.Clicked += HandleCancel; 
 		}
 
-		void HandleCancelClick (object sender, EventArgs e)
+		void HandleCancel (object sender, EventArgs e)
 		{
 			Close ();
 		}
 
-		void HandleOkClick (object o, EventArgs args)
+		void HandleOk (object o, EventArgs args)
 		{
-			if (SaveJackd != null) {
-				SaveJackd (this, new EventArgs ());
+			if (Save != null) {
+				Save (this, new EventArgs ());
 			}
 			HandleClose (o, args);
 		}
@@ -157,7 +157,7 @@ namespace Mmj.Views.Windows
 		/// <summary>
 		/// builds dialog window
 		/// </summary>
-		void BuildWindow ()
+		void BuildContent ()
 		{
 			Table table = new Table ();
 

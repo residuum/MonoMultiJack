@@ -23,6 +23,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+using Mmj.OS;
 using Xwt;
 
 namespace Mmj.Views.Windows
@@ -31,12 +33,12 @@ namespace Mmj.Views.Windows
 	{
 		public static void ShowErrorMessage (this IWindow window, string message)
 		{
-			MessageDialog.ShowError ((Window)window, message);
+			MessageDialog.ShowError ((Window)window, I18N._ (message));
 		}
 
 		public static void ShowInfoMessage (this IWindow window, string message)
 		{
-			MessageDialog.ShowMessage ((Window)window, message);
+			MessageDialog.ShowMessage ((Window)window, I18N._ (message));
 		}
 	}
 }

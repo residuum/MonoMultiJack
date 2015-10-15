@@ -26,7 +26,7 @@
 namespace Mmj.Views.Windows
 {
 	public interface IAboutWindow : IWindow
-	{		
+	{
 		string ProgramName { set; }
 
 		string Copyright { set; }

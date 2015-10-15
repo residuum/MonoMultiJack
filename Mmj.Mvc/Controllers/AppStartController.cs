@@ -42,8 +42,8 @@ namespace Mmj.Controllers
 			_application = DependencyResolver.GetImplementation<IProgram> ("IProgram", new object[] { appConfiguration });
 			_appWidget = new AppStartWidget ();
 			_appWidget.SetApp (appConfiguration.Name, appConfiguration.Command);
-			_appWidget.StartApplication += AppWidget_StartApplication;
-			_appWidget.StopApplication += AppWidget_StopApplication;
+			_appWidget.Start += AppWidgetStart;
+			_appWidget.Stop += AppWidgetStop;
 			_application.HasExited += Application_HasExited;
 			_application.HasStarted += Application_HasStarted;
 			_appName = appConfiguration.Name;
@@ -75,13 +75,13 @@ namespace Mmj.Controllers
 			_appWidget.Dispose ();
 		}
 
-		void AppWidget_StartApplication (object sender, EventArgs e)
+		void AppWidgetStart (object sender, EventArgs e)
 		{
 			Logging.LogMessage (string.Format ("Starting {0}", _appName), LogLevel.Debug);
 			_application.Start ();
 		}
 
-		void AppWidget_StopApplication (object sender, EventArgs e)
+		void AppWidgetStop (object sender, EventArgs e)
 		{
 			Logging.LogMessage (string.Format ("Stopping {0}", _appName), LogLevel.Debug);
 			_application.Stop ();

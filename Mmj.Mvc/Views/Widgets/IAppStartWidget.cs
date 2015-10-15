@@ -33,7 +33,7 @@ namespace Mmj.Views.Widgets
 
 		bool IsRunning{ set; }
 
-		event EventHandler StartApplication;
-		event EventHandler StopApplication;
+		event EventHandler Start;
+		event EventHandler Stop;
 	}
 }

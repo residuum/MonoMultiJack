@@ -59,7 +59,7 @@ namespace Mmj.Views.Windows
 		{
 			StockIcons.IconSet = new Icons ();
 			BuildMenu ();
-			BuildWindowContent ();
+			BuildContent ();
 			Closed += OnCloseEvent;
 			_keyMap.SetCommand (Command.Help, CallShowHelp);
 			_keyMap.SetCommand (Command.Quit, CallQuitApplication);
@@ -76,8 +76,8 @@ namespace Mmj.Views.Windows
 
 		private void CallShowHelp ()
 		{
-			if (ShowHelp != null) {
-				ShowHelp (this, new EventArgs ());
+			if (Help != null) {
+				Help (this, new EventArgs ());
 			}
 		}
 
@@ -226,18 +226,18 @@ namespace Mmj.Views.Windows
 		public event EventHandler StartJackd;
 		public event EventHandler StopJackd;
 		public event EventHandler StopAll;
-		public event EventHandler ShowConfigureJackd;
-		public event EventHandler ShowConfigureApps;
-		public event EventHandler ShowAbout;
-		public event EventHandler ShowHelp;
-		public event EventHandler QuitApplication;
+		public event EventHandler ConfigureJackd;
+		public event EventHandler ConfigureApps;
+		public event EventHandler About;
+		public event EventHandler Help;
+		public event EventHandler Quit;
 
 		#endregion
 
 		/// <summary>
 		/// builds window content
 		/// </summary>
-		void BuildWindowContent ()
+		void BuildContent ()
 		{
 			Title = "MonoMultiJack";
 			_connectionNotebook = new Notebook {
@@ -305,8 +305,8 @@ namespace Mmj.Views.Windows
 
 		void CallQuitApplication ()
 		{
-			if (QuitApplication != null) {
-				QuitApplication (this, new EventArgs ());
+			if (Quit != null) {
+				Quit (this, new EventArgs ());
 			}
 		}
 
@@ -353,15 +353,15 @@ namespace Mmj.Views.Windows
 
 		protected virtual void CallShowConfigureJackd (object sender, EventArgs e)
 		{
-			if (ShowConfigureJackd != null) {
-				ShowConfigureJackd (this, new EventArgs ());
+			if (ConfigureJackd != null) {
+				ConfigureJackd (this, new EventArgs ());
 			}
 		}
 
 		protected virtual void CallShowConfigureApps (object sender, EventArgs e)
 		{
-			if (ShowConfigureApps != null) {
-				ShowConfigureApps (this, new EventArgs ());
+			if (ConfigureApps != null) {
+				ConfigureApps (this, new EventArgs ());
 			}
 
 		}
@@ -391,8 +391,8 @@ namespace Mmj.Views.Windows
 		/// </param>
 		protected virtual void CallShowAbout (object sender, EventArgs e)
 		{
-			if (ShowAbout != null) {
-				ShowAbout (this, new EventArgs ());
+			if (About != null) {
+				About (this, new EventArgs ());
 			}
 		}
 

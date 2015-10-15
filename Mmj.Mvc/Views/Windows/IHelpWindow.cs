@@ -28,8 +28,9 @@ namespace Mmj.Views.Windows
 {
 	public interface IHelpWindow: IWindow
 	{
-		string ProgramName { set;}
-		string HelpContent { set;}
+		string ProgramName { set; }
+
+		string HelpContent { set; }
 	}
 }
 

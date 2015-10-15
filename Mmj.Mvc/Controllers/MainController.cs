@@ -110,11 +110,11 @@ namespace Mmj.Controllers
 			_mainWindow.StartJackd += MainWindow_StartJackd;
 			_mainWindow.StopJackd += MainWindow_StopJackd;
 			_mainWindow.StopAll += MainWindow_StopAll;
-			_mainWindow.ShowConfigureJackd += MainWindow_ShowConfigureJackd;
-			_mainWindow.ShowConfigureApps += MainWindow_ShowConfigureApps;
-			_mainWindow.ShowAbout += MainWindow_ShowAbout;
-			_mainWindow.ShowHelp += MainWindow_ShowHelp;
-			_mainWindow.QuitApplication += MainWindow_QuitApplication;
+			_mainWindow.ConfigureJackd += MainWindowConfigureJackd;
+			_mainWindow.ConfigureApps += MainWindowConfigureApps;
+			_mainWindow.About += MainWindowAbout;
+			_mainWindow.Help += MainWindowHelp;
+			_mainWindow.Quit += MainWindowQuit;
 
 			_mainWindow.Show ();
 
@@ -253,7 +253,7 @@ namespace Mmj.Controllers
 
 		}
 
-		void MainWindow_ShowConfigureJackd (object sender, EventArgs e)
+		void MainWindowConfigureJackd (object sender, EventArgs e)
 		{
 			ConfigureJackd ();
 		}
@@ -266,7 +266,7 @@ namespace Mmj.Controllers
 			_mainWindow.Sensitive = false;
 		}
 
-		void MainWindow_ShowConfigureApps (object sender, EventArgs e)
+		void MainWindowConfigureApps (object sender, EventArgs e)
 		{
 			ConfigureApps ();
 		}
@@ -279,7 +279,7 @@ namespace Mmj.Controllers
 			_mainWindow.Sensitive = false;
 		}
 
-		void MainWindow_ShowAbout (object sender, EventArgs e)
+		void MainWindowAbout (object sender, EventArgs e)
 		{
 			//TODO: Move to view.
 			IAboutWindow aboutWindow = new AboutWindow ();
@@ -407,12 +407,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			helpWindow.Closing += Window_Closing;
 		}
 
-		void MainWindow_ShowHelp (object sender, EventArgs e)
+		void MainWindowHelp (object sender, EventArgs e)
 		{
 			ShowHelp ();
 		}
 
-		void MainWindow_QuitApplication (object sender, EventArgs e)
+		void MainWindowQuit (object sender, EventArgs e)
 		{
 			if (!_mainWindow.Fullscreen) {
 				WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;

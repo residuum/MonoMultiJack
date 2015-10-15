@@ -43,11 +43,11 @@ namespace Mmj.Views.Windows
 
 		public AboutWindow ()
 		{
-			BuildWindowContent ();
+			BuildContent ();
 			Closed += HandleClose;
 		}
 
-		void BuildWindowContent ()
+		void BuildContent ()
 		{
 			VBox mainContent = new VBox ();
 			_programName = new Label ();
