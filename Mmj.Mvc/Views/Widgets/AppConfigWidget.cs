@@ -50,7 +50,7 @@ namespace Mmj.Views.Widgets
 
 		void BindEvents ()
 		{
-			_removeApp.Clicked += HandleRemoveClick;
+			_removeApp.Clicked += HandleRemove;
 		}
 
 		/// <summary>
@@ -84,10 +84,10 @@ namespace Mmj.Views.Widgets
 			return entry;
 		}
 
-		void HandleRemoveClick (object sender, EventArgs e)
+		void HandleRemove (object sender, EventArgs e)
 		{
-			if (RemoveApplication != null) {
-				RemoveApplication (this, new EventArgs ());
+			if (Remove != null) {
+				Remove (this, new EventArgs ());
 			}
 		}
 
@@ -143,7 +143,7 @@ namespace Mmj.Views.Widgets
 			}
 		}
 
-		public event EventHandler RemoveApplication;
+		public event EventHandler Remove;
 
 		#endregion
 	}

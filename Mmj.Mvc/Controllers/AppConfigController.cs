@@ -38,14 +38,16 @@ namespace Mmj.Controllers
 	{
 		readonly IAppConfigWindow _configWindow;
 		readonly List<IAppConfigWidget> _widgets = new List<IAppConfigWidget> ();
+		readonly Stack<IEnumerable<AppConfiguration>> _configHistory = new Stack<IEnumerable<AppConfiguration>> ();
 
 		public AppConfigController (IEnumerable<AppConfiguration> appConfigurations)
 		{
 			_configWindow = new AppConfigWindow { Icon = Icons.Program };
 			_configWindow.Show ();
 			_configWindow.Closing += Window_Closing;
-			_configWindow.AddApplication += Window_AddApplication;
-			_configWindow.SaveApplicationConfigs += Window_SaveConfigs;
+			_configWindow.Add += WindowAdd;
+			_configWindow.Save += Window_SaveConfigs;
+			_configWindow.Undo += Window_Undo;
 			if (appConfigurations.Any ()) {
 				CreateExistingWidgets (appConfigurations);
 			} else {
@@ -53,7 +55,7 @@ namespace Mmj.Controllers
 			}
 		}
 
-		private void CreateExistingWidgets(IEnumerable<AppConfiguration> appConfigurations)
+		void CreateExistingWidgets (IEnumerable<AppConfiguration> appConfigurations)
 		{
 			foreach (AppConfiguration config in appConfigurations) {
 				IAppConfigWidget widget = CreateWidget ();
@@ -87,40 +89,72 @@ namespace Mmj.Controllers
 		IAppConfigWidget CreateWidget ()
 		{
 			IAppConfigWidget widget = new AppConfigWidget ();
-			widget.RemoveApplication += Widget_RemoveApplication;
+			widget.Remove += WidgetRemove;
 			return widget;
 		}
 
-		void Widget_RemoveApplication (object sender, EventArgs e)
+		void WidgetRemove (object sender, EventArgs e)
 		{
 			IAppConfigWidget widget = sender as IAppConfigWidget;
 			if (widget == null) {
 				return;
 			}
+			_configHistory.Push (GetConfigurations ());
 			_configWindow.RemoveAppConfigWidget (widget);
 			_widgets.Remove (widget);
 			widget.Dispose ();
+			_configWindow.UndoEnabled = true;
 		}
 
 		void Window_SaveConfigs (object sender, EventArgs e)
 		{
+			List<AppConfiguration> newConfigurations = GetConfigurations ();
+			if (newConfigurations.Any (c => string.IsNullOrEmpty (c.Name) || string.IsNullOrEmpty (c.Command))) {
+				_configWindow.ShowErrorMessage ("Some applications have empty fields for \"Name\" or \"Command\".\n\nPlease correct these errors or remove the application.");
+				return;
+			}
 			if (UpdateApps != null) {
-				List<AppConfiguration> newConfigurations = new List<AppConfiguration> ();
-				foreach (IAppConfigWidget widget in _widgets) {
-					AppConfiguration newConfig = new AppConfiguration (widget.Name, widget.Command, widget.Arguments);
-					newConfigurations.Add (newConfig);
-				}
 				UpdateApps (this, new UpdateAppsEventArgs { AppConfigurations = newConfigurations });
 			}
-
+			Cleanup (_configWindow);
 		}
 
-		void Window_AddApplication (object sender, EventArgs e)
+		void Cleanup (IWindow window)
+		{
+			window.Hide ();
+			window.Dispose ();
+			if (AllWidgetsAreClosed != null) {
+				AllWidgetsAreClosed (this, new EventArgs ());
+			}
+		}
+
+		List<AppConfiguration> GetConfigurations ()
+		{
+			List<AppConfiguration> newConfigurations = new List<AppConfiguration> ();
+			foreach (IAppConfigWidget widget in _widgets) {
+				AppConfiguration newConfig = new AppConfiguration (widget.Name, widget.Command, widget.Arguments);
+				newConfigurations.Add (newConfig);
+			}
+			return newConfigurations;
+		}
+
+		void WindowAdd (object sender, EventArgs e)
 		{
 			AddNewApplication ();
 		}
 
-		private void AddNewApplication()
+		void Window_Undo (object sender, EventArgs e)
+		{
+			IEnumerable<AppConfiguration> configurations = _configHistory.Pop ();
+			foreach (IAppConfigWidget appConfigWidget in _widgets) {
+				_configWindow.RemoveAppConfigWidget (appConfigWidget);
+			}
+			_widgets.Clear ();
+			CreateExistingWidgets (configurations);
+			_configWindow.UndoEnabled = _configHistory.Count > 0;
+		}
+
+		void AddNewApplication ()
 		{
 			IAppConfigWidget newWidget = CreateWidget ();
 			_configWindow.AddAppConfigWidget (newWidget);
@@ -130,16 +164,15 @@ namespace Mmj.Controllers
 		void Window_Closing (object sender, EventArgs e)
 		{				
 			IWindow window = sender as IWindow;
-			if (window != null) {
-				window.Dispose ();
-			}
-			if (AllWidgetsAreClosed != null) {
-				AllWidgetsAreClosed (this, new EventArgs ());
-			}
+			Cleanup (window);
 		}
+
 		#region IController implementation
+
 		public event EventHandler AllWidgetsAreClosed;
+
 		#endregion
+
 		public event EventHandler<UpdateAppsEventArgs> UpdateApps;
 	}
 }

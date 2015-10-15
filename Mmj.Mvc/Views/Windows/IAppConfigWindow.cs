@@ -34,7 +34,10 @@ namespace Mmj.Views.Windows
 
 		void RemoveAppConfigWidget (IAppConfigWidget widget);
 
-		event EventHandler SaveApplicationConfigs;
-		event EventHandler AddApplication;
+		bool UndoEnabled { set; }
+
+		event EventHandler Save;
+		event EventHandler Add;
+		event EventHandler Undo;
 	}
 }

@@ -38,10 +38,11 @@ namespace Mmj.Views.Windows
 		Button _addButton;
 		Button _okButton;
 		Button _cancelButton;
+		Button _undoButton;
 
 		public AppConfigWindow ()
 		{
-			BuildWindow ();
+			BuildContent ();
 			BindEvents ();
 			
 			Title = I18N._ ("Configure Applications");
@@ -51,22 +52,29 @@ namespace Mmj.Views.Windows
 		void BindEvents ()
 		{
 			Closed += HandleClose;
-			_okButton.Clicked += HandleOkClick;
-			_cancelButton.Clicked += HandleCancelClick;
-			_addButton.Clicked += HandleAddClick;
+			_okButton.Clicked += HandleOk;
+			_cancelButton.Clicked += HandleCancel;
+			_addButton.Clicked += HandleAdd;
+			_undoButton.Clicked += HandleUndo;
 		}
 
-		void HandleCancelClick (object sender, EventArgs e)
+		void HandleUndo (object sender, EventArgs e)
+		{
+			if (Undo != null) {
+				Undo (this, new EventArgs ());
+			}
+		}
+
+		void HandleCancel (object sender, EventArgs e)
 		{
 			Close ();
 		}
 
-		void HandleOkClick (object o, EventArgs args)
+		void HandleOk (object o, EventArgs args)
 		{
-			if (SaveApplicationConfigs != null) {
-				SaveApplicationConfigs (this, new EventArgs ());
+			if (Save != null) {
+				Save (this, new EventArgs ());
 			}
-			HandleClose (o, args);
 		}
 
 		void HandleClose (object sender, EventArgs e)
@@ -113,14 +121,19 @@ namespace Mmj.Views.Windows
 			}
 		}
 
+		bool IAppConfigWindow.UndoEnabled {
+			set { _undoButton.Visible = value; }
+		}
+
 		public event EventHandler Closing;
 
 		#endregion
 
 		#region IAppConfigWindow implementation
 
-		public event EventHandler SaveApplicationConfigs;
-		public event EventHandler AddApplication;
+		public event EventHandler Save;
+		public event EventHandler Add;
+		public event EventHandler Undo;
 
 		void IAppConfigWindow.AddAppConfigWidget (IAppConfigWidget widget)
 		{
@@ -134,7 +147,7 @@ namespace Mmj.Views.Windows
 
 		#endregion
 
-		void BuildWindow ()
+		void BuildContent ()
 		{
 			_configTable = new Table { MinWidth = 300 };
 			ScrollView scrollView = new ScrollView (_configTable) {
@@ -151,10 +164,16 @@ namespace Mmj.Views.Windows
 				Image = Icons.Cancel,
 				Style = ButtonStyle.Flat
 			};
+			_undoButton = new Button (I18N._ ("Undo")) {
+				Image = Icons.Undo,
+				Style = ButtonStyle.Flat,
+				Visible = false
+			};
 			buttonBox.PackEnd (_okButton);
 			buttonBox.PackEnd (_addButton);
 			buttonBox.PackStart (_cancelButton);
-            
+			buttonBox.PackStart (_undoButton);
+
 			VBox box = new VBox ();
 			box.PackStart (scrollView, true, true);
 			box.PackEnd (buttonBox);
@@ -163,12 +182,12 @@ namespace Mmj.Views.Windows
 
 		void CallAddNewConfigWidget ()
 		{
-			if (AddApplication != null) {
-				AddApplication (this, new EventArgs ());
+			if (Add != null) {
+				Add (this, new EventArgs ());
 			}
 		}
 
-		protected void HandleAddClick (object sender, EventArgs e)
+		void HandleAdd (object sender, EventArgs e)
 		{
 			CallAddNewConfigWidget ();
 		}

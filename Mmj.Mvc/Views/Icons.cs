@@ -119,6 +119,11 @@ namespace Mmj.Views
 			return LoadImage ("Mmj.Views.Icons.remove.png");
 		}
 
+		static Image LoadUndo ()
+		{
+			return LoadImage ("Mmj.Views.Icons.remove.png");
+		}
+
 		public static Image Ok {
 			get { return LoadOk ().WithSize (IconSize.Small); }
 		}
@@ -161,6 +166,10 @@ namespace Mmj.Views
 
 		public static Image Warning {
 			get { return LoadWarning ().WithSize (IconSize.Small); }
+		}
+
+		public static Image Undo {
+			get { return LoadUndo ().WithSize (IconSize.Small); }
 		}
 	}
 }

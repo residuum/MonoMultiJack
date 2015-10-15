@@ -35,6 +35,6 @@ namespace Mmj.Views.Widgets
 
 		string Arguments { get; set; }
 
-		event EventHandler RemoveApplication;
+		event EventHandler Remove;
 	}
 }
