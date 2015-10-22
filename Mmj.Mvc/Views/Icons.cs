@@ -124,12 +124,14 @@ namespace Mmj.Views
 			return LoadImage ("Mmj.Views.Icons.undo.png");
 		}
 
-		public static Image Ok {
-			get { return LoadOk ().WithSize (IconSize.Small); }
+		static Image LoadUp ()
+		{
+			return LoadImage ("Mmj.Views.Icons.up.png");
 		}
 
-		public static Image Cancel {
-			get { return LoadCancel ().WithSize (IconSize.Small); }
+		static Image LoadDown ()
+		{
+			return LoadImage ("Mmj.Views.Icons.down.png");
 		}
 
 		public static Image Connect {
@@ -146,6 +148,14 @@ namespace Mmj.Views
 
 		public static Image Stop {
 			get { return LoadImage ("Mmj.Views.Icons.stop.png").WithSize (IconSize.Small); }
+		}
+
+		public static Image Ok {
+			get { return LoadOk ().WithSize (IconSize.Small); }
+		}
+
+		public static Image Cancel {
+			get { return LoadCancel ().WithSize (IconSize.Small); }
 		}
 
 		public static Image Delete {
@@ -170,6 +180,14 @@ namespace Mmj.Views
 
 		public static Image Undo {
 			get { return LoadUndo ().WithSize (IconSize.Small); }
+		}
+
+		public static Image Up {
+			get { return LoadUp ().WithSize (IconSize.Small); }
+		}
+
+		public static Image Down {
+			get { return LoadDown ().WithSize (IconSize.Small); }
 		}
 	}
 }

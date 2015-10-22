@@ -36,5 +36,13 @@ namespace Mmj.Views.Widgets
 		string Arguments { get; set; }
 
 		event EventHandler Remove;
+
+		event EventHandler MoveUp;
+
+		event EventHandler MoveDown;
+
+		bool IsFirst { set; }
+
+		bool IsLast { set; }
 	}
 }

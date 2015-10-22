@@ -121,6 +121,11 @@ namespace Mmj.Views.Windows
 			}
 		}
 
+		void IAppConfigWindow.ClearWidgets ()
+		{
+			_configTable.Clear ();
+		}
+
 		bool IAppConfigWindow.UndoEnabled {
 			set { _undoButton.Visible = value; }
 		}

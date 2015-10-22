@@ -93,7 +93,10 @@
       <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Icons\down.png" />
+    <EmbeddedResource Include="Views\Icons\up.png" />
+  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Views\Icons\add.png" />

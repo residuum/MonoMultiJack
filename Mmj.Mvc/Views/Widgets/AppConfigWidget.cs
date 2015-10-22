@@ -38,6 +38,8 @@ namespace Mmj.Views.Widgets
 		TextEntry _appCommandEntry;
 		TextEntry _appArgumentsEntry;
 		Button _removeApp;
+		Button _up;
+		Button _down;
 
 		/// <summary>
 		/// constructor
@@ -51,6 +53,8 @@ namespace Mmj.Views.Widgets
 		void BindEvents ()
 		{
 			_removeApp.Clicked += HandleRemove;
+			_up.Clicked += HandleUp;
+			_down.Clicked += HandleDown;
 		}
 
 		/// <summary>
@@ -67,6 +71,10 @@ namespace Mmj.Views.Widgets
 
 			_removeApp = new Button (I18N._ ("Delete")) { Image = Icons.Delete };
 			table.Add (_removeApp, 2, 1);
+			_up = new Button (Icons.Up) { Visible = false, Style = ButtonStyle.Flat };
+			table.Add (_up, 2, 0);
+			_down = new Button (Icons.Down) { Visible = false, Style = ButtonStyle.Flat };
+			table.Add (_down, 2, 2);
 			table.Margin = new WidgetSpacing (4, 8, 4, 8);
 			Content = table;
 		}
@@ -88,6 +96,20 @@ namespace Mmj.Views.Widgets
 		{
 			if (Remove != null) {
 				Remove (this, new EventArgs ());
+			}
+		}
+
+		void HandleUp (object sender, EventArgs e)
+		{
+			if (MoveUp != null) {
+				MoveUp (this, new EventArgs ());
+			}
+		}
+
+		void HandleDown (object sender, EventArgs e)
+		{
+			if (MoveDown != null) {
+				MoveDown (this, new EventArgs ());
 			}
 		}
 
@@ -143,7 +165,17 @@ namespace Mmj.Views.Widgets
 			}
 		}
 
+		bool IAppConfigWidget.IsFirst {
+			set { _up.Visible = !value; }
+		}
+
+		bool IAppConfigWidget.IsLast {
+			set { _down.Visible = !value; }
+		}
+
 		public event EventHandler Remove;
+		public event EventHandler MoveUp;
+		public event EventHandler MoveDown;
 
 		#endregion
 	}

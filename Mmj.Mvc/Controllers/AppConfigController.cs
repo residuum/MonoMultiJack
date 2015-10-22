@@ -40,6 +40,13 @@ namespace Mmj.Controllers
 		readonly List<IAppConfigWidget> _widgets = new List<IAppConfigWidget> ();
 		readonly Stack<IEnumerable<AppConfiguration>> _configHistory = new Stack<IEnumerable<AppConfiguration>> ();
 
+		enum OrderChange
+		{
+			Undefined,
+			Down,
+			Up
+		}
+
 		public AppConfigController (IEnumerable<AppConfiguration> appConfigurations)
 		{
 			_configWindow = new AppConfigWindow { Icon = Icons.Program };
@@ -65,6 +72,7 @@ namespace Mmj.Controllers
 				_configWindow.AddAppConfigWidget (widget);
 				_widgets.Add (widget);
 			}
+			UpdateWidgetButtons ();
 		}
 
 		~AppConfigController ()
@@ -90,7 +98,44 @@ namespace Mmj.Controllers
 		{
 			IAppConfigWidget widget = new AppConfigWidget ();
 			widget.Remove += WidgetRemove;
+			widget.MoveUp += WidgetMoveUp;
+			widget.MoveDown += WidgetMoveDown;
 			return widget;
+		}
+
+		void WidgetMoveDown (object sender, EventArgs e)
+		{
+			ReorderWidgets (sender, OrderChange.Down);
+		}
+
+		void WidgetMoveUp (object sender, EventArgs e)
+		{
+			ReorderWidgets (sender, OrderChange.Up);
+		}
+
+		void ReorderWidgets (object sender, OrderChange direction)
+		{
+			IAppConfigWidget widget = sender as IAppConfigWidget;
+			if (widget == null || direction == OrderChange.Undefined) {
+				return;
+			}
+			int widgetPosition = _widgets.IndexOf (widget);
+			_widgets.Remove (widget);
+			switch (direction) {
+			case OrderChange.Up:
+				widgetPosition -= 1;
+				break;
+			case OrderChange.Down:
+				widgetPosition += 1;
+				break;
+			}
+
+			_widgets.Insert (widgetPosition, widget);
+			_configWindow.ClearWidgets ();
+			foreach (IAppConfigWidget newWidget in _widgets) {
+				_configWindow.AddAppConfigWidget (newWidget);
+			}
+			UpdateWidgetButtons ();
 		}
 
 		void WidgetRemove (object sender, EventArgs e)
@@ -102,6 +147,7 @@ namespace Mmj.Controllers
 			_configHistory.Push (GetConfigurations ());
 			_configWindow.RemoveAppConfigWidget (widget);
 			_widgets.Remove (widget);
+			UpdateWidgetButtons ();
 			widget.Dispose ();
 			_configWindow.UndoEnabled = true;
 		}
@@ -159,6 +205,16 @@ namespace Mmj.Controllers
 			IAppConfigWidget newWidget = CreateWidget ();
 			_configWindow.AddAppConfigWidget (newWidget);
 			_widgets.Add (newWidget);
+			UpdateWidgetButtons ();
+		}
+
+		void UpdateWidgetButtons ()
+		{
+			for (int i = 0; i < _widgets.Count; i++) {
+				IAppConfigWidget widget = _widgets [i];
+				widget.IsFirst = i == 0;
+				widget.IsLast = i == _widgets.Count - 1;
+			}
 		}
 
 		void Window_Closing (object sender, EventArgs e)
