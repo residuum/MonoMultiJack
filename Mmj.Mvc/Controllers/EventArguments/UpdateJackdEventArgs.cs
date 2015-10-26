@@ -24,8 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Configuration;
 using Mmj.Configuration.Configuration;
+using Mmj.Configuration;
 
 namespace Mmj.Controllers.EventArguments
 {

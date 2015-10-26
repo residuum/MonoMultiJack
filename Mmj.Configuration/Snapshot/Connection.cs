@@ -1,10 +1,10 @@
-//
-// UppdateAppsEventArgs.cs
+﻿//
+// Connection.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2015 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Configuration;
-using Mmj.Configuration.Configuration;
-using Mmj.Controllers.EventArguments;
-using System.Collections.Generic;
 
-namespace Mmj.Controllers.EventArguments
+namespace Mmj.Configuration.Snapshot
 {
-	public class UpdateAppsEventArgs : EventArgs
+	public struct Connection
 	{
-		public IEnumerable<AppConfiguration> AppConfigurations { get; set; }
+		public string OutPort { get; private set; }
+
+		public string InPort { get; private set; }
+
+		public ConnectionType Type { get; private set; }
+
+		public Connection (string inPort, string outPort, ConnectionType type): this()
+		{
+			OutPort = outPort;
+			InPort = inPort;
+			Type = type;
+		}
 	}
 }
+

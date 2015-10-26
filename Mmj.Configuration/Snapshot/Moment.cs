@@ -1,10 +1,10 @@
-//
-// UppdateAppsEventArgs.cs
+﻿//
+// Snapshot.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2015 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Configuration;
-using Mmj.Configuration.Configuration;
-using Mmj.Controllers.EventArguments;
 using System.Collections.Generic;
 
-namespace Mmj.Controllers.EventArguments
+namespace Mmj.Configuration.Snapshot
 {
-	public class UpdateAppsEventArgs : EventArgs
+	public struct Moment
 	{
-		public IEnumerable<AppConfiguration> AppConfigurations { get; set; }
+		public IEnumerable<string> Apps { get; private set; }
+
+		public IEnumerable<Connection> Connections { get; private set; }
+
+		public Moment (IEnumerable<string> apps, IEnumerable<Connection> connections): this()
+		{
+			Apps = apps;
+			Connections = connections;
+		}
 	}
 }
+

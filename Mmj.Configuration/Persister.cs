@@ -29,6 +29,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using Mmj.Configuration.Configuration;
+using Mmj.Configuration.Snapshot;
 
 namespace Mmj.Configuration
 {
@@ -63,6 +64,20 @@ namespace Mmj.Configuration
 		public static void SetConfigDirectory (string configDirectory)
 		{
 			ApplicationFolder = configDirectory;
+		}
+
+		static string _snapshotFolder = null;
+
+		public static string SnapshotFolder {
+			get {
+				if (_snapshotFolder != null && Directory.Exists (_snapshotFolder)) {
+					return _snapshotFolder;
+				}
+				return Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
+			}
+			private set {
+				_snapshotFolder = value;
+			}
 		}
 
 		/// <summary>
@@ -127,6 +142,18 @@ namespace Mmj.Configuration
 		public static void SaveWindowSize (WindowConfiguration newWindowConfig)
 		{
 			SaveConfig (newWindowConfig, WindowSizeFile);
+		}
+
+		public static void SaveSnapshot (Moment snapshot, string fileName)
+		{
+			_snapshotFolder = Path.GetDirectoryName (fileName);
+			SaveConfig (snapshot, fileName);
+		}
+
+		public static Moment LoadSnapshot (string fileName)
+		{
+			_snapshotFolder = Path.GetDirectoryName (fileName);
+			return ReadConfig<Moment> (fileName);
 		}
 
 		static T ReadConfig<T> (string fileName)
