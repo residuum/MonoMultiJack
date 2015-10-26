@@ -106,5 +106,9 @@ namespace Mmj.Views.Windows
 		/// Controller should quit application.
 		/// </summary>
 		event EventHandler Quit;
+
+		event EventHandler LoadSnapshot;
+
+		event EventHandler SaveSnapshot;
 	}
 }

@@ -38,6 +38,12 @@ namespace Mmj.Controllers
 		readonly IAppStartWidget _appWidget;
 		readonly string _appName;
 
+		public string Name {
+			get {
+				return _appName;
+			}
+		}
+
 		public AppStartController (AppConfiguration appConfiguration)
 		{
 			_application = DependencyResolver.GetImplementation<IProgram> ("IProgram", new object[] { appConfiguration });
@@ -105,6 +111,11 @@ namespace Mmj.Controllers
 				ApplicationStatusHasChanged (this, new EventArgs ());
 			}
 
+		}
+
+		public void StartApplication ()
+		{
+			_application.Start ();
 		}
 
 		public void StopApplication ()

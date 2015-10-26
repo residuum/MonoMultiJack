@@ -116,6 +116,8 @@ namespace Mmj.Controllers
 			_mainWindow.About += MainWindowAbout;
 			_mainWindow.Help += MainWindowHelp;
 			_mainWindow.Quit += MainWindowQuit;
+			_mainWindow.SaveSnapshot += MainWindowSave;
+			_mainWindow.LoadSnapshot += MainWindowLoad;
 
 			_mainWindow.Show ();
 
@@ -422,6 +424,32 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			StopJackd ();
 			if (AllWidgetsAreClosed != null) {
 				AllWidgetsAreClosed (this, new EventArgs ());
+			}
+		}
+
+		void MainWindowSave (object sender, EventArgs e)
+		{
+			string fileName = _mainWindow.SaveFileDialog (PersistantConfiguration.SnapshotFolder, "Save Snapshot", "snap");
+			if (fileName == null) {
+				return;
+			}
+			IEnumerable<string> apps = _startWidgetControllers.Where (w => w.IsRunning).Select (w => w.Name);
+			Snapshot snap = new Snapshot (apps, new List<Mmj.Configuration.Connection> ());
+			PersistantConfiguration.SaveSnapshot (snap, fileName);
+		}
+
+		void MainWindowLoad (object sender, EventArgs e)
+		{
+			string fileName = _mainWindow.OpenFileDialog (PersistantConfiguration.SnapshotFolder, "Save Snapshot", "snap");
+			if (fileName == null) {
+				return;
+			}
+			Snapshot snap = PersistantConfiguration.LoadSnapshot (fileName);
+			if (!_jackd.IsRunning && snap.Apps.Any()){
+				_jackd.Start ();
+			}
+			foreach (AppStartController appStarter in _startWidgetControllers.Where(w => !w.IsRunning && snap.Apps.Contains(w.Name))) {
+				appStarter.StartApplication ();
 			}
 		}
 

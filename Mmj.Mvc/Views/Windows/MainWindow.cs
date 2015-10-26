@@ -126,6 +126,8 @@ namespace Mmj.Views.Windows
 			_stopAllAction = CreateMenuItem (I18N._ ("Stop _All"), CallStopAll, Icons.Stop);
 			_stopAllAction.Sensitive = false;
 			yield return _stopAllAction;
+			yield return CreateMenuItem (I18N._ ("Save Snapshot"), CallSaveSnapshot);
+			yield return CreateMenuItem (I18N._ ("_Load Snapshot"), CallLoadSnapshot);
 			yield return CreateMenuItem (I18N._ ("_Quit"), OnQuitActionActivated, Icons.Delete);
 		}
 
@@ -232,6 +234,8 @@ namespace Mmj.Views.Windows
 		public event EventHandler About;
 		public event EventHandler Help;
 		public event EventHandler Quit;
+		public event EventHandler LoadSnapshot;
+		public event EventHandler SaveSnapshot;
 
 		#endregion
 
@@ -315,6 +319,30 @@ namespace Mmj.Views.Windows
 		{
 			if (StopJackd != null) {
 				StopJackd (this, new EventArgs ());
+			}
+		}
+
+		protected virtual void CallSaveSnapshot (object sender, EventArgs e)
+		{
+			CallSaveSnapshot ();
+		}
+
+		void CallSaveSnapshot ()
+		{
+			if (SaveSnapshot != null) {
+				SaveSnapshot (this, new EventArgs ());
+			}
+		}
+
+		protected virtual void CallLoadSnapshot (object sender, EventArgs e)
+		{
+			CallLoadSnapshot ();
+		}
+
+		void CallLoadSnapshot ()
+		{
+			if (LoadSnapshot != null) {
+				LoadSnapshot (this, new EventArgs ());
 			}
 		}
 
