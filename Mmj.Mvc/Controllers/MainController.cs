@@ -454,7 +454,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 		void Controller_UpdateApps (object sender, UpdateAppsEventArgs e)
 		{
-			_appConfigurations = e.AppConfigurations;
+			_appConfigurations = e.AppConfigurations.ToList ();
 			PersistantConfiguration.SaveAppConfiguations (_appConfigurations);
 			UpdateApps (_appConfigurations);
 		}

@@ -159,6 +159,9 @@ namespace Mmj.Controllers
 				_configWindow.ShowErrorMessage ("Some applications have empty fields for \"Name\" or \"Command\".\n\nPlease correct these errors or remove the application.");
 				return;
 			}
+			if (newConfigurations.GroupBy (c => c.Name).Any (g => g.Count () > 1)) {
+				_configWindow.ShowInfoMessage ("Program names should be unique as these are displayed on the start buttons.");
+			}
 			if (UpdateApps != null) {
 				UpdateApps (this, new UpdateAppsEventArgs { AppConfigurations = newConfigurations });
 			}

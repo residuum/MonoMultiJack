@@ -161,7 +161,7 @@ namespace Mmj.Configuration
 			throw new XmlException ("XML file is corrupt.");
 		}
 
-		public static void SaveAppConfiguations (List<AppConfiguration> newAppConfigurations)
+		public static void SaveAppConfiguations (IEnumerable<AppConfiguration> newAppConfigurations)
 		{
 			if (!Directory.Exists (ApplicationFolder)) {
 				Directory.CreateDirectory (ApplicationFolder);

@@ -333,3 +333,6 @@ msgstr "Kein Port oder Client ausgewählt."
 
 msgid "Some applications have empty fields for \"Name\" or \"Command\".\n\nPlease correct these errors or remove the application."
 msgstr "Einige Anwendungen haben leere Werte in den Feldern \"Name\" oder \"Befehl\" stehen.\n\nBitte korrigieren Sie diese Fehler oder löschen Sie diese Anwendung."
+
+msgid "Program names should be unique as these are displayed on the start buttons."
+msgstr "Programme sollen eindeutige Namen haben, weil diese auf den Startknöpfen ausgegeben werden."
