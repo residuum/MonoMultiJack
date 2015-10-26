@@ -33,9 +33,9 @@ namespace Mmj.Configuration.Snapshot
 
 		public string InPort { get; private set; }
 
-		public ConnectionType Type { get; private set; }
+		public int Type { get; private set; }
 
-		public Connection (string inPort, string outPort, ConnectionType type): this()
+		public Connection (string inPort, string outPort, int type): this()
 		{
 			OutPort = outPort;
 			InPort = inPort;

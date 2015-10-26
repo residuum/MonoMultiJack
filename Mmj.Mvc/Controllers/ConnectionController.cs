@@ -63,6 +63,12 @@ namespace Mmj.Controllers
 			_connectionWidget.Disconnect += Widget_Disconnect;
 		}
 
+		public IEnumerable<IConnection> Connections {
+			get {
+				return this._connectionManager.Connections;
+			}
+		}
+
 		void Widget_Connect (object sender, ConnectEventArgs args)
 		{
 			Logging.LogMessage ("Connecting", LogLevel.Debug);

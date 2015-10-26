@@ -30,6 +30,7 @@ using System.Linq;
 using System.Reflection;
 using Mmj.Configuration;
 using Mmj.Configuration.Configuration;
+using Mmj.Configuration.Snapshot;
 using Mmj.ConnectionWrapper;
 using Mmj.OS;
 using Mmj.Controllers.EventArguments;
@@ -429,26 +430,27 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 		void MainWindowSave (object sender, EventArgs e)
 		{
-			string fileName = _mainWindow.SaveFileDialog (PersistantConfiguration.SnapshotFolder, "Save Snapshot", "snap");
+			string fileName = _mainWindow.SaveFileDialog (Persister.SnapshotFolder, "Save Snapshot", "snap");
 			if (fileName == null) {
 				return;
 			}
-			IEnumerable<string> apps = _startWidgetControllers.Where (w => w.IsRunning).Select (w => w.Name);
-			Snapshot snap = new Snapshot (apps, new List<Mmj.Configuration.Connection> ());
-			PersistantConfiguration.SaveSnapshot (snap, fileName);
+			IEnumerable<string> apps = _startWidgetControllers.Where (s => s.IsRunning).Select (s => s.Name);
+			IEnumerable<Mmj.Configuration.Snapshot.Connection> connections = _connectionControllers.SelectMany (c => c.Connections).Select(c => new Mmj.Configuration.Snapshot.Connection(c.InPort.Name, c.OutPort.Name, (int)c.ConnectionType));
+			Moment snap = new Moment (apps, connections);
+			Persister.SaveSnapshot (snap, fileName);
 		}
 
 		void MainWindowLoad (object sender, EventArgs e)
 		{
-			string fileName = _mainWindow.OpenFileDialog (PersistantConfiguration.SnapshotFolder, "Save Snapshot", "snap");
+			string fileName = _mainWindow.OpenFileDialog (Persister.SnapshotFolder, "Save Snapshot", "snap");
 			if (fileName == null) {
 				return;
 			}
-			Snapshot snap = PersistantConfiguration.LoadSnapshot (fileName);
+			Moment snap = Persister.LoadSnapshot (fileName);
 			if (!_jackd.IsRunning && snap.Apps.Any()){
 				_jackd.Start ();
 			}
-			foreach (AppStartController appStarter in _startWidgetControllers.Where(w => !w.IsRunning && snap.Apps.Contains(w.Name))) {
+			foreach (AppStartController appStarter in _startWidgetControllers.Where(s => !s.IsRunning && snap.Apps.Contains(s.Name))) {
 				appStarter.StartApplication ();
 			}
 		}

@@ -41,7 +41,6 @@
     <Compile Include="Persister.cs" />
     <Compile Include="Configuration\WindowConfiguration.cs" />
     <Compile Include="Snapshot\Connection.cs" />
-    <Compile Include="Snapshot\ConnectionType.cs" />
     <Compile Include="Snapshot\Moment.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
