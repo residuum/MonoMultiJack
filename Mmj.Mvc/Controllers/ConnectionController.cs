@@ -39,6 +39,12 @@ namespace Mmj.Controllers
 		readonly IConnectionWidget _connectionWidget;
 		readonly IConnectionManager _connectionManager;
 
+		public ConnectionType ConnectionType {
+			get {
+				return _connectionManager.ConnectionType;
+			}
+		}
+
 		public IConnectionWidget Widget {
 			get {
 				return _connectionWidget;
@@ -65,7 +71,16 @@ namespace Mmj.Controllers
 
 		public IEnumerable<IConnection> Connections {
 			get {
-				return this._connectionManager.Connections;
+				return _connectionManager.Connections;
+			}
+		}
+
+		public void Connect (string outName, string inName)
+		{
+			Port outPort = _connectionManager.Clients.SelectMany (c => c.Ports).FirstOrDefault (p => p.FlowDirection == FlowDirection.Out && p.Name == outName);
+			Port inPort = _connectionManager.Clients.SelectMany (c => c.Ports).FirstOrDefault (p => p.FlowDirection == FlowDirection.In && p.Name == inName);
+			if (outPort != null && inPort != null){
+				_connectionManager.Connect (new List<IConnectable>{ outPort }, new List<IConnectable>{ inPort });
 			}
 		}
 

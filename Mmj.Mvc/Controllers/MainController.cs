@@ -453,6 +453,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			foreach (AppStartController appStarter in _startWidgetControllers.Where(s => !s.IsRunning && snap.Apps.Contains(s.Name))) {
 				appStarter.StartApplication ();
 			}
+			foreach(IGrouping<int, Mmj.Configuration.Connection> connections in snap.Connections.GroupBy(c => c.Type)){
+				ConnectionType type = (ConnectionType)connections.Key;
+				ConnectionController controller = _connectionControllers.SingleOrDefault (c => c.ConnectionType == type);
+				if (controller == null) {
+					continue;
+				}
+				foreach(Mmj.Configuration.Connection connection in connections){
+					controller.Connect (connection.OutPort, connection.InPort);
+				}
+			}
 		}
 
 		#endregion
