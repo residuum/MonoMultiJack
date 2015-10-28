@@ -77,11 +77,18 @@ namespace Mmj.Controllers
 
 		public void Connect (string outName, string inName)
 		{
+			Logging.LogMessage ("Connecting", LogLevel.Debug);
 			Port outPort = _connectionManager.Clients.SelectMany (c => c.Ports).FirstOrDefault (p => p.FlowDirection == FlowDirection.Out && p.Name == outName);
 			Port inPort = _connectionManager.Clients.SelectMany (c => c.Ports).FirstOrDefault (p => p.FlowDirection == FlowDirection.In && p.Name == inName);
-			if (outPort != null && inPort != null){
+			if (outPort != null && inPort != null) {
 				_connectionManager.Connect (new List<IConnectable>{ outPort }, new List<IConnectable>{ inPort });
 			}
+		}
+
+		public void Disconnect (IConnection connection)
+		{
+			Logging.LogMessage ("Disconnecting", LogLevel.Debug);
+			_connectionManager.Disconnect (new List<IConnectable>{ connection.OutPort }, new List<IConnectable>{ connection.InPort });
 		}
 
 		void Widget_Connect (object sender, ConnectEventArgs args)

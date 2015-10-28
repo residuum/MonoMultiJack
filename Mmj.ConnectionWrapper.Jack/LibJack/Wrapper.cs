@@ -108,8 +108,11 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs {
 				MessageType = MessageType.Change
 			};
-			JackPort outPort = _portMapper.First (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, a));
-			JackPort inPort = _portMapper.First (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, b));
+			JackPort outPort = _portMapper.FirstOrDefault (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, a));
+			JackPort inPort = _portMapper.FirstOrDefault (map => map.JackPortPointer == Invoke.jack_port_by_id (_jackClient, b));
+			if (outPort == null  || inPort == null) {
+				return;
+			}
 			if (connect != 0) {
 				List<IConnection> connections = new List<IConnection> ();
 				IConnection newConn = MapConnection (outPort, inPort);

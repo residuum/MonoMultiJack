@@ -435,7 +435,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				return;
 			}
 			IEnumerable<string> apps = _startWidgetControllers.Where (s => s.IsRunning).Select (s => s.Name);
-			IEnumerable<Mmj.Configuration.Snapshot.Connection> connections = _connectionControllers.SelectMany (c => c.Connections).Select(c => new Mmj.Configuration.Snapshot.Connection(c.InPort.Name, c.OutPort.Name, (int)c.ConnectionType));
+
+			IEnumerable<Mmj.Configuration.Snapshot.Connection> connections = _connectionControllers.SelectMany (c => c.Connections).Select (c => new Mmj.Configuration.Snapshot.Connection (c.InPort.Name, c.OutPort.Name, (int)c.ConnectionType));
 			Moment snap = new Moment (apps, connections);
 			Persister.SaveSnapshot (snap, fileName);
 		}
@@ -447,19 +448,24 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				return;
 			}
 			Moment snap = Persister.LoadSnapshot (fileName);
-			if (!_jackd.IsRunning && snap.Apps.Any()){
+			if (!_jackd.IsRunning && snap.Apps.Any ()) {
 				_jackd.Start ();
+			}
+			foreach (AppStartController appStarter in _startWidgetControllers.Where(s => s.IsRunning && !snap.Apps.Contains(s.Name))) {
+				appStarter.StopApplication ();
 			}
 			foreach (AppStartController appStarter in _startWidgetControllers.Where(s => !s.IsRunning && snap.Apps.Contains(s.Name))) {
 				appStarter.StartApplication ();
 			}
-			foreach(IGrouping<int, Mmj.Configuration.Connection> connections in snap.Connections.GroupBy(c => c.Type)){
-				ConnectionType type = (ConnectionType)connections.Key;
-				ConnectionController controller = _connectionControllers.SingleOrDefault (c => c.ConnectionType == type);
+			foreach (IGrouping<int, Mmj.Configuration.Snapshot.Connection> connections in snap.Connections.GroupBy(c => c.Type)) {
+				ConnectionController controller = _connectionControllers.SingleOrDefault (c => (int)c.ConnectionType == connections.Key);
 				if (controller == null) {
 					continue;
 				}
-				foreach(Mmj.Configuration.Connection connection in connections){
+				foreach (IConnection connection in controller.Connections) {
+					controller.Disconnect (connection);
+				}
+				foreach (Mmj.Configuration.Snapshot.Connection connection in connections) {
 					controller.Connect (connection.OutPort, connection.InPort);
 				}
 			}

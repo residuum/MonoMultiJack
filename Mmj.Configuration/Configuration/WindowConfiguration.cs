@@ -29,7 +29,7 @@ using System.Xml.Serialization;
 namespace Mmj.Configuration.Configuration
 {
 	[XmlType ("window")]
-	public struct WindowConfiguration
+	public class WindowConfiguration
 	{
 		/// <summary>
 		/// Gets the X position.
@@ -82,12 +82,16 @@ namespace Mmj.Configuration.Configuration
 		/// <param name='ySize'>
 		/// Y size.
 		/// </param>
-		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize) : this ()
+		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize)
 		{
 			XPosition = xPosition;
 			YPosition = yPosition;
 			Width = xSize;
 			Height = ySize;
+		}
+
+		public WindowConfiguration ()
+		{
 		}
 	}
 }

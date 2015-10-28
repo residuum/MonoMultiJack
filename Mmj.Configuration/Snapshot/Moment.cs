@@ -25,19 +25,28 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using System.Linq;
 
 namespace Mmj.Configuration.Snapshot
 {
-	public struct Moment
+	[XmlType ("snapshot")]
+	public class Moment
 	{
-		public IEnumerable<string> Apps { get; private set; }
+		[XmlElement ("apps")]
+		public List<string> Apps { get; set; }
 
-		public IEnumerable<Connection> Connections { get; private set; }
+		[XmlElement ("connections")]
+		public List<Connection> Connections { get; set; }
 
-		public Moment (IEnumerable<string> apps, IEnumerable<Connection> connections): this()
+		public Moment (IEnumerable<string> apps, IEnumerable<Connection> connections)
 		{
-			Apps = apps;
-			Connections = connections;
+			Apps = apps.ToList ();
+			Connections = connections.ToList ();
+		}
+
+		public Moment ()
+		{
 		}
 	}
 }

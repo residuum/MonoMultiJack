@@ -30,14 +30,19 @@ using System.Xml.Serialization;
 namespace Mmj.Configuration.Configuration
 {
 	[XmlType ("applications")]
-	public struct AppConfigurationCollection
+	public class AppConfigurationCollection
 	{
 		[XmlElement ("application")]
 		public List<AppConfiguration> Configurations { get; set; }
 
-		public AppConfigurationCollection (IEnumerable<AppConfiguration> configurations) : this ()
+		public AppConfigurationCollection (IEnumerable<AppConfiguration> configurations)
 		{
 			Configurations = configurations.ToList ();
+		}
+
+		public AppConfigurationCollection ()
+		{
+
 		}
 	}
 }
