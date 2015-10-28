@@ -1,10 +1,10 @@
 // 
-// WindowConfiguration.cs
+// JackdConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2015 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,64 +23,62 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Mmj.Configuration
+
+using System.Xml.Serialization;
+
+namespace Mmj.Configuration.Configuration
 {
-	public struct WindowConfiguration
+	/// <summary>
+	/// jackd configuration
+	/// </summary>
+	[XmlType ("jackd")]
+	public struct JackdConfiguration
 	{
 		/// <summary>
-		/// Gets the X position.
+		/// path to jackd executable
 		/// </summary>
-		/// <value>
-		/// The X position.
-		/// </value>
-		public double XPosition { get; private set; }
+		[XmlElement ("path")]
+		public string Path { get; set; }
 
 		/// <summary>
-		/// Gets the Y position.
+		/// General oprions for jackd
 		/// </summary>
-		/// <value>
-		/// The Y position.
-		/// </value>
-		public double YPosition { get; private set; }
+		[XmlElement ("general-options")]
+		public string GeneralOptions { get; set; }
 
 		/// <summary>
-		/// Gets the size of the X.
+		/// Driver infrastructure for jackd
 		/// </summary>
-		/// <value>
-		/// The size of the X.
-		/// </value>
-		public double Width { get; private set; }
+		[XmlElement ("driver")]
+		public string Driver { get; set; }
 
 		/// <summary>
-		/// Gets the size of the Y.
+		/// Options for jackd driver
 		/// </summary>
-		/// <value>
-		/// The size of the Y.
-		/// </value>
-		public double Height { get; private set; }
+		[XmlElement ("driver-options")]
+		public string DriverOptions { get; set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WindowConfiguration"/> struct.
+		/// Constructor
 		/// </summary>
-		/// <param name='xPosition'>
-		/// X position.
+		/// <param name="newPath">
+		/// A <see cref="System.String"/> indicating the path to jackd executable
 		/// </param>
-		/// <param name='yPosition'>
-		/// Y position.
+		/// <param name="newGeneralOptions">
+		/// A <see cref="System.String"/> indicating the new general options
 		/// </param>
-		/// <param name='xSize'>
-		/// X size.
+		/// <param name="newDriver">
+		/// A <see cref="System.String"/> indicating the driver infrastructure
 		/// </param>
-		/// <param name='ySize'>
-		/// Y size.
+		/// <param name="newDriverOptions">
+		/// A <see cref="System.String"/> indicating the new driver options
 		/// </param>
-		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize) : this ()
-		{
-			XPosition = xPosition;
-			YPosition = yPosition;
-			Width = xSize;
-			Height = ySize;
+		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions) : this ()
+		{			
+			Path = newPath;
+			GeneralOptions = newGeneralOptions;
+			Driver = newDriver;
+			DriverOptions = newDriverOptions;
 		}
 	}
 }
-

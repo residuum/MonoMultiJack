@@ -1,10 +1,10 @@
 // 
-// AppConfiguration.cs
+// WindowConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2015 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,42 +23,72 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Mmj.Configuration
+
+using System.Xml.Serialization;
+
+namespace Mmj.Configuration.Configuration
 {
-	/// <summary>
-	/// Configuration of an application
-	/// </summary>
-	public struct AppConfiguration
+	[XmlType ("window")]
+	public struct WindowConfiguration
 	{
 		/// <summary>
-		/// name of the application
-		/// </summary>
-		public string Name { get; private set; }
-
-		/// <summary>
-		/// command to launch the application
-		/// </summary>
-		public string Command { get; private set; }
-
-		/// <summary>
-		/// Gets the arguments.
+		/// Gets the X position.
 		/// </summary>
 		/// <value>
-		/// The arguments.
+		/// The X position.
 		/// </value>
-		public string Arguments { get; private set; }
+		[XmlElement ("x-position")]
+		public double XPosition { get; set; }
 
 		/// <summary>
-		/// constructor
+		/// Gets the Y position.
 		/// </summary>
-		/// <param name="newName">A <see cref="System.String" /> indicating name of application</param>
-		/// <param name="newCommand">A <see cref="System.String" /> indicating command to lauch the application</param>
-		/// <param name="newArguments">The new arguments.</param>
-		public AppConfiguration (string newName, string newCommand, string newArguments) : this ()
+		/// <value>
+		/// The Y position.
+		/// </value>
+		[XmlElement ("y-position")]
+		public double YPosition { get; set; }
+
+		/// <summary>
+		/// Gets the size of the X.
+		/// </summary>
+		/// <value>
+		/// The size of the X.
+		/// </value>
+		[XmlElement ("x-size")]
+		public double Width { get; set; }
+
+		/// <summary>
+		/// Gets the size of the Y.
+		/// </summary>
+		/// <value>
+		/// The size of the Y.
+		/// </value>
+		[XmlElement ("y-size")]
+		public double Height { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="WindowConfiguration"/> struct.
+		/// </summary>
+		/// <param name='xPosition'>
+		/// X position.
+		/// </param>
+		/// <param name='yPosition'>
+		/// Y position.
+		/// </param>
+		/// <param name='xSize'>
+		/// X size.
+		/// </param>
+		/// <param name='ySize'>
+		/// Y size.
+		/// </param>
+		public WindowConfiguration (double xPosition, double yPosition, double xSize, double ySize) : this ()
 		{
-			Name = newName;
-			Command = newCommand;
-			Arguments = newArguments;
+			XPosition = xPosition;
+			YPosition = yPosition;
+			Width = xSize;
+			Height = ySize;
 		}
 	}
 }
+

@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using Mmj.Configuration;
+using Mmj.Configuration.Configuration;
 using Mmj.Views.Widgets;
 
 namespace Mmj.Views.Windows

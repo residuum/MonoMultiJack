@@ -28,7 +28,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 using Xwt;
-using Mmj.Configuration;
+using Mmj.Configuration.Configuration;
 
 namespace Mmj.OS
 {
@@ -240,10 +240,10 @@ namespace Mmj.OS
 		/// </summary>
 		void TestForRunningSingleton ()
 		{
-			if (string.IsNullOrEmpty(_commandName)){
+			if (string.IsNullOrEmpty (_commandName)) {
 				return;
 			}
-			using (Process pgrepProgram = new Process()) {
+			using (Process pgrepProgram = new Process ()) {
 				pgrepProgram.StartInfo.FileName = "pgrep";
 				string[] commandPaths = _commandName.Split (Path.DirectorySeparatorChar);
 				pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1];

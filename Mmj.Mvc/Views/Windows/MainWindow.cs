@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mmj.Configuration;
+using Mmj.Configuration.Configuration;
 using Mmj.OS;
 using Mmj.Utilities;
 using Xwt;
@@ -114,7 +115,7 @@ namespace Mmj.Views.Windows
 		IEnumerable<MenuItem> BuildConfigMenu ()
 		{
 			yield return CreateMenuItem (I18N._ ("Configure _Jackd"), CallShowConfigureJackd);
-			yield return CreateMenuItem (I18N._ ("Add / Remove _Applications"), CallShowConfigureApps);
+			yield return CreateMenuItem (I18N._ ("Manage _Applications"), CallShowConfigureApps);
 		}
 
 		IEnumerable<MenuItem> BuildFileMenu ()

@@ -26,6 +26,7 @@
 using System;
 using Mmj.Configuration;
 using System.Collections.Generic;
+using Mmj.Configuration.Configuration;
 
 namespace Mmj.Controllers.EventArguments
 {

@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Mmj.Configuration;
+using Mmj.Configuration.Configuration;
 using Mmj.Controllers.EventArguments;
 using Mmj.Views;
 using Mmj.Views.Windows;

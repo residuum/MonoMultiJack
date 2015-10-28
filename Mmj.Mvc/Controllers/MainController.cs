@@ -29,6 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Mmj.Configuration;
+using Mmj.Configuration.Configuration;
 using Mmj.ConnectionWrapper;
 using Mmj.OS;
 using Mmj.Controllers.EventArguments;
@@ -61,7 +62,7 @@ namespace Mmj.Controllers
 			}
 			_mainWindow.ConnectionWidgets = _connectionControllers.Select (c => c.Widget);
 			_parameters = DependencyResolver.GetImplementation<IStartupParameters> ("IStartupParameters", new object[] { args });
-			PersistantConfiguration.SetConfigDirectory (_parameters.ConfigDirectory);
+			Persister.SetConfigDirectory (_parameters.ConfigDirectory);
 			Logging.SetLogFile (_parameters.LogFile);
 		}
 
@@ -134,7 +135,7 @@ namespace Mmj.Controllers
 		bool TryLoadJackdConfiguration (out JackdConfiguration jackdConfig)
 		{
 			try {
-				jackdConfig = PersistantConfiguration.LoadJackdConfiguration ();
+				jackdConfig = Persister.LoadJackdConfiguration ();
 				return true;
 			} catch (System.Xml.XmlException ex) {
 				Logging.LogException (ex);
@@ -162,7 +163,7 @@ namespace Mmj.Controllers
 		bool TryLoadAppConfigurations (out List<AppConfiguration> appConfigs)
 		{
 			try {
-				appConfigs = PersistantConfiguration.LoadAppConfigurations ();
+				appConfigs = Persister.LoadAppConfigurations ();
 				return true;
 			} catch (System.Xml.XmlException ex) {				
 				Logging.LogException (ex);
@@ -179,7 +180,7 @@ namespace Mmj.Controllers
 		bool TryLoadWindowConfiguration (out WindowConfiguration windowConfig)
 		{
 			try {
-				windowConfig = PersistantConfiguration.LoadWindowSize ();
+				windowConfig = Persister.LoadWindowSize ();
 				if (Math.Abs (windowConfig.Width) > 1 && Math.Abs (windowConfig.Height) > 1) {
 					return true;
 				}
@@ -416,7 +417,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		{
 			if (!_mainWindow.Fullscreen) {
 				WindowConfiguration newWindowConfig = _mainWindow.WindowConfiguration;
-				PersistantConfiguration.SaveWindowSize (newWindowConfig);
+				Persister.SaveWindowSize (newWindowConfig);
 			}
 			StopJackd ();
 			if (AllWidgetsAreClosed != null) {
@@ -448,14 +449,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		void Controller_UpdateJackd (object sender, UpdateJackdEventArgs e)
 		{
 			_jackdConfiguration = e.JackdConfiguration;
-			PersistantConfiguration.SaveJackdConfig (_jackdConfiguration);
+			Persister.SaveJackdConfig (_jackdConfiguration);
 			InitJackd (_jackdConfiguration);
 		}
 
 		void Controller_UpdateApps (object sender, UpdateAppsEventArgs e)
 		{
 			_appConfigurations = e.AppConfigurations.ToList ();
-			PersistantConfiguration.SaveAppConfiguations (_appConfigurations);
+			Persister.SaveAppConfiguations (_appConfigurations);
 			UpdateApps (_appConfigurations);
 		}
 

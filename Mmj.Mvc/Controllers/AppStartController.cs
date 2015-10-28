@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Mmj.Configuration;
+using Mmj.Configuration.Configuration;
 using Mmj.OS;
 using Mmj.Utilities;
 using Mmj.Views.Widgets;

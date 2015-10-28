@@ -175,8 +175,8 @@ msgid "Configure _Jackd"
 msgstr "_Jackd einstellen"
 
 #: Mmj.Mvc/Views/Windows/MainWindow.cs:117
-msgid "Add / Remove _Applications"
-msgstr "_Anwendungen hinzufügen / entfernen"
+msgid "Manage _Applications"
+msgstr "_Anwendungen verwalten"
 
 #: Mmj.Mvc/Views/Windows/MainWindow.cs:122
 msgid "(Re)Start _Jackd"
