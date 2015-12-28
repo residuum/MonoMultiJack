@@ -31,7 +31,7 @@ namespace Mmj.Configuration.Configuration
 	/// <summary>
 	/// Configuration of an application
 	/// </summary>
-	public struct AppConfiguration
+	public class AppConfiguration
 	{
 		/// <summary>
 		/// name of the application
@@ -60,11 +60,15 @@ namespace Mmj.Configuration.Configuration
 		/// <param name="newName">A <see cref="System.String" /> indicating name of application</param>
 		/// <param name="newCommand">A <see cref="System.String" /> indicating command to lauch the application</param>
 		/// <param name="newArguments">The new arguments.</param>
-		public AppConfiguration (string newName, string newCommand, string newArguments) : this ()
+		public AppConfiguration (string newName, string newCommand, string newArguments)
 		{
 			Name = newName;
 			Command = newCommand;
 			Arguments = newArguments;
+		}
+
+		public AppConfiguration ()
+		{
 		}
 	}
 }

@@ -32,7 +32,7 @@ namespace Mmj.Configuration.Configuration
 	/// jackd configuration
 	/// </summary>
 	[XmlType ("jackd")]
-	public struct JackdConfiguration
+	public class JackdConfiguration
 	{
 		/// <summary>
 		/// path to jackd executable
@@ -73,12 +73,16 @@ namespace Mmj.Configuration.Configuration
 		/// <param name="newDriverOptions">
 		/// A <see cref="System.String"/> indicating the new driver options
 		/// </param>
-		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions) : this ()
+		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions)
 		{			
 			Path = newPath;
 			GeneralOptions = newGeneralOptions;
 			Driver = newDriver;
 			DriverOptions = newDriverOptions;
+		}
+
+		public JackdConfiguration ()
+		{
 		}
 	}
 }

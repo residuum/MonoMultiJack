@@ -42,7 +42,6 @@ namespace Mmj.Configuration.Configuration
 
 		public AppConfigurationCollection ()
 		{
-
 		}
 	}
 }

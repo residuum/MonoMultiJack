@@ -27,7 +27,7 @@ using System;
 
 namespace Mmj.Configuration.Snapshot
 {
-	public struct Connection
+	public class Connection
 	{
 		public string OutPort { get; private set; }
 
@@ -35,11 +35,15 @@ namespace Mmj.Configuration.Snapshot
 
 		public int Type { get; private set; }
 
-		public Connection (string inPort, string outPort, int type): this()
+		public Connection (string inPort, string outPort, int type)
 		{
 			OutPort = outPort;
 			InPort = inPort;
 			Type = type;
+		}
+
+		public Connection ()
+		{
 		}
 	}
 }
