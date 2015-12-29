@@ -177,4 +177,7 @@ $RECYCLE.BIN/
 *.msi
 
 # coverity
-cov-int/**
+cov-int/
+
+# Visual Studio 2015 cache/options directory
+.vs/
