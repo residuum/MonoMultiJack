@@ -57,8 +57,8 @@ namespace Mmj.Views.Widgets
 		void IAppStartWidget.SetApp (string name, string commandName)
 		{
 			_startButton.Label = name;
-			Name = name;
-			_startButton.Name = commandName;
+			Name = name.CreateWidgetName ();
+			_startButton.Name = commandName.CreateWidgetName ();
 		}
 
 		bool IAppStartWidget.IsRunning {

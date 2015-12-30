@@ -24,7 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using Xwt;
 
 namespace Mmj.Views
@@ -57,6 +61,16 @@ namespace Mmj.Views
 			if (dialog.Run ()) {
 				entry.Text = Path.Combine (dialog.CurrentFolder, dialog.FileName);
 			}
+		}
+
+		public static string CreateWidgetName(this string name)
+		{
+			return Regex.Replace (name, @"[^a-zA-Z0-9]",
+				m => {
+					byte[] bytes = Encoding.UTF8.GetBytes (m.Value);
+					IEnumerable<string> hexs = bytes.Select (b => string.Format ("_{0:x2}", b));
+					return string.Concat (hexs);
+				});
 		}
 	}
 }
