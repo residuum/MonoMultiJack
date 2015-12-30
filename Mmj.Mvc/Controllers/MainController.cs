@@ -443,7 +443,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 		void MainWindowLoad (object sender, EventArgs e)
 		{
-			string fileName = _mainWindow.OpenFileDialog (Persister.SnapshotFolder, "Save Snapshot", "snap");
+			string fileName = _mainWindow.OpenFileDialog (Persister.SnapshotFolder, "Load Snapshot", "snap");
 			if (fileName == null) {
 				return;
 			}

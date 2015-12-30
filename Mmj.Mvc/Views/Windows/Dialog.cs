@@ -48,7 +48,7 @@ namespace Mmj.Views.Windows
 			FileDialog dialog = new OpenFileDialog (I18N._ (title));
 			dialog.CurrentFolder = folder;
 			if (extension != null) {
-				dialog.Filters.Add (new FileDialogFilter ("." + extension, "*\\." + extension));
+				dialog.Filters.Add (new FileDialogFilter ("." + extension, "*." + extension));
 				dialog.Filters.Add (new FileDialogFilter (I18N._("all"), "*"));
 			}
 			if (dialog.Run ()) {
@@ -65,7 +65,7 @@ namespace Mmj.Views.Windows
 			FileDialog dialog = new SaveFileDialog (I18N._ (title));
 			dialog.CurrentFolder = folder;
 			if (extension != null) {
-				dialog.Filters.Add (new FileDialogFilter ("." + extension, "*\\." + extension));
+				dialog.Filters.Add (new FileDialogFilter ("." + extension, "*." + extension));
 			}
 			if (dialog.Run ()) {
 				window.Sensitive = true;
