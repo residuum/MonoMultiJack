@@ -29,11 +29,11 @@ namespace Mmj.Configuration.Snapshot
 {
 	public class Connection
 	{
-		public string OutPort { get; private set; }
+		public string OutPort { get; set; }
 
-		public string InPort { get; private set; }
+		public string InPort { get; set; }
 
-		public int Type { get; private set; }
+		public int Type { get; set; }
 
 		public Connection (string inPort, string outPort, int type)
 		{
