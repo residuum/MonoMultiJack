@@ -63,7 +63,7 @@ namespace Mmj.Views
 			}
 		}
 
-		public static string CreateWidgetName(this string name)
+		public static string CreateWidgetName (this string name)
 		{
 			return Regex.Replace (name, @"[^a-zA-Z0-9]",
 				m => {

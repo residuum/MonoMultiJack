@@ -121,12 +121,12 @@ namespace Mmj.Views.Windows
 		IEnumerable<MenuItem> BuildFileMenu ()
 		{
 			yield return CreateMenuItem (I18N._ ("(Re)Start _Jackd"), CallStartJackd, Icons.Start);
-			_stopAction = CreateMenuItem (I18N._ ("_Stop Jackd"), CallStopJackd, Icons.Stop);
+			_stopAction = CreateMenuItem (I18N._ ("S_top Jackd"), CallStopJackd, Icons.Stop);
 			yield return _stopAction;
 			_stopAllAction = CreateMenuItem (I18N._ ("Stop _All"), CallStopAll, Icons.Stop);
 			_stopAllAction.Sensitive = false;
 			yield return _stopAllAction;
-			yield return CreateMenuItem (I18N._ ("Save Snapshot"), CallSaveSnapshot);
+			yield return CreateMenuItem (I18N._ ("_Save Snapshot"), CallSaveSnapshot);
 			yield return CreateMenuItem (I18N._ ("_Load Snapshot"), CallLoadSnapshot);
 			yield return CreateMenuItem (I18N._ ("_Quit"), OnQuitActionActivated, Icons.Delete);
 		}

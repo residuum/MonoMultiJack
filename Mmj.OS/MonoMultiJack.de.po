@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-10-16 00:04+0200\n"
-"PO-Revision-Date: 2015-10-16 00:04+0200\n"
+"POT-Creation-Date: 2015-12-31 13:28+0100\n"
+"PO-Revision-Date: 2015-12-31 13:29+0100\n"
 "Last-Translator: Thomas Mayer <thomas@residuum.org>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 "X-Poedit-SearchPath-8: MonoMultiJack.Windows\n"
 "X-Poedit-SearchPath-9: MonoMultiJack.Windows.SetupCheck\n"
 
-#: Mmj.Mvc/Controllers/MainController.cs:289
+#: Mmj.Mvc/Controllers/MainController.cs:293
 msgid ""
 "MonoMultiJack is a simple tool for controlling Jackd and diverse audio "
 "programs."
@@ -33,33 +33,33 @@ msgstr ""
 "MonoMultiJack ist eine einfache Anwendung, um Jackd und Audio-Programme "
 "steuern zu können."
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:63
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:67
 msgid "Name"
 msgstr "Name"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:63
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:67
 msgid "e.g. Ardour"
 msgstr "z.B. Ardour"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:64
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:68
 msgid "Command"
 msgstr "Befehl"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:64
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:68
 msgid "e.g. /usr/bin/ardour3"
 msgstr "z.B. /usr/bin/ardour3"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:66
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:70
 msgid "Command Arguments"
 msgstr "Befehlsparameter"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:66
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:70
 #: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:166
 #: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:168
 msgid "optional"
 msgstr "optional"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:68
+#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:72
 msgid "Delete"
 msgstr "Löschen"
 
@@ -94,23 +94,27 @@ msgstr "Info über {0}"
 msgid "Configure Applications"
 msgstr "Einstellungen für Anwendungen"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:161
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:166
 msgid "Add"
 msgstr "Neu"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:162
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:167
 #: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:171
 msgid "Save"
 msgstr "Speichern"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:163
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:168
 #: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:172
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:167
+#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:172
 msgid "Undo"
 msgstr "Rückgängig"
+
+#: Mmj.Mvc/Views/Windows/Dialog.cs:52
+msgid "all"
+msgstr "alle"
 
 #: Mmj.Mvc/Views/Windows/HelpWindow.cs:90
 #, csharp-format
@@ -145,52 +149,60 @@ msgstr "z.B. alsa"
 msgid "Driver Options"
 msgstr "Treiber-Optionen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:44
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:45
 msgid "Jackd is running."
 msgstr "Jackd läuft."
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:45
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:46
 msgid "Jackd is stopped."
 msgstr "Jackd ist angehalten."
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:87
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:88
 msgid "_File"
 msgstr "_Datei"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:93
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:94
 msgid "_Configuration"
 msgstr "_Einstellungen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:99
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:110
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:100
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:111
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:111
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:112
 msgid "_About"
 msgstr "Üb_er"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:116
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:117
 msgid "Configure _Jackd"
 msgstr "_Jackd einstellen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:117
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:118
 msgid "Manage _Applications"
 msgstr "_Anwendungen verwalten"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:122
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:123
 msgid "(Re)Start _Jackd"
 msgstr "_Jackd (neu) starten"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:123
-msgid "_Stop Jackd"
-msgstr "Jackd _stoppen"
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:124
+msgid "S_top Jackd"
+msgstr "Jackd s_toppen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:125
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:126
 msgid "Stop _All"
 msgstr "_Alle Programme stoppen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:128
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:129
+msgid "_Save Snapshot"
+msgstr "Schnappschuss _speichern"
+
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:130
+msgid "_Load Snapshot"
+msgstr "Schnappschuss _laden"
+
+#: Mmj.Mvc/Views/Windows/MainWindow.cs:131
 msgid "_Quit"
 msgstr "_Beenden"
 
@@ -331,8 +343,25 @@ msgstr "Die Ports oder Clients können nicht verbunden werden."
 msgid "No port or client selected"
 msgstr "Kein Port oder Client ausgewählt."
 
-msgid "Some applications have empty fields for \"Name\" or \"Command\".\n\nPlease correct these errors or remove the application."
-msgstr "Einige Anwendungen haben leere Werte in den Feldern \"Name\" oder \"Befehl\" stehen.\n\nBitte korrigieren Sie diese Fehler oder löschen Sie diese Anwendung."
+msgid ""
+"Some applications have empty fields for \"Name\" or \"Command\".\n"
+"\n"
+"Please correct these errors or remove the application."
+msgstr ""
+"Einige Anwendungen haben leere Werte in den Feldern \"Name\" oder \"Befehl"
+"\" stehen.\n"
+"\n"
+"Bitte korrigieren Sie diese Fehler oder löschen Sie diese Anwendung."
 
-msgid "Program names should be unique as these are displayed on the start buttons."
-msgstr "Programme sollen eindeutige Namen haben, weil diese auf den Startknöpfen ausgegeben werden."
+msgid ""
+"Program names should be unique as these are displayed on the start "
+"buttons."
+msgstr ""
+"Programme sollen eindeutige Namen haben, weil diese auf den Startknöpfen "
+"ausgegeben werden."
+
+msgid "Save Snapshot"
+msgstr "Schnappschuss speichern"
+
+msgid "Load Snapshot"
+msgstr "Schnappschuss laden"
