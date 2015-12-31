@@ -1,12 +1,12 @@
 #!/bin/bash
 
 XBUILD=xbuild
-SOLUTION=MonoMultiJack.Lnx.sln
+SOLUTION=MonoMultiJack.Lnx.Gtk2.sln
 OTHER=MonoMultiJack.Lnx.Gtk3.sln
 
 if [ "$1" == "Gtk3" ]; then
 	SOLUTION=MonoMultiJack.Lnx.Gtk3.sln
-	OTHER=MonoMultiJack.Lnx.sln
+	OTHER=MonoMultiJack.Lnx.Gtk2.sln
 fi
 
 git submodule update --init --recursive

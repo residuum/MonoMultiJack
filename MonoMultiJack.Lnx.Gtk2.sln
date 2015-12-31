@@ -15,13 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.OS.Linux", "Mmj.OS.Linu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt", "xwt\Xwt\Xwt.csproj", "{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Linux", "MonoMultiJack.Linux\MonoMultiJack.Linux.csproj", "{C491EA5A-D734-4ACC-A30F-8D63B47F7167}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Linux.Gtk2", "MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk2.csproj", "{C491EA5A-D734-4ACC-A30F-8D63B47F7167}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Gtk", "xwt\Xwt.Gtk\Xwt.Gtk.csproj", "{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvc", "Mmj.Mvc\Mmj.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoMultiJack.Linux", "MonoMultiJack.Linux.Packaging\MonoMultiJack.Linux.mdproj", "{E1C953E7-CDDF-4D5F-8DF2-EDF3F924BD2E}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoMultiJack.Linux.Gtk2", "MonoMultiJack.Linux.Packaging\MonoMultiJack.Linux.Gtk2.mdproj", "{E1C953E7-CDDF-4D5F-8DF2-EDF3F924BD2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
