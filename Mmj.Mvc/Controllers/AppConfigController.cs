@@ -26,9 +26,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mmj.Configuration;
-using Mmj.Configuration.Configuration;
 using Mmj.Controllers.EventArguments;
+using Mmj.FileOperations.Configuration;
 using Mmj.Views;
 using Mmj.Views.Widgets;
 using Mmj.Views.Windows;

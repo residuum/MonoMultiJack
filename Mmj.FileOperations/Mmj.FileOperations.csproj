@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Mmj.Configuration</RootNamespace>
-    <AssemblyName>Mmj.Configuration</AssemblyName>
+    <RootNamespace>Mmj.FileOperations</RootNamespace>
+    <AssemblyName>Mmj.FileOperations</AssemblyName>
     <ReleaseVersion>0.6.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,7 +44,5 @@
     <Compile Include="Snapshot\Moment.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Snapshot\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

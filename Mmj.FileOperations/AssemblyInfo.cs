@@ -1,10 +1,10 @@
-﻿//
-// Snapshot.cs
+//
+// AssemblyInfo.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2015 Thomas Mayer
+// Copyright (c) 2009-2013 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace Mmj.Configuration.Snapshot
-{
-	[XmlType ("snapshot")]
-	public class Moment
-	{
-		[XmlElement ("apps")]
-		public List<string> Apps { get; set; }
-
-		[XmlElement ("connections")]
-		public List<Connection> Connections { get; set; }
-
-		public Moment (IEnumerable<string> apps, IEnumerable<Connection> connections)
-		{
-			Apps = apps.ToList ();
-			Connections = connections.ToList ();
-		}
-
-		public Moment ()
-		{
-		}
-	}
-}
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
+[assembly: AssemblyTitle ("Mmj.FileOperations")]
+[assembly: AssemblyDescription ("")]
+[assembly: AssemblyConfiguration ("")]
+[assembly: AssemblyCompany ("")]
+[assembly: AssemblyProduct ("MonoMultiJack")]
+[assembly: AssemblyCopyright ("2009 - 2013 Thomas Mayer")]
+[assembly: AssemblyTrademark ("")]
+[assembly: AssemblyCulture ("")]
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+[assembly: AssemblyVersion ("0.6.0.*")]
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
 

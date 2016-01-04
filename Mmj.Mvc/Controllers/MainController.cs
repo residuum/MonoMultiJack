@@ -28,15 +28,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Mmj.Configuration;
-using Mmj.Configuration.Configuration;
-using Mmj.Configuration.Snapshot;
 using Mmj.ConnectionWrapper;
 using Mmj.OS;
 using Mmj.Controllers.EventArguments;
+using Mmj.FileOperations;
+using Mmj.FileOperations.Configuration;
+using Mmj.FileOperations.Snapshot;
 using Mmj.Utilities;
 using Mmj.Views;
 using Mmj.Views.Windows;
+using Connection = Mmj.FileOperations.Snapshot.Connection;
 
 namespace Mmj.Controllers
 {
@@ -436,7 +437,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			}
 			IEnumerable<string> apps = _startWidgetControllers.Where (s => s.IsRunning).Select (s => s.Name);
 
-			IEnumerable<Mmj.Configuration.Snapshot.Connection> connections = _connectionControllers.SelectMany (c => c.Connections).Select (c => new Mmj.Configuration.Snapshot.Connection (c.InPort.Name, c.OutPort.Name, (int)c.ConnectionType));
+			IEnumerable<Connection> connections = _connectionControllers.SelectMany (c => c.Connections).Select (c => new Connection (c.InPort.Name, c.OutPort.Name, (int)c.ConnectionType));
 			Moment snap = new Moment (apps, connections);
 			Persister.SaveSnapshot (snap, fileName);
 		}
@@ -457,7 +458,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			foreach (AppStartController appStarter in _startWidgetControllers.Where(s => !s.IsRunning && snap.Apps.Contains(s.Name))) {
 				appStarter.StartApplication ();
 			}
-			foreach (IGrouping<int, Mmj.Configuration.Snapshot.Connection> connections in snap.Connections.GroupBy(c => c.Type)) {
+			foreach (IGrouping<int, Connection> connections in snap.Connections.GroupBy(c => c.Type)) {
 				ConnectionController controller = _connectionControllers.SingleOrDefault (c => (int)c.ConnectionType == connections.Key);
 				if (controller == null) {
 					continue;
@@ -465,7 +466,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				foreach (IConnection connection in controller.Connections) {
 					controller.Disconnect (connection);
 				}
-				foreach (Mmj.Configuration.Snapshot.Connection connection in connections) {
+				foreach (Connection connection in connections) {
 					controller.Connect (connection.OutPort, connection.InPort);
 				}
 			}

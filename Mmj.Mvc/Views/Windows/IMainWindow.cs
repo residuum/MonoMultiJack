@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using Mmj.Configuration.Configuration;
+using Mmj.FileOperations.Configuration;
 using Mmj.Views.Widgets;
 
 namespace Mmj.Views.Windows

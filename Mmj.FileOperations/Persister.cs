@@ -23,15 +23,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Mmj.Configuration.Configuration;
-using Mmj.Configuration.Snapshot;
+using Mmj.FileOperations.Configuration;
+using Mmj.FileOperations.Snapshot;
 
-namespace Mmj.Configuration
+namespace Mmj.FileOperations
 {
 	/// <summary>
 	/// Class for managing configuration.

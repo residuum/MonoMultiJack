@@ -1,5 +1,5 @@
 ﻿//
-// Connection.cs
+// Snapshot.cs
 //
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -23,26 +23,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
 
-namespace Mmj.Configuration.Snapshot
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
+
+namespace Mmj.FileOperations.Snapshot
 {
-	public class Connection
+	[XmlType ("snapshot")]
+	public class Moment
 	{
-		public string OutPort { get; set; }
+		[XmlElement ("apps")]
+		public List<string> Apps { get; set; }
 
-		public string InPort { get; set; }
+		[XmlElement ("connections")]
+		public List<Connection> Connections { get; set; }
 
-		public int Type { get; set; }
-
-		public Connection (string inPort, string outPort, int type)
+		public Moment (IEnumerable<string> apps, IEnumerable<Connection> connections)
 		{
-			OutPort = outPort;
-			InPort = inPort;
-			Type = type;
+			Apps = apps.ToList ();
+			Connections = connections.ToList ();
 		}
 
-		public Connection ()
+		public Moment ()
 		{
 		}
 	}

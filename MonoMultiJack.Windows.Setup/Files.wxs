@@ -11,8 +11,8 @@
             <Component Id="monomultijack.exe.config" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="MonoMultiJack.exe.config" Source="..\MonoMultiJack.Windows\bin\$(var.Configuration)\MonoMultiJack.exe.config" KeyPath="yes" />
             </Component>
-            <Component Id="dll_mmj_configuration" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
-              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.Configuration.dll" Source="..\Mmj.Configuration\bin\$(var.Configuration)\Mmj.Configuration.dll" KeyPath="yes" />
+            <Component Id="dll_mmj_fileoperations" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.FileOperations.dll" Source="..\Mmj.FileOperations\bin\$(var.Configuration)\Mmj.FileOperations.dll" KeyPath="yes" />
             </Component>
             <Component Id="dll_mmj_connectionwrapper" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.ConnectionWrapper.dll" Source="..\Mmj.ConnectionWrapper\bin\$(var.Configuration)\Mmj.ConnectionWrapper.dll" KeyPath="yes" />

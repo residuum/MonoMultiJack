@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper", "Mm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper.Jack", "Mmj.ConnectionWrapper.Jack\Mmj.ConnectionWrapper.Jack.csproj", "{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Configuration", "Mmj.Configuration\Mmj.Configuration.csproj", "{95BED56E-4297-4668-B75B-A9DF6F522EB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.FileOperations", "Mmj.FileOperations\Mmj.FileOperations.csproj", "{95BED56E-4297-4668-B75B-A9DF6F522EB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.OS", "Mmj.OS\Mmj.OS.csproj", "{D975B294-7420-433F-B5A8-A7B230584877}"
 EndProject

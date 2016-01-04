@@ -48,9 +48,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
+    <ProjectReference Include="..\Mmj.FileOperations\Mmj.FileOperations.csproj">
       <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
-      <Name>Mmj.Configuration</Name>
+      <Name>Mmj.FileOperations</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>

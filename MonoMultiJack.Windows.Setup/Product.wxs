@@ -17,7 +17,7 @@
     <Feature Id="ProductFeature" Title="MonoMultiJack" Level="1">
       <ComponentRef Id="monomultijack.exe" />
       <ComponentRef Id="monomultijack.exe.config" />
-      <ComponentRef Id="dll_mmj_configuration" />
+      <ComponentRef Id="dll_mmj_fileoperations" />
       <ComponentRef Id="dll_mmj_connectionwrapper" />
       <ComponentRef Id="dll_mmj_connectionwrapper_jack" />
       <ComponentRef Id="dll_mmj_mvc" />

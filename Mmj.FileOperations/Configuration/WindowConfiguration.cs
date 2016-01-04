@@ -26,7 +26,7 @@
 
 using System.Xml.Serialization;
 
-namespace Mmj.Configuration.Configuration
+namespace Mmj.FileOperations.Configuration
 {
 	[XmlType ("window")]
 	public class WindowConfiguration

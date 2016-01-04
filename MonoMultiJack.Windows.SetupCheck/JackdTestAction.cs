@@ -1,4 +1,4 @@
-﻿//
+//
 // JackdTestAction.cs
 //
 // Author:

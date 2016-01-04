@@ -28,7 +28,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 using Xwt;
-using Mmj.Configuration.Configuration;
+using Mmj.FileOperations.Configuration;
 
 namespace Mmj.OS
 {

@@ -78,9 +78,9 @@
       <Project>{BDDCE17F-A5CD-44D0-9068-FDD3BBD8B775}</Project>
       <Name>Mmj.ConnectionWrapper.Jack</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
+    <ProjectReference Include="..\Mmj.FileOperations\Mmj.FileOperations.csproj">
       <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
-      <Name>Mmj.Configuration</Name>
+      <Name>Mmj.FileOperations</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mmj.OS.Windows\Mmj.OS.Windows.csproj">
       <Project>{30BB68BB-C4E0-4613-9FD5-3AC5BFE920BA}</Project>

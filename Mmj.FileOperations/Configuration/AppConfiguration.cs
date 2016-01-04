@@ -1,5 +1,5 @@
 // 
-// JackdConfiguration.cs
+// AppConfiguration.cs
 //  
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
@@ -26,62 +26,48 @@
 
 using System.Xml.Serialization;
 
-namespace Mmj.Configuration.Configuration
+namespace Mmj.FileOperations.Configuration
 {
 	/// <summary>
-	/// jackd configuration
+	/// Configuration of an application
 	/// </summary>
-	[XmlType ("jackd")]
-	public class JackdConfiguration
+	public class AppConfiguration
 	{
 		/// <summary>
-		/// path to jackd executable
+		/// name of the application
 		/// </summary>
-		[XmlElement ("path")]
-		public string Path { get; set; }
+		[XmlElement ("name")]
+		public string Name { get; set; }
 
 		/// <summary>
-		/// General oprions for jackd
+		/// command to launch the application
 		/// </summary>
-		[XmlElement ("general-options")]
-		public string GeneralOptions { get; set; }
+		[XmlElement ("command")]
+		public string Command { get; set; }
 
 		/// <summary>
-		/// Driver infrastructure for jackd
+		/// Gets the arguments.
 		/// </summary>
-		[XmlElement ("driver")]
-		public string Driver { get; set; }
+		/// <value>
+		/// The arguments.
+		/// </value>
+		[XmlElement ("arguments")]
+		public string Arguments { get; set; }
 
 		/// <summary>
-		/// Options for jackd driver
+		/// constructor
 		/// </summary>
-		[XmlElement ("driver-options")]
-		public string DriverOptions { get; set; }
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="newPath">
-		/// A <see cref="System.String"/> indicating the path to jackd executable
-		/// </param>
-		/// <param name="newGeneralOptions">
-		/// A <see cref="System.String"/> indicating the new general options
-		/// </param>
-		/// <param name="newDriver">
-		/// A <see cref="System.String"/> indicating the driver infrastructure
-		/// </param>
-		/// <param name="newDriverOptions">
-		/// A <see cref="System.String"/> indicating the new driver options
-		/// </param>
-		public JackdConfiguration (string newPath, string newGeneralOptions, string newDriver, string newDriverOptions)
-		{			
-			Path = newPath;
-			GeneralOptions = newGeneralOptions;
-			Driver = newDriver;
-			DriverOptions = newDriverOptions;
+		/// <param name="newName">A <see cref="System.String" /> indicating name of application</param>
+		/// <param name="newCommand">A <see cref="System.String" /> indicating command to lauch the application</param>
+		/// <param name="newArguments">The new arguments.</param>
+		public AppConfiguration (string newName, string newCommand, string newArguments)
+		{
+			Name = newName;
+			Command = newCommand;
+			Arguments = newArguments;
 		}
 
-		public JackdConfiguration ()
+		public AppConfiguration ()
 		{
 		}
 	}

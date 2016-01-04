@@ -47,7 +47,7 @@
     <Compile Include="StartupParameters.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mmj.Configuration\Mmj.Configuration.csproj">
+    <ProjectReference Include="..\Mmj.FileOperations\Mmj.FileOperations.csproj">
       <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
       <Name>Mmj.Configuration</Name>
     </ProjectReference>

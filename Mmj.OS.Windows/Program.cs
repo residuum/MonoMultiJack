@@ -1,4 +1,4 @@
-﻿// 
+// 
 // Program.cs
 //  
 // Author:
@@ -27,8 +27,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Mmj.Configuration;
-using Mmj.Configuration.Configuration;
+using Mmj.FileOperations.Configuration;
 
 namespace Mmj.OS
 {
