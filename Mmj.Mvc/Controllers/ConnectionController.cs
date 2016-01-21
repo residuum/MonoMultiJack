@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2015 Thomas Mayer
+// Copyright (c) 2009-2016 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -75,14 +75,16 @@ namespace Mmj.Controllers
 			}
 		}
 
-		public void Connect (string outName, string inName)
+		public bool Connect (string outName, string inName)
 		{
 			Logging.LogMessage ("Connecting", LogLevel.Debug);
 			Port outPort = _connectionManager.Clients.SelectMany (c => c.Ports).FirstOrDefault (p => p.FlowDirection == FlowDirection.Out && p.Name == outName);
 			Port inPort = _connectionManager.Clients.SelectMany (c => c.Ports).FirstOrDefault (p => p.FlowDirection == FlowDirection.In && p.Name == inName);
 			if (outPort != null && inPort != null) {
 				_connectionManager.Connect (new List<IConnectable>{ outPort }, new List<IConnectable>{ inPort });
+				return true;
 			}
+			return false;
 		}
 
 		public void Disconnect (IConnection connection)

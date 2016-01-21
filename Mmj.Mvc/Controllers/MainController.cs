@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 //
-// Copyright (c) 2009-2015 Thomas Mayer
+// Copyright (c) 2009-2016 Thomas Mayer
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ using Mmj.Utilities;
 using Mmj.Views;
 using Mmj.Views.Windows;
 using Connection = Mmj.FileOperations.Snapshot.Connection;
+using Xwt;
 
 namespace Mmj.Controllers
 {
@@ -458,18 +459,24 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			foreach (AppStartController appStarter in _startWidgetControllers.Where(s => !s.IsRunning && snap.Apps.Contains(s.Name))) {
 				appStarter.StartApplication ();
 			}
-			foreach (IGrouping<int, Connection> connections in snap.Connections.GroupBy(c => c.Type)) {
-				ConnectionController controller = _connectionControllers.SingleOrDefault (c => (int)c.ConnectionType == connections.Key);
-				if (controller == null) {
-					continue;
+			int trials = 0;
+			Application.TimeoutInvoke (500, () => {
+				bool allFound = true;
+				foreach (IGrouping<int, Connection> connections in snap.Connections.GroupBy(c => c.Type)) {
+					ConnectionController controller = _connectionControllers.SingleOrDefault (c => (int)c.ConnectionType == connections.Key);
+					if (controller == null) {
+						continue;
+					}
+					foreach (IConnection connection in controller.Connections) {
+						controller.Disconnect (connection);
+					}
+					foreach (Connection connection in connections) {
+						allFound = allFound && controller.Connect (connection.OutPort, connection.InPort);
+					}
 				}
-				foreach (IConnection connection in controller.Connections) {
-					controller.Disconnect (connection);
-				}
-				foreach (Connection connection in connections) {
-					controller.Connect (connection.OutPort, connection.InPort);
-				}
-			}
+				trials++;
+				return !(allFound || trials >= 20);
+			});
 		}
 
 		#endregion
