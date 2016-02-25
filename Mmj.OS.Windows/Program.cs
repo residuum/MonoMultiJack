@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace Mmj.OS
 	{
 		readonly string _commandName;
 		readonly string _commandArguments;
+		readonly BackgroundWorker _worker;
 		Process _process;
 
 		/// <summary>
@@ -64,13 +66,41 @@ namespace Mmj.OS
 
 		public Program (JackdConfiguration jackdConfig)
 		{
+			_worker = new BackgroundWorker { WorkerSupportsCancellation = true };
+			_worker.DoWork += Worker_Work;
+
 			_commandName = jackdConfig.Path;
 			_commandArguments = jackdConfig.GeneralOptions + " -d " + jackdConfig.Driver + " " + jackdConfig.DriverOptions;
 			TestForRunningSingleton ();
 		}
 
+		void Worker_Work (object sender, DoWorkEventArgs e)
+		{
+			var worker = sender as BackgroundWorker;
+			if (worker == null) {
+				return;
+			}
+			if (worker.CancellationPending) {
+				e.Cancel = true;
+				return;
+			}
+			_process = new Process {
+				StartInfo = { FileName = _commandName, Arguments = _commandArguments },
+				EnableRaisingEvents = true
+			};
+			_process.Exited += Process_Exited;
+			if (_process.Start () && HasStarted != null) {
+				_process.PriorityClass = ProcessPriorityClass.RealTime;
+				HasStarted (this, new EventArgs ());
+			}
+		}
+
 		public Program (AppConfiguration appConfig)
 		{
+
+			_worker = new BackgroundWorker { WorkerSupportsCancellation = true };
+			_worker.DoWork += Worker_Work;
+
 			if (string.IsNullOrEmpty (appConfig.Command)) {
 				return;
 			}
@@ -116,6 +146,7 @@ namespace Mmj.OS
 			if (!IsRunning) {
 				return;
 			}
+			_worker.CancelAsync ();
 			if (!_process.CloseMainWindow ()) {
 				_process.Kill ();
 			}
@@ -132,16 +163,7 @@ namespace Mmj.OS
 			if (IsRunning) {
 				return;
 			}
-
-			_process = new Process {
-				StartInfo = {FileName = _commandName, Arguments = _commandArguments},
-				EnableRaisingEvents = true
-			};
-			_process.Exited += Process_Exited;
-			if (_process.Start () && HasStarted != null) {
-				_process.PriorityClass = ProcessPriorityClass.RealTime;
-				HasStarted (this, new EventArgs ());
-			}
+			_worker.RunWorkerAsync ();
 		}
 
 		void Process_Exited (object sender, EventArgs args)
@@ -152,6 +174,7 @@ namespace Mmj.OS
 			if (HasExited != null) {
 				HasExited (this, new EventArgs ());
 			}
+			_worker.CancelAsync ();
 		}
 
 		/// <summary>
