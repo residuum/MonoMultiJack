@@ -38,7 +38,7 @@ namespace Mmj.ConnectionWrapper.Alsa.Types
 			ConnectionType = ConnectionType.AlsaMidi;
 			Name = portName;
 			ClientName = clientName;
-			Id = (uint)(alsaAdress.Port << 8) + alsaAdress.Client;
+			Id = (alsaAdress.Port << 8) + alsaAdress.Client;
 		}
 	}	
 }

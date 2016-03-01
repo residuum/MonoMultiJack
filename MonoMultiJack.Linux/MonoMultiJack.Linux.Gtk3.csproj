@@ -9,8 +9,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Mmj</RootNamespace>
     <AssemblyName>MonoMultiJack</AssemblyName>
-    <ReleaseVersion>0.6.0</ReleaseVersion>
+    <ReleaseVersion>0.7.0</ReleaseVersion>
     <StartupObject>Mmj.MainClass</StartupObject>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

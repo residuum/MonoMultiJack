@@ -33,11 +33,11 @@ namespace Mmj.ConnectionWrapper
 
 		public ConnectableSerialization Serialization {
 			get {
-				return new ConnectableSerialization (ConnectionType, FlowDirection, new List<uint> { Id });
+				return new ConnectableSerialization (ConnectionType, FlowDirection, new List<int> { Id });
 			}
 		}
 
-		public uint Id { get; protected set; }
+		public int Id { get; protected set; }
 
 		public FlowDirection FlowDirection { get; protected set; }
 

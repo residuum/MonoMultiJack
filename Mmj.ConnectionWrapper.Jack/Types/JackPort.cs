@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2013 Thomas Mayer
+// Copyright (c) 2009-2016 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,27 +24,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using JackSharp.Ports;
 
 namespace Mmj.ConnectionWrapper.Jack.Types
 {
-	internal class JackPort : Port
-	{			
-		public IntPtr JackPortPointer { get; private set; }
+    internal class JackPort : Port
+    {
+        public PortReference PortReference { get; private set; }
 
-		public string JackPortName { get; private set; }
 
-		public string ClientName { get; private set; }
+        public string ClientName { get; private set; }
 
-		public JackPort (string jackPortName, IntPtr jackPortPtr, FlowDirection portType, ConnectionType connectionType, uint portId)
-		{				
-			JackPortName = jackPortName;
-			JackPortPointer = jackPortPtr;
-			FlowDirection = portType;
-			ConnectionType = connectionType;
-			string[] splittedName = jackPortName.Split (new[] { ':' });
-			ClientName = splittedName [0];
-			Name = splittedName [1];				
-			Id = portId;
-		}
-	}
+        public JackPort(PortReference portReference)
+        {
+            PortReference = portReference;
+            FlowDirection = GetDirection(portReference.Direction);
+            ConnectionType = GetPortType(portReference.PortType);
+            ClientName = portReference.ClientName;
+            Name = portReference.PortName;
+            Id = portReference.GetHashCode();
+        }
+
+        private ConnectionType GetPortType(PortType portType)
+        {
+            switch (portType)
+            {
+                case PortType.Audio:
+                    return ConnectionType.JackAudio;
+                case PortType.Midi:
+                    return ConnectionType.JackMidi;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(portType));
+            }
+        }
+
+        private FlowDirection GetDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.In:
+                    return FlowDirection.In;
+                case Direction.Out:
+                    return FlowDirection.Out;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction));
+            }
+        }
+    }
 }

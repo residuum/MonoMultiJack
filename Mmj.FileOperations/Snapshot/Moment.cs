@@ -1,4 +1,4 @@
-﻿//
+//
 // Snapshot.cs
 //
 // Author:

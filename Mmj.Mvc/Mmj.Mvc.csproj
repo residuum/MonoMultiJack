@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Mmj.Mvc</AssemblyName>
     <RootNamespace>Mmj</RootNamespace>
-    <ReleaseVersion>0.6.0</ReleaseVersion>
+    <ReleaseVersion>0.7.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,7 +82,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Mmj.FileOperations\Mmj.FileOperations.csproj">
       <Project>{95BED56E-4297-4668-B75B-A9DF6F522EB4}</Project>
-      <Name>Mmj.Configuration</Name>
+      <Name>Mmj.FileOperations</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mmj.OS\Mmj.OS.csproj">
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>

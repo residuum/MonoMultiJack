@@ -28,7 +28,7 @@ namespace Mmj.ConnectionWrapper
 {
 	public class DummyPort : Port
 	{
-		public DummyPort (uint id, ConnectionType connectionType, FlowDirection flowDirection)
+		public DummyPort (int id, ConnectionType connectionType, FlowDirection flowDirection)
 		{
 			Id = id;
 			ConnectionType = connectionType;

@@ -1,4 +1,4 @@
-﻿//
+//
 // AboutWindow.LicenseDialog.cs
 //
 // Author:

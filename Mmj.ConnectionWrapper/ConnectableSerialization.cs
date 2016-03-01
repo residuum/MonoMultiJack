@@ -34,7 +34,7 @@ namespace Mmj.ConnectionWrapper
 		public IConnectable GetConnectable ()
 		{
 			Client client = new Client ("", FlowDirection, ConnectionType);
-			foreach (uint portId in _portIds) {
+			foreach (int portId in _portIds) {
 				client.AddPort (new DummyPort (portId, ConnectionType, FlowDirection));
 			}
 			return client;
@@ -44,7 +44,7 @@ namespace Mmj.ConnectionWrapper
 
 		public FlowDirection FlowDirection{ get; private set; }
 
-		readonly IEnumerable<uint> _portIds;
+		readonly IEnumerable<int> _portIds;
 
 		public ConnectableSerialization (string connectableId)
 		{
@@ -55,10 +55,10 @@ namespace Mmj.ConnectionWrapper
 			ConnectionType = (ConnectionType)Enum.Parse (typeof(ConnectionType), parameters [0]);
 			FlowDirection = (FlowDirection)Enum.Parse (typeof(FlowDirection), parameters [1]);
 			string[] portIds = parameters [2].Split (new char[] { ',' });
-			_portIds = portIds.Select (id => Convert.ToUInt32 (id)).ToList ();
+			_portIds = portIds.Select (id => Convert.ToInt32(id)).ToList ();
 		}
 
-		public ConnectableSerialization (ConnectionType connectionType, FlowDirection flowDirection, IEnumerable<uint> portIds)
+		public ConnectableSerialization (ConnectionType connectionType, FlowDirection flowDirection, IEnumerable<int> portIds)
 		{
 			ConnectionType = connectionType;
 			FlowDirection = flowDirection;

@@ -5,7 +5,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E14C4642-6194-45C0-86DB-23057E2921AF}</ProjectGuid>
-    <ReleaseVersion>0.6.0</ReleaseVersion>
+    <ReleaseVersion>0.7.0</ReleaseVersion>
     <Packages>
       <Packages>
         <Package name="MonoMultiJack.Linux.Gtk3.Autotools">

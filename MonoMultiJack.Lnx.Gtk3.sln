@@ -73,7 +73,6 @@ Global
 		{E14C4642-6194-45C0-86DB-23057E2921AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk3.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
@@ -264,7 +263,8 @@ Global
 		$0.TextStylePolicy = $38
 		$38.inheritsSet = null
 		$38.scope = application/xml
-		version = 0.6.0
+		version = 0.7.0
+		StartupItem = MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk3.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

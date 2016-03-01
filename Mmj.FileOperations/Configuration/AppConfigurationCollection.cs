@@ -1,4 +1,4 @@
-﻿// 
+// 
 // AppConfigurationCollection.cs
 //  
 // Author:

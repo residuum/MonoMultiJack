@@ -4,7 +4,7 @@
 // Author:
 //       Thomas Mayer <thomas@residuum.org>
 // 
-// Copyright (c) 2009-2014 Thomas Mayer
+// Copyright (c) 2009-2016 Thomas Mayer
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ namespace Mmj.ConnectionWrapper.Jack
 {
 	public abstract class JackConnectionManager : IConnectionManager
 	{
-		IDisposable _timeout;
+		static IDisposable _timeout;
 
 		protected JackConnectionManager ()
 		{
@@ -92,8 +92,9 @@ namespace Mmj.ConnectionWrapper.Jack
 					}
 					return clients;
 				} else {
-					_timeout = Application.TimeoutInvoke (2000, ConnectToServer);
-					Wrapper.ConnectToServer ();
+					if (_timeout == null) {
+						_timeout = Application.TimeoutInvoke (2000, ConnectToServer);
+					}
 					return null;
 				}
 			}
@@ -137,6 +138,7 @@ namespace Mmj.ConnectionWrapper.Jack
 					ConnectionHasChanged (this, eventArgs);
 				}
 				_timeout.Dispose ();
+				_timeout = null;
 				return false;
 			} 
 			return true;
@@ -155,7 +157,9 @@ namespace Mmj.ConnectionWrapper.Jack
 				BackendHasChanged (this, args);
 			}
 			if (args.ChangeType == ChangeType.BackendExited) {
-				_timeout = Application.TimeoutInvoke (2000, ConnectToServer);
+				if (_timeout == null) {
+					_timeout = Application.TimeoutInvoke (2000, ConnectToServer);
+				}
 			}
 		}
 	}
