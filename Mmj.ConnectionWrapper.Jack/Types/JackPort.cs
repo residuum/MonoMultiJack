@@ -31,8 +31,7 @@ namespace Mmj.ConnectionWrapper.Jack.Types
     internal class JackPort : Port
     {
         public PortReference PortReference { get; private set; }
-
-
+        
         public string ClientName { get; private set; }
 
         public JackPort(PortReference portReference)
@@ -54,7 +53,7 @@ namespace Mmj.ConnectionWrapper.Jack.Types
                 case PortType.Midi:
                     return ConnectionType.JackMidi;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(portType));
+                    throw new ArgumentOutOfRangeException("portType");
             }
         }
 
@@ -67,7 +66,7 @@ namespace Mmj.ConnectionWrapper.Jack.Types
                 case Direction.Out:
                     return FlowDirection.Out;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(direction));
+                    throw new ArgumentOutOfRangeException("direction");
             }
         }
     }
