@@ -40,8 +40,8 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 	/// </summary>
 	internal static class Wrapper
 	{
-		private static Controller _jackClient;
-		static readonly List<JackPort> _portMapper = new List<JackPort> ();
+		static Controller _jackClient;
+		static readonly List<JackPort> PortMapper = new List<JackPort> ();
 		static List<IConnection> _connections = new List<IConnection> ();
 		static readonly string ClientName = "MonoMultiJack"
 		                                    + (DateTime.Now.Ticks / 10000000).ToString (CultureInfo.InvariantCulture).Substring (6);
@@ -50,18 +50,18 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 		{
 			ConnectionEventArgs eventArgs = null;
 			if (args.ChangeType == JackSharp.Events.ChangeType.New) {
-				GetNewPort (args, out eventArgs);
+				eventArgs = GetNewPortArgs (args);
 			} else if (args.ChangeType == JackSharp.Events.ChangeType.Deleted) {
-				if (GetOldPort (args, out eventArgs)) {
+				if (!TryGetOldPortArgs (args, out eventArgs)) {
 					return;
 				}
 			} else if (args.ChangeType == JackSharp.Events.ChangeType.Renamed) {
-				JackPort oldPort = _portMapper.FirstOrDefault (map => map.PortReference == args.Port);
+				JackPort oldPort = PortMapper.FirstOrDefault (map => map.PortReference == args.Port);
 				if (oldPort == null) {
 					// Cannot find it, treat is as new
-					GetNewPort (args, out eventArgs);
+					eventArgs = GetNewPortArgs (args);
 				} else {
-					GetRenamedPort (args, oldPort, out eventArgs);
+					eventArgs = GetRenamedPortArgs (args, oldPort);
 				}
 			}
 			if (PortOrConnectionHasChanged != null && eventArgs != null) {
@@ -69,42 +69,42 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			}
 		}
 
-		private static bool GetRenamedPort (PortRegistrationEventArgs args, JackPort oldPort, out ConnectionEventArgs eventArgs)
+		static ConnectionEventArgs GetRenamedPortArgs (PortRegistrationEventArgs args, JackPort oldPort)
 		{
-			eventArgs = new ConnectionEventArgs {
+			ConnectionEventArgs eventArgs = new ConnectionEventArgs {
 				MessageType = MessageType.Change
 			};
-			_portMapper.Remove (oldPort);
+			PortMapper.Remove (oldPort);
 			JackPort port = AddNewJackPort (args.Port);
 			eventArgs.Connectables = new List<Port> { port };
 			eventArgs.ChangeType = ChangeType.Content;
 			eventArgs.ConnectionType = port.ConnectionType;
 			eventArgs.Message = "Port renamed.";
-			return true;
+			return eventArgs;
 		}
 
-		private static bool GetOldPort (PortRegistrationEventArgs args, out ConnectionEventArgs eventArgs)
+		static bool TryGetOldPortArgs (PortRegistrationEventArgs args, out ConnectionEventArgs eventArgs)
 		{
 			eventArgs = new ConnectionEventArgs {
 				MessageType = MessageType.Change
 			};
-			JackPort oldPort = _portMapper.FirstOrDefault (map => map.PortReference == args.Port);
+			JackPort oldPort = PortMapper.FirstOrDefault (map => map.PortReference == args.Port);
 			if (oldPort == null) {
-				return true;
+				return false;
 			}
 			List<Port> ports = new List<Port> ();
 			ports.Add (oldPort);
 			eventArgs.Connectables = ports;
 			eventArgs.ChangeType = ChangeType.Deleted;
 			eventArgs.ConnectionType = oldPort.ConnectionType;
-			_portMapper.Remove (oldPort);
+			PortMapper.Remove (oldPort);
 			eventArgs.Message = "Port unregistered.";
-			return false;
+			return true;
 		}
 
-		private static bool GetNewPort (PortRegistrationEventArgs args, out ConnectionEventArgs eventArgs)
+		static ConnectionEventArgs GetNewPortArgs (PortRegistrationEventArgs args)
 		{
-			eventArgs = new ConnectionEventArgs {
+			ConnectionEventArgs eventArgs = new ConnectionEventArgs {
 				MessageType = MessageType.Change
 			};
 			var newPort = AddNewJackPort (args.Port);
@@ -116,13 +116,13 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			newClient.AddPort (newPort);
 			clients.Add (newClient);
 			eventArgs.Connectables = clients;
-			return true;
+			return eventArgs;
 		}
 
-		private static JackPort AddNewJackPort (PortReference port)
+		static JackPort AddNewJackPort (PortReference port)
 		{
 			JackPort newPort = new JackPort (port);
-			_portMapper.Add (newPort);
+			PortMapper.Add (newPort);
 			return newPort;
 		}
 
@@ -148,8 +148,8 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			ConnectionEventArgs eventArgs = new ConnectionEventArgs {
 				MessageType = MessageType.Change
 			};
-			JackPort outPort = _portMapper.FirstOrDefault (map => map.PortReference == args.Outlet);
-			JackPort inPort = _portMapper.FirstOrDefault (map => map.PortReference == args.Inlet);
+			JackPort outPort = PortMapper.FirstOrDefault (map => map.PortReference == args.Outlet);
+			JackPort inPort = PortMapper.FirstOrDefault (map => map.PortReference == args.Inlet);
 			if (outPort == null || inPort == null) {
 				return;
 			}
@@ -179,7 +179,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 
 		static void OnJackShutdown (object sender, EventArgs args)
 		{
-			_portMapper.Clear ();
+			PortMapper.Clear ();
 			if (BackendHasChanged != null) {
 				BackendHasChanged (null, new ConnectionEventArgs {
 					Message = "Backend has exited",
@@ -212,7 +212,7 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			if (_jackClient.IsConnectedToJack) {
 				return true;
 			}
-			if (!_jackClient.Start (false)) {
+			if (!_jackClient.Start ()) {
 				return false;
 			}
 			return true;
@@ -245,8 +245,8 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			if (outputPort.FlowDirection != FlowDirection.Out || inputPort.FlowDirection != FlowDirection.In || outputPort.ConnectionType != inputPort.ConnectionType) {
 				return false;
 			}
-			JackPort outPort = _portMapper.First (map => map == outputPort);
-			JackPort inPort = _portMapper.First (map => map == inputPort);
+			JackPort outPort = PortMapper.First (map => map == outputPort);
+			JackPort inPort = PortMapper.First (map => map == inputPort);
 			if (_connections.Any (c => c.InPort == inputPort && c.OutPort == outputPort)) {
 				return _jackClient.Disconnect (outPort.PortReference, inPort.PortReference);
 			}
@@ -260,14 +260,14 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 			    || outputPort.ConnectionType != inputPort.ConnectionType) {
 				return false;
 			}
-			JackPort outPort = _portMapper.First (map => map == outputPort);
-			JackPort inPort = _portMapper.First (map => map == inputPort);
+			JackPort outPort = PortMapper.First (map => map == outputPort);
+			JackPort inPort = PortMapper.First (map => map == inputPort);
 			return _jackClient.Connect (outPort.PortReference, inPort.PortReference);
 		}
 
 		internal static IEnumerable<JackPort> GetPorts (ConnectionType connectionType)
 		{	
-			return _portMapper.Where (portMap => portMap.ConnectionType == connectionType);
+			return PortMapper.Where (portMap => portMap.ConnectionType == connectionType);
 		}
 
 		internal static IEnumerable<IConnection> GetConnections (ConnectionType connectionType)
