@@ -27,6 +27,7 @@
       <ComponentRef Id="dll_xwt_wpf" />
       <ComponentRef Id="dll_nlog" />
       <ComponentRef Id="dll_ngettext" />
+      <ComponentRef Id="dll_jacksharp" />
       <ComponentRef Id="mo_de" />
       <ComponentRef Id="ApplicationShortcut" />
     </Feature>

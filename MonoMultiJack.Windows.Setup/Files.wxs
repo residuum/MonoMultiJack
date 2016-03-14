@@ -38,6 +38,9 @@
             <Component Id="dll_nlog" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="NLog.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\NLog.dll" KeyPath="yes" />
             </Component>
+            <Component Id="dll_jacksharp" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="JackSharp.dll" Source="..\Mmj.ConnectionWrapper.Jack\bin\$(var.Configuration)\JackSharp.dll" KeyPath="yes" />
+            </Component>
             <Component Id="dll_ngettext" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="NGettext.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\NGettext.dll" KeyPath="yes" />
             </Component>
