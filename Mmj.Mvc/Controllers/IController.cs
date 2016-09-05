@@ -29,6 +29,6 @@ namespace Mmj.Controllers
 {
 	public interface IController : IDisposable
 	{
-		
+
 	}
 }

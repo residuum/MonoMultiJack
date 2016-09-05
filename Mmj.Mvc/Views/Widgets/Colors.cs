@@ -32,32 +32,32 @@ namespace Mmj.Views.Widgets
 		public static Color GetColor (this int index, Color bg)
 		{
 			switch (index % 13) {
-			case 0:
-				return new Color (0, 0, 0).FromBackground (bg);
-			case 1:
-				return new Color (0.3, 0, 0).FromBackground (bg);
-			case 2:
-				return new Color (0, 0.3, 0).FromBackground (bg);
-			case 3:
-				return new Color (0, 0, 0.3).FromBackground (bg);
-			case 4:
-				return new Color (0.3, 0.3, 0).FromBackground (bg);
-			case 5:
-				return new Color (0, 0.3, 0.3).FromBackground (bg);
-			case 6:
-				return new Color (0.3, 0, 0.3).FromBackground (bg);
-			case 7:
-				return new Color (0.6, 0.3, 0).FromBackground (bg);
-			case 8:
-				return new Color (0, 0.6, 0.3).FromBackground (bg);
-			case 9:
-				return new Color (0.3, 0, 0.6).FromBackground (bg);
-			case 10:
-				return new Color (0.3, 0.6, 0).FromBackground (bg);
-			case 11:
-				return new Color (0, 0.3, 0.6).FromBackground (bg);
-			case 12:
-				return new Color (0.6, 0, 0.3).FromBackground (bg);
+				case 0:
+					return new Color (0, 0, 0).FromBackground (bg);
+				case 1:
+					return new Color (0.3, 0, 0).FromBackground (bg);
+				case 2:
+					return new Color (0, 0.3, 0).FromBackground (bg);
+				case 3:
+					return new Color (0, 0, 0.3).FromBackground (bg);
+				case 4:
+					return new Color (0.3, 0.3, 0).FromBackground (bg);
+				case 5:
+					return new Color (0, 0.3, 0.3).FromBackground (bg);
+				case 6:
+					return new Color (0.3, 0, 0.3).FromBackground (bg);
+				case 7:
+					return new Color (0.6, 0.3, 0).FromBackground (bg);
+				case 8:
+					return new Color (0, 0.6, 0.3).FromBackground (bg);
+				case 9:
+					return new Color (0.3, 0, 0.6).FromBackground (bg);
+				case 10:
+					return new Color (0.3, 0.6, 0).FromBackground (bg);
+				case 11:
+					return new Color (0, 0.3, 0.6).FromBackground (bg);
+				case 12:
+					return new Color (0.6, 0, 0.3).FromBackground (bg);
 
 			}
 			return new Color (0, 0, 0).FromBackground (bg);
@@ -66,8 +66,8 @@ namespace Mmj.Views.Widgets
 		static Color FromBackground (this Color baseColor, Color bg)
 		{
 			return new Color ((baseColor.Red - bg.Red).Wrap (),
-				(baseColor.Blue - bg.Blue).Wrap (),
-				(baseColor.Green - bg.Green).Wrap ());
+					(baseColor.Blue - bg.Blue).Wrap (),
+					(baseColor.Green - bg.Green).Wrap ());
 		}
 
 		static double Wrap (this double value)

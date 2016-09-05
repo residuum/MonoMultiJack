@@ -86,18 +86,19 @@ namespace Mmj.OS
 			}
 			_process = new Process {
 				StartInfo = { FileName = _commandName, Arguments = _commandArguments },
-				EnableRaisingEvents = true
+					  EnableRaisingEvents = true
 			};
 			_process.Exited += Process_Exited;
-			if (_process.Start () && HasStarted != null) {
+			if (_process.Start ()) {
 				_process.PriorityClass = ProcessPriorityClass.RealTime;
-				HasStarted (this, new EventArgs ());
+				if (HasStarted != null) {
+					HasStarted(this, new EventArgs());
+				}
 			}
 		}
 
 		public Program (AppConfiguration appConfig)
 		{
-
 			_worker = new BackgroundWorker { WorkerSupportsCancellation = true };
 			_worker.DoWork += Worker_Work;
 
@@ -112,8 +113,8 @@ namespace Mmj.OS
 		/// Destructs instance and cleans up temporary files.
 		/// </summary>
 		~Program ()
-		{
-			Dispose (false);
+		{ Dispose (false);
+			GC.SuppressFinalize (this);
 		}
 
 		public void Dispose ()
@@ -126,8 +127,10 @@ namespace Mmj.OS
 		{
 			Stop ();
 			if (_process != null) {
+				_process.Exited -= Process_Exited;
 				_process.Dispose ();
 			}
+			_worker.DoWork -= Worker_Work;
 		}
 
 		/// <summary>
@@ -151,6 +154,7 @@ namespace Mmj.OS
 				_process.Kill ();
 			}
 			_process.Close ();
+			_process.Exited -= Process_Exited;
 			_process.Dispose ();
 
 			if (HasExited != null) {
@@ -169,6 +173,7 @@ namespace Mmj.OS
 		void Process_Exited (object sender, EventArgs args)
 		{
 			if (_process != null) {
+				_process.Exited -= Process_Exited;
 				_process.Dispose ();
 			}
 			if (HasExited != null) {

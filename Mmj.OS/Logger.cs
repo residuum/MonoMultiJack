@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Diagnostics;
 using NLog.Config;
 using NLog.Targets;
 using NLog;
@@ -58,9 +59,8 @@ namespace Mmj.OS
 
 		void ILogger.LogMessage (string message, LogLevel level)
 		{
-			#if DEBUG
-			Console.WriteLine ("{0:yyyy-MM-dd HH:mm:ss.fff} {1} {2}", DateTime.Now, level, message);
-			#else
+			Debug.WriteLine ("{0:yyyy-MM-dd HH:mm:ss.fff} {1} {2}", DateTime.Now, level, message);
+			#if !DEBUG
 			if (level <= LogLevel.Debug){
 				return;
 			}

@@ -72,6 +72,7 @@ namespace Mmj.Controllers
 		~MainController ()
 		{
 			Dispose (false);
+			GC.SuppressFinalize (this);
 		}
 
 		public void Dispose ()
@@ -83,14 +84,27 @@ namespace Mmj.Controllers
 		protected virtual void Dispose (bool isDisposing)
 		{
 			if (_jackd != null) {
+				_jackd.HasStarted -= Jackd_HasStarted;
+				_jackd.HasExited -= Jackd_HasExited;
 				_jackd.Dispose ();
 			}
 			for (int i = _startWidgetControllers.Count - 1; i >= 0; i--) {
+				_startWidgetControllers [i].ApplicationStatusHasChanged -= AppStartController_StatusHasChanged;
 				_startWidgetControllers [i].Dispose ();
 			}
 			for (int i = _connectionControllers.Count - 1; i >= 0; i--) {
 				_connectionControllers [i].Dispose ();
 			}
+			_mainWindow.StartJackd -= MainWindow_StartJackd;
+			_mainWindow.StopJackd -= MainWindow_StopJackd;
+			_mainWindow.StopAll -= MainWindow_StopAll;
+			_mainWindow.ConfigureJackd -= MainWindowConfigureJackd;
+			_mainWindow.ConfigureApps -= MainWindowConfigureApps;
+			_mainWindow.About -= MainWindowAbout;
+			_mainWindow.Help -= MainWindowHelp;
+			_mainWindow.Quit -= MainWindowQuit;
+			_mainWindow.SaveSnapshot -= MainWindowSave;
+			_mainWindow.LoadSnapshot -= MainWindowLoad;
 			_mainWindow.Dispose ();
 		}
 
@@ -110,7 +124,7 @@ namespace Mmj.Controllers
 			}
 
 			_mainWindow.Show ();
-			
+
 			_mainWindow.StartJackd += MainWindow_StartJackd;
 			_mainWindow.StopJackd += MainWindow_StopJackd;
 			_mainWindow.StopAll += MainWindow_StopAll;
@@ -297,107 +311,107 @@ namespace Mmj.Controllers
 			aboutWindow.Authors = new string[] { "Thomas Mayer" };
 			aboutWindow.License = @"Copyright (c) 2009-2015 Thomas Mayer
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-""Software""), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+				Permission is hereby granted, free of charge, to any person obtaining
+				a copy of this software and associated documentation files (the
+						""Software""), to deal in the Software without restriction, including
+				without limitation the rights to use, copy, modify, merge, publish,
+					distribute, sublicense, and/or sell copies of the Software, and to
+						permit persons to whom the Software is furnished to do so, subject to
+						the following conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+						The above copyright notice and this permission notice shall be
+						included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-*Additional Components used*
-
-**NLog**
-
-Copyright (c) 2004-2011 Jaroslaw Kowalski <jaak@jkowalski.net>
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-* Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer. 
-* Redistributions in binary form must reproduce the above copyright
-  notice, this list of conditions and the following disclaimer in the
-  documentation and/or other materials provided with the distribution. 
-* Neither the name of Jaroslaw Kowalski nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission. 
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-""AS IS"" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+						THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
+					EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+						MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+						IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+						CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+					TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+						SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-**XWT**
+						*Additional Components used*
 
-Copyright (c) 2011 Xamarin Inc
+						**NLog**
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-""Software""), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+						Copyright (c) 2004-2011 Jaroslaw Kowalski <jaak@jkowalski.net>
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+						All rights reserved.
 
-THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+						Redistribution and use in source and binary forms, with or without
+						modification, are permitted provided that the following conditions are
+						met:
+
+						* Redistributions of source code must retain the above copyright
+						notice, this list of conditions and the following disclaimer. 
+						* Redistributions in binary form must reproduce the above copyright
+						notice, this list of conditions and the following disclaimer in the
+						documentation and/or other materials provided with the distribution. 
+						* Neither the name of Jaroslaw Kowalski nor the names of its
+						contributors may be used to endorse or promote products derived from
+						this software without specific prior written permission. 
+
+						THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+						""AS IS"" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+						LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+						A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+						OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+					SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+							LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+							DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+						THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+						(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+						OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-**NGettext**
+						**XWT**
 
-Copyright (c) 2012 Neris Ereptoris (www.neris.ws)
+						Copyright (c) 2011 Xamarin Inc
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-""Software""), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+						Permission is hereby granted, free of charge, to any person obtaining
+						a copy of this software and associated documentation files (the
+								""Software""), to deal in the Software without restriction, including
+						without limitation the rights to use, copy, modify, merge, publish,
+					distribute, sublicense, and/or sell copies of the Software, and to
+						permit persons to whom the Software is furnished to do so, subject to
+						the following conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+						The above copyright notice and this permission notice shall be
+						included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-";
+						THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
+					EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+						MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+						IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+						CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+					TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+						SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+						**NGettext**
+
+						Copyright (c) 2012 Neris Ereptoris (www.neris.ws)
+
+						Permission is hereby granted, free of charge, to any person obtaining
+						a copy of this software and associated documentation files (the
+								""Software""), to deal in the Software without restriction, including
+						without limitation the rights to use, copy, modify, merge, publish,
+					distribute, sublicense, and/or sell copies of the Software, and to
+						permit persons to whom the Software is furnished to do so, subject to
+						the following conditions:
+
+						The above copyright notice and this permission notice shall be
+						included in all copies or substantial portions of the Software.
+
+						THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
+					EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+						MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+						IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+						CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+					TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+						SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+						";
 			aboutWindow.Icon = Icons.Info;
 			aboutWindow.Show ();
 			aboutWindow.Closing += Window_Closing;
@@ -487,12 +501,23 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			if (window == null) {
 				return;
 			}
+			window.Closing -= Window_Closing;
 			window.Dispose ();
 			_mainWindow.Sensitive = true;
 		}
 
 		void Controller_WidgetsAreClosed (object sender, EventArgs e)
 		{
+			JackdConfigController jackController = sender as JackdConfigController;
+			if (jackController != null) {
+				jackController.UpdateJackd -= Controller_UpdateJackd;
+				jackController.AllWidgetsAreClosed -= Controller_WidgetsAreClosed;
+			}
+			AppConfigController appConfigController = sender as AppConfigController;
+			if (appConfigController != null) {
+				appConfigController.UpdateApps += Controller_UpdateApps;
+				appConfigController.AllWidgetsAreClosed += Controller_WidgetsAreClosed;
+			}
 			IController controller = sender as IController;
 			if (controller != null) {
 				controller.Dispose ();

@@ -76,8 +76,12 @@ namespace Mmj.Controllers
 		{
 			if (_application != null) {
 				_application.Stop ();
+				_application.HasExited -= Application_HasExited;
+				_application.HasStarted -= Application_HasStarted;
 				_application.Dispose ();
 			}
+			_appWidget.Start -= AppWidgetStart;
+			_appWidget.Stop -= AppWidgetStop;
 			_appWidget.Dispose ();
 		}
 

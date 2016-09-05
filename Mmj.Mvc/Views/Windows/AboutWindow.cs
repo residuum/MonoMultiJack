@@ -47,6 +47,22 @@ namespace Mmj.Views.Windows
 			Closed += HandleClose;
 		}
 
+		~AboutWindow ()
+		{
+			Dispose (false);
+		}
+
+		public new void Dispose ()
+		{
+			Dispose (true);
+		}
+
+		protected new void Dispose (bool isDisposing)
+		{
+			Closed -= HandleClose;
+			base.Dispose (isDisposing);
+		}
+
 		void BuildContent ()
 		{
 			VBox mainContent = new VBox ();

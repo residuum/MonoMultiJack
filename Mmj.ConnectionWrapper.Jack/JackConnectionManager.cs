@@ -45,6 +45,7 @@ namespace Mmj.ConnectionWrapper.Jack
 		~JackConnectionManager ()
 		{
 			Dispose (false);
+			GC.SuppressFinalize (this);
 		}
 
 		public void Dispose ()

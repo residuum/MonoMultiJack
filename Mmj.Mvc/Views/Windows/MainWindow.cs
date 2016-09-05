@@ -69,6 +69,23 @@ namespace Mmj.Views.Windows
 			Content.KeyPressed += OnKeyEvent;
 		}
 
+		~MainWindow ()
+		{
+			Dispose (false);
+		}
+
+		public new void Dispose ()
+		{
+			Dispose (true);
+		}
+
+		protected new void Dispose (bool isDisposing)
+		{
+			Closed -= OnCloseEvent;
+			Content.KeyPressed -= OnKeyEvent;
+			base.Dispose (isDisposing);
+		}
+
 		void OnKeyEvent (object sender, KeyEventArgs e)
 		{
 			_keyMap.ExecuteCommand (e.Key, e.Modifiers);

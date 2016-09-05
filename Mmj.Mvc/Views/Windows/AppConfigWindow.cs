@@ -44,9 +44,29 @@ namespace Mmj.Views.Windows
 		{
 			BuildContent ();
 			BindEvents ();
-			
+
 			Title = I18N._ ("Configure Applications");
 			Resizable = true;
+		}
+
+		~AppConfigWindow()
+		{
+			Dispose(false);
+		}
+
+		public new void Dispose()
+		{
+			Dispose(true);
+		}
+
+		protected new void Dispose(bool isDisposing)
+		{
+			Closed -= HandleClose;
+			_okButton.Clicked -= HandleOk;
+			_cancelButton.Clicked -= HandleCancel;
+			_addButton.Clicked -= HandleAdd;
+			_undoButton.Clicked -= HandleUndo;
+			base.Dispose(isDisposing);
 		}
 
 		void BindEvents ()
@@ -84,16 +104,16 @@ namespace Mmj.Views.Windows
 			}
 		}
 
-		#region IDisposable implementation
+#region IDisposable implementation
 
 		void IDisposable.Dispose ()
 		{
 			Dispose ();
 		}
 
-		#endregion
+#endregion
 
-		#region IWidget implementation
+#region IWidget implementation
 
 		void IWidget.Show ()
 		{
@@ -105,9 +125,9 @@ namespace Mmj.Views.Windows
 			Hide ();
 		}
 
-		#endregion
+#endregion
 
-		#region IWindow implementation
+#region IWindow implementation
 
 		Image IWindow.Icon {
 			set {
@@ -132,9 +152,9 @@ namespace Mmj.Views.Windows
 
 		public event EventHandler Closing;
 
-		#endregion
+#endregion
 
-		#region IAppConfigWindow implementation
+#region IAppConfigWindow implementation
 
 		public event EventHandler Save;
 		public event EventHandler Add;
@@ -150,29 +170,29 @@ namespace Mmj.Views.Windows
 			_configTable.Remove ((Widget)widget);
 		}
 
-		#endregion
+#endregion
 
 		void BuildContent ()
 		{
 			_configTable = new Table { MinWidth = 300 };
 			ScrollView scrollView = new ScrollView (_configTable) {
 				ExpandHorizontal = true,
-				ExpandVertical = true,
-				HorizontalScrollPolicy = ScrollPolicy.Never,
-				MinHeight = 300,
-				MinWidth = 300
+						 ExpandVertical = true,
+						 HorizontalScrollPolicy = ScrollPolicy.Never,
+						 MinHeight = 300,
+						 MinWidth = 300
 			};
 			HBox buttonBox = new HBox ();
 			_addButton = new Button (I18N._ ("Add")) { Image = Icons.Add };
 			_okButton = new Button (I18N._ ("Save")) { Image = Icons.Ok };
 			_cancelButton = new Button (I18N._ ("Cancel")) {
 				Image = Icons.Cancel,
-				Style = ButtonStyle.Flat
+				      Style = ButtonStyle.Flat
 			};
 			_undoButton = new Button (I18N._ ("Undo")) {
 				Image = Icons.Undo,
-				Style = ButtonStyle.Flat,
-				Visible = false
+				      Style = ButtonStyle.Flat,
+				      Visible = false
 			};
 			buttonBox.PackEnd (_okButton);
 			buttonBox.PackEnd (_addButton);

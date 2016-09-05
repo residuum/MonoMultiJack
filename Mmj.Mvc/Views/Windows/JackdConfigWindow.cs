@@ -42,7 +42,7 @@ namespace Mmj.Views.Windows
 		Button _okButton;
 		Button _cancelButton;
 
-		#region IWidget implementation
+#region IWidget implementation
 
 		void Widgets.IWidget.Show ()
 		{
@@ -54,9 +54,9 @@ namespace Mmj.Views.Windows
 			Hide ();
 		}
 
-		#endregion
+#endregion
 
-		#region IWindow implementation
+#region IWindow implementation
 
 		public event EventHandler Closing;
 
@@ -72,9 +72,9 @@ namespace Mmj.Views.Windows
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region IJackdConfigWindow implementation
+#region IJackdConfigWindow implementation
 
 		string IJackdConfigWindow.Path {
 			get {
@@ -114,7 +114,7 @@ namespace Mmj.Views.Windows
 
 		public event EventHandler Save;
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// constructor
@@ -125,6 +125,24 @@ namespace Mmj.Views.Windows
 			Resizable = false;
 			BuildContent ();
 			BindEvents ();
+		}
+
+		~JackdConfigWindow()
+		{
+			Dispose(false);
+		}
+
+		public new void Dispose()
+		{
+			Dispose(true);
+		}
+
+		protected new void Dispose(bool isDisposing)
+		{
+			Closed -= HandleClose;
+			_okButton.Clicked -= HandleOk;
+			_cancelButton.Clicked -= HandleCancel;
+			base.Dispose(isDisposing);
 		}
 
 		void BindEvents ()
@@ -171,7 +189,7 @@ namespace Mmj.Views.Windows
 			_okButton = new Button (I18N._ ("Save")) { Image = Icons.Ok };
 			_cancelButton = new Button (I18N._ ("Cancel")) {
 				Image = Icons.Cancel,
-				Style = ButtonStyle.Flat
+				      Style = ButtonStyle.Flat
 			};
 			buttonBox.PackStart (_cancelButton);
 			buttonBox.PackEnd (_okButton);
@@ -188,7 +206,7 @@ namespace Mmj.Views.Windows
 			table.Add (label, 0, index);
 			TextEntry entry = new TextEntry {
 				MultiLine = false,
-				PlaceholderText = placeholder
+					  PlaceholderText = placeholder
 			};
 			table.Add (entry, 1, index);
 			label.LinkClicked += (sender, args) => entry.SetFocus ();

@@ -85,7 +85,7 @@ namespace Mmj.Views.Widgets
 			table.Add (label, 0, index);
 			TextEntry entry = new TextEntry {
 				MultiLine = false,
-				PlaceholderText = placeholder
+					  PlaceholderText = placeholder
 			};
 			table.Add (entry, 1, index);
 			label.LinkClicked += (sender, args) => entry.SetFocus ();
@@ -113,16 +113,19 @@ namespace Mmj.Views.Widgets
 			}
 		}
 
-		#region IDisposable implementation
+#region IDisposable implementation
 
 		void IDisposable.Dispose ()
 		{
+			_removeApp.Clicked -= HandleRemove;
+			_up.Clicked -= HandleUp;
+			_down.Clicked -= HandleDown;
 			Dispose ();
 		}
 
-		#endregion
+#endregion
 
-		#region IWidget implementation
+#region IWidget implementation
 
 		void IWidget.Show ()
 		{
@@ -134,9 +137,9 @@ namespace Mmj.Views.Widgets
 			Hide ();
 		}
 
-		#endregion
+#endregion
 
-		#region IAppConfigWidget implementation
+#region IAppConfigWidget implementation
 
 		string IAppConfigWidget.Name {
 			get {
@@ -177,6 +180,6 @@ namespace Mmj.Views.Widgets
 		public event EventHandler MoveUp;
 		public event EventHandler MoveDown;
 
-		#endregion
+#endregion
 	}
 }

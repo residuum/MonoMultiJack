@@ -55,8 +55,8 @@ namespace Mmj
 			IController controller = sender as IController;
 			if (controller != null) {
 				controller.Dispose ();				
-				Application.Exit ();
 			}
+			Application.Exit ();
 		}
 	}
 }

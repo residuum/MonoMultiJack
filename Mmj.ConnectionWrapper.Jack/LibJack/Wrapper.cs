@@ -234,6 +234,10 @@ namespace Mmj.ConnectionWrapper.Jack.LibJack
 		internal static void Close ()
 		{
 			if (_jackClient.Stop ()) {
+				_jackClient.ConnectionChanged -= OnPortConnect;
+				_jackClient.PortChanged -= OnPortRegistration;
+				_jackClient.Shutdown -= OnJackShutdown;
+				_jackClient.Xrun -= OnJackXRun;
 				_jackClient.Dispose ();
 			}
 		}

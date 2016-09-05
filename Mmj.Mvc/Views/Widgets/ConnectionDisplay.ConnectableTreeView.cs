@@ -48,6 +48,27 @@ namespace Mmj.Views.Widgets
 				BuildWidget ();
 			}
 
+			~ConnectableTreeView()
+			{
+				Dispose(false);
+			}
+
+			public new void Dispose()
+			{
+				Dispose(true);
+			}
+
+			protected new void Dispose(bool isDisposing)
+			{
+				_treeView.RowExpanded -= UpdateParent;
+				_treeView.RowCollapsed -= UpdateParent;
+				_treeView.VerticalScrollControl.ValueChanged -= UpdateParent;
+				_treeView.DragDrop -= HandleDropped;
+				_treeView.DragOver -= HandleDragOver;
+				_treeView.DragStarted -= HandleDragStarted;
+				base.Dispose(isDisposing);
+			}
+
 			void BindEvents ()
 			{
 				_treeView.RowExpanded += UpdateParent;
@@ -66,9 +87,9 @@ namespace Mmj.Views.Widgets
 				_dataField = new DataField<IConnectable> ();
 				_textField = new DataField<string> ();
 				_treeStore = new TreeStore (new IDataField[] {
-					_dataField,
-					_textField
-				});
+						_dataField,
+						_textField
+						});
 				_treeView = new TreeView (_treeStore);
 				_treeView.Columns.Add ("", _textField);
 				_treeView.MinHeight = 200;
@@ -142,9 +163,9 @@ namespace Mmj.Views.Widgets
 
 				if (Connect != null && droppedOn != null) {
 					Connect (this, new ConnectEventArgs {
-						Outlets = droppedOn,
-						Inlets = connectables
-					});
+							Outlets = droppedOn,
+							Inlets = connectables
+							});
 				}
 			}
 
@@ -159,22 +180,22 @@ namespace Mmj.Views.Widgets
 					BindEvents ();
 				}
 				Application.Invoke (() => {
-					Client client = connectable as Client;
-					Port port = connectable as Port;
-					if (client != null) {
+						Client client = connectable as Client;
+						Port port = connectable as Port;
+						if (client != null) {
 						AddClient (client);
 						foreach (Port clientPort in client.Ports) {
-							AddPort (clientPort);
+						AddPort (clientPort);
 						}
-					}
-					if (port != null) {
+						}
+						if (port != null) {
 						TreeNavigator navigator = FindNavigator (port.Client);
 						if (navigator != null) {
-							AddPort (port);
+						AddPort (port);
 						}
-					}
-					NotifyParent ();
-				});
+						}
+						NotifyParent ();
+						});
 			}
 
 			void AddClient (Client client)
@@ -201,16 +222,16 @@ namespace Mmj.Views.Widgets
 			public void RemoveConnectable (IConnectable connectable)
 			{
 				Application.Invoke (() => {
-					Client client = connectable as Client;
-					Port port = connectable as Port;
-					if (client != null) {
+						Client client = connectable as Client;
+						Port port = connectable as Port;
+						if (client != null) {
 						RemoveClient (client);
-					}
-					if (port != null) {
+						}
+						if (port != null) {
 						RemovePort (port);
-					}
-					NotifyParent ();
-				});
+						}
+						NotifyParent ();
+						});
 			}
 
 			void RemoveClient (Client client)
@@ -242,17 +263,17 @@ namespace Mmj.Views.Widgets
 			public void UpdateConnectable (IConnectable connectable)
 			{
 				Application.Invoke (() => {
-					Client client = connectable as Client;
-					Port port = connectable as Port;
-					if (client != null) {
+						Client client = connectable as Client;
+						Port port = connectable as Port;
+						if (client != null) {
 						TreeNavigator navigator = FindNavigator (client);
 						UpdateTreeStoreValues (navigator, connectable);
-					}
-					if (port != null) {
+						}
+						if (port != null) {
 						TreeNavigator navigator = FindNavigator (port);
 						UpdateTreeStoreValues (navigator, connectable);
-					}
-				});
+						}
+						});
 			}
 
 			void UpdateTreeStoreValues (TreeNavigator navigator, IConnectable connectable)

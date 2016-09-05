@@ -55,7 +55,25 @@ namespace Mmj.Views.Widgets
 
 		public new void Dispose ()
 		{
-			base.Dispose ();
+			Dispose(true);
+		}
+
+		~ConnectionDisplay()
+		{
+			Dispose(false);
+		}
+
+		protected new void Dispose(bool isDisposing)
+		{
+
+			_connectButton.Clicked -= ConnectButton_Click;
+			_disconnectButton.Clicked -= DisconnectButton_Click;
+			_inTreeView.ViewChanged -= OnTreeViewRowExpanded;
+			_outTreeView.ViewChanged -= OnTreeViewRowExpanded;
+			_inTreeView.Connect -= OnInTreeConnect;
+			_outTreeView.Connect -= OnOutTreeConnect;
+			KeyPressed -= OnKeyEvent;
+			base.Dispose(isDisposing);
 		}
 
 		public ConnectionDisplay (string connectionManagerName)
@@ -71,7 +89,7 @@ namespace Mmj.Views.Widgets
 		{
 			VBox vbox = new VBox {
 				ExpandVertical = true,
-				ExpandHorizontal = true
+					       ExpandHorizontal = true
 			};
 
 			HBox buttonBox = new HBox ();
@@ -80,19 +98,19 @@ namespace Mmj.Views.Widgets
 			_disconnectButton = new Button (Icons.Disconnect, I18N._ ("Disconnect"));
 			buttonBox.PackStart (_disconnectButton);
 			vbox.PackStart (buttonBox);            
-			
+
 			_inTreeView = new ConnectableTreeView ();
 			_outTreeView = new ConnectableTreeView ();
 
 			_connectionArea = new ConnectionArea (_outTreeView, _inTreeView) {
 				MinWidth = 200,
-				MinHeight = 200,
-				ExpandVertical = true,
-				ExpandHorizontal = true
+					 MinHeight = 200,
+					 ExpandVertical = true,
+					 ExpandHorizontal = true
 			};
 			HBox connectionBox = new HBox {
 				ExpandVertical = true,
-				ExpandHorizontal = true
+					       ExpandHorizontal = true
 			};
 			connectionBox.PackStart (_outTreeView, false, false);
 			connectionBox.PackStart (_connectionArea, true, true);
@@ -102,10 +120,10 @@ namespace Mmj.Views.Widgets
 			_messageDisplay = new RichTextView ();
 			_messageContainer = new ScrollView (_messageDisplay) {
 				HorizontalScrollPolicy = ScrollPolicy.Never,
-				VerticalScrollPolicy = ScrollPolicy.Automatic,
-				HeightRequest = 40,
-				BorderVisible = true,
-				Margin = 2
+						       VerticalScrollPolicy = ScrollPolicy.Automatic,
+						       HeightRequest = 40,
+						       BorderVisible = true,
+						       Margin = 2
 			};
 			_messageContainer.Hide ();
 			vbox.PackEnd (_messageContainer);
@@ -161,23 +179,23 @@ namespace Mmj.Views.Widgets
 		public void AddMessage (string message, object[] parameters = null)
 		{
 			Application.Invoke (() => {
-				_messages.AddMessage (message, parameters);
-				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Markdown);
-				_messageContainer.Show ();
-				_messageContainer.VerticalScrollControl.Value = 0;
-			});
+					_messages.AddMessage (message, parameters);
+					_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Markdown);
+					_messageContainer.Show ();
+					_messageContainer.VerticalScrollControl.Value = 0;
+					});
 			if (_timeout != null) {
 				_timeout.Dispose ();
 			}
 			_timeout = Application.TimeoutInvoke (100, () => {
-				string output = _messages.GetMessages ();
-				if (string.IsNullOrEmpty (output)) {
+					string output = _messages.GetMessages ();
+					if (string.IsNullOrEmpty (output)) {
 					_messageContainer.Hide ();
 					return false;
-				}
-				_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Markdown);
-				return true;
-			});
+					}
+					_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Markdown);
+					return true;
+					});
 		}
 
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
@@ -195,9 +213,9 @@ namespace Mmj.Views.Widgets
 			}
 			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
-					Outlets = outlets,
-					Inlets = inlets
-				});
+						Outlets = outlets,
+						Inlets = inlets
+						});
 			}
 		}
 
@@ -205,9 +223,9 @@ namespace Mmj.Views.Widgets
 		{
 			if (Connect != null) {
 				Connect (this, new ConnectEventArgs {
-					Outlets = e.Outlets,
-					Inlets = e.Inlets
-				});
+						Outlets = e.Outlets,
+						Inlets = e.Inlets
+						});
 			}
 		}
 
@@ -248,9 +266,9 @@ namespace Mmj.Views.Widgets
 					return;
 				}
 				Disconnect (this, new ConnectEventArgs {
-					Outlets = outlets,
-					Inlets = inlets
-				});
+						Outlets = outlets,
+						Inlets = inlets
+						});
 			}
 		}
 
@@ -280,7 +298,7 @@ namespace Mmj.Views.Widgets
 			Application.Invoke (UpdateConnectionLines);
 		}
 
-		#region IConnectionWidget implementation
+#region IConnectionWidget implementation
 
 		public event ConnectEventHandler Connect;
 		public event ConnectEventHandler Disconnect;
@@ -296,7 +314,7 @@ namespace Mmj.Views.Widgets
 		public void AddConnection (IConnection connection)
 		{			
 			_connections.Add (connection);
-			
+
 			Application.Invoke (UpdateConnectionLines);
 		}
 
@@ -309,6 +327,6 @@ namespace Mmj.Views.Widgets
 
 		public string ConnectionManagerName { get; private set; }
 
-		#endregion
+#endregion
 	}
 }

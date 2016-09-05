@@ -53,6 +53,7 @@ namespace Mmj.Controllers
 		~JackdConfigController ()
 		{
 			Dispose (false);
+			GC.SuppressFinalize (this);
 		}
 
 		public void Dispose ()
@@ -63,6 +64,8 @@ namespace Mmj.Controllers
 
 		protected virtual void Dispose (bool isDisposing)
 		{
+			_jackdConfigWindow.Closing -= HandleClosing;
+			_jackdConfigWindow.Save -= HandleSave;
 			_jackdConfigWindow.Dispose ();
 		}
 

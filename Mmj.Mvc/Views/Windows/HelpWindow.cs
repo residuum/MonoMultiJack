@@ -42,14 +42,14 @@ namespace Mmj.Views.Windows
 			};
 			ScrollView scroller = new ScrollView (_messageDisplay) {
 				VerticalScrollPolicy = ScrollPolicy.Automatic,
-				HorizontalScrollPolicy = ScrollPolicy.Never,
-				HeightRequest = 500
+						     HorizontalScrollPolicy = ScrollPolicy.Never,
+						     HeightRequest = 500
 			};
 			mainContent.PackStart (scroller);
 			HBox buttonRow = new HBox ();
 			Button ok = new Button {
 				Label = I18N._ ("Close"),
-				Image = Icons.Ok
+				      Image = Icons.Ok
 			};
 			ok.Clicked += (sender, args) => Close ();
 			buttonRow.PackEnd (ok);
@@ -58,16 +58,16 @@ namespace Mmj.Views.Windows
 			Width = 400;
 		}
 
-		#region IDisposable implementation
+#region IDisposable implementation
 
 		void IDisposable.Dispose ()
 		{
 			Dispose ();
 		}
 
-		#endregion
+#endregion
 
-		#region IWidget implementation
+#region IWidget implementation
 
 		void Widgets.IWidget.Show ()
 		{
@@ -79,11 +79,11 @@ namespace Mmj.Views.Windows
 			Hide ();
 		}
 
-		#endregion
+#endregion
 
 		public event EventHandler Closing;
 
-		#region IHelpWindow implementation
+#region IHelpWindow implementation
 
 		string IHelpWindow.ProgramName {
 			set {
@@ -103,7 +103,7 @@ namespace Mmj.Views.Windows
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }
 

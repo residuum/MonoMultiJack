@@ -35,24 +35,35 @@ namespace Mmj.Views.Widgets
 	{
 		public new void Dispose ()
 		{
-			base.Dispose ();
+			Dispose(true);
 		}
-
-		#region IWidget implementation
-
-		void IWidget.Show ()
+		~AppStartWidget()
 		{
-			Show ();
+			Dispose(false);
 		}
+		
+#region IWidget implementation
+			
+			void IWidget.Show ()
+			{
+				Show ();
+			}
 
 		void IWidget.Hide ()
 		{
 			Hide ();
 		}
 
-		#endregion
+		protected new void Dispose(bool isDisposing)
+		{
+			_startButton.Clicked -= CallStop;
+				_startButton.Clicked -= CallStart;
+				base.Dispose(isDisposing);
+		}
 
-		#region IAppWidget implementation
+#endregion
+
+#region IAppWidget implementation
 
 		void IAppStartWidget.SetApp (string name, string commandName)
 		{
@@ -65,28 +76,28 @@ namespace Mmj.Views.Widgets
 
 			set {
 				Application.Invoke (delegate {
-					if (value) {
+						if (value) {
 						_startButton.Active = true;
 						_startButton.Clicked -= CallStop;
 						_startButton.Clicked -= CallStart;
 						_startButton.Clicked += CallStop;
 						_startButton.Image = Icons.Stop;
-					} else {
+						} else {
 						_startButton.Active = false;
 						_startButton.Clicked -= CallStop;
 						_startButton.Clicked -= CallStart;
 						_startButton.Clicked += CallStart;
 						_startButton.Image = Icons.Start;
-					}
-				}
-				);
+						}
+						}
+						);
 			}
 		}
 
 		public event EventHandler Start;
 		public event EventHandler Stop;
 
-		#endregion
+#endregion
 
 		readonly ToggleButton _startButton;
 

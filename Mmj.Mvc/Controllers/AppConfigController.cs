@@ -78,6 +78,7 @@ namespace Mmj.Controllers
 		~AppConfigController ()
 		{
 			Dispose (false);
+			GC.SuppressFinalize (this);
 		}
 
 		public void Dispose ()
@@ -91,6 +92,10 @@ namespace Mmj.Controllers
 			for (int i = _widgets.Count - 1; i >= 0; i--) {
 				_widgets [i].Dispose ();
 			}
+			_configWindow.Closing -= Window_Closing;
+			_configWindow.Add -= WindowAdd;
+			_configWindow.Save -= Window_SaveConfigs;
+			_configWindow.Undo -= Window_Undo;
 			_configWindow.Dispose ();
 		}
 
@@ -148,6 +153,9 @@ namespace Mmj.Controllers
 			_configWindow.RemoveAppConfigWidget (widget);
 			_widgets.Remove (widget);
 			UpdateWidgetButtons ();
+			widget.Remove -= WidgetRemove;
+			widget.MoveUp -= WidgetMoveUp;
+			widget.MoveDown -= WidgetMoveDown;
 			widget.Dispose ();
 			_configWindow.UndoEnabled = true;
 		}

@@ -56,7 +56,7 @@ namespace Mmj.Views
 			}
 			FileDialog dialog = new OpenFileDialog {
 				CurrentFolder = directory,
-				InitialFileName = fileName
+					      InitialFileName = fileName
 			};
 			if (dialog.Run ()) {
 				entry.Text = Path.Combine (dialog.CurrentFolder, dialog.FileName);
@@ -66,11 +66,11 @@ namespace Mmj.Views
 		public static string CreateWidgetName (this string name)
 		{
 			return Regex.Replace (name, @"[^a-zA-Z0-9]",
-				m => {
+					m => {
 					byte[] bytes = Encoding.UTF8.GetBytes (m.Value);
 					IEnumerable<string> hexs = bytes.Select (b => string.Format ("_{0:x2}", b));
 					return string.Concat (hexs);
-				});
+					});
 		}
 	}
 }

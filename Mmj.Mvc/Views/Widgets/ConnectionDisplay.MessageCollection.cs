@@ -41,9 +41,9 @@ namespace Mmj.Views.Widgets
 			{
 				lock (_messages) {
 					_messages.Add (new Message {
-						Created = DateTime.Now, 
-						Content = parameters == null ? I18N._ (message) : I18N._ (message, parameters)
-					});
+							Created = DateTime.Now, 
+							Content = parameters == null ? I18N._ (message) : I18N._ (message, parameters)
+							});
 				}
 			}
 

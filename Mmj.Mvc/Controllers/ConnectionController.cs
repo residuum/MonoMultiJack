@@ -64,7 +64,7 @@ namespace Mmj.Controllers
 					_connectionWidget.AddConnectable (client);
 				}
 			}
-			
+
 			_connectionWidget.Connect += Widget_Connect;
 			_connectionWidget.Disconnect += Widget_Disconnect;
 		}
@@ -154,6 +154,7 @@ namespace Mmj.Controllers
 		~ConnectionController ()
 		{
 			Dispose (false);
+			GC.SuppressFinalize (this);
 		}
 
 		public void Dispose ()
@@ -164,6 +165,10 @@ namespace Mmj.Controllers
 
 		protected virtual void Dispose (bool isDisposing)
 		{
+			_connectionManager.BackendHasChanged -= ConnectionManager_BackendHasChanged;
+			_connectionManager.ConnectionHasChanged -= ConnectionManager_ConnectionHasChanged;
+			_connectionWidget.Connect -= Widget_Connect;
+			_connectionWidget.Disconnect -= Widget_Disconnect;
 			_connectionWidget.Dispose ();
 		}
 	}
