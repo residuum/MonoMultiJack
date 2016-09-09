@@ -41,13 +41,12 @@ namespace Mmj.Views.Widgets
 		{
 			Dispose(false);
 		}
-		
+
 #region IWidget implementation
-			
-			void IWidget.Show ()
-			{
-				Show ();
-			}
+		void IWidget.Show ()
+		{
+			Show ();
+		}
 
 		void IWidget.Hide ()
 		{
@@ -57,8 +56,8 @@ namespace Mmj.Views.Widgets
 		protected new void Dispose(bool isDisposing)
 		{
 			_startButton.Clicked -= CallStop;
-				_startButton.Clicked -= CallStart;
-				base.Dispose(isDisposing);
+			_startButton.Clicked -= CallStart;
+			base.Dispose(isDisposing);
 		}
 
 #endregion
@@ -76,21 +75,20 @@ namespace Mmj.Views.Widgets
 
 			set {
 				Application.Invoke (delegate {
-						if (value) {
+					if (value) {
 						_startButton.Active = true;
 						_startButton.Clicked -= CallStop;
 						_startButton.Clicked -= CallStart;
 						_startButton.Clicked += CallStop;
 						_startButton.Image = Icons.Stop;
-						} else {
+					} else {
 						_startButton.Active = false;
 						_startButton.Clicked -= CallStop;
 						_startButton.Clicked -= CallStart;
 						_startButton.Clicked += CallStart;
 						_startButton.Image = Icons.Start;
-						}
-						}
-						);
+					}
+				});
 			}
 		}
 

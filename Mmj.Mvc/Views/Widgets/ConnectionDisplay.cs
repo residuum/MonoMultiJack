@@ -179,23 +179,23 @@ namespace Mmj.Views.Widgets
 		public void AddMessage (string message, object[] parameters = null)
 		{
 			Application.Invoke (() => {
-					_messages.AddMessage (message, parameters);
-					_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Markdown);
-					_messageContainer.Show ();
-					_messageContainer.VerticalScrollControl.Value = 0;
+				_messages.AddMessage (message, parameters);
+				_messageDisplay.LoadText (_messages.GetMessages (), Xwt.Formats.TextFormat.Markdown);
+				_messageContainer.Show ();
+				_messageContainer.VerticalScrollControl.Value = 0;
 					});
 			if (_timeout != null) {
 				_timeout.Dispose ();
 			}
 			_timeout = Application.TimeoutInvoke (100, () => {
-					string output = _messages.GetMessages ();
-					if (string.IsNullOrEmpty (output)) {
+				string output = _messages.GetMessages ();
+				if (string.IsNullOrEmpty (output)) {
 					_messageContainer.Hide ();
 					return false;
-					}
-					_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Markdown);
+				}
+				_messageDisplay.LoadText (output, Xwt.Formats.TextFormat.Markdown);
 					return true;
-					});
+				});
 		}
 
 		protected virtual void ConnectButton_Click (object sender, EventArgs e)
