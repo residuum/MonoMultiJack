@@ -135,7 +135,11 @@ namespace Mmj.OS
 				bashScript.AppendLine ("then true");
 				bashScript.AppendLine ("else");
 			}
+			#if DEBUG
+			bashScript.AppendLine (_commandName + " " + _commandArguments + " >> \"/tmp/mmj-log/"+ _commandName + ".log\" 2>&1&");
+			#else
 			bashScript.AppendLine (_commandName + " " + _commandArguments + " >> /dev/null 2>&1&");
+			#endif
 			bashScript.AppendLine ("echo $!");
 			if (isJackd) {
 				bashScript.AppendLine ("fi");
