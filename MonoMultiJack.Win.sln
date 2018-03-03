@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.WPF", "xwt\Xwt.WPF\Xwt.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Windows", "MonoMultiJack.Windows\MonoMultiJack.Windows.csproj", "{48716E31-9E50-469A-8EA4-3F722C79D7B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvc", "Mmj.Mvc\Mmj.Mvc.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvp", "Mmj.Mvp\Mmj.Mvp.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "MonoMultiJack.Windows.Setup", "MonoMultiJack.Windows.Setup\MonoMultiJack.Windows.Setup.wixproj", "{5E708E1A-DC0D-4A78-B943-978548E555D9}"
 EndProject

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='windows-1252'?>
+<?xml version='1.0' encoding='utf-8'?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
@@ -21,7 +21,7 @@
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.ConnectionWrapper.Jack.dll" Source="..\Mmj.ConnectionWrapper.Jack\bin\$(var.Configuration)\Mmj.ConnectionWrapper.Jack.dll" KeyPath="yes" />
             </Component>
             <Component Id="dll_mmj_mvc" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
-              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.Mvc.dll" Source="..\Mmj.Mvc\bin\$(var.Configuration)\Mmj.Mvc.dll" KeyPath="yes" />
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.Mvp.dll" Source="..\Mmj.Mvp\bin\$(var.Configuration)\Mmj.Mvp.dll" KeyPath="yes" />
             </Component>
             <Component Id="dll_mmj_os" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.OS.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\Mmj.OS.dll" KeyPath="yes" />

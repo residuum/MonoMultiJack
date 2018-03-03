@@ -24,7 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Mmj.Controllers;
+using Mmj.Presenters;
 using Xwt;
 
 namespace Mmj
@@ -44,17 +44,17 @@ namespace Mmj
 		public static void Main (string[] args)
 		{
 			Application.Initialize ();
-			MainController mainController = new MainController (args);
-			mainController.Start ();
-			mainController.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
+			MainPresenter mainPresenter = new MainPresenter (args);
+			mainPresenter.Start ();
+			mainPresenter.AllWidgetsAreClosed += HandleAllWidgetsAreClosed;
 			Application.Run ();
 		}
 
 		static void HandleAllWidgetsAreClosed (object sender, EventArgs e)
 		{
-			IController controller = sender as IController;
-			if (controller != null) {
-				controller.Dispose ();				
+			IPresenter presenter = sender as IPresenter;
+			if (presenter != null) {
+				presenter.Dispose ();				
 			}
 			Application.Exit ();
 		}

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-12-31 13:28+0100\n"
-"PO-Revision-Date: 2015-12-31 13:29+0100\n"
+"POT-Creation-Date: 2015-03-01 22:14+0100\n"
+"PO-Revision-Date: 2015-03-01 22:14+0100\n"
 "Last-Translator: Thomas Mayer <thomas@residuum.org>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: Mmj.ConnectionWrapper\n"
 "X-Poedit-SearchPath-1: Mmj.ConnectionWrapper.Alsa\n"
 "X-Poedit-SearchPath-2: Mmj.ConnectionWrapper.Jack\n"
-"X-Poedit-SearchPath-3: Mmj.Mvc\n"
+"X-Poedit-SearchPath-3: Mmj.Mvp\n"
 "X-Poedit-SearchPath-4: Mmj.OS\n"
 "X-Poedit-SearchPath-5: Mmj.OS.Linux\n"
 "X-Poedit-SearchPath-6: Mmj.OS.Windows\n"
@@ -25,7 +25,7 @@ msgstr ""
 "X-Poedit-SearchPath-8: MonoMultiJack.Windows\n"
 "X-Poedit-SearchPath-9: MonoMultiJack.Windows.SetupCheck\n"
 
-#: Mmj.Mvc/Controllers/MainController.cs:293
+#: Mmj.Mvp/Presenters/MainPresenter.cs:293
 msgid ""
 "MonoMultiJack is a simple tool for controlling Jackd and diverse audio "
 "programs."
@@ -33,176 +33,176 @@ msgstr ""
 "MonoMultiJack ist eine einfache Anwendung, um Jackd und Audio-Programme "
 "steuern zu können."
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:67
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:67
 msgid "Name"
 msgstr "Name"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:67
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:67
 msgid "e.g. Ardour"
 msgstr "z.B. Ardour"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:68
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:68
 msgid "Command"
 msgstr "Befehl"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:68
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:68
 msgid "e.g. /usr/bin/ardour3"
 msgstr "z.B. /usr/bin/ardour3"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:70
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:70
 msgid "Command Arguments"
 msgstr "Befehlsparameter"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:70
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:166
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:168
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:70
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:166
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:168
 msgid "optional"
 msgstr "optional"
 
-#: Mmj.Mvc/Views/Widgets/AppConfigWidget.cs:72
+#: Mmj.Mvp/Views/Widgets/AppConfigWidget.cs:72
 msgid "Delete"
 msgstr "Löschen"
 
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:78
+#: Mmj.Mvp/Views/Widgets/ConnectionDisplay.cs:78
 msgid "Connect"
 msgstr "Verbinden"
 
-#: Mmj.Mvc/Views/Widgets/ConnectionDisplay.cs:80
+#: Mmj.Mvp/Views/Widgets/ConnectionDisplay.cs:80
 msgid "Disconnect"
 msgstr "Trennen"
 
-#: Mmj.Mvc/Views/Windows/AboutWindow.LicenseDialog.cs:60
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:78
-#: Mmj.Mvc/Views/Windows/HelpWindow.cs:51
+#: Mmj.Mvp/Views/Windows/AboutWindow.LicenseDialog.cs:60
+#: Mmj.Mvp/Views/Windows/AboutWindow.cs:78
+#: Mmj.Mvp/Views/Windows/HelpWindow.cs:51
 msgid "Close"
 msgstr "Schließen"
 
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:67
+#: Mmj.Mvp/Views/Windows/AboutWindow.cs:67
 msgid "Authors"
 msgstr "Autoren"
 
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:73
+#: Mmj.Mvp/Views/Windows/AboutWindow.cs:73
 msgid "License"
 msgstr "Lizenz"
 
-#: Mmj.Mvc/Views/Windows/AboutWindow.cs:142
+#: Mmj.Mvp/Views/Windows/AboutWindow.cs:142
 #, csharp-format
 msgid "Info about {0}"
 msgstr "Info über {0}"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:48
+#: Mmj.Mvp/Views/Windows/AppConfigWindow.cs:48
 msgid "Configure Applications"
 msgstr "Einstellungen für Anwendungen"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:166
+#: Mmj.Mvp/Views/Windows/AppConfigWindow.cs:166
 msgid "Add"
 msgstr "Neu"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:167
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:171
+#: Mmj.Mvp/Views/Windows/AppConfigWindow.cs:167
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:171
 msgid "Save"
 msgstr "Speichern"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:168
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:172
+#: Mmj.Mvp/Views/Windows/AppConfigWindow.cs:168
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:172
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: Mmj.Mvc/Views/Windows/AppConfigWindow.cs:172
+#: Mmj.Mvp/Views/Windows/AppConfigWindow.cs:172
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: Mmj.Mvc/Views/Windows/Dialog.cs:52
+#: Mmj.Mvp/Views/Windows/Dialog.cs:52
 msgid "all"
 msgstr "alle"
 
-#: Mmj.Mvc/Views/Windows/HelpWindow.cs:90
+#: Mmj.Mvp/Views/Windows/HelpWindow.cs:90
 #, csharp-format
 msgid "Help for {0}"
 msgstr "Hilfe für {0}"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:124
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:124
 msgid "Configure Jackd"
 msgstr "Einstellungen für Jackd"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:164
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:164
 msgid "Jackd Startup Path"
 msgstr "Pfad zu Jackd"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:164
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:164
 msgid "e.g. /usr/bin/jackd"
 msgstr "z.B. /usr/bin/jackd"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:166
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:166
 msgid "General Options"
 msgstr "Allgemeine Optionen"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:167
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:167
 msgid "Driver Infrastructure"
 msgstr "Treiber-Infrastruktur"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:167
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:167
 msgid "e.g. alsa"
 msgstr "z.B. alsa"
 
-#: Mmj.Mvc/Views/Windows/JackdConfigWindow.cs:168
+#: Mmj.Mvp/Views/Windows/JackdConfigWindow.cs:168
 msgid "Driver Options"
 msgstr "Treiber-Optionen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:45
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:45
 msgid "Jackd is running."
 msgstr "Jackd läuft."
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:46
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:46
 msgid "Jackd is stopped."
 msgstr "Jackd ist angehalten."
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:88
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:88
 msgid "_File"
 msgstr "_Datei"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:94
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:94
 msgid "_Configuration"
 msgstr "_Einstellungen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:100
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:111
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:100
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:111
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:112
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:112
 msgid "_About"
 msgstr "Üb_er"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:117
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:117
 msgid "Configure _Jackd"
 msgstr "_Jackd einstellen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:118
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:118
 msgid "Manage _Applications"
 msgstr "_Anwendungen verwalten"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:123
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:123
 msgid "(Re)Start _Jackd"
 msgstr "_Jackd (neu) starten"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:124
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:124
 msgid "S_top Jackd"
 msgstr "Jackd s_toppen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:126
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:126
 msgid "Stop _All"
 msgstr "_Alle Programme stoppen"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:129
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:129
 msgid "_Save Snapshot"
 msgstr "Schnappschuss _speichern"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:130
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:130
 msgid "_Load Snapshot"
 msgstr "Schnappschuss _laden"
 
-#: Mmj.Mvc/Views/Windows/MainWindow.cs:131
+#: Mmj.Mvp/Views/Windows/MainWindow.cs:131
 msgid "_Quit"
 msgstr "_Beenden"
 
