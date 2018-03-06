@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.ConnectionWrapper", "Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj", "{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}"
@@ -13,15 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.OS", "Mmj.OS\Mmj.OS.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.OS.Linux", "Mmj.OS.Linux\Mmj.OS.Linux.csproj", "{0FF07842-6E86-40F0-998B-D376D50B83A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt", "xwt\Xwt\Xwt.csproj", "{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mmj.Mvp", "Mmj.Mvp\Mmj.Mvp.csproj", "{D43459F9-41B8-467F-965E-8783BD10FC04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoMultiJack.Linux", "MonoMultiJack.Linux\MonoMultiJack.Linux.csproj", "{C491EA5A-D734-4ACC-A30F-8D63B47F7167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Gtk3", "xwt\Xwt.Gtk\Xwt.Gtk3.csproj", "{3B25FD1F-CEBA-4450-8893-DC330FDB56A7}"
-EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoMultiJack.Linux.Gtk3", "MonoMultiJack.Linux.Packaging\MonoMultiJack.Linux.Gtk3.mdproj", "{E14C4642-6194-45C0-86DB-23057E2921AF}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoMultiJack.Linux", "MonoMultiJack.Linux.Packaging\MonoMultiJack.Linux.mdproj", "{E14C4642-6194-45C0-86DB-23057E2921AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,7 +260,7 @@ Global
 		$38.inheritsSet = null
 		$38.scope = application/xml
 		version = 0.7.0
-		StartupItem = MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk3.csproj
+		StartupItem = MonoMultiJack.Linux\MonoMultiJack.Linux.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

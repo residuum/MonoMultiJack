@@ -8,23 +8,6 @@
     <ReleaseVersion>0.7.0</ReleaseVersion>
     <Packages>
       <Packages>
-        <Package name="MonoMultiJack.Linux.Gtk3.Autotools">
-          <Builder TargetDirectory=".." DefaultConfiguration="Release" ctype="TarballDeployTarget">
-            <ChildEntries>
-              <SolutionItemReference path="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj" />
-              <SolutionItemReference path="..\Mmj.ConnectionWrapper.Jack\Mmj.ConnectionWrapper.Jack.csproj" />
-              <SolutionItemReference path="..\Mmj.ConnectionWrapper.Alsa\Mmj.ConnectionWrapper.Alsa.csproj" />
-              <SolutionItemReference path="..\Mmj.Configuration\Mmj.Configuration.csproj" />
-              <SolutionItemReference path="..\Mmj.OS\Mmj.OS.csproj" />
-              <SolutionItemReference path="..\Mmj.OS.Linux\Mmj.OS.Linux.csproj" />
-              <SolutionItemReference path="..\xwt\Xwt\Xwt.csproj" />
-              <SolutionItemReference path="..\Mmj.Mvc\Mmj.Mvc.csproj" />
-              <SolutionItemReference path="..\MonoMultiJack.Linux\MonoMultiJack.Linux.Gtk3.csproj" />
-              <SolutionItemReference path="..\xwt\Xwt.Gtk\Xwt.Gtk3.csproj" />
-            </ChildEntries>
-            <RootEntry path="..\MonoMultiJack.Lnx.Gtk3.sln" id=":root:" />
-          </Builder>
-        </Package>
         <Package name="MSBuild (Visual Studio 2010) Sources">
           <Builder targetFile="..\MonoMultiJack.Lnx.Gtk3.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
             <ChildEntries>

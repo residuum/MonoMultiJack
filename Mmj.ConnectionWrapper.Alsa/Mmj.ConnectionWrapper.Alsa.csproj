@@ -32,6 +32,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Xwt">
+      <HintPath>..\packages\Xwt.0.2.84\lib\net40\Xwt.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -46,15 +49,10 @@
     <Compile Include="Types\PointerWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
       <Project>{A2E7179B-3D8A-4158-B23F-71ACB5C713D9}</Project>
       <Name>Mmj.ConnectionWrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
@@ -121,4 +119,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

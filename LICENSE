@@ -1,4 +1,4 @@
-Copyright (c) 2009-2015 Thomas Mayer
+Copyright (c) 2009-2018 Thomas Mayer
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -24,7 +24,8 @@ Additional Components used
 
 NLog
 
-Copyright (c) 2004-2011 Jaroslaw Kowalski <jaak@jkowalski.net>
+Copyright (c) 2004-2018 Jaroslaw Kowalski <jaak@jkowalski.net>, Kim 
+Christensen, Julian Verdurmen
 
 All rights reserved.
 
@@ -54,9 +55,9 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-XWT
+Xwt, Xwt.WPF
 
-Copyright (c) 2011 Xamarin Inc
+Copyright (c) 2014 Xamarin Inc
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -80,7 +81,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 NGettext
 
-Copyright (c) 2012 Neris Ereptoris (www.neris.ws)
+Copyright (c) 2012 Vitaly Zilnik
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

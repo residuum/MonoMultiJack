@@ -57,7 +57,8 @@ namespace Mmj.Views.Windows
 		/// </summary>
 		public MainWindow ()
 		{
-			StockIcons.IconSet = new Icons ();
+		    Toolkit.CurrentEngine.Defaults.MessageDialog.InformationIcon = Icons.Info;
+		    Toolkit.CurrentEngine.Defaults.MessageDialog.WarningIcon = Icons.Warning;
 			BuildMenu ();
 			BuildContent ();
 			Closed += OnCloseEvent;

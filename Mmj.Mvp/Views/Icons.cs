@@ -27,11 +27,10 @@ using System.IO;
 using System.Reflection;
 using Xwt;
 using Xwt.Drawing;
-using Xwt.Backends;
 
 namespace Mmj.Views
 {
-	public class Icons : IIconSet
+	public class Icons
 	{
 		static Assembly _assembly;
 
@@ -43,35 +42,6 @@ namespace Mmj.Views
 				return _assembly;
 			}
 		}
-
-		#region IIconSet implementation
-
-		Image IIconSet.GetStockIcon (string iconId)
-		{
-			switch (iconId) {
-			case StockIconId.Add:
-				return LoadAdd ();
-			case StockIconId.Information:
-				return LoadInfo ();
-			case StockIconId.Question:
-				return LoadHelp ();
-			case StockIconId.Remove:
-				return LoadDelete ();
-			case StockIconId.Warning:
-				return LoadWarning ();
-			case StockIconId.Error:
-			case StockIconId.OrientationLandscape:
-			case StockIconId.OrientationPortrait:
-			case StockIconId.Zoom100:
-			case StockIconId.ZoomFit:
-			case StockIconId.ZoomIn:
-			case StockIconId.ZoomOut:
-				return null;
-			}
-			return null;
-		}
-
-		#endregion
 
 		public static Image Program {
 			get { return LoadImage ("Mmj.Views.Icons.program.png"); }

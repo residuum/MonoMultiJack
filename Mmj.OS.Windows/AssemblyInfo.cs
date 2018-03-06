@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MonoMultiJack")]
-[assembly: AssemblyCopyright("2009 - 2013 Thomas Mayer")]
+[assembly: AssemblyCopyright("2009 - 2018 Thomas Mayer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,4 +24,4 @@ using System.Runtime.CompilerServices;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
-[assembly: AssemblyVersionAttribute("0.6.0.*")]
+[assembly: AssemblyVersionAttribute("0.7.0.*")]

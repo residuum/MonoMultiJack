@@ -31,6 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Xwt">
+      <HintPath>..\packages\Xwt.0.2.84\lib\net40\Xwt.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -60,10 +63,6 @@
     <ProjectReference Include="..\Mmj.OS\Mmj.OS.csproj">
       <Project>{D975B294-7420-433F-B5A8-A7B230584877}</Project>
       <Name>Mmj.OS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

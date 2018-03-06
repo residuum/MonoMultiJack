@@ -22,9 +22,6 @@ Linux:
 Run 
 $ bash Linux-build.sh
 
-To build it with Gtk3 libraries:
-$ bash Linux-build.sh Gtk3
-
 You will get a tar.bz2 file with all dll and MonoMultiJack.exe
 Running the extracted program:
 $ exec mono "./MonoMultiJack.exe"

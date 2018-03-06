@@ -305,11 +305,11 @@ namespace Mmj.Presenters
 			IAboutWindow aboutWindow = new AboutWindow ();
 			aboutWindow.ProgramName = "MonoMultiJack";
 			aboutWindow.Version = Assembly.GetExecutingAssembly ().GetName ().Version.ToString ();
-			aboutWindow.Copyright = "(c) Thomas Mayer 2009-2015";
+			aboutWindow.Copyright = "(c) Thomas Mayer 2009-2018";
 			aboutWindow.Comments = I18N._ (@"MonoMultiJack is a simple tool for controlling Jackd and diverse audio programs.");
 			aboutWindow.Website = "http://ix.residuum.org/";
 			aboutWindow.Authors = new string[] { "Thomas Mayer" };
-			aboutWindow.License = @"Copyright (c) 2009-2015 Thomas Mayer
+			aboutWindow.License = @"Copyright (c) 2009-2018 Thomas Mayer
 
 				Permission is hereby granted, free of charge, to any person obtaining
 				a copy of this software and associated documentation files (the
@@ -335,7 +335,8 @@ namespace Mmj.Presenters
 
 						**NLog**
 
-						Copyright (c) 2004-2011 Jaroslaw Kowalski <jaak@jkowalski.net>
+						Copyright (c) 2004-2018 Jaroslaw Kowalski <jaak@jkowalski.net>, Kim 
+						Christensen, Julian Verdurmen
 
 						All rights reserved.
 
@@ -367,7 +368,7 @@ namespace Mmj.Presenters
 
 						**XWT**
 
-						Copyright (c) 2011 Xamarin Inc
+						Copyright (c) 2014 Xamarin Inc
 
 						Permission is hereby granted, free of charge, to any person obtaining
 						a copy of this software and associated documentation files (the
@@ -391,7 +392,7 @@ namespace Mmj.Presenters
 
 						**NGettext**
 
-						Copyright (c) 2012 Neris Ereptoris (www.neris.ws)
+						Copyright (c) 2012 Vitaly Zilnik
 
 						Permission is hereby granted, free of charge, to any person obtaining
 						a copy of this software and associated documentation files (the

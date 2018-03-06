@@ -12,6 +12,8 @@
     <ReleaseVersion>0.7.0</ReleaseVersion>
     <StartupObject>Mmj.MainClass</StartupObject>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,15 +44,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Xwt">
+      <HintPath>..\packages\Xwt.0.2.84\lib\net40\Xwt.dll</HintPath>
+    </Reference>
+    <Reference Include="Xwt.Gtk3">
+      <HintPath>..\packages\Xwt.Gtk3.0.2.84\lib\net40\Xwt.Gtk3.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Xwt.Gtk3.0.2.84\build\Xwt.Gtk3.props" Condition="Exists('..\packages\Xwt.Gtk3.0.2.84\build\Xwt.Gtk3.props')" />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Linux-pocompile.sh" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mmj.FileOperations\Mmj.FileOperations.csproj">
@@ -80,14 +90,6 @@
     <ProjectReference Include="..\Mmj.OS.Linux\Mmj.OS.Linux.csproj">
       <Project>{0FF07842-6E86-40F0-998B-D376D50B83A3}</Project>
       <Name>Mmj.OS.Linux</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\xwt\Xwt.Gtk\Xwt.Gtk3.csproj">
-      <Project>{3B25FD1F-CEBA-4450-8893-DC330FDB56A7}</Project>
-      <Name>Xwt.Gtk3</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>

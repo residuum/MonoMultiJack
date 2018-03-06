@@ -30,10 +30,10 @@
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Mmj.OS.Windows.dll" Source="..\Mmj.OS.Windows\bin\$(var.Configuration)\Mmj.OS.Windows.dll" KeyPath="yes" />
             </Component>
             <Component Id="dll_xwt" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
-              <File  DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Xwt.dll" Source="..\xwt\Xwt\bin\$(var.Configuration)\Xwt.dll" KeyPath="yes" />
+              <File  DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Xwt.dll" Source="..\MonoMultiJack.Windows\bin\$(var.Configuration)\Xwt.dll" KeyPath="yes" />
             </Component>
             <Component Id="dll_xwt_wpf" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
-              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Xwt.WPF.dll" Source="..\xwt\Xwt.WPF\bin\$(var.Configuration)\Xwt.WPF.dll" KeyPath="yes" />
+              <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Xwt.WPF.dll" Source="..\MonoMultiJack.Windows\bin\$(var.Configuration)\Xwt.WPF.dll" KeyPath="yes" />
             </Component>
             <Component Id="dll_nlog" Permanent="no" SharedDllRefCount="no" Transitive="no" Guid="*">
               <File DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="NLog.dll" Source="..\Mmj.OS\bin\$(var.Configuration)\NLog.dll" KeyPath="yes" />
