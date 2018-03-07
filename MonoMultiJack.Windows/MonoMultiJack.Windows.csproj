@@ -55,11 +55,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System" />
-    <Reference Include="Xwt, Version=0.2.78.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xwt.0.2.78\lib\net40\Xwt.dll</HintPath>
+    <Reference Include="Xwt, Version=0.2.84.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xwt.0.2.84\lib\net40\Xwt.dll</HintPath>
     </Reference>
-    <Reference Include="Xwt.WPF, Version=0.2.78.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xwt.WPF.0.2.78\lib\net40\Xwt.WPF.dll</HintPath>
+    <Reference Include="Xwt.WPF, Version=0.2.84.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xwt.WPF.0.2.84\lib\net40\Xwt.WPF.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +75,29 @@
     <None Include="Windows-pocompile.bat" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mmj.ConnectionWrapper.Jack\Mmj.ConnectionWrapper.Jack.csproj">
+      <Project>{bddce17f-a5cd-44d0-9068-fdd3bbd8b775}</Project>
+      <Name>Mmj.ConnectionWrapper.Jack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.ConnectionWrapper\Mmj.ConnectionWrapper.csproj">
+      <Project>{a2e7179b-3d8a-4158-b23f-71acb5c713d9}</Project>
+      <Name>Mmj.ConnectionWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.FileOperations\Mmj.FileOperations.csproj">
+      <Project>{95bed56e-4297-4668-b75b-a9df6f522eb4}</Project>
+      <Name>Mmj.FileOperations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mmj.Mvp\Mmj.Mvp.csproj">
       <Project>{D43459F9-41B8-467F-965E-8783BD10FC04}</Project>
       <Name>Mmj.Mvp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.OS.Windows\Mmj.OS.Windows.csproj">
+      <Project>{30bb68bb-c4e0-4613-9fd5-3ac5bfe920ba}</Project>
+      <Name>Mmj.OS.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mmj.OS\Mmj.OS.csproj">
+      <Project>{d975b294-7420-433f-b5a8-a7b230584877}</Project>
+      <Name>Mmj.OS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
