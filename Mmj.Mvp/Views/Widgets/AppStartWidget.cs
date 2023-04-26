@@ -66,7 +66,12 @@ namespace Mmj.Views.Widgets
 
 		void IAppStartWidget.SetApp (string name, string commandName)
 		{
-			_startButton.Label = name;
+			if (name.Length > 8) {
+				_startButton.Label = name.Substring (0, 6) + "..";
+			} else {
+				_startButton.Label = name;
+			}
+			_startButton.TooltipText = name;
 			Name = name.CreateWidgetName ();
 			_startButton.Name = commandName.CreateWidgetName ();
 		}
