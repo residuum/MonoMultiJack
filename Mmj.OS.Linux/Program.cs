@@ -131,7 +131,7 @@ namespace Mmj.OS
 			bashScript.AppendLine ("#!/bin/sh");
 			if (isJackd && !string.IsNullOrEmpty (_commandName)) {
 				string[] commandPaths = _commandName.Split (Path.DirectorySeparatorChar);
-				bashScript.AppendLine ("if pgrep " + commandPaths [commandPaths.Length - 1]);
+				bashScript.AppendLine ("if pgrep " + commandPaths [commandPaths.Length - 1] + "$");
 				bashScript.AppendLine ("then true");
 				bashScript.AppendLine ("else");
 			}
@@ -250,7 +250,7 @@ namespace Mmj.OS
 			using (Process pgrepProgram = new Process ()) {
 				pgrepProgram.StartInfo.FileName = "pgrep";
 				string[] commandPaths = _commandName.Split (Path.DirectorySeparatorChar);
-				pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1];
+				pgrepProgram.StartInfo.Arguments = commandPaths [commandPaths.Length - 1] + "$";
 				pgrepProgram.StartInfo.RedirectStandardOutput = true;
 				pgrepProgram.EnableRaisingEvents = true;
 				pgrepProgram.StartInfo.UseShellExecute = false;
