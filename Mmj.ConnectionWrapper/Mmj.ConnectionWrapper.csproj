@@ -10,6 +10,7 @@
     <RootNamespace>Mmj.ConnectionWrapper</RootNamespace>
     <AssemblyName>Mmj.ConnectionWrapper</AssemblyName>
     <ReleaseVersion>0.7.0</ReleaseVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

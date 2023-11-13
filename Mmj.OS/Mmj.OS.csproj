@@ -10,6 +10,7 @@
     <RootNamespace>Mmj.OS</RootNamespace>
     <AssemblyName>Mmj.OS</AssemblyName>
     <ReleaseVersion>0.7.0</ReleaseVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,15 +32,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="NGettext, Version=0.2.2.1, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985">
-      <HintPath>..\packages\NGettext.0.2.2.1\lib\NGettext.dll</HintPath>
-    </Reference>
     <Reference Include="Xwt">
-      <HintPath>..\packages\Xwt.0.2.84\lib\net40\Xwt.dll</HintPath>
+      <HintPath>..\packages\Xwt.0.2.251\lib\net472\Xwt.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\packages\NLog.4.4.13\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.5.2.5\lib\net46\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="NGettext">
+      <HintPath>..\packages\NGettext.0.6.7\lib\net46\NGettext.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.IO.Compression" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -62,7 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="MonoMultiJack.de.po" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

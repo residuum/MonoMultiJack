@@ -10,6 +10,7 @@
     <AssemblyName>Mmj.Mvp</AssemblyName>
     <RootNamespace>Mmj</RootNamespace>
     <ReleaseVersion>0.7.0</ReleaseVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,7 +35,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Core" />
     <Reference Include="Xwt">
-      <HintPath>..\packages\Xwt.0.2.84\lib\net40\Xwt.dll</HintPath>
+      <HintPath>..\packages\Xwt.0.2.251\lib\net472\Xwt.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
